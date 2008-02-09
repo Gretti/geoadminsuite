@@ -1,0 +1,24 @@
+#for symbology
+map
+	 extent 0.11 0.70 0.33 0.82
+	 imagecolor 238 238 238
+	 imagetype GIF
+	 size 40 22
+	 status ON
+	 transparent OFF
+	 units METERS
+	 fontset "../fonts/font.list"
+	 symbolset "symbols.sym"
+	 
+	 layer
+		 name "line"
+		 data "ln.shp"
+		 status DEFAULT
+		 type LINE
+		 class
+			 name "c1"
+			 color 255 0 0
+			 outlinecolor 0 0 0
+		end
+	end
+end
