@@ -1,0 +1,30 @@
+OpenLayers contributors:
+Howard Butler
+Bertil Chaupis                                                               
+John Cole
+Jeff Dege
+Roald de Wit
+Schuyler Erle
+Christian López Espínola
+John Frank
+Sean Gilles
+Pierre Giraud
+Andreas Hocevar
+Ian Johnson
+Eric Lemoine
+Philip Lindsay
+Corey Puffault
+Gregers Rygg
+Tim Schaub
+Christopher Schmidt
+Cameron Shorter                                                              
+Paul Spencer                                                                 
+Glen Stampoultzis
+James Stembridge
+Erik Uzureau
+Bill Woodall
+Steve Woodbridge
+
+
+OpenLayers is graciously supported by MetaCarta, Inc.
+<http://www.metacarta.com>.
