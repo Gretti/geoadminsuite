@@ -1,0 +1,126 @@
+html, body {
+    font:normal 12px verdana;
+    margin:0;
+    padding:0;
+    border:0 none;
+    overflow:hidden;
+    height:100%;
+}
+.x-layout-panel-north {
+    border:0px none;
+}
+#nav {
+}
+#autoTabs, #catalog, #composer, #publisher, #west {
+    padding:10px;
+}
+#north, #south{
+    font:normal 8pt arial, helvetica;
+    padding:4px;
+}
+.x-layout-panel-center p {
+    margin:5px;
+}
+#props-panel .x-grid-col-0{
+}
+#props-panel .x-grid-col-1{
+}
+
+.btrash {
+    background-image:url(basket_delete.png) !important;
+}
+
+.badd {
+    background-image:url(add.png) !important;
+}
+
+.bnext {
+    background-image:url(next.png) !important;
+}
+
+.btry {
+    background-image:url(try.png) !important;
+}
+
+.brefresh {
+    background-image:url(refresh.gif) !important;
+}
+
+.blegend {
+    background-image:url(legend.png) !important;
+}
+
+.bzoomin {
+    background-image:url(zoomin.png) !important;
+}
+
+.bzoomout {
+    background-image:url(zoomout.png) !important;
+}
+
+.bdrag {
+    background-image:url(mouse.png) !important;
+}
+
+.bprint {
+    background-image:url(printer.png) !important;
+}
+
+.bok {
+    background-image:url(accept.png) !important;
+}
+
+.bko {
+    background-image:url(cancel.png) !important;
+}
+
+.res-block {
+    background:transparent url(block-top.gif) no-repeat scroll 0%;
+    margin-bottom:15px;
+    padding-top:5px;
+    width:210px;
+}
+.res-block-inner {
+    background:transparent url(block-bottom.gif) no-repeat scroll left bottom;
+    padding:6px 11px;
+}
+.res-block h3 {
+    color:#555555;
+    font-family:tahoma,arial,sans-serif;
+    font-size:12px;
+    font-size-adjust:none;
+    font-stretch:normal;
+    font-style:normal;
+    font-variant:normal;
+    font-weight:bold;
+    line-height:normal;
+    margin-bottom:8px;
+}
+.res-block ul {
+    color:#555555;
+    font-family:tahoma,arial,sans-serif;
+    font-size:12px;
+    font-size-adjust:none;
+    font-style:normal;
+    font-variant:normal;
+    font-weight:normal;
+    line-height:normal;
+}
+#custom {
+    cursor:move;
+}
+#custom-rzwrap {
+    z-index: 100;
+}
+#custom-rzwrap .x-resizable-handle {
+    width:11px;
+    height:11px;
+    background:transparent url(../scripts/mfbase/ext/resources/images/default/sizer/square.gif) no-repeat;
+    margin:0px;
+}
+#custom-rzwrap .x-resizable-handle-east, #custom-rzwrap .x-resizable-handle-west{
+    top:45%;
+}
+#custom-rzwrap .x-resizable-handle-north, #custom-rzwrap .x-resizable-handle-south{
+    left:45%;
+}
