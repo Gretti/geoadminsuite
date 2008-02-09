@@ -1,68 +1,94 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="iso-8859-1"?>
 
 <!DOCTYPE struts-config PUBLIC
-          "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
-          "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
 
+"-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+
+"http://struts.apache.org/dtds/struts-config_1_2.dtd">
+
+<!--
+
+  Default configuration file for GAS application.
+
+-->
 
 <struts-config>
-    <form-beans>
     
+    <!-- ========== Form Bean Definitions =================================== -->
+
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="KaboumPropertiesForm" type="org.geogurus.gas.forms.KaboumPropertiesForm" />
+        <form-bean name="LayerForm" type="org.geogurus.gas.forms.LayerForm"/>
+        <form-bean name="ListHostDescriptorForm" type="org.geogurus.gas.forms.ListHostDescriptorForm"/>
+        <form-bean name="ListCatalogForm" type="org.geogurus.gas.forms.ListCatalogForm"/>
+        <form-bean name="MapForm" type="org.geogurus.gas.forms.MapForm"/>
+        
     </form-beans>
     
-    <global-exceptions>
-    
-    </global-exceptions>
-
+    <!-- ========== Global Forwards Definitions =================================== -->
     <global-forwards>
-        <forward name="welcome"  path="/Welcome.do"/>
+        <forward name="configServer" path="/ext/generallayout.jsp"/>
+        <forward name="mapCatalog" path="/ext/mapCatalogLayerDetail.jsp"/>
+        <forward name="mapCatalogLayerDetail" path="/ext/mapCatalogLayerDetail.jsp"/>
+        <forward name="mapConfiguration" path="/ext/mapConfiguration.jsp"/>
+        <forward name="mapConfigurationLayerProperties" path="/ext/mapConfigurationLayerProperties.jsp"/>
+        <forward name="classificationProperties" path="/ext/composer/classification_properties.jsp"/>
+        <!--<forward name="configServer" path="/configServer.jsp"/>-->
+        <!--<forward name="mapCatalog" path="/mapCatalog.jsp"/>-->
+        <!--<forward name="mapCatalogLayerDetail" path="/mapCatalogLayerDetail.jsp"/>-->
+        <!--<forward name="mapConfiguration" path="/mapConfiguration.jsp"/>-->
+        <!--<forward name="mapConfigurationLayerProperties" path="/mapConfigurationLayerProperties.jsp"/>-->
+        <!--<forward name="classificationProperties" path="/MC_geonline_classification_properties.jsp"/>-->
+        <forward name="index" path="/index.jsp"/>
+        <forward name="configServerTestResult" path="/configServerTestResult.jsp"/>
+        <forward name="layerProperties" path="/MC_geonline_layer_properties.jsp"/>
+        <forward name="kaboumProperties" path="/MC_kaboum_properties.jsp"/>
+        <forward name="labelProperties" path="/MC_geonline_label_properties.jsp"/>
+        <forward name="mapProperties" path="/MC_mapserver_map_properties.jsp"/>
+        
+        <forward name="mapGenerator" path="/MapGenerator.jsp"/>
+        <forward name="mapComposer" path="/MapComposer.jsp"/>
     </global-forwards>
-
+    
+    <!-- ========== Actions Definitions =================================== -->
     <action-mappings>
-        <action path="/Welcome" forward="/welcomeStruts.jsp"/>
+        <action path="/submitMapfile" type="org.geogurus.gas.actions.submitMapfileAction"/>
+        <action path="/getSampleData" type="org.geogurus.gas.actions.GetSampleDataAction"/>
+        <action path="/refreshLayerOrder" type="org.geogurus.gas.actions.RefreshLayerOrderAction"/>
+        <action path="/layerProperties" 
+                type="org.geogurus.gas.actions.LayerPropertiesAction"
+                attribute="LayerForm" 
+                name="LayerForm"/>
+        <action path="/kaboumProperties" 
+                type="org.geogurus.gas.actions.KaboumPropertiesAction"
+                attribute="KaboumPropertiesForm" 
+                name="KaboumPropertiesForm"
+                input="/MC_kaboum_properties.jsp"/>
+        <action path="/classificationProperties" 
+                type="org.geogurus.gas.actions.ClassificationPropertiesAction"
+                attribute="LayerForm" 
+                name="LayerForm"/>
+        <action path="/mapProperties" 
+                type="org.geogurus.gas.actions.MapPropertiesAction"
+                attribute="MapForm" 
+                name="MapForm"/>
+        <action path="/switchLang" type="org.geogurus.gas.actions.SwitchLangAction"/>
+        <action path="/displayHelp" type="org.geogurus.gas.actions.DisplayHelpAction"/>
+        <action path="/listDatasources" type="org.geogurus.gas.actions.ListDatasourcesAction"/>
+        <action path="/infoDatasources" type="org.geogurus.gas.actions.InfoDatasourcesAction"/>
+        <action path="/testServer" type="org.geogurus.gas.actions.TestServerAction"/>
+        <action path="/hostLoader" 
+                type="org.geogurus.gas.actions.HostLoaderAction"
+                name="ListHostDescriptorForm"
+                attribute="ListHostDescriptorForm"/>
+        <action path="/composeMap" type="org.geogurus.gas.actions.ComposeMapAction"/>
+        <action path="/displayLayerProperties" type="org.geogurus.gas.actions.DisplayLayerPropertiesAction"/>
+        <action path="/loadLabelProperties" type="org.geogurus.gas.actions.LoadLabelPropertiesAction"/>
     </action-mappings>
     
-    <controller processorClass="org.apache.struts.tiles.TilesRequestProcessor"/>
-
-    <message-resources parameter="org/geogurus/gas/resources/ApplicationResource"/>    
+    <!-- if a key is added to this bundle, be sure to modify all references to bean:message to add the "bundle" properties -->
+    <message-resources  parameter="org.geogurus.gas.resources.GASResources" null="false"/>
+    <message-resources  parameter="org.geogurus.gas.resources.KaboumPropertiesResources" key="KaboumPropertiesBundle" null="false"/>
     
-    <!-- ========================= Tiles plugin ===============================-->
-    <!--
-    This plugin initialize Tiles definition factory. This later can takes some
-    parameters explained here after. The plugin first read parameters from
-    web.xml, thenoverload them with parameters defined here. All parameters
-    are optional.
-    The plugin should be declared in each struts-config file.
-    - definitions-config: (optional)
-    Specify configuration file names. There can be several comma
-    separated file names (default: ?? )
-    - moduleAware: (optional - struts1.1)
-    Specify if the Tiles definition factory is module aware. If true
-    (default), there will be one factory for each Struts module.
-    If false, there will be one common factory for all module. In this
-    later case, it is still needed to declare one plugin per module.
-    The factory will be initialized with parameters found in the first
-    initialized plugin (generally the one associated with the default
-    module).
-    true : One factory per module. (default)
-    false : one single shared factory for all modules
-    - definitions-parser-validate: (optional)
-    Specify if xml parser should validate the Tiles configuration file.
-    true : validate. DTD should be specified in file header (default)
-    false : no validation
-
-    Paths found in Tiles definitions are relative to the main context.
-    -->
-    <plug-in className="org.apache.struts.tiles.TilesPlugin" >
-        <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml" />      
-        <set-property property="moduleAware" value="true" />
-    </plug-in>
-    
-    <!-- ========================= Validator plugin ================================= -->
-    <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
-        <set-property
-            property="pathnames"
-            value="/WEB-INF/validator-rules.xml,/WEB-INF/validation.xml"/>
-    </plug-in>
-  
 </struts-config>
+
