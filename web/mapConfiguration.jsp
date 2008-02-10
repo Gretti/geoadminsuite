@@ -147,10 +147,10 @@
             var generalProperties = [
                 {"text":"<bean:message key="map"/>","id":"mapProps","icon":"images/mapserver.gif"},
                 {"text":"<bean:message key="legend"/>","id":"legendProps","icon":"images/palette.gif"},
-                {"text":"<bean:message key="scalebar"/>","id":"scalebarProps","icon":"ext/styles/static.gif"},
-                {"text":"<bean:message key="reference"/>","id":"referenceProps","icon":"ext/styles/map.png"},
-                {"text":"<bean:message key="web"/>","id":"webProps","icon":"ext/styles/world.png"},
-                {"text":"MapFile","id":"mapfileProps","icon":"ext/styles/prop.gif"}
+                {"text":"<bean:message key="scalebar"/>","id":"scalebarProps","icon":"styles/static.gif"},
+                {"text":"<bean:message key="reference"/>","id":"referenceProps","icon":"styles/map.png"},
+                {"text":"<bean:message key="web"/>","id":"webProps","icon":"styles/world.png"},
+                {"text":"MapFile","id":"mapfileProps","icon":"styles/prop.gif"}
             ];
 
             // adds nodes
@@ -208,7 +208,7 @@
             Ext.getCmp('layerprops').expand();
             Ext.getCmp('layerprops').doLayout();
             Ext.getCmp('cpLayerProps').load({
-                url: "ext/mapConfigurationLayerProperties.jsp",
+                url: "mapConfigurationLayerProperties.jsp",
                 scripts:true
             });
         }
@@ -284,15 +284,15 @@
             var url, title;
             var width = 500;
             var height = 300;
-            if (id == "genLayProps")         {url = 'ext/composer/general_properties.jsp';       title='General Properties';}
-            else if (id == "clasLayProps")   {url = 'ext/composer/classification_properties.jsp';title='Layer Classification Properties';}
-            else if (id == "layLayProps")    {url = 'ext/composer/layer_properties.jsp';         title='Layer Object Properties';}
-            else if (id == "layClasProps")   {url = 'ext/composer/classes_properties.jsp';       title='Layer Classes Properties';}
-            else if (id == "mapProps")       {url = 'ext/composer/map_properties.jsp';           title='Map Object Properties';}
-            else if (id == "legendProps")    {url = 'ext/composer/legend_properties.jsp';        title='Legend Object Properties';}
-            else if (id == "referenceProps") {url = 'ext/composer/reference_properties.jsp';     title='Reference Object Properties';}
-            else if (id == "scalebarProps")  {url = 'ext/composer/scalebar_properties.jsp';      title='Scalebar Object Properties';}
-            else if (id == "webProps")       {url = 'ext/composer/web_properties.jsp';           title='Web Object Properties';}
+            if (id == "genLayProps")         {url = 'composer/general_properties.jsp';       title='General Properties';}
+            else if (id == "clasLayProps")   {url = 'composer/classification_properties.jsp';title='Layer Classification Properties';}
+            else if (id == "layLayProps")    {url = 'composer/layer_properties.jsp';         title='Layer Object Properties';}
+            else if (id == "layClasProps")   {url = 'composer/classes_properties.jsp';       title='Layer Classes Properties';}
+            else if (id == "mapProps")       {url = 'composer/map_properties.jsp';           title='Map Object Properties';}
+            else if (id == "legendProps")    {url = 'composer/legend_properties.jsp';        title='Legend Object Properties';}
+            else if (id == "referenceProps") {url = 'composer/reference_properties.jsp';     title='Reference Object Properties';}
+            else if (id == "scalebarProps")  {url = 'composer/scalebar_properties.jsp';      title='Scalebar Object Properties';}
+            else if (id == "webProps")       {url = 'composer/web_properties.jsp';           title='Web Object Properties';}
             else if (id == "querymapProps")  {url = '';}
             else if (id == "mapfileProps")   {url = 'ZipDownload.jsv?exporttype=-3&cols=90&rows=20';width=800;height=400;title='Full Mapfile';}
             else {return;}

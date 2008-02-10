@@ -13,23 +13,23 @@
     <head>
         <title>Geogurus Administration Suite</title>
         <link rel="shortcut icon" href="favicon.ico">
-        <link rel="stylesheet" type="text/css" href="ext/scripts/mfbase/ext/resources/css/ext-all.css" />
-        <link rel="stylesheet" type="text/css" href="ext/scripts/mfbase/ext/resources/css/xtheme-gray.css" />
-        <link rel="stylesheet" type="text/css" href="ext/styles/layouts.css" />
-        <script type="text/javascript" src="ext/scripts/mfbase/openlayers/lib/OpenLayers.js"></script>
-        <script type="text/javascript" src="ext/scripts/mfbase/ext/adapter/ext/ext-base.js"></script>     
-        <script type="text/javascript" src="ext/scripts/mfbase/ext/ext-all.js"></script>
+        <link rel="stylesheet" type="text/css" href="scripts/mfbase/ext/resources/css/ext-all.css" />
+        <link rel="stylesheet" type="text/css" href="scripts/mfbase/ext/resources/css/xtheme-gray.css" />
+        <link rel="stylesheet" type="text/css" href="styles/layouts.css" />
+        <script type="text/javascript" src="scripts/mfbase/openlayers/lib/OpenLayers.js"></script>
+        <script type="text/javascript" src="scripts/mfbase/ext/adapter/ext/ext-base.js"></script>     
+        <script type="text/javascript" src="scripts/mfbase/ext/ext-all.js"></script>
         <script type="text/javascript">
             // Because of a bug in Firefox 2 we need to specify the MapFish base path.
             // See https://bugzilla.mozilla.org/show_bug.cgi?id=351282
-            var gMfLocation = "ext/scripts/mfbase/";
+            var gMfLocation = "scripts/mfbase/";
         </script>
-        <script type="text/javascript" src="ext/scripts/mfbase/mapfish/MapFish.js"></script>
-        <script type="text/javascript" src="ext/scripts/GeneralLayout.js"></script>
-        <script type="text/javascript" src="ext/scripts/Host.js"></script>
+        <script type="text/javascript" src="scripts/mfbase/mapfish/MapFish.js"></script>
+        <script type="text/javascript" src="scripts/GeneralLayout.js"></script>
+        <script type="text/javascript" src="scripts/Host.js"></script>
         <script type="text/javascript">
             <!--
-            Ext.BLANK_IMAGE_URL = 'ext/scripts/mfbase/ext/resources/images/default/s.gif';
+            Ext.BLANK_IMAGE_URL = 'scripts/mfbase/ext/resources/images/default/s.gif';
             GeneralLayout.setLanguage('fr');
             Ext.onReady(GeneralLayout.init);
             

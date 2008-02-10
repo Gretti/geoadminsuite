@@ -91,7 +91,7 @@ datasourcetypes.push(['<%=dstb%>','<%=dst%>'])
     params += '\'<bean:write name="cnt"/>\'';
     
     dlString = '<a href="javascript:void(0);" onclick="javascript:downloadData(' + params + ');">';
-    dlString += '<img src="ext/styles/package_go.png" alt=\"<bean:message key="download"/>\" title=\"<bean:message key="download"/>\" border=\"0\">';
+    dlString += '<img src="styles/package_go.png" alt=\"<bean:message key="download"/>\" title=\"<bean:message key="download"/>\" border=\"0\">';
     dlString += "</a>";
     
     myData.push(['<bean:write name="gc" property="name"/>','<bean:write name="gc" property="datasourceTypeAsString"/>','',dlString]);
@@ -146,12 +146,12 @@ datasourcetypes.push(['<%=dstb%>','<%=dst%>'])
     strdlmap += '<td style="font-family:arial,tahoma,helvetica,sans-serif;font-size:11px;"><bean:message key="map_file"/></td>';
     strdlmap += '<td>';
     strdlmap += '<a href="ZipDownload.jsv?exporttype=-1" target="_blank" alt=\"<bean:message key="see"/>\">';
-    strdlmap += '<img src="ext/styles/report.png" border="0" alt=\"<bean:message key="see"/>\" title=\"<bean:message key="see"/>\">';
+    strdlmap += '<img src="styles/report.png" border="0" alt=\"<bean:message key="see"/>\" title=\"<bean:message key="see"/>\">';
     strdlmap += '</a>';
     strdlmap += '</td>';
     strdlmap += '<td>';
     strdlmap += '<a href="ZipDownload.jsv?exporttype=-2" alt=\"<bean:message key="download_map"/>\">';
-    strdlmap += '<img src="ext/styles/report_go.png" border="0" alt=\"<bean:message key="download"/>\" title=\"<bean:message key="download"/>\">';
+    strdlmap += '<img src="styles/report_go.png" border="0" alt=\"<bean:message key="download"/>\" title=\"<bean:message key="download"/>\">';
     strdlmap += '</a>';
     strdlmap += '</td>';
     

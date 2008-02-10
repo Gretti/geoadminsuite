@@ -16,7 +16,7 @@
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <logic:present name="dgp">
-    <script type="text/javascript" language="Javascript">
+    <script type="text/javascript">
                 <!--
             var pAttributeInfo;
             var pFileInfo;
