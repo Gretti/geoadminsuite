@@ -228,7 +228,7 @@ GeneralLayout =
                     var nodeMF = new Ext.tree.TreeNode({text:'MapFish controls', id:'MFCtrl'});
                     
                     var subNodesOL = [
-                        new Ext.tree.TreeNode({text:'Editing Toolbar <img src="ext/styles/cog_add.png" onclick="GeneralLayout.addComponent(\'OL_EditingToolbar\');">',    id:'OL_EditingToolbar', leaf:true}),
+                        new Ext.tree.TreeNode({text:'Editing Toolbar <img src="styles/cog_add.png" onclick="GeneralLayout.addComponent(\'OL_EditingToolbar\');">',    id:'OL_EditingToolbar', leaf:true}),
                         new Ext.tree.TreeNode({text:'Layer Switcher',     id:'OL_LayerSwitcher',  leaf:true}),
                         new Ext.tree.TreeNode({text:'Mouse Position',     id:'OL_MousePosition',  leaf:true}),
                         new Ext.tree.TreeNode({text:'Mouse Toolbar',      id:'OL_MouseToolbar',   leaf:true}),
@@ -621,7 +621,7 @@ GeneralLayout =
             
            initCatalog : function(){
                 cpDataList.load({
-                    url: "ext/mapCatalogDatasourceList.jsp",
+                    url: "mapCatalogDatasourceList.jsp",
                     waitMsg:'Loading',
                     scripts:true
                 });
@@ -655,7 +655,7 @@ GeneralLayout =
            
            initComposer : function(){
                 cpComposerMap.load({
-                    url: "ext/mapConfiguration.jsp",
+                    url: "mapConfiguration.jsp",
                     scripts:true
                 });
            },
@@ -667,7 +667,7 @@ GeneralLayout =
            
            initPublisher : function(){
                 cpPublisherDownload.load({
-                    url: "ext/mapPublisher.jsp",
+                    url: "mapPublisher.jsp",
                     scripts:true
                 });
                 cpPublisherMapfish.doLayout();
