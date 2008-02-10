@@ -27,18 +27,12 @@
     
     <!-- ========== Global Forwards Definitions =================================== -->
     <global-forwards>
-        <forward name="configServer" path="/ext/generallayout.jsp"/>
-        <forward name="mapCatalog" path="/ext/mapCatalogLayerDetail.jsp"/>
-        <forward name="mapCatalogLayerDetail" path="/ext/mapCatalogLayerDetail.jsp"/>
-        <forward name="mapConfiguration" path="/ext/mapConfiguration.jsp"/>
-        <forward name="mapConfigurationLayerProperties" path="/ext/mapConfigurationLayerProperties.jsp"/>
-        <forward name="classificationProperties" path="/ext/composer/classification_properties.jsp"/>
-        <!--<forward name="configServer" path="/configServer.jsp"/>-->
-        <!--<forward name="mapCatalog" path="/mapCatalog.jsp"/>-->
-        <!--<forward name="mapCatalogLayerDetail" path="/mapCatalogLayerDetail.jsp"/>-->
-        <!--<forward name="mapConfiguration" path="/mapConfiguration.jsp"/>-->
-        <!--<forward name="mapConfigurationLayerProperties" path="/mapConfigurationLayerProperties.jsp"/>-->
-        <!--<forward name="classificationProperties" path="/MC_geonline_classification_properties.jsp"/>-->
+        <forward name="configServer" path="/generallayout.jsp"/>
+        <forward name="mapCatalog" path="/mapCatalogLayerDetail.jsp"/>
+        <forward name="mapCatalogLayerDetail" path="/mapCatalogLayerDetail.jsp"/>
+        <forward name="mapConfiguration" path="/mapConfiguration.jsp"/>
+        <forward name="mapConfigurationLayerProperties" path="/mapConfigurationLayerProperties.jsp"/>
+        <forward name="classificationProperties" path="/composer/classification_properties.jsp"/>
         <forward name="index" path="/index.jsp"/>
         <forward name="configServerTestResult" path="/configServerTestResult.jsp"/>
         <forward name="layerProperties" path="/MC_geonline_layer_properties.jsp"/>
