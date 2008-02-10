@@ -73,5 +73,5 @@
                     <i>Modification de l'ordre des couches sans rafraichissement de la page entière (DHTML + AJaX).</i> OK
             </td></tr>
         </table>
-    </body>
+    </body><!-- a test -->
 </html>
