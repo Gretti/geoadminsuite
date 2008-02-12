@@ -5,6 +5,7 @@
  */
 package org.geogurus.web;
 
+import java.io.Serializable;
 import java.util.Properties;
 import java.util.StringTokenizer;
 import org.geogurus.mapserver.objects.RGB;
@@ -16,7 +17,7 @@ import org.geogurus.mapserver.objects.RGB;
  * geodata
  * @author  nri
  */
-public class ColorGenerator {
+public class ColorGenerator implements Serializable {
 
     private int currentColorIndex;
     private int maxColorIndex;
