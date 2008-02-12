@@ -70,7 +70,7 @@
                                     params: paramstr,
                                     scripts:true
                                 });
-                                Ext.getCmp('pnlDataDetail').activate('view');
+                                //Ext.getCmp('pnlDataDetail').activate('view');
                 });
                 nodeDatasource.appendChild(nodeLayer);
                             </logic:iterate>

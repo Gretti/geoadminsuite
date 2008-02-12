@@ -100,10 +100,18 @@
                     });
                     Ext.getCmp('metadata').add(pFileInfo);
                 }
-                //destroy previous form if existing
-                if(Ext.getCmp('frmFileInfo')) Ext.getCmp('frmFileInfo').destroy();
-                //builds new form
-                var frmFileInfo= new Ext.FormPanel({
+                //updates previous form if existing
+                if(Ext.getCmp('frmFileInfo')) {
+                    Ext.getCmp('frmFileInfo').getForm().setValues({
+                        metadata_name:"<bean:write name="dgp" property="name"/>",
+                        metadata_source_type:"<bean:message name="dgp" property="dsType"/>",
+                        metadata_object_type:"<bean:write name="dgp" property="geoType"/>",
+                        metadata_num_objects:"<bean:write name="dgp" property="numRecords"/>",
+                        metadata_projection:"<bean:write name="dgp" property="projection"/>"
+                    });
+                } else {
+                    //builds new form
+                    var frmFileInfo= new Ext.FormPanel({
                         id:'frmFileInfo',
                         labelWidth: 75, // label settings here cascade unless overridden
                         frame:true,
@@ -113,25 +121,35 @@
                         defaultType: 'textfield',
 
                         items: [{
+                                name:"metadata_name",
                                 fieldLabel: "<bean:message key="name"/>",
-                                value: "<bean:write name="dgp" property="name"/>"
+                                value: "<bean:write name="dgp" property="name"/>",
+                                disabled:true
                             },{
+                                name:"metadata_source_type",
                                 fieldLabel: "<bean:message key="source_type_upper"/>",
-                                value: "<bean:message name="dgp" property="dsType"/>"
+                                value: "<bean:message name="dgp" property="dsType"/>",
+                                disabled:true
                             },{
+                                name:"metadata_object_type",
                                 fieldLabel: "<bean:message key="object_type"/>",
-                                value: "<bean:write name="dgp" property="geoType"/>"
+                                value: "<bean:write name="dgp" property="geoType"/>",
+                                disabled:true
                             }, {
+                                name:"metadata_num_objects",
                                 fieldLabel: "<bean:message key="num_objects"/>",
-                                value: "<bean:write name="dgp" property="numRecords"/>"
+                                value: "<bean:write name="dgp" property="numRecords"/>",
+                                disabled:true
                             }, {
+                                name:"metadata_projection",
                                 fieldLabel: "<bean:message key="projection"/>",
-                                value: "<bean:write name="dgp" property="projection"/>"
+                                value: "<bean:write name="dgp" property="projection"/>",
+                                disabled:true
                             }
                         ]
                     });
-                    
-                pFileInfo.add(frmFileInfo);
+                    pFileInfo.add(frmFileInfo);
+                }
                 <logic:equal name="dgp" property="dsType" value="imgfile">
                     if(Ext.getCmp('pAttributeInfo')) Ext.getCmp('pAttributeInfo').hide();
                 </logic:equal>
@@ -151,39 +169,42 @@
                 }
                 Ext.getCmp('pAttributeInfo').show();
                 
-                //destroy previous grid if existing
-                if(Ext.getCmp('gridAttributeInfo')) Ext.getCmp('gridAttributeInfo').destroy();
-                
                 // create the data store
                 var aiData = [];
                 <logic:iterate id="fs" name="dgp" property="fields">
                 aiData.push(['<bean:write name="fs" property="name"/>','<bean:write name="fs" property="type"/>','<bean:write name="fs" property="length"/>','<bean:write name="fs" property="nullable"/>']);
                 </logic:iterate>
-                var aistore = new Ext.data.SimpleStore({
-                    fields: [
-                       {name: '<bean:message key="name" />'},
-                       {name: '<bean:message key="type_upper" />'},
-                       {name: '<bean:message key="length" />'},
-                       {name: '<bean:message key="nullable" />'}
-                    ]
-                });
-                aistore.loadData(aiData);
+                //fills the grid
+                if(Ext.getCmp('gridAttributeInfo')) {
+                    Ext.getCmp('gridAttributeInfo').getStore().removeAll();
+                    Ext.getCmp('gridAttributeInfo').getStore().loadData(aiData);
+                } else {
+                    var aistore = new Ext.data.SimpleStore({
+                        fields: [
+                           {name: '<bean:message key="name" />'},
+                           {name: '<bean:message key="type_upper" />'},
+                           {name: '<bean:message key="length" />'},
+                           {name: '<bean:message key="nullable" />'}
+                        ]
+                    });
+                    aistore.loadData(aiData);
 
-                // create the Grid
-                var gridAttributeInfo = new Ext.grid.GridPanel({
-                    id: 'gridAttributeInfo',
-                    store: aistore,
-                    columns: [
-                        {header: "<bean:message key="name" />", width: 160},
-                        {header: "<bean:message key="type_upper" />", width: 75},
-                        {header: "<bean:message key="length" />", width: 75},
-                        {header: "<bean:message key="nullable" />", width: 75}
-                    ],
-                    height:350,
-                    width:400
-                });
-                pAttributeInfo.add(gridAttributeInfo);
-                gridAttributeInfo.ownerCt.doLayout();
+                    // create the Grid
+                    var gridAttributeInfo = new Ext.grid.GridPanel({
+                        id: 'gridAttributeInfo',
+                        store: aistore,
+                        columns: [
+                            {header: "<bean:message key="name" />", width: 160},
+                            {header: "<bean:message key="type_upper" />", width: 75},
+                            {header: "<bean:message key="length" />", width: 75},
+                            {header: "<bean:message key="nullable" />", width: 75}
+                        ],
+                        height:350,
+                        width:400
+                    });
+                    pAttributeInfo.add(gridAttributeInfo);
+                    pAttributeInfo.doLayout();
+                }
                 </logic:notEqual>
                 </logic:notEqual>
             }

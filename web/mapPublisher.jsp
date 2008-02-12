@@ -26,7 +26,7 @@
         dst = GeometryClass.DATASOURCE_TYPES_ASSTRING[i];
         dstb = GeometryClass.DATASOURCE_TYPES_ASBYTE[i];
 %>
-datasourcetypes.push(['<%=dstb%>','<%=dst%>'])
+datasourcetypes.push(['<%=dstb%>','<%=dst%>']);
 <%
     }
 %>
@@ -145,12 +145,12 @@ datasourcetypes.push(['<%=dstb%>','<%=dst%>'])
     var strdlmap = '<table style="border:0;width:100%;"><tr>';
     strdlmap += '<td style="font-family:arial,tahoma,helvetica,sans-serif;font-size:11px;"><bean:message key="map_file"/></td>';
     strdlmap += '<td>';
-    strdlmap += '<a href="ZipDownload.jsv?exporttype=-1" target="_blank" alt=\"<bean:message key="see"/>\">';
+    strdlmap += '<a href="zipDownload.do?exporttype=-1" target="_blank" alt=\"<bean:message key="see"/>\">';
     strdlmap += '<img src="styles/report.png" border="0" alt=\"<bean:message key="see"/>\" title=\"<bean:message key="see"/>\">';
     strdlmap += '</a>';
     strdlmap += '</td>';
     strdlmap += '<td>';
-    strdlmap += '<a href="ZipDownload.jsv?exporttype=-2" alt=\"<bean:message key="download_map"/>\">';
+    strdlmap += '<a href="zipDownload.do?exporttype=-2" alt=\"<bean:message key="download_map"/>\">';
     strdlmap += '<img src="styles/report_go.png" border="0" alt=\"<bean:message key="download"/>\" title=\"<bean:message key="download"/>\">';
     strdlmap += '</a>';
     strdlmap += '</td>';
@@ -189,7 +189,7 @@ datasourcetypes.push(['<%=dstb%>','<%=dst%>'])
             }
         }
         var db = "";
-        var url = 'ZipDownload.jsv?currentlayer=' + order + '&exporttype=' + dltype + '&dbname=' + db;
+        var url = 'zipDownload.do?currentlayer=' + order + '&exporttype=' + dltype + '&dbname=' + db;
         var w = window.open(url, "wait", "width=300,height=200");
         w.focus();
     }
