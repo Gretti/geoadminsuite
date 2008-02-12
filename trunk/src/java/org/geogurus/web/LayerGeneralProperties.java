@@ -27,7 +27,7 @@ import org.geogurus.mapserver.objects.Symbol;
  * This bean is built when a MG_layer_general_properties*.jsp page is called (for a pg table,
  * @author  nri
  */
-public class LayerGeneralProperties {
+public class LayerGeneralProperties implements Serializable {
     
     public static int DEFAULT_SAMPLEDATA_SIZE = 50;
     
