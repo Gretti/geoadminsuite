@@ -46,6 +46,7 @@
     
     <!-- ========== Actions Definitions =================================== -->
     <action-mappings>
+        <action path="/zipDownload" type="org.geogurus.gas.actions.ZipDownloadAction"/>
         <action path="/submitMapfile" type="org.geogurus.gas.actions.submitMapfileAction"/>
         <action path="/getSampleData" type="org.geogurus.gas.actions.GetSampleDataAction"/>
         <action path="/refreshLayerOrder" type="org.geogurus.gas.actions.RefreshLayerOrderAction"/>
