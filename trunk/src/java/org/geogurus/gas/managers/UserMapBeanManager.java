@@ -200,7 +200,7 @@ public class UserMapBeanManager {
         
         //Calls for recalculation of map extent taking into account ref projection
         Extent calcExtent = null;
-        if(hExtent.size() > 1) calcExtent = Reprojector.returnBBox(mostUsedProj, hExtent);
+        if(hproj.size() > 1) calcExtent = Reprojector.returnBBox(mostUsedProj, hExtent);
         
         // verify the extent: if no layers with geographic object, construct an extent
         // that is supported by mapserver
