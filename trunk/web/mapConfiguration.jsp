@@ -24,10 +24,8 @@
             
             GeneralLayout.zoomout = new OpenLayers.Control();
             OpenLayers.Util.extend(GeneralLayout.zoomout, {
-                draw: function () {
-                    this.point = new OpenLayers.Handler.Point(GeneralLayout.zoomout,
-                        {"done": this.zoomout},{});
-                    this.point.activate();
+                control: function () {
+                    new OpenLayers.Handler.Click(GeneralLayout.zoomout,{"click": this.zoomout},{});
                 },
                 zoomout: function () {
                     this.map.zoomOut();
@@ -294,7 +292,7 @@
             else if (id == "scalebarProps")  {url = 'composer/scalebar_properties.jsp';      title='Scalebar Object Properties';}
             else if (id == "webProps")       {url = 'composer/web_properties.jsp';           title='Web Object Properties';}
             else if (id == "querymapProps")  {url = '';}
-            else if (id == "mapfileProps")   {url = 'ZipDownload.jsv?exporttype=-3&cols=90&rows=20';width=800;height=400;title='Full Mapfile';}
+            else if (id == "mapfileProps")   {url = 'zipDownload.do?exporttype=-3&cols=90&rows=20';width=800;height=400;title='Full Mapfile';}
             else {return;}
         
             var contentProps = new Ext.Panel({
