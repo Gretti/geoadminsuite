@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <display-name>geoadminsuite</display-name>
+    <distributable/>
+    <context-param>
+        <description>Application administrator</description>
+        <param-name>first_developper</param-name>
+        <param-value>gretti.nguessan@gmail.com</param-value>
+    </context-param>
+    <context-param>
+        <description>Application administrator</description>
+        <param-name>second_developper</param-name>
+        <param-value>nicky666@gmail.com</param-value>
+    </context-param>
     <servlet>
         <servlet-name>action</servlet-name>
         <servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
@@ -22,9 +34,7 @@
         <url-pattern>*.do</url-pattern>
     </servlet-mapping>
     <session-config>
-        <session-timeout>
-            30
-        </session-timeout>
+        <session-timeout>60</session-timeout>
     </session-config>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
