@@ -30,6 +30,7 @@ import org.geogurus.tools.sql.ConPool;
  * @author Administrateur
  */
 public class TestServerAction extends Action {
+    @Override
     public ActionForward execute(ActionMapping mapping,
             ActionForm form,
             HttpServletRequest request,
@@ -76,7 +77,7 @@ public class TestServerAction extends Action {
                     stmt.close();
                     con.close();
                 }
-            } else if (type.equalsIgnoreCase("ORA")) {
+            } else if (type.equalsIgnoreCase("oracle")) {
                 Connection con = ConPool.getConnection(name, port, path, uname, upwd, ConPool.DBTYPE_ORACLE);
                 //try to connect to datasource
                 serverState = con == null ? "ko" : "ok";
