@@ -66,6 +66,10 @@ html, body {
     background-image:url(printer.png) !important;
 }
 
+.bzoomtomax {
+    background-image:url(world.png) !important;
+}
+
 .bok {
     background-image:url(accept.png) !important;
 }

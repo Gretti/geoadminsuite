@@ -4,8 +4,8 @@ GeneralLayout =
         var layout,top;
         var cpDataList,cpDataDetail;
         var cpComposerMap,cpComposerProps,cpComposerCtrl;
-        var composermap,zoombox,zoomout,dragpan,layertree, composerlayers, winProperties, legendContainer;
-        var cpPublisherMapfish,cpPublisherDownload, publishermap, publisherlayers;
+        var composermap,zoombox,dragpan,zoomtomax,layertree, composerlayers, winProperties, legendContainer;
+        var cpPublisherMapfish,cpPublisherDownload, publishermap, publisherlayers,correspControls;
         
         return {
             
@@ -17,13 +17,14 @@ GeneralLayout =
             dsArray : [],
             composermap : null,
             zoombox : null,
-            zoomout : null,
+            zoomtomax : null,
             dragpan : null,
             layertree : null,
             composerlayers : null,
             legendContainer : null,
             publishermap : null,
             publisherlayers : null,
+            correspControls: null,
             
             init : function(){
                 
@@ -85,10 +86,9 @@ GeneralLayout =
                         tbar:[{
                                    id:'zoominTool',
                                    enableToggle: true,
+                                   toggleGroup: 'map',
                                    toggleHandler: function(){
                                         if(this.pressed) {
-                                            Ext.getCmp('zoomoutTool').toggle(false);
-                                            Ext.getCmp('dragTool').toggle(false);
                                             GeneralLayout.zoombox.activate();
                                         } else {
                                             GeneralLayout.zoombox.deactivate();
@@ -97,26 +97,11 @@ GeneralLayout =
                                    iconCls: 'bzoomin',
                                    pressed: false
                              },{
-                                   id:'zoomoutTool',
-                                   enableToggle: true,
-                                   toggleHandler: function(){
-                                        if(this.pressed) {
-                                            Ext.getCmp('zoominTool').toggle(false);
-                                            Ext.getCmp('dragTool').toggle(false);
-                                            GeneralLayout.zoomout.activate();
-                                        } else {
-                                            GeneralLayout.zoomout.deactivate();
-                                        }
-                                   },
-                                   iconCls: 'bzoomout',
-                                   pressed: false
-                             },{
                                    id:'dragTool',
+                                   toggleGroup: 'map',
                                    enableToggle: true,
                                    toggleHandler: function(){
                                         if(this.pressed) {
-                                            Ext.getCmp('zoomoutTool').toggle(false);
-                                            Ext.getCmp('zoominTool').toggle(false);
                                             GeneralLayout.dragpan.activate();
                                         } else {
                                             GeneralLayout.dragpan.deactivate();
@@ -124,10 +109,18 @@ GeneralLayout =
                                    },
                                    iconCls: 'bdrag',
                                    pressed: false
-                             },'-',{
+                             },{
+                                   id:'zoomtomaxTool',
+                                   handler: function(){
+                                       GeneralLayout.composermap.zoomToMaxExtent();
+                                   },
+                                   iconCls: 'bzoomtomax'
+                             },
+                             ' ','-',' ',
+                             {
                                    id:'printTool',
                                    handler: function(){
-                                       Ext.Msg.alert('to be continued ...');
+                                       Ext.Msg.alert('Print','todo ...');
                                    },
                                    iconCls: 'bprint'
                              }]
@@ -218,7 +211,7 @@ GeneralLayout =
                         animate: true,
                         containerScroll: true,
                         rootVisible: true,
-                        enableDrag:true,
+                        enableDrag:false,
                         containerScroll: true
                     });
                     
@@ -228,16 +221,43 @@ GeneralLayout =
                     var nodeMF = new Ext.tree.TreeNode({text:'MapFish controls', id:'MFCtrl'});
                     
                     var subNodesOL = [
-                        new Ext.tree.TreeNode({text:'Editing Toolbar <img src="styles/cog_add.png" onclick="GeneralLayout.addComponent(\'OL_EditingToolbar\');">',    id:'OL_EditingToolbar', leaf:true}),
-                        new Ext.tree.TreeNode({text:'Layer Switcher',     id:'OL_LayerSwitcher',  leaf:true}),
-                        new Ext.tree.TreeNode({text:'Mouse Position',     id:'OL_MousePosition',  leaf:true}),
-                        new Ext.tree.TreeNode({text:'Mouse Toolbar',      id:'OL_MouseToolbar',   leaf:true}),
-                        new Ext.tree.TreeNode({text:'Navigation Toolbar', id:'OL_NavToolbar',     leaf:true}),
-                        new Ext.tree.TreeNode({text:'Overview Map',       id:'OL_OverviewMap',    leaf:true}),
-                        new Ext.tree.TreeNode({text:'Pan Zoom Bar',       id:'OL_PanZoomBar',     leaf:true}),
-                        new Ext.tree.TreeNode({text:'Permalink',          id:'OL_Permalink',      leaf:true}),
-                        new Ext.tree.TreeNode({text:'Scale',              id:'OL_Scale',          leaf:true})
+                        new Ext.tree.TreeNode({text:'Layer Switcher&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_LayerSwitcher" onclick="GeneralLayout.addComponent(this);">',  
+                            id:'OL_LayerSwitcher', leaf:true}),
+                        new Ext.tree.TreeNode({text:'Mouse Position&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_MousePosition" onclick="GeneralLayout.addComponent(this);">',  
+                            id:'OL_MousePosition', leaf:true}),
+                        new Ext.tree.TreeNode({text:'Mouse Toolbar&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_MouseToolbar" onclick="GeneralLayout.addComponent(this);">',    
+                            id:'OL_MouseToolbar',  leaf:true}),
+                        new Ext.tree.TreeNode({text:'Navigation&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_Navigation" onclick="GeneralLayout.addComponent(this);">', 
+                            id:'OL_Navigation',    leaf:true}),
+                        new Ext.tree.TreeNode({text:'Navigation Toolbar&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_NavToolbar" onclick="GeneralLayout.addComponent(this);">', 
+                            id:'OL_NavToolbar',    leaf:true}),
+                        new Ext.tree.TreeNode({text:'Overview Map&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_OverviewMap" onclick="GeneralLayout.addComponent(this);">',      
+                            id:'OL_OverviewMap',   leaf:true}),
+                        new Ext.tree.TreeNode({text:'Pan Zoom&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_PanZoom" onclick="GeneralLayout.addComponent(this);">',       
+                            id:'OL_PanZoom',       leaf:true}),
+                        new Ext.tree.TreeNode({text:'Pan Zoom Bar&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_PanZoomBar" onclick="GeneralLayout.addComponent(this);">',       
+                            id:'OL_PanZoomBar',    leaf:true}),
+                        new Ext.tree.TreeNode({text:'Editing Toolbar&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_EditingToolbar" onclick="GeneralLayout.addComponent(this);">',
+                            id:'OL_EditingToolbar',leaf:true}),
+                        new Ext.tree.TreeNode({text:'Permalink&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_Permalink" onclick="GeneralLayout.addComponent(this);">',           
+                            id:'OL_Permalink',     leaf:true}),
+                        new Ext.tree.TreeNode({text:'Scale&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_Scale" onclick="GeneralLayout.addComponent(this);">',                   
+                            id:'OL_Scale',         leaf:true})
                     ];
+                    
+                    GeneralLayout.correspControls = {
+                        'OL_EditingToolbar':{tool:'new OpenLayers.Control.EditingToolbar()',incompatible:[]},
+                        'OL_LayerSwitcher': {tool:'new OpenLayers.Control.LayerSwitcher()',incompatible:[]},
+                        'OL_MousePosition': {tool:'new OpenLayers.Control.MousePosition()',incompatible:[]},
+                        'OL_MouseToolbar':  {tool:'new OpenLayers.Control.MouseToolbar()',incompatible:['OL_NavToolbar']},
+                        'OL_NavToolbar':    {tool:'new OpenLayers.Control.NavToolbar()',incompatible:['OL_MouseToolbar']},
+                        'OL_Navigation':    {tool:'new OpenLayers.Control.Navigation()',incompatible:[]},
+                        'OL_OverviewMap':   {tool:'new OpenLayers.Control.OverviewMap()',incompatible:[]},
+                        'OL_PanZoom':       {tool:'new OpenLayers.Control.PanZoom()',incompatible:['OL_PanZoomBar']},
+                        'OL_PanZoomBar':    {tool:'new OpenLayers.Control.PanZoomBar()',incompatible:['OL_PanZoom']},
+                        'OL_Permalink':     {tool:'new OpenLayers.Control.Permalink()',incompatible:[]},
+                        'OL_Scale':         {tool:'new OpenLayers.Control.Scale()',incompatible:[]}
+                    };
                     
                     var subNodesMF = [
                         new Ext.tree.TreeNode({text:'Layer Tree',         id:'MF_LayerTree',      leaf:true}),
@@ -259,7 +279,7 @@ GeneralLayout =
                         autoScroll:true,
                         //rootVisible: false,
                         containerScroll: true,
-                        enableDD:true,
+                        enableDD:false,
                         dropConfig: {appendOnly:true}
                     });
 
@@ -676,7 +696,61 @@ GeneralLayout =
            },
            
            addComponent : function(cmp) {
-               console.log(cmp);
+               //retreives treenode to move it
+               var elt = cmp.id.split(".")[1];
+               var parentNode = elt.split('_')[0] + 'Ctrl';
+               var selnode = Ext.getCmp('treeComponents').root.findChild('id',parentNode).findChild('id',elt);
+               Ext.getCmp('treeSelectedComponents').root.appendChild(selnode);
+               
+               //modifies text
+               var toolname = selnode.text.split("<")[0];
+               
+               var newtext = toolname + '<img src="styles/cog_delete.png" id="' + cmp.id + '" onclick="javascript:GeneralLayout.removeComponent(this)"/>';
+               
+               selnode.disable();
+               selnode.setText (newtext);
+               
+               Ext.getCmp('treeSelectedComponents').root.expand();
+               
+               var objCtrlToAdd = GeneralLayout.correspControls[elt];
+               var ctrlToAdd = eval(objCtrlToAdd.tool);
+               ctrlToAdd.id = 'ctrl_' + elt;
+               GeneralLayout.eltcount++;
+               //adds control to the map and refreshes it
+               GeneralLayout.publishermap.addControl(ctrlToAdd,null);
+               //removes incompatible controls
+               for (var n=0;n < objCtrlToAdd.incompatible.length;n++) {
+                   var c = GeneralLayout.correspControls[objCtrlToAdd.incompatible[n]];
+                   if(GeneralLayout.publishermap.getControl('ctrl_' + objCtrlToAdd.incompatible[n])) {
+                       GeneralLayout.removeComponent($('img.' + objCtrlToAdd.incompatible[n]));
+                   }
+               }
+           },
+           
+           removeComponent : function(cmp) {
+               //retreives treenode to move it
+               var elt = cmp.id.split(".")[1];
+               var parentNode = elt.split('_')[0] + 'Ctrl';
+               var selnode = Ext.getCmp('treeSelectedComponents').root.findChild('id',elt);
+               Ext.getCmp('treeComponents').root.findChild('id',parentNode).appendChild(selnode);
+               
+               //modifies text
+               var toolname = selnode.text.split("<")[0];
+               
+               var newtext = toolname + '<img src="styles/cog_add.png" id="' + cmp.id + '" onclick="javascript:GeneralLayout.addComponent(this)"/>';
+               
+               selnode.enable();
+               selnode.setText (newtext);
+               
+               Ext.getCmp('treeComponents').root.findChild('id',parentNode).expand();
+               
+               //removes control from the map
+               var ctrl2remove = GeneralLayout.publishermap.getControl('ctrl_' + elt);
+               
+               //GeneralLayout.publishermap.removeControl(ctrl2remove);
+               //GeneralLayout.publishermap.controls.remove(ctrl2remove);
+               //ctrl2remove.destroy();
+               GeneralLayout.publishermap.removeControl(ctrl2remove);
            }
 
      };

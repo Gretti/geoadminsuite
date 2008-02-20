@@ -21,7 +21,7 @@
                     params: Ext.Ajax.serializeForm(document.forms["LegendForm"]),
                     success: function(){
                             // Do nothing for the moment. Legend is not displayed.
-                            //GeneralLayout.composermap.baseLayer.mergeNewParams({'timestamp':Math.random()});
+                            //GeneralLayout.composermap.layers[1].mergeNewParams({'timestamp':Math.random()});
                         }
                     });*/             
             }
