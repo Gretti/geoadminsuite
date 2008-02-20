@@ -14,7 +14,7 @@
         var myLayers = [];
         var children = [];
         var initialOrder = [];
-        
+            
         function loadMap() {
             //MAPFISH MAP COMPONENT
             var bounds = new OpenLayers.Bounds(<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapExtent"/>);
@@ -22,22 +22,12 @@
             proj = proj.split('=')[1].split("&")[0];
             var options = {maxResolution: 'auto',maxExtent: bounds, projection: proj};
             
-            GeneralLayout.zoomout = new OpenLayers.Control();
-            OpenLayers.Util.extend(GeneralLayout.zoomout, {
-                control: function () {
-                    new OpenLayers.Handler.Click(GeneralLayout.zoomout,{"click": this.zoomout},{});
-                },
-                zoomout: function () {
-                    this.map.zoomOut();
-                }
-            }); 
+            GeneralLayout.zoombox = new OpenLayers.Control.ZoomBox();
+            GeneralLayout.dragpan = new OpenLayers.Control.DragPan();
 
             GeneralLayout.composermap = new OpenLayers.Map(Ext.getCmp('pnlComposerMap').body.id, options);
             GeneralLayout.composermap.addControl(new OpenLayers.Control.MousePosition());
-            GeneralLayout.zoombox = new OpenLayers.Control.ZoomBox();
-            GeneralLayout.dragpan = new OpenLayers.Control.DragPan();
             GeneralLayout.composermap.addControl(GeneralLayout.zoombox);
-            GeneralLayout.composermap.addControl(GeneralLayout.zoomout);
             GeneralLayout.composermap.addControl(GeneralLayout.dragpan);
             //GeneralLayout.composermap.addControl(new OpenLayers.Control.Scale());
             
@@ -59,31 +49,33 @@
                     leaf: true,
                     layerName: "myGroup:<bean:write name="geomcoll" property="name"/>",
                     checked: true,
-                    icon: 'images/layer.gif'
+                    icon: 'images/layers.png'
                 }
             );
             </logic:iterate>
             //Must reverse children order to reflect Mapserver's layer order
             initialOrder.reverse();
             
+            // layer to digitalize
+            var drawingLayer = new OpenLayers.Layer.Vector("Draw",{isBaseLayer:true});
+            
             layer = new OpenLayers.Layer.MapServer('myGroup', 
                      '<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapserverURL"/>?mode=map&map=<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapfilePath"/>',
                      {layers: myLayers,format: "image/png",'map_scalebar_status':'OFF'}, 
-                     {isBaseLayer:true});
+                     {isBaseLayer:false});
             
             var model = [
                     {
                         text: "Layer tree",
-                        leaf: false,
                         expanded: true,
-                        icon: "images/folder.gif",
+                        checked: true,
                         children: children
                     }
                 ];
-            
                      
             GeneralLayout.composerlayers[GeneralLayout.composerlayers.length] = layer;
             
+            GeneralLayout.composermap.addLayer(drawingLayer);
             GeneralLayout.composermap.addLayers(GeneralLayout.composerlayers);
             
             //MAPFISH TREE COMPONENT
@@ -116,6 +108,7 @@
                 id:'layerTree',
                 map: GeneralLayout.composermap, 
                 model: model,
+                enableDD:true,
                 width: '100%',
                 height: '100%',
                 border: false,
@@ -272,7 +265,8 @@
                     url:'refreshLayerOrder.do',
                     params: {layerorder:newOrder},
                     success: function(){
-                            GeneralLayout.composermap.baseLayer.mergeNewParams({'timestamp':Math.random()}) 
+                            GeneralLayout.composermap.layers[1].mergeNewParams({'timestamp':Math.random()}) 
+                            //GeneralLayout.composermap.baseLayer.redraw();
                         }
                 });
             }

@@ -60,7 +60,7 @@
                     waitMsg:'Loading',
                     params: Ext.Ajax.serializeForm(document.forms["MapForm"]),
                     success: function(){
-                            GeneralLayout.composermap.baseLayer.mergeNewParams({'timestamp':Math.random()});
+                            GeneralLayout.composermap.layers[1].mergeNewParams({'timestamp':Math.random()});
                         }
                     });                
                     return true;

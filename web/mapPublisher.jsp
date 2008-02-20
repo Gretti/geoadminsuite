@@ -70,9 +70,10 @@ datasourcetypes.push(['<%=dstb%>','<%=dst%>']);
     var proj = '<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapfile.projection.attributes"/>';
     proj = proj.split('=')[1].split("&")[0];
     var options = {maxResolution: 'auto',maxExtent: bounds, projection: proj};
-            
-    GeneralLayout.publishermap = new OpenLayers.Map(Ext.getCmp('pnlPublisherResult').body.id, options);
-            
+    
+    Ext.get('pnlPublisherResult').update("<div id='publishertoolbar'>Toolbar</div><div id='publishermap' style='width:800px;height:600px;'></div><div id='publishertree'>Tree</div>");
+    GeneralLayout.publishermap = new OpenLayers.Map($('publishermap'), options);
+    
     //Builds layers
     GeneralLayout.publisherlayers = [];
     var layer;
@@ -101,9 +102,11 @@ datasourcetypes.push(['<%=dstb%>','<%=dst%>']);
     layer = new OpenLayers.Layer.MapServer('myGroup', 
              '<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapserverURL"/>?mode=map&map=<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapfilePath"/>',
              {layers: myLayers,format: "image/png",'map_scalebar_status':'OFF'}, 
-             {isBaseLayer:true});
+             {isBaseLayer:false});
     GeneralLayout.publisherlayers[GeneralLayout.publisherlayers.length] = layer;
+    var drawingLayer = new OpenLayers.Layer.Vector("Draw",{isBaseLayer:true});
 
+    GeneralLayout.publishermap.addLayer(drawingLayer);
     GeneralLayout.publishermap.addLayers(GeneralLayout.publisherlayers);
             
     var store = new Ext.data.SimpleStore({
@@ -114,7 +117,7 @@ datasourcetypes.push(['<%=dstb%>','<%=dst%>']);
            {name: 'download'}
         ]
     });
-
+console.log(store);
     // create the editor grid
     var grid = new Ext.grid.EditorGridPanel({
         id:'publisherDownloadGrid',
@@ -166,7 +169,6 @@ datasourcetypes.push(['<%=dstb%>','<%=dst%>']);
     
     function downloadData(order,cnt) {
         var dlItem =grid.store.data.items[parseInt(cnt)];
-        console.log(dlItem);
         //controls if datasource db name is specified in case of db type selected
         if(dlItem.data.type == '<%=GeometryClass.STRING_PGCLASS%>') {
             if(dlItem.data.dbname == '') {

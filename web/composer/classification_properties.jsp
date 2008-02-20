@@ -133,7 +133,7 @@
     }
 
     function sub() {
-        GeneralLayout.composermap.baseLayer.mergeNewParams({'timestamp':Math.random()});
+        GeneralLayout.composermap.layers[1].mergeNewParams({'timestamp':Math.random()});
     }
 
     // returns a MS URL to get legend image for given layer name
