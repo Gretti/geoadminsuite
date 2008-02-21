@@ -57,8 +57,12 @@
                             <logic:notEqual name="datasource" property="type" value="<%=new Short(Datasource.FOLDER).toString()%>">
                 img = imgdatabase;
                             </logic:notEqual>
-                nodeDatasource = new Ext.tree.TreeNode({text: '<bean:write name="datasource" property="name"/>', id: j, icon: img});
+                nodeDatasource = new Ext.tree.TreeNode({text: '<bean:write name="datasource" property="name"/>', id: j, checked:false, icon: img});
                 nodeServer.appendChild(nodeDatasource);
+                nodeDatasource.cascade(function() {
+                    var node = this;
+                    var checked = node.attributes.checked;
+                });
                             <%// Loops on layers%>
                             <logic:iterate id="gc" indexId="cntGc" name="datasource" property="sortedDataList" type="GeometryClass">
                 k = j + 'gc' + <bean:write name="cntGc"/>;

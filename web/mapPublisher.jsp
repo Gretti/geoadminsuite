@@ -71,8 +71,57 @@ datasourcetypes.push(['<%=dstb%>','<%=dst%>']);
     proj = proj.split('=')[1].split("&")[0];
     var options = {maxResolution: 'auto',maxExtent: bounds, projection: proj};
     
-    Ext.get('pnlPublisherResult').update("<div id='publishertoolbar'>Toolbar</div><div id='publishermap' style='width:800px;height:600px;'></div><div id='publishertree'>Tree</div>");
+    Ext.get('pnlPublisherResult').update("<div id='publishertoolbar' style='width:600px'></div><div id='publishertree' style='position:absolute;left:620px;'></div><div id='publishermap' style='width:600px;height:600px;border:1px solid black'></div>");
     GeneralLayout.publishermap = new OpenLayers.Map($('publishermap'), options);
+
+    //Adds pre-added controls if existing, parsing treeSelectedControls nodes
+    for(var sel=0; sel<Ext.getCmp('treeSelectedComponents').root.childNodes.length; sel++) {
+        var c = Ext.getCmp('treeSelectedComponents').root.childNodes[sel].id;
+        if(c.split('_')[0] == 'OL') {
+            var objCtrlToAdd = GeneralLayout.correspControls[c];
+            var ctrlToAdd = eval(objCtrlToAdd.tool);
+            ctrlToAdd.id = 'ctrl_' + c;
+            //adds control to the map and refreshes it
+            GeneralLayout.publishermap.addControl(ctrlToAdd,null);
+        } else {
+           if(c == 'MF_LayerTree') {
+               //need to rebuild tree in case of changes inside
+               GeneralLayout.publishertree.destroy();
+               GeneralLayout.publishertree = new mapfish.widgets.LayerTree({
+                    id:'publisherTree',
+                    map: GeneralLayout.publishermap, 
+                    model: GeneralLayout.layertree.model,
+                    enableDD:false,
+                    width: '100%',
+                    height: '100%',
+                    border: false,
+                    autoScroll: true
+               });
+               GeneralLayout.publishertree.render('publishertree');
+           }
+
+           if(c == 'MF_NavToolbar') {
+               //**FIXME : rebuild bar instead of displaying it
+               GeneralLayout.publishertoolbar.destroy();
+               GeneralLayout.publishertoolbar = new mapfish.widgets.toolbar.Toolbar({map: GeneralLayout.publishermap, configurable: false});
+               GeneralLayout.publishertoolbar.render('publishertoolbar');
+               GeneralLayout.publishertoolbar.addControl(new OpenLayers.Control.ZoomBox(), {iconCls: 'bzoomin', toggleGroup: 'map'});
+               GeneralLayout.publishertoolbar.addControl(new OpenLayers.Control.DragPan({isDefault: true}), {iconCls: 'bdrag', toggleGroup: 'map'});
+
+               GeneralLayout.publishertoolbar.add(new Ext.Toolbar.Spacer());
+               GeneralLayout.publishertoolbar.add(new Ext.Toolbar.Separator());
+               GeneralLayout.publishertoolbar.add(new Ext.Toolbar.Spacer());
+
+               var vectorLayer = GeneralLayout.publishermap.getLayersByName('Draw')[0];
+
+               GeneralLayout.publishertoolbar.addControl(new OpenLayers.Control.DrawFeature(vectorLayer, OpenLayers.Handler.Point), {iconCls: 'bdrawpoint', toggleGroup: 'map'});
+               GeneralLayout.publishertoolbar.addControl(new OpenLayers.Control.DrawFeature(vectorLayer, OpenLayers.Handler.Path), {iconCls: 'bdrawline', toggleGroup: 'map'});
+               GeneralLayout.publishertoolbar.addControl(new OpenLayers.Control.DrawFeature(vectorLayer, OpenLayers.Handler.Polygon), {iconCls: 'bdrawpolygon', toggleGroup: 'map'});
+
+               GeneralLayout.publishertoolbar.activate();               
+           }
+        }
+    }
     
     //Builds layers
     GeneralLayout.publisherlayers = [];
@@ -117,7 +166,7 @@ datasourcetypes.push(['<%=dstb%>','<%=dst%>']);
            {name: 'download'}
         ]
     });
-console.log(store);
+    
     // create the editor grid
     var grid = new Ext.grid.EditorGridPanel({
         id:'publisherDownloadGrid',
