@@ -5,7 +5,7 @@ GeneralLayout =
         var cpDataList,cpDataDetail;
         var cpComposerMap,cpComposerProps,cpComposerCtrl;
         var composermap,zoombox,dragpan,zoomtomax,layertree, composerlayers, winProperties, legendContainer;
-        var cpPublisherMapfish,cpPublisherDownload, publishermap, publisherlayers,correspControls;
+        var cpPublisherMapfish,cpPublisherDownload, publishermap, publishertree, publishertoolbar, publisherlayers,correspControls;
         
         return {
             
@@ -20,6 +20,8 @@ GeneralLayout =
             zoomtomax : null,
             dragpan : null,
             layertree : null,
+            publishertree : null,
+            publishertoolbar : null,
             composerlayers : null,
             legendContainer : null,
             publishermap : null,
@@ -215,33 +217,33 @@ GeneralLayout =
                         containerScroll: true
                     });
                     
-                    var root = new Ext.tree.TreeNode({text: 'Components', id:'source'});
+                    var root = new Ext.tree.TreeNode({text: 'Components', id:'source',expanded : true});
                     components.setRootNode(root);
-                    var nodeOL = new Ext.tree.TreeNode({text:'Openlayers controls', id:'OLCtrl'});
-                    var nodeMF = new Ext.tree.TreeNode({text:'MapFish controls', id:'MFCtrl'});
+                    var nodeOL = new Ext.tree.TreeNode({text:'Openlayers controls', id:'OLCtrl',expanded : true});
+                    var nodeMF = new Ext.tree.TreeNode({text:'MapFish controls', id:'MFCtrl',expanded : true});
                     
                     var subNodesOL = [
-                        new Ext.tree.TreeNode({text:'Layer Switcher&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_LayerSwitcher" onclick="GeneralLayout.addComponent(this);">',  
+                        new Ext.tree.TreeNode({text:'Layer Switcher&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_LayerSwitcher" onclick="GeneralLayout.addComponent(this);">',
                             id:'OL_LayerSwitcher', leaf:true}),
-                        new Ext.tree.TreeNode({text:'Mouse Position&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_MousePosition" onclick="GeneralLayout.addComponent(this);">',  
+                        new Ext.tree.TreeNode({text:'Mouse Position&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_MousePosition" onclick="GeneralLayout.addComponent(this);">',
                             id:'OL_MousePosition', leaf:true}),
-                        new Ext.tree.TreeNode({text:'Mouse Toolbar&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_MouseToolbar" onclick="GeneralLayout.addComponent(this);">',    
+                        new Ext.tree.TreeNode({text:'Mouse Toolbar&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_MouseToolbar" onclick="GeneralLayout.addComponent(this);">',
                             id:'OL_MouseToolbar',  leaf:true}),
-                        new Ext.tree.TreeNode({text:'Navigation&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_Navigation" onclick="GeneralLayout.addComponent(this);">', 
+                        new Ext.tree.TreeNode({text:'Navigation&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_Navigation" onclick="GeneralLayout.addComponent(this);">',
                             id:'OL_Navigation',    leaf:true}),
-                        new Ext.tree.TreeNode({text:'Navigation Toolbar&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_NavToolbar" onclick="GeneralLayout.addComponent(this);">', 
+                        new Ext.tree.TreeNode({text:'Navigation Toolbar&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_NavToolbar" onclick="GeneralLayout.addComponent(this);">',
                             id:'OL_NavToolbar',    leaf:true}),
-                        new Ext.tree.TreeNode({text:'Overview Map&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_OverviewMap" onclick="GeneralLayout.addComponent(this);">',      
+                        new Ext.tree.TreeNode({text:'Overview Map&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_OverviewMap" onclick="GeneralLayout.addComponent(this);">',
                             id:'OL_OverviewMap',   leaf:true}),
-                        new Ext.tree.TreeNode({text:'Pan Zoom&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_PanZoom" onclick="GeneralLayout.addComponent(this);">',       
-                            id:'OL_PanZoom',       leaf:true}),
-                        new Ext.tree.TreeNode({text:'Pan Zoom Bar&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_PanZoomBar" onclick="GeneralLayout.addComponent(this);">',       
+                        //new Ext.tree.TreeNode({text:'Pan Zoom&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_PanZoom" onclick="GeneralLayout.addComponent(this);">',
+                        //    id:'OL_PanZoom',       leaf:true}),
+                        new Ext.tree.TreeNode({text:'Pan Zoom Bar&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_PanZoomBar" onclick="GeneralLayout.addComponent(this);">',
                             id:'OL_PanZoomBar',    leaf:true}),
                         new Ext.tree.TreeNode({text:'Editing Toolbar&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_EditingToolbar" onclick="GeneralLayout.addComponent(this);">',
                             id:'OL_EditingToolbar',leaf:true}),
-                        new Ext.tree.TreeNode({text:'Permalink&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_Permalink" onclick="GeneralLayout.addComponent(this);">',           
+                        new Ext.tree.TreeNode({text:'Permalink&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_Permalink" onclick="GeneralLayout.addComponent(this);">',
                             id:'OL_Permalink',     leaf:true}),
-                        new Ext.tree.TreeNode({text:'Scale&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_Scale" onclick="GeneralLayout.addComponent(this);">',                   
+                        new Ext.tree.TreeNode({text:'Scale&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.OL_Scale" onclick="GeneralLayout.addComponent(this);">',
                             id:'OL_Scale',         leaf:true})
                     ];
                     
@@ -253,15 +255,17 @@ GeneralLayout =
                         'OL_NavToolbar':    {tool:'new OpenLayers.Control.NavToolbar()',incompatible:['OL_MouseToolbar']},
                         'OL_Navigation':    {tool:'new OpenLayers.Control.Navigation()',incompatible:[]},
                         'OL_OverviewMap':   {tool:'new OpenLayers.Control.OverviewMap()',incompatible:[]},
-                        'OL_PanZoom':       {tool:'new OpenLayers.Control.PanZoom()',incompatible:['OL_PanZoomBar']},
-                        'OL_PanZoomBar':    {tool:'new OpenLayers.Control.PanZoomBar()',incompatible:['OL_PanZoom']},
+//                        'OL_PanZoom':       {tool:'new OpenLayers.Control.PanZoom()',incompatible:['OL_PanZoomBar']},
+                        'OL_PanZoomBar':    {tool:'new OpenLayers.Control.PanZoomBar()',incompatible:[]},
                         'OL_Permalink':     {tool:'new OpenLayers.Control.Permalink()',incompatible:[]},
                         'OL_Scale':         {tool:'new OpenLayers.Control.Scale()',incompatible:[]}
                     };
                     
                     var subNodesMF = [
-                        new Ext.tree.TreeNode({text:'Layer Tree',         id:'MF_LayerTree',      leaf:true}),
-                        new Ext.tree.TreeNode({text:'Navigation Toolbar', id:'MF_NavToolbar',     leaf:true})
+                        new Ext.tree.TreeNode({text:'Layer Tree&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.MF_LayerTree" onclick="GeneralLayout.addComponent(this);">',
+                            id:'MF_LayerTree',      leaf:true}),
+                        new Ext.tree.TreeNode({text:'MapFish Toolbar&nbsp;&nbsp;&nbsp;&nbsp;<img src="styles/cog_add.png" id="img.MF_NavToolbar" onclick="GeneralLayout.addComponent(this);">',
+                            id:'MF_NavToolbar',     leaf:true})
                     ];
                     
                     root.appendChild(nodeOL);
@@ -272,7 +276,6 @@ GeneralLayout =
                     for(var sn=0; sn < subNodesMF.length; sn++) {
                         nodeMF.appendChild(subNodesMF[sn]);
                     }
-                    
                     var selectedcomponents = new Ext.tree.TreePanel({
                         id:'treeSelectedComponents',
                         animate:true,
@@ -293,6 +296,16 @@ GeneralLayout =
                     });
                     selectedcomponents.setRootNode(root2);
                     
+                    //add export button
+                    var xportAction = new Ext.Action({
+                        text: 'Export',
+                        handler: function(){
+                            Ext.Msg.alert('Export','ZipDowloadAction export to mapfish site');
+                        },
+                        iconCls: 'bexport'
+                    });
+                    
+                    //creates panel
                     cpPublisherCpts = new Ext.Panel({
                         id:'pnlPublisherCpts',
                         region: 'west',
@@ -303,7 +316,8 @@ GeneralLayout =
                         margins:'3 0 3 3',
                         cmargins:'3 3 3 3',
                         el: 'publisher_component_list',
-                        items:[components,selectedcomponents]
+                        items:[components,selectedcomponents],
+                        bbar: [xportAction]
                     });
                     
                     //Panel for resulting site display
@@ -648,14 +662,20 @@ GeneralLayout =
            },
 
            gotoComposer : function(){
-                Ext.getCmp('pnlComposer').show();
                 //gets the checked nodes in the tree
                 var checkedNodes = Ext.getCmp('treeHost').getChecked();
                 var selectedIds = '';
                 //passes the ids to the ComposeMapAction
                 if(checkedNodes.length == 0) {
+                    Ext.MessageBox.show({
+                       title: 'No datasource selected',
+                       msg: 'You must select at least one datasource ...',
+                       buttons: Ext.MessageBox.OK,
+                       icon: Ext.MessageBox.INFO
+                    });
                     return;
                 } else {
+                    Ext.getCmp('pnlComposer').show();
                     for (var n=0; n<checkedNodes.length; n++) {
                         if(n == 0) {
                             selectedIds += checkedNodes[n].id;
@@ -663,14 +683,14 @@ GeneralLayout =
                             selectedIds += '|' + checkedNodes[n].id;
                         }
                     }
+                    Ext.Ajax.request({
+                    url:'composeMap.do',
+                    params: {SELECTED_IDS:selectedIds,screenWidth:window.innerWidth,screenHeight:window.innerWidth},
+                    success: function(){
+                            GeneralLayout.initComposer();
+                        }
+                    });
                 }
-                Ext.Ajax.request({
-                url:'composeMap.do',
-                params: {SELECTED_IDS:selectedIds,screenWidth:window.innerWidth,screenHeight:window.innerWidth},
-                success: function(){
-                        GeneralLayout.initComposer();
-                    }
-                });
            },
            
            initComposer : function(){
@@ -712,19 +732,56 @@ GeneralLayout =
                
                Ext.getCmp('treeSelectedComponents').root.expand();
                
-               var objCtrlToAdd = GeneralLayout.correspControls[elt];
-               var ctrlToAdd = eval(objCtrlToAdd.tool);
-               ctrlToAdd.id = 'ctrl_' + elt;
-               GeneralLayout.eltcount++;
-               //adds control to the map and refreshes it
-               GeneralLayout.publishermap.addControl(ctrlToAdd,null);
-               //removes incompatible controls
-               for (var n=0;n < objCtrlToAdd.incompatible.length;n++) {
-                   var c = GeneralLayout.correspControls[objCtrlToAdd.incompatible[n]];
-                   if(GeneralLayout.publishermap.getControl('ctrl_' + objCtrlToAdd.incompatible[n])) {
-                       GeneralLayout.removeComponent($('img.' + objCtrlToAdd.incompatible[n]));
+               if(elt.split('_')[0] == 'OL') {
+                   //adds control to the map if OL control
+                   var objCtrlToAdd = GeneralLayout.correspControls[elt];
+                   var ctrlToAdd = eval(objCtrlToAdd.tool);
+                   ctrlToAdd.id = 'ctrl_' + elt;
+               
+                   GeneralLayout.publishermap.addControl(ctrlToAdd,null);
+               
+                   //removes incompatible controls
+                   for (var n=0;n < objCtrlToAdd.incompatible.length;n++) {
+                       var c = GeneralLayout.correspControls[objCtrlToAdd.incompatible[n]];
+                       if(GeneralLayout.publishermap.getControl('ctrl_' + objCtrlToAdd.incompatible[n])) {
+                           GeneralLayout.removeComponent($('img.' + objCtrlToAdd.incompatible[n]));
+                       }
+                   }
+               } else {
+                   if(elt == 'MF_LayerTree') {
+                       GeneralLayout.publishertree = new mapfish.widgets.LayerTree({
+                            id:'publisherTree',
+                            map: GeneralLayout.publishermap, 
+                            model: GeneralLayout.layertree.model,
+                            enableDD:false,
+                            width: '100%',
+                            height: '100%',
+                            border: false,
+                            autoScroll: true
+                       });
+                       GeneralLayout.publishertree.render('publishertree');
+                   }
+                   
+                   if(elt == 'MF_NavToolbar') {
+                       GeneralLayout.publishertoolbar = new mapfish.widgets.toolbar.Toolbar({map: GeneralLayout.publishermap, configurable: false});
+                       GeneralLayout.publishertoolbar.render('publishertoolbar');
+                       GeneralLayout.publishertoolbar.addControl(new OpenLayers.Control.ZoomBox(), {iconCls: 'bzoomin', toggleGroup: 'map'});
+                       GeneralLayout.publishertoolbar.addControl(new OpenLayers.Control.DragPan({isDefault: true}), {iconCls: 'bdrag', toggleGroup: 'map'});
+ 
+                       GeneralLayout.publishertoolbar.add(new Ext.Toolbar.Spacer());
+                       GeneralLayout.publishertoolbar.add(new Ext.Toolbar.Separator());
+                       GeneralLayout.publishertoolbar.add(new Ext.Toolbar.Spacer());
+                       
+                       var vectorLayer = GeneralLayout.publishermap.getLayersByName('Draw')[0];
+                       
+                       GeneralLayout.publishertoolbar.addControl(new OpenLayers.Control.DrawFeature(vectorLayer, OpenLayers.Handler.Point), {iconCls: 'bdrawpoint', toggleGroup: 'map'});
+                       GeneralLayout.publishertoolbar.addControl(new OpenLayers.Control.DrawFeature(vectorLayer, OpenLayers.Handler.Path), {iconCls: 'bdrawline', toggleGroup: 'map'});
+                       GeneralLayout.publishertoolbar.addControl(new OpenLayers.Control.DrawFeature(vectorLayer, OpenLayers.Handler.Polygon), {iconCls: 'bdrawpolygon', toggleGroup: 'map'});
+ 
+                       GeneralLayout.publishertoolbar.activate();
                    }
                }
+               
            },
            
            removeComponent : function(cmp) {
@@ -744,13 +801,20 @@ GeneralLayout =
                
                Ext.getCmp('treeComponents').root.findChild('id',parentNode).expand();
                
-               //removes control from the map
-               var ctrl2remove = GeneralLayout.publishermap.getControl('ctrl_' + elt);
-               
-               //GeneralLayout.publishermap.removeControl(ctrl2remove);
-               //GeneralLayout.publishermap.controls.remove(ctrl2remove);
-               //ctrl2remove.destroy();
-               GeneralLayout.publishermap.removeControl(ctrl2remove);
+               //removes control from the map if OL Control
+               if(elt.split('_')[0] == 'OL') {
+                   var c2r = GeneralLayout.publishermap.getControl('ctrl_' + elt);
+                   if(c2r) {
+                   GeneralLayout.publishermap.removeControl(c2r);
+                   }
+               } else {
+                   if(elt == 'MF_LayerTree') {
+                       GeneralLayout.publishertree.destroy();
+                   }
+                   if(elt == 'MF_NavToolbar') {
+                       GeneralLayout.publishertoolbar.destroy();
+                   }
+               }
            }
 
      };
