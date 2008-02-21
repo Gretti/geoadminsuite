@@ -58,18 +58,12 @@ public class Reprojector {
                 sb.append(" ymax(transform(setSRID('BOX(" + strExtent + ")'::box2d, " + epsg + ")," + refEpsg + ")) as ymax");
 
             }
-
-
         }
 
         try {
-            //Builds query
-            System.out.println(sb.toString());
             //Connects to GAS db
             con = ConPool.getConnection("127.0.0.1", "5432", "gas", "postgres", "c2c", ConPool.DBTYPE_POSTGRES);
             stmt = con.createStatement();
-
-
 
             rs = stmt.executeQuery(sb.toString());
 
