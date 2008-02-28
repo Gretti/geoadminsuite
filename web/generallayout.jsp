@@ -22,7 +22,7 @@
         <script type="text/javascript">
             // Because of a bug in Firefox 2 we need to specify the MapFish base path.
             // See https://bugzilla.mozilla.org/show_bug.cgi?id=351282
-            var gMfLocation = "scripts/mfbase/";
+            var gMfLocation = "scripts/mfbase/mapfish/";
         </script>
         <script type="text/javascript" src="scripts/mfbase/mapfish/MapFish.js"></script>
         <script type="text/javascript" src="scripts/GeneralLayout.js"></script>

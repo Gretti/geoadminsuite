@@ -73,6 +73,60 @@ datasourcetypes.push(['<%=dstb%>','<%=dst%>']);
     
     Ext.get('pnlPublisherResult').update("<div id='publishertoolbar' style='width:600px'></div><div id='publishertree' style='position:absolute;left:620px;'></div><div id='publishermap' style='width:600px;height:600px;border:1px solid black'></div>");
     GeneralLayout.publishermap = new OpenLayers.Map($('publishermap'), options);
+    
+    //Builds layers
+    GeneralLayout.publisherlayers = [];
+    var mylayer;
+    var myLayers = [];
+            
+    // by default columns are sortable
+    cm.defaultSortable = true;
+    // create the Data Store
+    var myData = [];
+    var dlString, params;
+    var pchildren = [];
+    
+<logic:iterate id="order" indexId="cnt" name="<%=ObjectKeys.USER_MAP_BEAN%>" property="userLayerOrder">
+    <bean:define id='gc' name='<%=ObjectKeys.USER_MAP_BEAN%>' property='<%="userLayer(" + order + ")"%>' type='org.geogurus.GeometryClass'/>
+    
+    params = '\'<bean:write name="order"/>\',';
+    params += '\'<bean:write name="cnt"/>\'';
+    
+    dlString = '<a href="javascript:void(0);" onclick="javascript:downloadData(' + params + ');">';
+    dlString += '<img src="styles/package_go.png" alt=\"<bean:message key="download"/>\" title=\"<bean:message key="download"/>\" border=\"0\">';
+    dlString += "</a>";
+    
+    myData.push(['<bean:write name="gc" property="name"/>','<bean:write name="gc" property="datasourceTypeAsString"/>','',dlString]);
+    myLayers.push('<bean:write name="gc" property="name"/>'); 
+    pchildren.push(
+        {
+            id: "<bean:write name="gc" property="ID"/>",
+            text: "<bean:write name="gc" property="name"/>",
+            leaf: true,
+            layerName: "myGroup:<bean:write name="gc" property="name"/>",
+            checked: true,
+            icon: 'images/layers.png'
+        }
+    );
+</logic:iterate>
+    var pmodel = [
+            {
+                text: "Layer tree",
+                expanded: true,
+                checked: true,
+                children: pchildren
+            }
+        ];
+    
+    mylayer = new OpenLayers.Layer.MapServer('myGroup', 
+             '<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapserverURL"/>?mode=map&map=<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapfilePath"/>',
+             {layers: myLayers,format: "image/png",'map_scalebar_status':'OFF'}, 
+             {isBaseLayer:false});
+    GeneralLayout.publisherlayers[GeneralLayout.publisherlayers.length] = mylayer;
+    var drawingLayer = new OpenLayers.Layer.Vector("Draw",{isBaseLayer:true});
+
+    GeneralLayout.publishermap.addLayer(drawingLayer);
+    GeneralLayout.publishermap.addLayers(GeneralLayout.publisherlayers);
 
     //Adds pre-added controls if existing, parsing treeSelectedControls nodes
     for(var sel=0; sel<Ext.getCmp('treeSelectedComponents').root.childNodes.length; sel++) {
@@ -90,8 +144,8 @@ datasourcetypes.push(['<%=dstb%>','<%=dst%>']);
                GeneralLayout.publishertree = new mapfish.widgets.LayerTree({
                     id:'publisherTree',
                     map: GeneralLayout.publishermap, 
-                    model: GeneralLayout.layertree.model,
-                    enableDD:false,
+                    model: pmodel,
+                    enableDD:true,
                     width: '100%',
                     height: '100%',
                     border: false,
@@ -122,41 +176,6 @@ datasourcetypes.push(['<%=dstb%>','<%=dst%>']);
            }
         }
     }
-    
-    //Builds layers
-    GeneralLayout.publisherlayers = [];
-    var layer;
-    var myLayers = [];
-            
-    // by default columns are sortable
-    cm.defaultSortable = true;
-    // create the Data Store
-    var myData = [];
-    var dlString, params;
-    
-<logic:iterate id="order" indexId="cnt" name="<%=ObjectKeys.USER_MAP_BEAN%>" property="userLayerOrder">
-    <bean:define id='gc' name='<%=ObjectKeys.USER_MAP_BEAN%>' property='<%="userLayer(" + order + ")"%>' type='org.geogurus.GeometryClass'/>
-    
-    params = '\'<bean:write name="order"/>\',';
-    params += '\'<bean:write name="cnt"/>\'';
-    
-    dlString = '<a href="javascript:void(0);" onclick="javascript:downloadData(' + params + ');">';
-    dlString += '<img src="styles/package_go.png" alt=\"<bean:message key="download"/>\" title=\"<bean:message key="download"/>\" border=\"0\">';
-    dlString += "</a>";
-    
-    myData.push(['<bean:write name="gc" property="name"/>','<bean:write name="gc" property="datasourceTypeAsString"/>','',dlString]);
-    myLayers.push('<bean:write name="gc" property="name"/>'); 
-</logic:iterate>
-                     
-    layer = new OpenLayers.Layer.MapServer('myGroup', 
-             '<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapserverURL"/>?mode=map&map=<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapfilePath"/>',
-             {layers: myLayers,format: "image/png",'map_scalebar_status':'OFF'}, 
-             {isBaseLayer:false});
-    GeneralLayout.publisherlayers[GeneralLayout.publisherlayers.length] = layer;
-    var drawingLayer = new OpenLayers.Layer.Vector("Draw",{isBaseLayer:true});
-
-    GeneralLayout.publishermap.addLayer(drawingLayer);
-    GeneralLayout.publishermap.addLayers(GeneralLayout.publisherlayers);
             
     var store = new Ext.data.SimpleStore({
         fields: [

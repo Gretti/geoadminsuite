@@ -25,7 +25,7 @@ GeneralLayout =
             composerlayers : null,
             legendContainer : null,
             publishermap : null,
-            publisherlayers : null,
+            publisherlayers : [],
             correspControls: null,
             
             init : function(){
@@ -677,12 +677,24 @@ GeneralLayout =
                 } else {
                     Ext.getCmp('pnlComposer').show();
                     for (var n=0; n<checkedNodes.length; n++) {
-                        if(n == 0) {
-                            selectedIds += checkedNodes[n].id;
+                        if(checkedNodes[n].isLeaf()) {
+                            if(selectedIds == '') {
+                                selectedIds += checkedNodes[n].id;
+                            } else {
+                                selectedIds += '|' + checkedNodes[n].id;
+                            }
                         } else {
-                            selectedIds += '|' + checkedNodes[n].id;
+                            for (var m=0; m<checkedNodes[n].childNodes.length; m++) {
+                                    if(selectedIds == '') {
+                                        selectedIds += checkedNodes[n].childNodes[m].id;
+                                    } else {
+                                        selectedIds += '|' + checkedNodes[n].childNodes[m].id;
+                                    }
+                            }
                         }
                     }
+                    
+                    
                     Ext.Ajax.request({
                     url:'composeMap.do',
                     params: {SELECTED_IDS:selectedIds,screenWidth:window.innerWidth,screenHeight:window.innerWidth},
@@ -752,8 +764,8 @@ GeneralLayout =
                        GeneralLayout.publishertree = new mapfish.widgets.LayerTree({
                             id:'publisherTree',
                             map: GeneralLayout.publishermap, 
-                            model: GeneralLayout.layertree.model,
-                            enableDD:false,
+                            model: pmodel,
+                            enableDD:true,
                             width: '100%',
                             height: '100%',
                             border: false,

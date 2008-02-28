@@ -57,16 +57,25 @@
                             <logic:notEqual name="datasource" property="type" value="<%=new Short(Datasource.FOLDER).toString()%>">
                 img = imgdatabase;
                             </logic:notEqual>
-                nodeDatasource = new Ext.tree.TreeNode({text: '<bean:write name="datasource" property="name"/>', id: j, checked:false, icon: img});
+                
+                nodeDatasource = new Ext.tree.TreeNode({
+                    text: '<bean:write name="datasource" property="name"/>', 
+                    id: j, 
+                    checked:false, 
+                    icon: img});
+                
                 nodeServer.appendChild(nodeDatasource);
-                nodeDatasource.cascade(function() {
-                    var node = this;
-                    var checked = node.attributes.checked;
-                });
                             <%// Loops on layers%>
                             <logic:iterate id="gc" indexId="cntGc" name="datasource" property="sortedDataList" type="GeometryClass">
                 k = j + 'gc' + <bean:write name="cntGc"/>;
-                nodeLayer = new Ext.tree.TreeNode({text: '<bean:write name="gc" property="name"/>', id: "<bean:write name="datasource" property="host"/>,<bean:write name="gc" property="ID"/>", checked: false,icon:imglayer});
+                
+                nodeLayer = new Ext.tree.TreeNode({
+                    text: '<bean:write name="gc" property="name"/>', 
+                    id: "<bean:write name="datasource" property="host"/>,<bean:write name="gc" property="ID"/>", 
+                    checked: false,
+                    icon:imglayer, 
+                    leaf:true});
+                
                 nodeLayer.on('click',function(n){
                                 var paramstr = 'st=data&host=<bean:write name="host" property="key" filter="false"/>&layerID=<bean:write name="gc" property="ID"/>&dsID=<bean:write name="cntDs"/>';
                                 Ext.get("data_detail").load({
@@ -74,9 +83,13 @@
                                     params: paramstr,
                                     scripts:true
                                 });
-                                //Ext.getCmp('pnlDataDetail').activate('view');
                 });
                 nodeDatasource.appendChild(nodeLayer);
+                nodeDatasource.on('checkchange',function(n){
+                    for (var i=0; i < n.childNodes.length; i++) {
+                        n.childNodes[i].ui.toggleCheck(n.attributes.checked);
+                    };
+                });
                             </logic:iterate>
                         </logic:iterate>
                     </logic:iterate>
