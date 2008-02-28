@@ -29,9 +29,19 @@
         </init-param>
         <load-on-startup>2</load-on-startup>
         </servlet>
+    <servlet>
+        <description>Cleans file</description>
+        <servlet-name>GOFileCleaner</servlet-name>
+        <servlet-class>org.geogurus.web.GOFileCleaner</servlet-class>
+        <load-on-startup>1</load-on-startup>
+        </servlet>
     <servlet-mapping>
         <servlet-name>action</servlet-name>
         <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GOFileCleaner</servlet-name>
+        <url-pattern>/GOFileCleaner</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>60</session-timeout>
