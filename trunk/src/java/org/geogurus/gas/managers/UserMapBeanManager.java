@@ -21,6 +21,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.Properties;
 import org.geogurus.Datasource;
 import org.geogurus.Extent;
 import org.geogurus.Geometry;
@@ -171,7 +172,7 @@ public class UserMapBeanManager {
                 } else {
                     hproj.put(proj, new Integer(1));
                 }
-                hExtent.put(proj,gc.getExtent());
+                hExtent.put(proj, gc.getExtent());
                 m_userMapBean.getMapfile().addLayer(l);
             }
         }
@@ -195,22 +196,42 @@ public class UserMapBeanManager {
                 mostUsedProj = curkey;
             }
         }
-        
+
         m_userMapBean.getMapfile().setProjection(mostUsedProj);
-        
+
         //Calls for recalculation of map extent taking into account ref projection
         Extent calcExtent = null;
-        if(hproj.size() > 1) calcExtent = Reprojector.returnBBox(mostUsedProj, hExtent);
-        
+        String dbInfos = "";
+        if (hproj.size() > 1) {
+            //reads DB infos used for reprojection from geonline.properties file
+            Properties p = new Properties();
+            try {
+                p.load(getClass().getClassLoader().getResourceAsStream("org/geogurus/gas/resources/geonline.properties"));
+                dbInfos = p.getProperty("GAS_DB_REPROJ");
+            } catch (Exception e) {
+                System.out.println("cannot load properties file");
+                e.printStackTrace();
+            }
+            StringTokenizer st = new StringTokenizer(dbInfos,",");
+            String rh = st.nextToken();
+            String rp = st.nextToken();
+            String rd = st.nextToken();
+            String ru = st.nextToken();
+            String rw = st.nextToken();
+            calcExtent = Reprojector.returnBBox(mostUsedProj, hExtent,rh,rp,rd,ru,rw);
+        }
+
         // verify the extent: if no layers with geographic object, construct an extent
         // that is supported by mapserver
         if (mExt.ll.x == Double.MAX_VALUE || mExt.ur.x == Double.MIN_VALUE) {
             mExt = new Extent(0, 0, 10, 10);
         }
-        
+
         //Sets extent to calculated extent if not null
-        if (calcExtent != null) mExt = calcExtent;
-        
+        if (calcExtent != null) {
+            mExt = calcExtent;
+        }
+
         // construct the mapextent each time
         m_userMapBean.setMapExtent(mExt.toString());
         m_userMapBean.getMapfile().setExtent(new MSExtent(mExt.ll.x, mExt.ll.y, mExt.ur.x, mExt.ur.y));
