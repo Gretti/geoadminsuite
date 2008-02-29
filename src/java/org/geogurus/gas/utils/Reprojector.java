@@ -20,7 +20,8 @@ import org.geogurus.tools.sql.ConPool;
  */
 public class Reprojector {
 
-    public static Extent returnBBox(Projection projRef, Hashtable hExtents) throws SQLException {
+    public static Extent returnBBox(Projection projRef, Hashtable hExtents, String host, String port, String db, String user, String pwd) 
+            throws SQLException {
         Extent extent = null;
         Connection con = null;
         Statement stmt = null;
@@ -56,13 +57,12 @@ public class Reprojector {
                 sb.append(" ymin(transform(setSRID('BOX(" + strExtent + ")'::box2d, " + epsg + ")," + refEpsg + ")) as ymin,");
                 sb.append(" xmax(transform(setSRID('BOX(" + strExtent + ")'::box2d, " + epsg + ")," + refEpsg + ")) as xmax,");
                 sb.append(" ymax(transform(setSRID('BOX(" + strExtent + ")'::box2d, " + epsg + ")," + refEpsg + ")) as ymax");
-
             }
         }
-
+        
         try {
             //Connects to GAS db
-            con = ConPool.getConnection("127.0.0.1", "5432", "gas", "postgres", "c2c", ConPool.DBTYPE_POSTGRES);
+            con = ConPool.getConnection(host, port, db, user, pwd, ConPool.DBTYPE_POSTGRES);
             stmt = con.createStatement();
 
             rs = stmt.executeQuery(sb.toString());
