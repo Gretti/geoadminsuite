@@ -5,10 +5,7 @@
  */
 package org.geogurus.mapserver.objects;
 import java.util.ArrayList;
-import java.awt.Point;
 import java.io.File;
-import java.io.BufferedReader;
-import org.geogurus.tools.string.ConversionUtilities;
 import org.geogurus.mapserver.tools.MapTools;
 /**
  *
