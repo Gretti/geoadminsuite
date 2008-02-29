@@ -685,11 +685,13 @@ GeneralLayout =
                             }
                         } else {
                             for (var m=0; m<checkedNodes[n].childNodes.length; m++) {
+                                if(checkedNodes[n].childNodes[m].attributes.checked) {
                                     if(selectedIds == '') {
                                         selectedIds += checkedNodes[n].childNodes[m].id;
                                     } else {
                                         selectedIds += '|' + checkedNodes[n].childNodes[m].id;
                                     }
+                                }
                             }
                         }
                     }
