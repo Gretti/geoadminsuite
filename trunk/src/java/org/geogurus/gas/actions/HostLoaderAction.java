@@ -41,6 +41,7 @@ import org.geogurus.gas.objects.ListHostDescriptorBean;
  */
 
 public class HostLoaderAction extends Action {
+    @Override
     public ActionForward execute(ActionMapping mapping,
             ActionForm form,
             HttpServletRequest request,
@@ -175,7 +176,6 @@ public class HostLoaderAction extends Action {
                         res.add(ds);
                     }
                 }
-                stmt.close();
             } catch (SQLException sqle) {
                 String error = "HostLoader getDatasources: SQLException: " + sqle.getMessage();
                 error += "<br>query was: <code>" + query.toString() + "</code>";
