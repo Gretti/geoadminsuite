@@ -12,10 +12,19 @@
 <html:html locale="true">
     <head>
         <title>Geogurus Administration Suite</title>
-        <link rel="shortcut icon" href="favicon.ico">
+        <link rel="shortcut icon" href="favicon.ico" />
+            
+        <link rel="stylesheet" type="text/css" href="scripts/refexportfiles/resources/css/ext-all.css" />
+        <link rel="stylesheet" type="text/css" href="scripts/refexportfiles/resources/css/xtheme-gray.css" />
+        <link rel="stylesheet" type="text/css" href="styles/layouts.css" />
+
+        <script type="text/javascript" src="scripts/refexportfiles/adapter/ext/ext-base.js"></script>
+        <script type="text/javascript" src="scripts/refexportfiles/ext-all.js"></script>
+        <script type="text/javascript" src="scripts/refexportfiles/mapfish/MapFish.js"></script>          
+
+<!--            
         <link rel="stylesheet" type="text/css" href="scripts/mfbase/ext/resources/css/ext-all.css" />
         <link rel="stylesheet" type="text/css" href="scripts/mfbase/ext/resources/css/xtheme-gray.css" />
-        <link rel="stylesheet" type="text/css" href="styles/layouts.css" />
         <script type="text/javascript" src="scripts/mfbase/openlayers/lib/OpenLayers.js"></script>
         <script type="text/javascript" src="scripts/mfbase/ext/adapter/ext/ext-base.js"></script>     
         <script type="text/javascript" src="scripts/mfbase/ext/ext-all.js"></script>
@@ -25,6 +34,7 @@
             var gMfLocation = "scripts/mfbase/mapfish/";
         </script>
         <script type="text/javascript" src="scripts/mfbase/mapfish/MapFish.js"></script>
+-->
         <script type="text/javascript" src="scripts/GeneralLayout.js"></script>
         <script type="text/javascript" src="scripts/Host.js"></script>
         <script type="text/javascript">
