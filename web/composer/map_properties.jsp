@@ -59,7 +59,7 @@
                     url:'mapProperties.do',
                     waitMsg:'Loading',
                     params: Ext.Ajax.serializeForm(document.forms["MapForm"]),
-                    success: function(){
+                    callback: function(){
                             GeneralLayout.composermap.layers[1].mergeNewParams({'timestamp':Math.random()});
                         }
                     });                
