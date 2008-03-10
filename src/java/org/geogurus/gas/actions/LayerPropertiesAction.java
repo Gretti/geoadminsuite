@@ -20,7 +20,6 @@ import org.geogurus.gas.managers.UserMapBeanManager;
 import org.geogurus.gas.objects.UserMapBean;
 import org.geogurus.gas.utils.ObjectKeys;
 import org.geogurus.mapserver.objects.Layer;
-import org.geogurus.mapserver.objects.RGB;
 import org.geogurus.web.ColorGenerator;
 /**
  *

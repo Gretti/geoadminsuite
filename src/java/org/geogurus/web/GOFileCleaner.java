@@ -1,24 +1,13 @@
 package org.geogurus.web;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.InputStream;
-import java.io.IOException;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.util.Iterator;
 import java.util.Timer;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.ArrayList;
 import java.util.Properties;
 import javax.servlet.ServletException;
-import javax.servlet.UnavailableException;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.geogurus.gas.utils.ObjectKeys;
 
 import org.geogurus.tools.util.FileDeletionTimerTask;
@@ -34,14 +23,6 @@ import org.geogurus.mapserver.tools.MapTools;
  */
 
 public final class GOFileCleaner extends HttpServlet {
-    /**
-     * The file separator
-     */
-    private final String FS = System.getProperty("file.separator");
-    /**
-     * The debugging detail level for this servlet.
-     */
-    private int debug = 0;
     /**
      * The timer for tmp maps deletion. Active only if servlet init parameter
      * "tempMapsDeletionDelay" is set to a value in ms (delay at which temp maps must be deleted)
@@ -71,6 +52,7 @@ public final class GOFileCleaner extends HttpServlet {
      *
      * @exception ServletException if we cannot configure ourselves correctly
      */
+    @Override
     public void init() throws ServletException {
         
         Properties p = new Properties();
@@ -83,8 +65,8 @@ public final class GOFileCleaner extends HttpServlet {
         }
         
         // initialize the LogEngine
-        boolean debug = (p.getProperty("DEBUG") != null && p.getProperty("DEBUG").equalsIgnoreCase("TRUE")) ? true : false;
-        LogEngine.setDebugMode(debug);
+        boolean debg = (p.getProperty("DEBUG") != null && p.getProperty("DEBUG").equalsIgnoreCase("TRUE")) ? true : false;
+        LogEngine.setDebugMode(debg);
 
         // the temp mapfile deletion delay, based upon the initialisation parameter:
         // tmp maps will be deleted each <tempMapsDeletionDelay>

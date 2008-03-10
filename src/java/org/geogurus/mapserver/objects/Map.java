@@ -457,7 +457,7 @@ public class Map extends MapServerObject implements java.io.Serializable {
         try {
             String[] tokens;
             String line;
-
+//FIXME: should return error codes instead of false
             while ((line = br.readLine()) != null) {
                 // Looking for the first util line
                 while ((line.trim().length() == 0) || (line.trim().startsWith("#")) || (line.trim().startsWith("%"))) {
