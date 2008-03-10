@@ -8,6 +8,7 @@ package org.geogurus.gas.objects;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -124,7 +125,16 @@ public class UserMapBean implements Serializable {
     }
 
     public GeometryClass getUserLayer(String layerName_) {
-        return (GeometryClass) userLayerList.get(layerName_);
+        Enumeration<String> enu = userLayerList.keys();
+        GeometryClass gc = null;
+        while (enu.hasMoreElements()) {
+            Object key = enu.nextElement();
+            gc = (GeometryClass)userLayerList.get(key);
+            if(gc.getName().equalsIgnoreCase(layerName_)) {
+                break;
+            }
+        }
+        return gc;
     }
 
     public Vector getUserLayerOrder() {

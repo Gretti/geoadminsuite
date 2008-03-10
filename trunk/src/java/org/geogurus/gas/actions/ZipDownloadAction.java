@@ -153,8 +153,8 @@ public class ZipDownloadAction extends org.apache.struts.action.Action {
                 pwOut.println("    Ext.Ajax.request({" +
                         "url:'submitMapfile.do'," +
                         "params: Ext.Ajax.serializeForm(document.forms['frmFullMapfile'])," +
-                        "success: function(){" +
-                        "        GeneralLayout.composermap.baseLayer.mergeNewParams({'timestamp':Math.random()}); " +
+                        "callback: function(){" +
+                        "        GeneralLayout.composermap.layers[1].mergeNewParams({'timestamp':Math.random()}); " +
                         "        Ext.getCmp('floatingProps').hide();" +
                         "        Ext.getCmp('floatingProps').destroy();" +
                         "    }" +
@@ -478,10 +478,7 @@ public class ZipDownloadAction extends org.apache.struts.action.Action {
             try {
                 stmt.close();
             } catch (Exception e) {
-            }
-            try {
-                con.close();
-            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         res[0] = dataPath;
