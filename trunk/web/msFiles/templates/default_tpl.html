@@ -1,108 +1,128 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-
+<!DOCTYPE html>
 <html>
-<head>
-<title>
-[AV2GPAGE]
-</title>
+    <head>
+        <title>[AV2GPAGE]</title>
+        <link rel="stylesheet" type="text/css" href="http://demo.mapfish.org/openexpo/mfbase/ext/resources/css/ext-all.css" />
+        
+        <script type="text/javascript" src="http://demo.mapfish.org/openexpo/mfbase/openlayers/lib/Firebug/firebug.js"></script>
+        <script type="text/javascript" src="http://demo.mapfish.org/openexpo/mfbase/openlayers/lib/OpenLayers.js"></script>
+        
+        <script type="text/javascript" src="http://demo.mapfish.org/openexpo/mfbase/ext/adapter/ext/ext-base.js"></script>
+        <script type="text/javascript" src="http://demo.mapfish.org/openexpo/mfbase/ext/ext-all-debug.js"></script>
+        
+        
+        <script type="text/javascript">
+            // Because of a bug in Firefox 2 we need to specify the MapFish base path.
+            // See https://bugzilla.mozilla.org/show_bug.cgi?id=351282
+            var gMfLocation = "http://demo.mapfish.org/openexpo/mfbase/mapfish/";
+        </script>
+        <script type="text/javascript" src="http://demo.mapfish.org/openexpo/mfbase/mapfish/MapFish.js"></script>
+        
+        <script type="text/javascript">
+            
+             Ext.onReady(function() {
+                 //MAPFISH MAP COMPONENT
+                var bounds = new OpenLayers.Bounds([AV2GBOUNDS]);
 
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<link REL='STYLESHEET' HREF='geonline.css' TYPE='text/css'>
-</head>
-<body bgcolor="#7197BD" topmargin="2" leftmargin="3" marginheight="3" marginwidth="3">
-<form name='form1'>
+                var proj = '[AV2GPROJECTION]';
+                proj = proj.split('=')[1].split("&")[0];
+                var options = {maxResolution: 'auto',maxExtent: bounds, projection: proj};
+                var options = {};
 
-<table border=0 cellpadding="0" cellspacing="0">
-  <tr bgcolor="black"> 
-    <td colspan=3><img src="images/pix.gif" width="2" height="2"></td>
-  </tr>
-  <tr>
+                var map = new OpenLayers.Map('map', options);
+
+                //Builds layers
+                var layers = [];
+                var mylayer;
+                var myLayers = [];
+
+                // by default columns are sortable
+                cm.defaultSortable = true;
+                // create the Data Store
+                var pchildren = [];
+
+            //[AV2GLAYERS]
+
+                var pmodel = [
+                        {
+                            text: "Layer tree",
+                            expanded: true,
+                            checked: true,
+                            children: pchildren
+                        }
+                    ];
+
+                var url = '[AV2GPATHTOMAPSERVER]?mode=map&map=[AV2GMAPFILEPATH]';
+
+                mylayer = new OpenLayers.Layer.MapServer('myGroup', 
+                         url,
+                         {layers: myLayers,format: "image/png",'map_scalebar_status':'OFF'}, 
+                         {isBaseLayer:false});
+                layers[layers.length] = mylayer;
+                var drawingLayer = new OpenLayers.Layer.Vector("Draw",{isBaseLayer:true});
+
+                map.addLayer(drawingLayer);
+                map.addLayers(layers);
+
+               var tree = new mapfish.widgets.LayerTree({
+                    id:'MFTree',
+                    map: map, 
+                    model: pmodel,
+                    enableDD: false,
+                    width: '100%',
+                    height: '100%',
+                    border: false,
+                    autoScroll: true
+               });
+               tree.render('mftree');
+
+               //**FIXME : rebuild bar instead of displaying it
+               var toolbar = new mapfish.widgets.toolbar.Toolbar({map: GeneralLayout.publishermap, configurable: false});
+               toolbar.render('toolbar');
+               toolbar.addControl(new OpenLayers.Control.ZoomBox(), {iconCls: 'bzoomin', toggleGroup: 'map'});
+               toolbar.addControl(new OpenLayers.Control.DragPan({isDefault: true}), {iconCls: 'bdrag', toggleGroup: 'map'});
+
+               toolbar.add(new Ext.Toolbar.Spacer());
+               toolbar.add(new Ext.Toolbar.Separator());
+               toolbar.add(new Ext.Toolbar.Spacer());
+
+               var vectorLayer = map.getLayersByName('Draw')[0];
+
+               toolbar.addControl(new OpenLayers.Control.DrawFeature(vectorLayer, OpenLayers.Handler.Point), {iconCls: 'bdrawpoint', toggleGroup: 'map'});
+               toolbar.addControl(new OpenLayers.Control.DrawFeature(vectorLayer, OpenLayers.Handler.Path), {iconCls: 'bdrawline', toggleGroup: 'map'});
+               toolbar.addControl(new OpenLayers.Control.DrawFeature(vectorLayer, OpenLayers.Handler.Polygon), {iconCls: 'bdrawpolygon', toggleGroup: 'map'});
+
+               toolbar.activate();
+               map.zoomToExtent(bounds);
+        });
+           
+        </script>
+        <style type="text/css">
+            @import "http://demo.mapfish.org/openexpo/base.css";
+            #maparea {
+                width: 600px;
+                height: 600px;
+                border: 1px solid black;
+            }
+            #toolbar {
+                width: 600px;
+            }
+            #tree {
+                position: absolute;
+                left: 620px;
+            }
+            
+        </style>
+        
+    </head>
     
-    <td width="2" bgcolor="black">
-      <img src="images/pix.gif" width="1" height="1">
-    </td>
-    
-    <td bgcolor="#B8CBDE" bordercolor="#FFFFFF"> 
-
-      <table width="100%" border="0" height="100%" cellpadding="0" cellspacing="0">
-        <tr bordercolor="#FFFFFF"> 
-          <td align="left" valign="top" nowrap> 
-
-            <table border="0" height="100%" cellpadding="0" cellspacing="0">
-              <tr> 
-                <td align="left" valign="top" height="24" nowrap class='tiny'>
-
-[AV2GThm]
-
-                  <div align="center" class='tiny'>
-
-[AV2GScale]
-
-  		  </div>
-    	          <p align="center">
-
-[AV2GLeg]
-
-		  </p>
-                </td>
-              </tr>
-              <tr> 
-                <td> 
-
-[AV2GRef]
-
-                </td>
-              </tr>
-
-            </table>
-          </td>
-          <td width="1" bgcolor="black" rowspan=2>
-            <img src="images/pix.gif" width="1" height="1">
-          </td>
-          
-          <td align="center" valign="middle"> 
-
-            <table width="100%" border="0" height="100%" cellpadding="0" cellspacing="0">
-              <tr> 
-                <td align="center" valign="middle">
-                  <font face="Arial, Helvetica, sans-serif">
-                  <b> 
-
-[AV2GTitle]
-
-                  </b>
-                  </font>
-                </td>
-              </tr>
-              <tr> 
-                <td align="left" valign="middle" nowrap height="40"> &nbsp;&nbsp; 
-
-[AV2GTool]
-
-                </td>
-              </tr>
-              <tr> 
-                <td align="center" valign="middle" nowrap>
-
-[AV2GMAP]
-
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </td>
-    <td width="2" bgcolor="black">
-      <img src="images/pix.gif" width="1" height="1">
-    </td>
-  </tr>
-  <tr bgcolor="black"><td colspan=3><img src="images/pix.gif" width="2" height="2"></td></tr>
-</table>
-   
-<p class="tinygrey" align="center"><a href="#" onClick="kDebug()">...</a></p>
-</form>
-
-</body>
+    <body>
+        <div id="header"><a href="http://www.mapfish.org" target="_blank"><img id="header-logo" src="http://demo.mapfish.org/openexpo/mapfish.png"/></a></div>
+        <h1 class="page-title">[AV2GTITLE]</h1>
+        <div id="content">
+            <div id="toolbar"></div>
+            <div id="maparea"></div>
+            <div class="mftree"></div>
+        </div>
+    </body>
 </html>
-  
