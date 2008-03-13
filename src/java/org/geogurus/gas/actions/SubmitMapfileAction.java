@@ -73,7 +73,7 @@ public class SubmitMapfileAction extends org.apache.struts.action.Action {
                 //FIXME : in case of new layer declared or order modification, should map changes
                 for (Iterator it = newMap.getLayers().iterator(); it.hasNext();) {
                     Layer l = (Layer) it.next();
-                    GeometryClass gc = umb.getUserLayer(l.getName());
+                    GeometryClass gc = umb.getUserLayerByName(l.getName());
                     if (gc != null) {
                         gc.setMSLayer(l);
                     }
