@@ -124,7 +124,7 @@ public class UserMapBean implements Serializable {
         return userLayerList;
     }
 
-    public GeometryClass getUserLayer(String layerName_) {
+    public GeometryClass getUserLayerByName(String layerName_) {
         Enumeration<String> enu = userLayerList.keys();
         GeometryClass gc = null;
         while (enu.hasMoreElements()) {
@@ -135,6 +135,10 @@ public class UserMapBean implements Serializable {
             }
         }
         return gc;
+    }
+    
+    public GeometryClass getUserLayer(String id_) {
+        return (GeometryClass) userLayerList.get(id_);
     }
 
     public Vector getUserLayerOrder() {
