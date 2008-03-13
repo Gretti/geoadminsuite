@@ -44,9 +44,10 @@ import org.geogurus.tools.util.ZipEngine;
 public class ZipDownloadAction extends org.apache.struts.action.Action {
 
     /* forward name="success" path="" */
-    private static int EXPORT_TYPE_FULL = -2;
     private static int EXPORT_TYPE_TEXT = -1;
+    private static int EXPORT_TYPE_FULL = -2;
     private static int EXPORT_TYPE_HTML = -3;
+    private static int EXPORT_TYPE_MAPFISH = -4;
 
     /**
      * This is the action called from the Struts framework.
