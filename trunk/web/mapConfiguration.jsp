@@ -35,13 +35,14 @@
             GeneralLayout.composerlayers = [];
             var layer;
             
+console.log('<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="userLayerOrder"/>');
             
             //Builds layer tree elements
             <logic:iterate id="order" name="<%=ObjectKeys.USER_MAP_BEAN%>" property="userLayerOrder">
                 <bean:define id='geomcoll' name='<%=ObjectKeys.USER_MAP_BEAN%>' property='<%="userLayer(" + order + ")"%>' type='org.geogurus.GeometryClass'/>
             myLayers.push('<bean:write name="geomcoll" property="name"/>'); 
             initialOrder.push('<bean:write name="geomcoll" property="ID"/>');
-            
+console.log('<bean:write name="geomcoll" property="name"/>');
             children.push(
                 {
                     id: "<bean:write name="geomcoll" property="ID"/>",
