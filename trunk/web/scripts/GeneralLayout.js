@@ -300,7 +300,18 @@ GeneralLayout =
                     var xportAction = new Ext.Action({
                         text: 'Export',
                         handler: function(){
-                            Ext.Msg.alert('Export','ZipDowloadAction export to mapfish site');
+                            Ext.Msg.show({
+                                msg: 'Reading datasources, please wait...',
+                                progressText: 'Loading ...',
+                                width:300,
+                                wait:true,
+                                waitConfig: {interval:200}
+                                //icon:'ext-mb-download',
+                                //animEl: 'mb7'
+                            });
+                            
+                           window.open('sitePublisher.do', "wait", "width=300,height=200");
+                           Ext.MessageBox.hide();
                         },
                         iconCls: 'bexport'
                     });
