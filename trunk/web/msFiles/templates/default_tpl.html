@@ -1,128 +1,85 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>[AV2GPAGE]</title>
-        <link rel="stylesheet" type="text/css" href="http://demo.mapfish.org/openexpo/mfbase/ext/resources/css/ext-all.css" />
+        [AV2GPAGE]
+        <link rel="stylesheet" type="text/css" href="styles/mapfish.css" />
+        <link rel="stylesheet" type="text/css" href="scripts/resources/css/ext-all.css" />
+        <link rel="stylesheet" type="text/css" href="scripts/resources/css/xtheme-gray.css" />
         
-        <script type="text/javascript" src="http://demo.mapfish.org/openexpo/mfbase/openlayers/lib/Firebug/firebug.js"></script>
-        <script type="text/javascript" src="http://demo.mapfish.org/openexpo/mfbase/openlayers/lib/OpenLayers.js"></script>
-        
-        <script type="text/javascript" src="http://demo.mapfish.org/openexpo/mfbase/ext/adapter/ext/ext-base.js"></script>
-        <script type="text/javascript" src="http://demo.mapfish.org/openexpo/mfbase/ext/ext-all-debug.js"></script>
-        
-        
-        <script type="text/javascript">
-            // Because of a bug in Firefox 2 we need to specify the MapFish base path.
-            // See https://bugzilla.mozilla.org/show_bug.cgi?id=351282
-            var gMfLocation = "http://demo.mapfish.org/openexpo/mfbase/mapfish/";
-        </script>
-        <script type="text/javascript" src="http://demo.mapfish.org/openexpo/mfbase/mapfish/MapFish.js"></script>
+        <script type="text/javascript" src="scripts/adapter/ext/ext-base.js"></script>
+        <script type="text/javascript" src="scripts/ext-all.js"></script>
+        <script type="text/javascript" src="scripts/mapfish/MapFish.js"></script>          
         
         <script type="text/javascript">
-            
-             Ext.onReady(function() {
-                 //MAPFISH MAP COMPONENT
-                var bounds = new OpenLayers.Bounds([AV2GBOUNDS]);
-
-                var proj = '[AV2GPROJECTION]';
-                proj = proj.split('=')[1].split("&")[0];
+            var map;
+            Ext.onReady(function() {
+                //MAPFISH MAP COMPONENT
+                [AV2GBOUNDS]
+                
+                [AV2GPROJECTION]
+                
                 var options = {maxResolution: 'auto',maxExtent: bounds, projection: proj};
-                var options = {};
-
-                var map = new OpenLayers.Map('map', options);
-
+                
+                map = new OpenLayers.Map('map', options);
+                //Specified to stay relative to the project folder
+                map.theme = 'theme/default/style.css';
+                
+                //List of OL tools selected
+                [AV2GOLTOOLS]
+                
                 //Builds layers
                 var layers = [];
                 var mylayer;
                 var myLayers = [];
+                
+                [AV2GLAYERS]
 
-                // by default columns are sortable
-                cm.defaultSortable = true;
-                // create the Data Store
-                var pchildren = [];
-
-            //[AV2GLAYERS]
-
-                var pmodel = [
-                        {
-                            text: "Layer tree",
-                            expanded: true,
-                            checked: true,
-                            children: pchildren
-                        }
-                    ];
-
-                var url = '[AV2GPATHTOMAPSERVER]?mode=map&map=[AV2GMAPFILEPATH]';
-
+                [AV2GPATHTOMAPSERVER]
+                [AV2GMAPFILEPATH]
+                
+                var url = path_to_mapserver + 'mode=map&map=' + mapfile_path;
+                
                 mylayer = new OpenLayers.Layer.MapServer('myGroup', 
-                         url,
-                         {layers: myLayers,format: "image/png",'map_scalebar_status':'OFF'}, 
-                         {isBaseLayer:false});
+                    url,
+                    {layers: myLayers,format: "image/png"}, 
+                    {isBaseLayer:false});
                 layers[layers.length] = mylayer;
                 var drawingLayer = new OpenLayers.Layer.Vector("Draw",{isBaseLayer:true});
-
+                
                 map.addLayer(drawingLayer);
                 map.addLayers(layers);
-
-               var tree = new mapfish.widgets.LayerTree({
-                    id:'MFTree',
-                    map: map, 
-                    model: pmodel,
-                    enableDD: false,
-                    width: '100%',
-                    height: '100%',
-                    border: false,
-                    autoScroll: true
-               });
-               tree.render('mftree');
-
-               //**FIXME : rebuild bar instead of displaying it
-               var toolbar = new mapfish.widgets.toolbar.Toolbar({map: GeneralLayout.publishermap, configurable: false});
-               toolbar.render('toolbar');
-               toolbar.addControl(new OpenLayers.Control.ZoomBox(), {iconCls: 'bzoomin', toggleGroup: 'map'});
-               toolbar.addControl(new OpenLayers.Control.DragPan({isDefault: true}), {iconCls: 'bdrag', toggleGroup: 'map'});
-
-               toolbar.add(new Ext.Toolbar.Spacer());
-               toolbar.add(new Ext.Toolbar.Separator());
-               toolbar.add(new Ext.Toolbar.Spacer());
-
-               var vectorLayer = map.getLayersByName('Draw')[0];
-
-               toolbar.addControl(new OpenLayers.Control.DrawFeature(vectorLayer, OpenLayers.Handler.Point), {iconCls: 'bdrawpoint', toggleGroup: 'map'});
-               toolbar.addControl(new OpenLayers.Control.DrawFeature(vectorLayer, OpenLayers.Handler.Path), {iconCls: 'bdrawline', toggleGroup: 'map'});
-               toolbar.addControl(new OpenLayers.Control.DrawFeature(vectorLayer, OpenLayers.Handler.Polygon), {iconCls: 'bdrawpolygon', toggleGroup: 'map'});
-
-               toolbar.activate();
-               map.zoomToExtent(bounds);
-        });
-           
-        </script>
-        <style type="text/css">
-            @import "http://demo.mapfish.org/openexpo/base.css";
-            #maparea {
-                width: 600px;
-                height: 600px;
-                border: 1px solid black;
-            }
-            #toolbar {
-                width: 600px;
-            }
-            #tree {
-                position: absolute;
-                left: 620px;
-            }
+                
+                [AV2GMFTREE]
+                
+                [AV2GMFTOOLBAR]
+                
+                map.zoomToExtent(bounds);
+            });
             
-        </style>
-        
+        </script>
     </head>
     
     <body>
-        <div id="header"><a href="http://www.mapfish.org" target="_blank"><img id="header-logo" src="http://demo.mapfish.org/openexpo/mapfish.png"/></a></div>
-        <h1 class="page-title">[AV2GTITLE]</h1>
+        
+        [AV2GTITLE]
         <div id="content">
             <div id="toolbar"></div>
-            <div id="maparea"></div>
-            <div class="mftree"></div>
+            <div id="mftree"></div>
+            <div id="map"></div>
+        </div>
+        <div class="references">
+            <div class="res-block">
+                <div class="res-block-inner">
+                    <h3>References</h3>
+                    <ul>
+                        <li><a target="_blank" href="http://geoadminsuite.org">GeoAdminSuite</a></li>
+                        <li><a target="_blank" href="http://mapfish.org">MapFish</a></li>
+                        <li><a target="_blank" href="http://extjs.com">ExtJS</a></li>
+                        <li><a target="_blank" href="http://mapserv.gis.umn.edu">Mapserver</a></li>
+                        <li><a target="_blank" href="http://geotools.org">GeoTools</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </body>
 </html>

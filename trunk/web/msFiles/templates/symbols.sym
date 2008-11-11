@@ -1,3 +1,4 @@
+# GAS symbols
 SYMBOL
    NAME "ln1"
    TYPE ELLIPSE
@@ -152,8 +153,9 @@ SYMBOL
  FONT "esri_3"
 END
 
+# DO NOT REMOVE THIS SYMBOL: needed by GAS code
 symbol
- name "gasdefsympoint"
+ name "ptgasdefsympoint"
  antialias TRUE
  filled FALSE
  type ELLIPSE
@@ -174,7 +176,7 @@ SYMBOL
  TYPE TRUETYPE
  FILLED TRUE
  ANTIALIAS TRUE
- CHARACTER "°"
+ CHARACTER "ï¿½"
  FONT "esri_3"
 END
 
@@ -431,14 +433,6 @@ SYMBOL
 END
 
 SYMBOL   
-  NAME "pg1"
-  TYPE ELLIPSE
-  POINTS
-  0 0
-  END   
-END
-
-SYMBOL   
   NAME "pattern1"
   TYPE VECTOR
   TRANSPARENT 0
@@ -524,7 +518,7 @@ SYMBOL
   END
 END
 
-SYMBOL   
+SYMBOL
   NAME "pattern9"
   TYPE VECTOR
   POINTS
