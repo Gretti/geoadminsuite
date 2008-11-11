@@ -5,116 +5,188 @@
 <%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <%@page contentType="text/html"%>
 <%@page import="org.geogurus.gas.utils.ObjectKeys" %>
-<%@page import="org.geogurus.GeometryClass" %>
+<%@page import="org.geogurus.data.DataAccess" %>
 <%@page import="org.geogurus.mapserver.objects.Layer" %>
 <%@page import="org.geogurus.mapserver.objects.RGB" %>
-<html:html locale="true">
-    <head><title><bean:message key="layer_configuration"/></title>
-        <link rel="stylesheet" href="css/gas.css" type="text/css">
         <script type="text/javascript">
         <!--
-        // checks form fields to avoid passing bad values to the servlet
-        function checkForm() {
-            var curForm = document.forms["LayerForm"];
-            if (document.getElementsByName("defaultMsLayer.minScale").item(0).value.length != 0 && 
-                isNaN(document.getElementsByName("defaultMsLayer.minScale").item(0).value)) {
-                alert("<bean:message key="err_scale_min"/>");
-                return false;
-            }
-            if (document.getElementsByName("defaultMsLayer.maxScale").item(0).value.length != 0 && 
-                isNaN(document.getElementsByName("defaultMsLayer.maxScale").item(0).value)) {
-                alert("<bean:message key="err_scale_max"/>");
-                return false;
-            }
-            if (isNaN(document.getElementsByName("defaultMsLayer.transparency").item(0).value) || 
-                document.getElementsByName("defaultMsLayer.transparency").item(0).value < 0 || 
-                document.getElementsByName("defaultMsLayer.transparency").item(0).value > 100) {
-                alert("<bean:message key="err_transparency"/>");
-                return false;
-            }
-            return true;
-        }
+        var flds = [];
+<logic:iterate id="field" name="<%=ObjectKeys.CURRENT_GC%>" property="columnInfo">
+    flds.push(['<bean:write name="field" property="name"/>']);
+</logic:iterate>
+
+        //Builds FormPanel to inject in opened Window
+        if(Ext.getCmp('formProps')) Ext.getCmp('formProps').destroy();
+        var html = "<table>";
+        html += "<tr><td><bean:message key="source_name"/>&nbsp;</td><td style=\"font-weight:bold\">&nbsp;<bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="name"/></td></tr>";
+        html += "<tr><td><bean:message key="source_origin"/>&nbsp;</td><td style=\"font-weight:bold\">&nbsp;<bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="datasourceName"/></td></tr>";
+        html += "<tr><td><bean:message key="source_type"/>&nbsp;</td><td style=\"font-weight:bold\">&nbsp;<bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="datasourceTypeAsString"/></td></tr>";
+        html += "<tr><td><bean:message key="geometry_type"/>&nbsp;</td><td style=\"font-weight:bold\">&nbsp;<bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="ogisType"/></td></tr>";
+        <logic:equal name="<%=ObjectKeys.CURRENT_GC%>" property="numGeometries" value="-1">
+    		html += "<tr><td><bean:message key="num_objects_lower"/>&nbsp;</td><td style=\"font-weight:bold\">&nbsp;Unknown</td></tr>";
+    	</logic:equal>
+    	<logic:notEqual name="<%=ObjectKeys.CURRENT_GC%>" property="numGeometries" value="-1">
+	    	html += "<tr><td><bean:message key="num_objects_lower"/>&nbsp;</td><td style=\"font-weight:bold\">&nbsp;<bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="numGeometries"/></td></tr>";
+		</logic:notEqual>
+        html += "</table>";
+        //Prepares raster fieldset in case
+        var isCollapsedRaster = true;
+<logic:notEmpty name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.tileItem">
+        isCollapsedRaster = false;
+</logic:notEmpty>
+
+        var fsRaster = {
+                            xtype:'fieldset',
+                            id:'isRasterTile',
+                            checkboxToggle:true,
+                            title: i18n.is_tile,
+                            autoHeight:true,
+                            autoWidth:true,
+                            defaultType: 'textfield',
+                            collapsed: isCollapsedRaster,
+                            items :[new Ext.form.ComboBox({
+                                        fieldLabel: "Tile Item",
+                                        name: 'defaultMsLayer.tileItem',
+                                        store: new Ext.data.SimpleStore({
+                                            fields: ['name'],
+                                            data : flds
+                                        }),
+                                        displayField:'name',
+                                        valueField:'name',
+                                        value: "<bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.tileItem"/>",
+                                        typeAhead: true,
+                                        autoWidth: true,
+                                        mode: 'local',
+                                        triggerAction: 'all',
+                                        forceSelection: false,
+                                        selectOnFocus:true,
+                                        listClass: 'x-combo-list-small'
+                                    })]
+                        };
+            
+        var formProps = new Ext.FormPanel({
+                            id: 'formProps',
+                            labelWidth: 150,
+                            frame:true,
+                            autoScroll: true,
+                            width: '100%',
+                            border: false,
+                            items: [{
+                                        xtype: 'fieldset',
+                                        title: '<bean:message key="general_info"/>',
+                                        autoHeight:true,
+                                        autoWidth:true,
+                                        html:html
+                                    },{
+                                        xtype: 'fieldset',
+                                        title: '<bean:message key="layer_param"/>',
+                                        autoHeight:true,
+                                        autoWidth:true,
+                                        defaultType: 'textfield',
+                                        defaults: {msgTarget: 'side', grow:true},
+                                        items: [
+                                            new Ext.form.NumberField({
+                                                fieldLabel: "<bean:message key="min_scale"/>",
+                                                name: 'defaultMsLayer.minScale',
+                                                value: "<bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.minScale"/>",
+                                                decimalPrecision: 0,
+                                                allowDecimals : false,
+                                                allowNegative : false
+                                            }),
+                                            new Ext.form.NumberField({
+                                                fieldLabel: "<bean:message key="max_scale"/>",
+                                                name: 'defaultMsLayer.maxScale',
+                                                value: "<bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.maxScale"/>",
+                                                decimalPrecision: 0,
+                                                allowDecimals : false,
+                                                allowNegative : false
+                                            }),
+                                            {
+                                                fieldLabel: "<bean:message key="filter"/>",
+                                                name: 'defaultMsLayer.filter',
+                                                value: "<bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.filter"/>"
+                                            },
+                                            new Ext.form.ComboBox({
+                                                fieldLabel: "<bean:message key="filter_item"/>",
+                                                name: 'defaultMsLayer.filterItem',
+                                                store: new Ext.data.SimpleStore({
+                                                    fields: ['name'],
+                                                    data : flds
+                                                }),
+                                                displayField:'name',
+                                                valueField:'name',
+                                                value: "<bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.filterItem"/>",
+                                                typeAhead: true,
+                                                autoWidth: true,
+                                                mode: 'local',
+                                                triggerAction: 'all',
+                                                forceSelection: false,
+                                                selectOnFocus:true,
+                                                listClass: 'x-combo-list-small'
+                                            }),
+                                            new Ext.form.NumberField({
+                                                fieldLabel: "<bean:message key="transparency"/>",
+                                                name: 'defaultMsLayer.transparency',
+                                                value: "<bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.transparency"/>",
+                                                allowDecimals: false,
+                                                allowNegative: false,
+                                                allowBlank: false,
+                                                decimalPrecision: 0,
+                                                minValue: 0,
+                                                maxValue: 100
+                                            })
+                                        ]
+                                    }
+<logic:equal name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.type" value="<%=String.valueOf(Layer.POLYGON)%>">
+                                    ,fsRaster
+</logic:equal>
+<logic:notEmpty name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.tileItem">
+                                    ,fsRaster
+</logic:notEmpty>
+                                ]
+                            });
+
+        Ext.getCmp('contentProps').add(formProps);
+        Ext.getCmp('contentProps').doLayout();
+        
+        if(Ext.getCmp('isRasterTile')) 
+            Ext.getCmp('isRasterTile').on("collapse",function(){
+            Ext.getCmp('formProps').form.findField('defaultMsLayer.tileItem').clearValue();
+        });
 
         function sub() {
-            if (checkForm()) {
+            if (!Ext.getCmp('formProps').form.isValid()) {
+                Ext.MessageBox.show({
+                   title: 'Invalid form',
+                   msg: 'Correct errors in form before validating ...',
+                   buttons: Ext.MessageBox.OK,
+                   icon: Ext.MessageBox.WARNING
+                });
+                return;
+            }
+            var max = Ext.getCmp('formProps').form.findField('defaultMsLayer.maxScale').value
+            var min = Ext.getCmp('formProps').form.findField('defaultMsLayer.minScale').value
+            if (max < min) {
+                Ext.MessageBox.show({
+                   title: 'Invalid form',
+                   msg: 'Maximum scale can not be lesser than minimum scale',
+                   buttons: Ext.MessageBox.OK,
+                   icon: Ext.MessageBox.ERROR
+                });
+                return;
+            }
+
+            if (Ext.getCmp('formProps').form.isValid()) {
                 Ext.Ajax.request({
-                url:'layerProperties.do',
-                waitMsg:'Loading',
-                params: Ext.Ajax.serializeForm(document.forms["LayerForm"]),
-                callback: function(){
-                        GeneralLayout.composermap.layers[1].mergeNewParams({'timestamp':Math.random()});
-                    }
-                });                
+                    url:'layerProperties.do',
+                    waitMsg:'Loading',
+                    params: Ext.Ajax.serializeForm(Ext.getCmp('formProps').form.id),
+                    callback: function(){
+                            refreshComposerMap();
+                        }
+                    });
                 return true;
             }
         }
         //-->
         </script>
-    </head>
-    <body class='body2' style="margin:0;background-color:#FFF;">
-        <html:form method="post" action="layerProperties.do">
-            <table class="tableb" cellpadding="0" cellspacing="1" width="100%">
-                <tr> 
-                    <th class="th0" colspan="2"><bean:message key="layer_param"/></th>
-                </tr>
-                <tr> 
-                    <td class='td4tiny'><bean:message key="source_name"/></td>
-                    <td class='td4tiny'><b><bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="name"/></b></td>
-                </tr>
-                <tr> 
-                    <td class='td4tiny'><bean:message key="source_origin"/></td>
-                    <td class='td4tiny'><b><bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="datasourceName"/></b></td>
-                </tr>
-                <tr> 
-                    <td class='td4tiny'><bean:message key="source_type"/></td>
-                    <td class='td4tiny'><b><bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="datasourceTypeAsString"/></b></td>
-                </tr>
-                <tr> 
-                    <td class='td4tiny'><bean:message key="geometry_type"/></td>
-                    <td class='td4tiny'><b><bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="ogisType"/></b></td>
-                </tr>
-                <tr> 
-                    <td class='td4tiny'><bean:message key="num_objects_lower"/></td>
-                    <td class='td4tiny'><b><bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="numGeometries"/></b></td>
-                </tr>
-                <tr> 
-                    <th class="th0" colspan="2">&nbsp;</th>
-                </tr>
-                <tr> 
-                    <td class='td4tiny'><bean:message key="max_scale"/></td>
-                    <td class='td4tiny'> 
-                        <html:text name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.maxScale" styleClass="tiny"/>
-                    </td>
-                </tr>
-                <tr> 
-                    <td class='td4tiny'><bean:message key="min_scale"/></td>
-                    <td class='td4tiny'> 
-                        <html:text name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.minScale" styleClass="tiny"/>
-                    </td>
-                </tr>
-                <tr> 
-                    <td class='td4tiny'><bean:message key="filter"/></td>
-                    <td class='td4tiny'> 
-                        <html:text name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.filter" styleClass="tiny"/>
-                    </td>
-                </tr>
-                <tr> 
-                    <td class='td4tiny'><bean:message key="filter_item"/></td>
-                    <td class='td4tiny'> 
-                        <span class='tiny'>
-                            <html:select name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.filterItem" styleClass="tiny">
-                                <html:options name="<%=ObjectKeys.CURRENT_GC%>" property="columnNamesInfo"/>
-                            </html:select>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class='td4tiny'><bean:message key="transparency"/></td>
-                    <td class='td4tiny'>
-                        <html:text name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.transparency" styleClass="tiny"/>
-                    </td>
-                </tr>
-            </table>
-        </html:form>
-    </body>
-</html:html>

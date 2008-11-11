@@ -6,6 +6,7 @@
 <%@page contentType="text/html"%>
 <%@page import="org.geogurus.gas.utils.ObjectKeys" %>
 <%@page import="org.geogurus.mapserver.objects.Layer" %>
+<%@page import="org.geogurus.mapserver.objects.MsLayer" %>
 <html:html locale="true">
     <head><title><bean:message key="ms_layer_title"/></title>
         <link rel="stylesheet" href="css/gas.css" type="text/css">
@@ -68,7 +69,7 @@
                     <td class='td4tiny'>ClassItem:</td>
                     <td class='td4tiny'>
                         <html:select name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.classItem" styleClass="tiny">
-                            <html:options name="<%=ObjectKeys.CURRENT_GC%>" property="columnNamesInfo" />
+                            <html:options name="<%=ObjectKeys.CURRENT_GC%>" property="attributeDataNames" />
                         </html:select>
                     </td>
                 </tr>
@@ -82,11 +83,11 @@
                     <td class='td4tiny'>ConnectionType:</td>
                     <td class='td4tiny'> 
                         <html:select name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.connectionType" styleClass="tiny">
-                            <html:option styleClass="tiny" value="<%=String.valueOf(Layer.LOCAL)%>">Local</html:option>
-                            <html:option styleClass="tiny" value="<%=String.valueOf(Layer.SDE)%>">sde</html:option>
-                            <html:option styleClass="tiny" value="<%=String.valueOf(Layer.OGR)%>">ogr</html:option>
-                            <html:option styleClass="tiny" value="<%=String.valueOf(Layer.POSTGIS)%>">Postgis</html:option>
-                            <html:option styleClass="tiny" value="<%=String.valueOf(Layer.ORACLESPATIAL)%>">OracleSpatial</html:option>
+						<%
+ 						    for( MsLayer layer:MsLayer.values() ){ %>
+		                            <html:option styleClass="tiny" value="<%=layer.toString()%>"><%=layer.getLabel()%></html:option>
+
+						<% } %>
                         </html:select>
                     </td>
                 </tr>
@@ -140,7 +141,7 @@
                     <td class='td4tiny'>LabeAnglelItem:</td>
                     <td class='td4tiny'> 
                         <html:select name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.labelAngleItem" styleClass="tiny">
-                            <html:options name="<%=ObjectKeys.CURRENT_GC%>" property="columnNamesInfo" />
+                            <html:options name="<%=ObjectKeys.CURRENT_GC%>" property="attributeDataNames" />
                         </html:select>
                     </td>
                 </tr>
@@ -154,7 +155,7 @@
                     <td class='td4tiny'>LabelItem:</td>
                     <td class='td4tiny'> 
                         <html:select name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.labelItem" styleClass="tiny">
-                            <html:options name="<%=ObjectKeys.CURRENT_GC%>" property="columnNamesInfo" />
+                            <html:options name="<%=ObjectKeys.CURRENT_GC%>" property="attributeDataNames" />
                         </html:select>
                     </td>
                 </tr>
@@ -180,7 +181,7 @@
                     <td class='td4tiny'>LabelSizeItem:</td>
                     <td class='td4tiny'> 
                         <html:select name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.labelSizeItem" styleClass="tiny">
-                            <html:options name="<%=ObjectKeys.CURRENT_GC%>" property="columnNamesInfo" />
+                            <html:options name="<%=ObjectKeys.CURRENT_GC%>" property="attributeDataNames" />
                         </html:select>
                     </td>
                 </tr>
