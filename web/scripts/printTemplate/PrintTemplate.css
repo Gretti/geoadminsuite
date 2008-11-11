@@ -1,0 +1,52 @@
+/* 
+Document   : PrintTemplate
+Created on : 20 oct. 2008, 13:42:41
+Author     : Gretti
+Description:
+Purpose of the stylesheet follows.
+*/
+
+.printTplbasic {
+    border:1px solid #C3DAF9;
+    color:#1E4E8F;
+    font:bold 10px tahoma,verdana,helvetica;
+    text-align:center;
+    cursor:move;
+}
+
+#conteneur {
+    width:99%;
+    height:99%;
+    position:relative;
+    background-color:#EEE;
+    margin-left:3px;
+    margin-top:3px;
+    padding:1px 1px 1px 1px;
+}
+
+/*Buttons*/
+.bmap {
+    background-image:url(images/map.png) !important;
+}
+.bnorth {
+    background-image:url(images/north.png) !important;
+}
+.bimage {
+    background-image:url(images/image.png) !important;
+}
+.bcomment {
+    background-image:url(images/comment.png) !important;
+}
+.bscale {
+    background-image:url(images/scale.png) !important;
+}
+.blegend {
+    background-image:url(images/legend.png) !important;
+}
+.btitle {
+    background-image:url(images/title.png) !important;
+}
+
+
+
+

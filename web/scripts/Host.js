@@ -4,5 +4,7 @@ Host = Ext.extend(Ext.Component, {
     path: '',
     port: '5432',
     uname: '',
-    upwd: ''
+    upwd: '',
+    instance: 'template1',
+    recurse: 'on'
 });
