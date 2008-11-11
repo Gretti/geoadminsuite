@@ -72,6 +72,15 @@
             <tr><td class="tinygrey">
                     <i>Modification de l'ordre des couches sans rafraichissement de la page entière (DHTML + AJaX).</i> OK
             </td></tr>
+            <tr><td class="tinygrey">
+                    GeometryClass modifications: 
+                    <ul>
+                        <li>remove all kaboum reference from it and put them into a KaboumBean class</li>
+                        <li>cleanup static variables and moves most of them in a dedicated class, that can give textual
+                        representation if needed</li>
+                    </ul> 
+                    
+            </td></tr>
         </table>
     </body><!-- a test -->
 </html>

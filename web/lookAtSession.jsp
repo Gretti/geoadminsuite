@@ -16,7 +16,7 @@
 	<META HTTP-EQUIV="Expires" CONTENT=0>
 </HEAD>
 
-<BODY BGCOLOR="#FFFFFF">
+<BODY>
 <% 
 
 //*** formatage des dates ***
@@ -97,7 +97,7 @@ SimpleDateFormat dateFormater = new SimpleDateFormat ("dd/MM/yyyy HH:mm:ss");
 					<TD BGCOLOR="#F1F1F1">
 						<% try { %>
 							<FONT COLOR="#0000FF">&nbsp;&nbsp;
-								<%=m[cpt].invoke(session.getAttribute(objName),null)%>
+								<%=m[cpt].invoke(session.getAttribute(objName),(Object[])null)%>
 							</FONT>
 						<% } catch (Exception e) { %>
 							<FONT COLOR="#FF3300"><%=e.getMessage()%></FONT>
@@ -195,7 +195,7 @@ SimpleDateFormat dateFormater = new SimpleDateFormat ("dd/MM/yyyy HH:mm:ss");
 					<TD BGCOLOR="#F1F1F1">
 						<% try { %>
 							<FONT COLOR="#0000FF">&nbsp;&nbsp;
-								<%=m[cpt].invoke(application.getAttribute(objName),null)%>
+								<%=m[cpt].invoke(application.getAttribute(objName),(Object[])null)%>
 							</FONT>
 						<% } catch (Exception e) { %>
 							<FONT COLOR="#FF3300"><%=e.getMessage()%></FONT>

@@ -12,28 +12,28 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="org.geogurus.gas.objects.UserMapBean" %>
 <%@ page import="org.geogurus.gas.utils.ObjectKeys" %>
-<%@ page import="org.geogurus.GeometryClass" %>
+<%@ page import="org.geogurus.data.DataAccessType" %>
+<%@ page import="org.geogurus.data.DatasourceType" %>
 
 <script type="text/javascript" charset="utf-8">
     // the column model has information about grid columns
     // dataIndex maps the column to the specific data field in
     // the data store (created below)
     var datasourcetypes = [];
-<%
-    String dst;
-    Byte dstb;
-    for (int i=0; i < GeometryClass.DATASOURCE_TYPES_ASSTRING.length; i++) {
-        dst = GeometryClass.DATASOURCE_TYPES_ASSTRING[i];
-        dstb = GeometryClass.DATASOURCE_TYPES_ASBYTE[i];
+<%	
+    for (DataAccessType dataType:DataAccessType.values()) {
+        String displayName = dataType.displayname();
+        if(dataType.getType() == DatasourceType.VECTOR) {
 %>
-datasourcetypes.push(['<%=dstb%>','<%=dst%>']);
+	    datasourcetypes.push(['<%=dataType%>','<%=displayName%>']);
 <%
+        }
     }
 %>
-    var cm = new Ext.grid.ColumnModel([
+    var cmVector = new Ext.grid.ColumnModel([
             {
                id:'layer',
-               header: "Layer",
+               header: '<bean:message key="publisher.dl.layer"/>',
                dataIndex: 'layer',
                width: 150
             },{
@@ -67,12 +67,19 @@ datasourcetypes.push(['<%=dstb%>','<%=dst%>']);
     ]);
    //MAPFISH MAP COMPONENT
     var bounds = new OpenLayers.Bounds(<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapExtent"/>);
-    var proj = '<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapfile.projection.attributes"/>';
-    proj = proj.split('=')[1].split("&")[0];
     var options = {maxResolution: 'auto',maxExtent: bounds, projection: proj};
+    <logic:notEmpty name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapfile.projection">
+    var proj = '<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapfile.projection.attributes" />';
+    if (proj.length > 2) {
+        proj = proj.split('=')[1].split("&")[0];
+    }
+    //options.push({projection: proj});
+    options.projection = proj;
+    </logic:notEmpty>
     
     Ext.get('pnlPublisherResult').update("<div id='publishertoolbar' style='width:600px'></div><div id='publishertree' style='position:absolute;left:620px;'></div><div id='publishermap' style='width:600px;height:600px;border:1px solid black'></div>");
     GeneralLayout.publishermap = new OpenLayers.Map($('publishermap'), options);
+    GeneralLayout.publishermap.theme = 'theme/default/style.css';
     
     //Builds layers
     GeneralLayout.publisherlayers = [];
@@ -80,14 +87,14 @@ datasourcetypes.push(['<%=dstb%>','<%=dst%>']);
     var myLayers = [];
             
     // by default columns are sortable
-    cm.defaultSortable = true;
+    cmVector.defaultSortable = true;
     // create the Data Store
     var myData = [];
     var dlString, params;
     var pchildren = [];
     
 <logic:iterate id="order" indexId="cnt" name="<%=ObjectKeys.USER_MAP_BEAN%>" property="userLayerOrder">
-    <bean:define id='gc' name='<%=ObjectKeys.USER_MAP_BEAN%>' property='<%="userLayer(" + order + ")"%>' type='org.geogurus.GeometryClass'/>
+    <bean:define id='gc' name='<%=ObjectKeys.USER_MAP_BEAN%>' property='<%="userLayer(" + order + ")"%>' type='org.geogurus.data.DataAccess'/>
     
     params = '\'<bean:write name="order"/>\',';
     params += '\'<bean:write name="cnt"/>\'';
@@ -95,15 +102,16 @@ datasourcetypes.push(['<%=dstb%>','<%=dst%>']);
     dlString = '<a href="javascript:void(0);" onclick="javascript:downloadData(' + params + ');">';
     dlString += '<img src="styles/package_go.png" alt=\"<bean:message key="download"/>\" title=\"<bean:message key="download"/>\" border=\"0\">';
     dlString += "</a>";
-    
-    myData.push(['<bean:write name="gc" property="name"/>','<bean:write name="gc" property="datasourceTypeAsString"/>','',dlString]);
+    <logic:equal name="gc" property="datasourceType.type" value="<%=DatasourceType.VECTOR.toString()%>">
+        myData.push(['<bean:write name="gc" property="name"/>','<bean:write name="gc" property="datasourceTypeAsString"/>','',dlString]);
+    </logic:equal>
     myLayers.push('<bean:write name="gc" property="name"/>'); 
     pchildren.push(
         {
             id: "<bean:write name="gc" property="ID"/>",
             text: "<bean:write name="gc" property="name"/>",
             leaf: true,
-            layerName: "myGroup:<bean:write name="gc" property="name"/>",
+            layerName: "mapserverLayer:<bean:write name="gc" property="name"/>",
             checked: true,
             icon: 'images/layers.png'
         }
@@ -118,10 +126,10 @@ datasourcetypes.push(['<%=dstb%>','<%=dst%>']);
             }
         ];
     
-    mylayer = new OpenLayers.Layer.MapServer('myGroup', 
+    mylayer = new OpenLayers.Layer.MapServer('mapserverLayer', 
              '<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapserverURL"/>?mode=map&map=<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapfilePath"/>',
-             {layers: myLayers,format: "image/png",'map_scalebar_status':'OFF'}, 
-             {isBaseLayer:false});
+             {layers: myLayers,format: "image/png"}, 
+             {transitionEffect:'resize',isBaseLayer:false,singleTile:true});
     GeneralLayout.publisherlayers[GeneralLayout.publisherlayers.length] = mylayer;
     var drawingLayer = new OpenLayers.Layer.Vector("Draw",{isBaseLayer:true});
 
@@ -161,6 +169,7 @@ datasourcetypes.push(['<%=dstb%>','<%=dst%>']);
                GeneralLayout.publishertoolbar.render('publishertoolbar');
                GeneralLayout.publishertoolbar.addControl(new OpenLayers.Control.ZoomBox(), {iconCls: 'bzoomin', toggleGroup: 'map'});
                GeneralLayout.publishertoolbar.addControl(new OpenLayers.Control.DragPan({isDefault: true}), {iconCls: 'bdrag', toggleGroup: 'map'});
+               GeneralLayout.publishertoolbar.addControl(new OpenLayers.Control.ZoomToMaxExtent(), {iconCls: 'bzoomtomax', toggleGroup: 'map'});
 
                GeneralLayout.publishertoolbar.add(new Ext.Toolbar.Spacer());
                GeneralLayout.publishertoolbar.add(new Ext.Toolbar.Separator());
@@ -177,7 +186,7 @@ datasourcetypes.push(['<%=dstb%>','<%=dst%>']);
         }
     }
             
-    var store = new Ext.data.SimpleStore({
+    var storeVector = new Ext.data.SimpleStore({
         fields: [
            {name: 'layer'},
            {name: 'type'},
@@ -189,8 +198,8 @@ datasourcetypes.push(['<%=dstb%>','<%=dst%>']);
     // create the editor grid
     var grid = new Ext.grid.EditorGridPanel({
         id:'publisherDownloadGrid',
-        store: store,
-        cm: cm,
+        store: storeVector,
+        cm: cmVector,
         autoExpandColumn:'layer',
         title:'Layers',
         frame:false,
@@ -216,29 +225,42 @@ datasourcetypes.push(['<%=dstb%>','<%=dst%>']);
     var strdlmap = '<table style="border:0;width:100%;"><tr>';
     strdlmap += '<td style="font-family:arial,tahoma,helvetica,sans-serif;font-size:11px;"><bean:message key="map_file"/></td>';
     strdlmap += '<td>';
-    strdlmap += '<a href="zipDownload.do?exporttype=-1" target="_blank" alt=\"<bean:message key="see"/>\">';
+    strdlmap += '<a href="zipDownload.do?exporttype=EXPORT_TYPE_TEXT" target="_blank" alt=\"<bean:message key="see"/>\">';
     strdlmap += '<img src="styles/report.png" border="0" alt=\"<bean:message key="see"/>\" title=\"<bean:message key="see"/>\">';
     strdlmap += '</a>';
     strdlmap += '</td>';
     strdlmap += '<td>';
-    strdlmap += '<a href="zipDownload.do?exporttype=-2" alt=\"<bean:message key="download_map"/>\">';
+    strdlmap += '<a href="zipDownload.do?exporttype=EXPORT_TYPE_FULL" alt=\"<bean:message key="download_map"/>\">';
     strdlmap += '<img src="styles/report_go.png" border="0" alt=\"<bean:message key="download"/>\" title=\"<bean:message key="download"/>\">';
     strdlmap += '</a>';
     strdlmap += '</td>';
+    strdlmap += '<tr>';
+    strdlmap += '<td style="font-family:arial,tahoma,helvetica,sans-serif;font-size:11px;"><bean:message key="cartoweb.iniConfFiles"/></td>';
+    strdlmap += '<td>';
+    strdlmap += '&nbsp;';
+    strdlmap += '</td>';
+    strdlmap += '<td>';
+    strdlmap += '<a href="zipDownload.do?exporttype=EXPORT_TYPE_CARTOWEB" alt=\"<bean:message key="download"/>\">';
+    strdlmap += '<img src="styles/report_go.png" border="0" alt=\"<bean:message key="download"/>\" title=\"<bean:message key="download"/>\">';
+    strdlmap += '</a>';
+    strdlmap += '</td></tr></table><br>'
+    strdlmap += GeneralLayout.createBoxHelp('<img src="images/help.png">','To Internat:Liste des autres types d\'export possibles : export des donn&eacute;es avec changement de format, exports de la configuration cartographique.<br>Cliquer sur les liens images pour lancer le téléchargement.');
     
     // trigger the data store load
-    store.loadData(myData);
+    storeVector.loadData(myData);
     Ext.getCmp('pnlPublisherDownload').add(grid);
     Ext.getCmp('pnlPublisherDownload').add(other);
     Ext.getCmp('pnlPublisherDownload').doLayout();
     grid.render;
     Ext.getCmp('pnlOtherDownload').body.dom.innerHTML = strdlmap;
-    GeneralLayout.publishermap.zoomToExtent(bounds);
+    
+    customizeConfigurationMap(GeneralLayout.publishermap);
+    GeneralLayout.publishermap.zoomToExtent(GeneralLayout.publishermap.baseLayer.maxExtent);
     
     function downloadData(order,cnt) {
         var dlItem =grid.store.data.items[parseInt(cnt)];
         //controls if datasource db name is specified in case of db type selected
-        if(dlItem.data.type == '<%=GeometryClass.STRING_PGCLASS%>') {
+        if(dlItem.data.type == '<%=DataAccessType.POSTGIS.displayname()%>') {
             if(dlItem.data.dbname == '') {
                 Ext.Msg.show({
                    title:'<bean:message key="error"/>',
@@ -246,7 +268,7 @@ datasourcetypes.push(['<%=dstb%>','<%=dst%>']);
                    buttons: Ext.Msg.OK,
                    icon: Ext.MessageBox.ERROR
                 });
-                return false;
+                return;
             } else {
                 db = dlItem.data.dbname;
             }

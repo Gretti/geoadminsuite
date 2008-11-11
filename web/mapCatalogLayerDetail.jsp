@@ -7,27 +7,26 @@
 <%@  page import="java.net.*" %>
 <%@  page import="org.geogurus.gas.utils.ObjectKeys" %>
 <%@  page import="org.geogurus.tools.DataManager" %>
-<%@  page import="org.geogurus.Datasource" %>
-<%@  page import="org.geogurus.GeometryClass" %>
+<%@  page import="org.geogurus.data.Datasource" %>
+<%@  page import="org.geogurus.data.DataAccess" %>
 <%@  page import="org.geogurus.gas.objects.GeometryClassFieldBean" %>
-<%@  page import="org.geogurus.web.LayerGeneralProperties" %>
+<%@  page import="org.geogurus.gas.objects.LayerGeneralProperties" %>
 <%@  page import="org.geogurus.mapserver.objects.Layer" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
-<logic:present name="dgp">
+<logic:present name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>">
     <script type="text/javascript">
-                <!--
             var pAttributeInfo;
             var pFileInfo;
-            var map, layer;
+            var map, layer, vlayer;
             
             function initLayout() {
 
                 //------------------------------------------//
                 //                 QUICKVIEW                //
                 //------------------------------------------//
-                loadMap('<bean:write name="dgp" property="imgURL"/>');
+                loadMap('<bean:write name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="imgURL" />');
 
                 //------------------------------------------//
                 //                 DATA VIEW                //
@@ -43,11 +42,12 @@
                     GeneralLayout.grid = null;
                 }
 
-                <logic:notEqual name="dgp" property="dsType" value="tifffile">
-                <logic:notEqual name="dgp" property="dsType" value="imgfile">
+                <logic:notEqual name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="dsType" value="tifffile">
+                <logic:notEqual name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="dsType" value="imgfile">
+                <logic:notEqual name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="dsType" value="WMS">
                 //Attributes Grid
                 //headers
-                <logic:iterate id="fs" name="dgp" property="fields">
+                <logic:iterate id="fs" name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="fields">
                 GeneralLayout.headers.push({'name' : '<bean:write name="fs" property="name"/>'});
                 GeneralLayout.columnsModels.push({header: '<bean:write name="fs" property="name"/>', width: 80, sortable: true, dataIndex: '<bean:write name="fs" property="name"/>'});
                 </logic:iterate>
@@ -56,7 +56,6 @@
                     proxy: new Ext.data.HttpProxy({
                         url: 'getSampleData.do'
                     }),
-
                     // create reader that reads the Topic records
                     reader: new Ext.data.JsonReader({
                         root: 'enregistrements',
@@ -64,7 +63,7 @@
                         fields: GeneralLayout.headers
                     })
                 });
-
+                
                 GeneralLayout.grid = new Ext.grid.GridPanel({
                     id:'gridData',
                     cm: new Ext.grid.ColumnModel(GeneralLayout.columnsModels),
@@ -74,8 +73,8 @@
                         pageSize: 50,
                         store: GeneralLayout.store,
                         displayInfo: true,
-                        displayMsg: 'Enregistrements {0} - {1} of {2}',
-                        emptyMsg: "Aucun enregistrements"
+                        displayMsg: i18n.records + ' {0} - {1} ' + i18n.of + ' {2}',
+                        emptyMsg: i18n.none + ' ' + i18n.records
                     })
                 });
 
@@ -83,9 +82,22 @@
                 Ext.getCmp('data').add(GeneralLayout.grid);
                 // trigger the data store load
                 GeneralLayout.store.load({params:{start:0, limit:50}});
-
+                Ext.getCmp('data').doLayout();
+                Ext.getCmp('pnlDataDetail').unhideTabStripItem('data');
                 </logic:notEqual>
                 </logic:notEqual>
+                </logic:notEqual>
+                
+                //Hides Data Tab
+                <logic:equal name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="dsType" value="tifffile">
+                    Ext.getCmp('pnlDataDetail').hideTabStripItem('data');
+                </logic:equal>
+                <logic:equal name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="dsType" value="imgfile">
+                    Ext.getCmp('pnlDataDetail').hideTabStripItem('data');
+                </logic:equal>
+                <logic:equal name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="dsType" value="WMS">
+                    Ext.getCmp('pnlDataDetail').hideTabStripItem('data');
+                </logic:equal>
 
                 //------------------------------------------//
                 //               METADATA VIEW              //
@@ -94,7 +106,7 @@
                     //Panel
                     pFileInfo = new Ext.Panel({
                         id: 'pFileInfo',
-                        title: 'File Info',
+                        title: '<bean:message key="file_info"/>',
                         collapsible:true,
                         width:400
                     });
@@ -103,11 +115,11 @@
                 //updates previous form if existing
                 if(Ext.getCmp('frmFileInfo')) {
                     Ext.getCmp('frmFileInfo').getForm().setValues({
-                        metadata_name:"<bean:write name="dgp" property="name"/>",
-                        metadata_source_type:"<bean:message name="dgp" property="dsType"/>",
-                        metadata_object_type:"<bean:write name="dgp" property="geoType"/>",
-                        metadata_num_objects:"<bean:write name="dgp" property="numRecords"/>",
-                        metadata_projection:"<bean:write name="dgp" property="projection"/>"
+                        metadata_name:"<bean:write name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="name"/>",
+                        metadata_source_type:"<bean:message name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="dsType"/>",
+                        metadata_object_type:"<bean:write name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="geoType"/>",
+                        metadata_num_objects:"<bean:write name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="numRecords"/>",
+                        metadata_projection:"<bean:write name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="projection"/>"
                     });
                 } else {
                     //builds new form
@@ -123,45 +135,49 @@
                         items: [{
                                 name:"metadata_name",
                                 fieldLabel: "<bean:message key="name"/>",
-                                value: "<bean:write name="dgp" property="name"/>",
+                                value: "<bean:write name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="name"/>",
                                 disabled:true
                             },{
                                 name:"metadata_source_type",
                                 fieldLabel: "<bean:message key="source_type_upper"/>",
-                                value: "<bean:message name="dgp" property="dsType"/>",
+                                value: "<bean:message name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="dsType"/>",
                                 disabled:true
                             },{
                                 name:"metadata_object_type",
                                 fieldLabel: "<bean:message key="object_type"/>",
-                                value: "<bean:write name="dgp" property="geoType"/>",
+                                value: "<bean:write name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="geoType"/>",
                                 disabled:true
                             }, {
                                 name:"metadata_num_objects",
                                 fieldLabel: "<bean:message key="num_objects"/>",
-                                value: "<bean:write name="dgp" property="numRecords"/>",
+                                value: "<bean:write name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="numRecords"/>",
                                 disabled:true
                             }, {
                                 name:"metadata_projection",
                                 fieldLabel: "<bean:message key="projection"/>",
-                                value: "<bean:write name="dgp" property="projection"/>",
+                                value: "<bean:write name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="projection"/>",
                                 disabled:true
                             }
                         ]
                     });
                     pFileInfo.add(frmFileInfo);
                 }
-                <logic:equal name="dgp" property="dsType" value="imgfile">
+                <logic:equal name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="dsType" value="imgfile">
                     if(Ext.getCmp('pAttributeInfo')) Ext.getCmp('pAttributeInfo').hide();
                 </logic:equal>
-                <logic:equal name="dgp" property="dsType" value="tifffile">
+                <logic:equal name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="dsType" value="tifffile">
                     if(Ext.getCmp('pAttributeInfo')) Ext.getCmp('pAttributeInfo').hide();
                 </logic:equal>
-                <logic:notEqual name="dgp" property="dsType" value="tifffile">
-                <logic:notEqual name="dgp" property="dsType" value="imgfile">
+                <logic:equal name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="dsType" value="WMS">
+                    if(Ext.getCmp('pAttributeInfo')) Ext.getCmp('pAttributeInfo').hide();
+                </logic:equal>
+                <logic:notEqual name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="dsType" value="tifffile">
+                <logic:notEqual name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="dsType" value="imgfile">
+                <logic:notEqual name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="dsType" value="WMS">
                 if(!Ext.getCmp('pAttributeInfo')) {
                     pAttributeInfo = new Ext.Panel({
                         id: 'pAttributeInfo',
-                        title: 'Attribute Info',
+                        title: '<bean:message key="attribute_info"/>',
                         collapsible:true,
                         width:400
                     });
@@ -171,7 +187,7 @@
                 
                 // create the data store
                 var aiData = [];
-                <logic:iterate id="fs" name="dgp" property="fields">
+                <logic:iterate id="fs" name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="fields">
                 aiData.push(['<bean:write name="fs" property="name"/>','<bean:write name="fs" property="type"/>','<bean:write name="fs" property="length"/>','<bean:write name="fs" property="nullable"/>']);
                 </logic:iterate>
                 //fills the grid
@@ -207,11 +223,12 @@
                 }
                 </logic:notEqual>
                 </logic:notEqual>
+                </logic:notEqual>
             }
 
             function loadMap(imgUrl) {
                 
-                var bounds = new OpenLayers.Bounds(<bean:write name="dgp" property="geometryClass.extent.bounds"/>);
+                var bounds = new OpenLayers.Bounds(<bean:write name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="dataAccess.extent.bounds"/>);
                 var options = {maxResolution: 'auto',maxExtent: bounds};
                 if(!map) {
                     map = new OpenLayers.Map(Ext.getCmp('view').body.id, options);
@@ -223,19 +240,27 @@
                     layer.destroy();
                 }
                 if(imgUrl != 'images/noobjects.gif') {
-                    layer = new OpenLayers.Layer.MapServer('<bean:write name="dgp" property="name"/>', 
-                             '<%=DataManager.getProperty("MAPSERVERURL")%>' + '?mode=map&map=<bean:write name='dgp' property='rootPath'/>',
-                             {layers: '<bean:write name="dgp" property="name"/>'}, 
-                             {singleTile: false});
+                    layer = new OpenLayers.Layer.MapServer('<bean:write name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="name"/>', 
+                             '<%=DataManager.getProperty("MAPSERVERURL")%>?mode=map&map=<bean:write name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="escapedRootPath"/>',
+                             {layers: '<bean:write name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="name"/>'}, 
+                             {singleTile: false,'buffer':0, transitionEffect:'resize'});
                     map.addLayer(layer);
                     map.zoomToExtent(bounds);
+                    catalogMsUrl = '<%=DataManager.getProperty("MAPSERVERURL")%>?mode=map&map=<bean:write name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="escapedRootPath"/>&layers=<bean:write name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="name"/>&map_size=400+400';
                 } else {
                     map.destroy();
                     map = null;
+                    catalogMsUrl = null;
                 }
                 
             }
-            Ext.onReady(initLayout);
-            //-->
+
+            Ext.onReady(
+                function() {
+                    initLayout();
+                    if(Ext.getCmp('data').ownerCt.activeTab == Ext.getCmp('data'))
+                        Ext.getCmp('gridData').getView().renderUI();
+                }
+            );
     </script>
 </logic:present>
