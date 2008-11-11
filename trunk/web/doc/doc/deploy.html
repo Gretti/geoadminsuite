@@ -1,0 +1,406 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+        <title>GeoAdminSuite</title>
+        <meta name="keywords" content="" />
+        <meta name="description" content="" />
+        <link rel="stylesheet" type="text/css" href="../default.css" />
+        <link rel="shortcut icon" href="../images/favicon.ico">
+    </head>
+    <script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+        var pageTracker = _gat._getTracker("UA-5143159-1");
+        pageTracker._initData();
+        pageTracker._trackPageview();
+    </script>
+    <body>
+        
+        <div id="header">
+            <div id="header_inner">
+                <h1><span>Geo</span>AdminSuite</h1>
+                <div id="slogan">distributed GeoData manager and Mapfish-based site publisher</div>
+            </div>
+        </div>
+        
+        <div id="main">
+            
+            <div id="lcol">
+                <div id="menu">
+                    <ul>
+                        <li><a href="../index.html">Homepage<span></span></a></li>
+                        <li><a href="download.html">Download<span></span></a></li>
+                        <li><a href="#"><b>Install/Deploy</b><span></span></a></li>
+                        <li><a href="documentation.html">Documentation<span></span></a></li>
+                        <li><a href="about.html">About<span></span></a></li>
+                        <li><a href="../../trac/geojava">Trac<span></span></a></li>
+                    </ul>
+                </div>
+                <div id="menu_end"></div>
+                
+                <div id="lcontent">
+                    <h3 class="first">Related.<span>sites</span></h3>
+                    <ul class="divided">
+                        <li class="first"><a href="http://www.mapfish.org">Mapfish</a></li>
+                        <li><a href="http://mapserver.gis.umn.edu" target="_blank">Mapserver</a></li>
+                        <li><a href="http://geotools.codehaus.org" target="_blank">Geotools</a></li>
+                        <li><a href="http://postgis.refractions.net" target="_blank">PostGIS</a></li>
+                    </ul>
+                    
+                    <h3>More.<span>Informations</span></h3>
+                    <p>visit <a href="http://camptocamp.com">Camptocamp</a> for more informations.</p>	
+                    <a href="http://www.geoadminsuite.org/cgi-bin/mailman/listinfo/gas-users">community mailing list</a></p>
+                    <div class="divider"></div>
+                </div>
+                
+            </div>
+            
+            <div id="rcol">
+                <div id="rcontent">
+                    <a href="#install_from_sources" title="Install from sources">	
+                        <div class="box">
+                            <div class="box_inner">
+                                <div class="captioned_image"><img src="../images/source_c.png" alt="Install from sources" border="0"/></div>
+                                <h2>Install from sources</h2> <br/>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#deploy_war_file" title="Deploy War file">	
+                        <div class="box">
+                            <div class="box_inner">
+                                <div class="captioned_image"><img src="../images/2downarrow.png" alt="Deploy War file"  border="0"/></div>
+                                <h2>Deploy and run War file</h2> <br/>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#configure_application" title="Configure application">	
+                        <div class="box">
+                            <div class="box_inner">
+                                <div class="captioned_image"><img src="../images/cr32-action-contents2.png" alt="Configure application"  border="0"/></div>
+                                <h2>Configure application</h2> <br/>
+                            </div>
+                        </div>
+                    </a>
+                    <h3>Introduction</h3>
+                    <p>
+                        GeoAdminSuite is a non distributed Java EE application (JSP 2.1, Servlets 2.5) requiring a Servlet/JSP engine to run.
+                        It can also be run with NetBeans Java IDE, using the embeded Tomcat server.<br/>
+                        GeoAdminSuite uses MapServer as map engine. Running MapServer as a CGI program requires that
+                        a Web Server is installed locally (Apache for instance).
+                    </p>
+                    <h3>Running <span>GeoAdminSuite locally</span> requires the following steps:</h3>
+                    <p>
+                        <ul>
+                            <li>Get and install <a href="http://mapserver.gis.umn.edu">MapServer</a> (CGI). 
+                                Write down the mapserv CGI address (probably something like: http://localhost/cgi-bin/mapserv).
+                                It will be used later on during configuration.
+                            </li>
+                            <li><a href="#build_nb">Build and run Webapp with NetBeans</a> <b>OR</b></li>
+                            <li>Deploy GAS webapp in a servlet engine :<br/>
+                                <ul>
+                                    <li><a href="#jetty">Deploy with Jetty</a></li>
+                                    <li><a href="#tomcat">Deploy with Tomcat</a></li>
+                                </ul>
+                            </li>
+                            
+                            <li><a href="#configure">Configure</a> the webapp</li>
+                            <li>Launch/test: Point your browser to http://localhost:[port]/geoadminsuite/ where
+                                [port] is the port number your servlet engine is running on.<br/>
+                                Ex. with NetBeans: <a href="http://localhost:8084/geoadminsuite/">http://localhost:8084/geoadminsuite/</a>
+                            </li>
+                        </ul>
+                    </p>
+                    <a name="install_from_sources"></a>
+                    <h3>How to <span>install</span> GeoAdminSuite from sources ?</h3>
+                    <p>The GAS sources can be managed with an Java IDE like Netbeans, Eclipse or Intellij IDEA. It allows to compile, debug and run
+                    GAS easily.
+                    </p>
+                    <p>GAS project requires <a href="http://maven.apache.org">Maven</a> project management environment to be installed, 
+                    but <b>note that GAS itself IS NOT a Maven project</b><br/>
+                    Maven is required to get libraries GAS depends on from externam repositories.</p>
+                    The following chapter explains how to install GAS as a Netbeans Web Application Project and how to run it.
+                    <a name="build_nb"></a>
+                    <p>
+                        Netbeans comes with an embeded Tomcat server, suitable to run GeoAdminSuite webapp directly from Netbeans.
+                        This is the easiest way to deploy and run GeoAdminSuite.
+                    </p>
+                    <p>
+                        <ol>
+                            <li>Download and install <a href="http://www.netbeans.org/">NetBeans 6</a></li>
+                            <br/>
+                            <li>Download and install <a href="http://maven.apache.org/">Maven 2</a></li>
+                            <br/>
+                            <li>Launch NetBeans and go to Versionning -> Suberversion -> Checkout, 
+                                Enter the GeoAdminSuite SVN repository URL: <pre>https://geojava.camptocamp.net/svn/geojava</pre>
+                                <br/><br /><img src="../images/nb_checkout.png"/>
+                            </li>
+                            <br/>
+                            <li>
+                                Click Next, Browse repository folder to choose tags/geoadminsuite_1_0RC1 folder
+                                (or trunk/geoadminsuite for the current development version):
+                                <br/><br /><img src="../images/nb_browse_folder.png"/>
+                            </li>
+                            <br/>
+                            <li>
+                                Choose local folder to get a copy of GeoAdminSuite, Click Finish:
+                                <br/><br /><img src="../images/nb_localfolder.png"/>
+                            </li>
+                            <br/>
+                            <li>Create a new NetBeans project, choosing web project with existing sources:
+                                <br/><br /><img src="../images/nb_new_project.png"/>
+                                <br/>
+                            </li>
+                            <br/>
+                            <li>Fill in required information by browsing geoadminsuite folder that was created
+                                at the previous step.<br/>
+                                <br/>Sources are located in the geoadminsuite/src/java folder AND geoadminsuite/src/resources folder
+                                <br/>Libraries are  locatedin the geoadminsuite/web/WEB-INF/lib folder
+                                <br/>Give project a name: geoadminsuite
+                                <br/><br /><img src="../images/nb_fill_project.png"/>
+                            </li>
+                            <br/>
+                            <li>Click Finish</li>
+                            <br/>
+                            <li>
+                                Find your project name in the Projects tab of the left panel, right-click on it and select Properties.
+                                In the Build/Packaging section, add scripts/mapfish/** in the Exclude From WAR File text field:
+                                <br/><br /><img src="../images/nb_exlude_from_war.png"/>
+                            </li>
+                            <br/>
+                            <li>Build the project. It will create a geoadminsuite/dist/geoadminsuite.war file.
+                                <i>This file can be used to deploy GeoAdminSuite on Servlet engines (Jetty, Tomcat, etc.)</i>
+                            </li>
+                            <br/>
+                            <li>Run the project (hit F6 key, or Run -> Run Main Project menu).
+                                The default Web browser should open and display the GeoAdminSuite Welcome page.
+                            </li>
+                            <br/>
+                        </ol>
+                    </p>
+                    <a name="deploy_war_file"></a>
+                    <h3>How to <span>deploy and run</span> GeoAdminSuite war file ?</h3>
+                    <a name="jetty"></a>
+                    <h4>Deploy with Jetty</h4>
+                    <p>
+                        <ol>
+                            <li>Download and install <a href="http://www.mortbay.org/jetty-6/">Jetty</a></li>
+                            <li>Download <a href="http://geojava.camptocamp.net/trac/geojava/browser/tags/geoadminsuite_0_9/bin/geoadminsuite.war?format=raw">geoadminsuite.war</a> 
+                            and copy/move it to &lt;jetty folder&gt;/webapps/</li>
+                            <li>Run Jetty:
+                                <pre>java -jar start.jar etc/jetty.xml</pre>
+                                Note the Message telling in which folder geoadmin webapp was deployed. Something like:
+                                <pre> Extract jar:file:/jetty-6.1.10/webapps/geoadminsuite.war!/ 
+                                to /tmp/Jetty_0_0_0_0_8080_geoadminsuite.war__geoadminsuite__tmh58n/webapp</pre>
+                                
+                            </li>
+                            <li>
+                                Change "&lt;jetty deployment folder&gt;/msFiles/tmpMaps" folder permissions to be writable by the MapServer process, for instance:
+                                <pre>chmod a+w  /tmp/Jetty_0_0_0_0_8080_geoadminsuite.war__geoadminsuite__tmh58n/webapp/msFiles/tmpMaps</pre>
+                            </li>
+                            <li><a href="#configure">Configure</a> the geoadminsuite Webapp</li>
+                            <li>Restart Jetty</li>
+                            <li><a href="http://localhost:8080/geoadminsuite">Test</a> the application</li>
+                        </ol>
+                    </p>
+                    <a name="tomcat"></a>
+                    <h4>Deploy with Tomcat</h4>
+                    <p>
+                        <ol>
+                            <li>Download and install <a href="http://tomcat.apache.org/">Tomcat</a></li>
+                            <br/><li>Download <a href="http://geojava.camptocamp.net/trac/geojava/browser/tags/geoadminsuite_0_9/bin/geoadminsuite.war?format=raw">geoadminsuite.war</a> 
+                            and copy/move it to &lt;tomcat folder&gt;/webapps/</li>
+                            <li>Follow Tomcat doc to deploy geoadminsuite webapp
+                            <br/></li>
+                            <li>
+                                Change "&lt;tomcat deployment folder&gt;/msFiles/tmpMaps" folder permissions to be writable by the MapServer process, for instance:
+                                <pre>chmod a+w  [tomcat webapps folder]/geoadminsuite/msFiles/tmpMaps</pre>
+                            </li>
+                            <li><a href="#configure">Configure</a> the geoadminsuite Webapp</li>
+                            <li>Restart Tomcat</li><br/>
+                            <li><a href="http://localhost:8081/geoadminsuite">Test</a> the application</li><br/>
+                        </ol>
+                    </p>
+                    <a name="configure_application"></a>
+                    <h3>How to configure GeoAdminSuite Webapp ?</h3>
+                    <p>
+                        Before using GeoAdminSuite, the webapp must be configured by setting some parameters
+                        in properties files.<br/>
+                        GeoAdminSuite Properties files are located at:
+                        <pre>geoadminsuite/src/resources/org/geogurus/gas/resources</pre>
+                        <br />in the source tree, and at:
+                        <pre>geoadminsuite/WEB-INF/classes/org/geogurus/gas/resources</pre>
+                        <br/>
+                        in the deployed webapp.
+                        <br />
+                        <br />
+                        
+                        <ul>
+                            <li><b>geonline.properties</b>: contains path to mapserv cgi programs, postgis programs
+                            and sets times for automatic files deletion. Some parameters are not used (CUT_OBJECT_COORDINATES for instance)</li>
+                            <br /><li><b>serverlist.properties</b>: contains list of predefined datasources. These can be PostGIS or Oracle databases, 
+                                folders containing geographic files (TIFF, ECW, shapefiles),
+                            or folders containing MapServer mapfiles.</li>
+                            <br /><li><b>symbology.properties</b>: contains definitions for GeoAdminSuite symbologies</li>
+                        </ul>
+                    </p>
+                    <br />
+                    <p>
+                        To configure GeoAdminSuite, there are 2 options:
+                        <ol>
+                            <li>Use the GeoAdminSuite admin page: /geoadminsuite/admin.jsp.
+                                Sets the required values and test configuration. 
+                            (Note: these values are not saved into properties files)</li>
+                            <br/><li>Edit properties files and sets values, as described in the following table.
+                                relaunch the webapp after the files are saved.<br/>
+                            </li>
+                        </ol>
+                        <table border="1">
+                            <tr>
+                                <td colspan="2" align="center"><b>geonline.properties</b></td>
+                            </tr>
+                            <tr>
+                                <th>Property</th>
+                                <th>Expected value</th>
+                            </tr>
+                            <tr>
+                                <td>WAITIMAGE</td>
+                                <td>the absolute URL to find an image that kaboum displays when the applet is working
+                                Ex:<br/>http://localhost:8084/GeoAdminSuite/images/earth.gif</td>
+                            </tr>
+                            <tr>
+                                <td>MAPSERVERURL</td>
+                                <td> the absolute URL to the mapserver CGI program Ex:<br/>
+                                http://localhost/cgi-bin/mapserv</td>
+                            </tr>
+                            <tr>
+                                <td>SHP2PGSQL</td>
+                                <td>the FULL path to PostGIS shp2pgsql program Ex:<br/>
+                                /usr/local/pgsql/bin/shp2pgsql</td>
+                            </tr>
+                            <tr>
+                                <td>PGSQL2SHP</td>
+                                <td>the FULL path to pgsql2shp program Ex:<br/>
+                                /usr/local/pgsql/bin/pgsql2shp</td>
+                            </tr>
+                            <tr>
+                                <td>MAPSERVER_CLASS_LIMIT</td>
+                                <td>The maximun number of classes mapserver can generate (compilation-dependant) Ex:<br/>
+                                250</td>
+                            </tr>
+                            <tr>
+                                <td>tempMapsDeletionPeriod</td>
+                                <td>the time, in second, to wait before deleting old user-specific mapfiles Ex:<br/>
+                                86400</td>
+                            </tr>
+                            <tr>
+                                <td>tempMapsDeletionTimeRange</td>
+                                <td>the time range, in second, before considering a user-specific mapfile is too old.
+                                    for instante, of both paramters are set to 86400 seconds, it means that
+                                    each 24 hours, user-specific mapfiles older than 24 hours from the current 
+                                    date will be deleted. Ex:<br/>
+                                86400</td>
+                            </tr>
+                            <tr>
+                                <td>GeoAdminSuite_DB_REPROJ</td>
+                                <td>The database used to manage reprojections.
+                                    This database must be a recent PostGIS database version (>= 1.2)
+                                    host,port,db,user,pwd Ex:<br/>
+                                localhost,5432,test,myusername,mypwd</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" align="center"><b>serverlist.properties</b></td>
+                            </tr>
+                            <tr>
+                                <th>Property</th>
+                                <th>Expected value</th>
+                            </tr>
+                            <tr>
+                                <td>host&lt;id&gt;</td>
+                                <td>
+                                    A valid host definition: 
+                                    <pre>
+##################################################################################################
+# This file Contains definition for available hosts containing geographic information on the
+# running server.
+# Supported servers are:
+#   - a folder (must be accessible by the server running the GeoAdminSuite application)
+#   - a postgis database
+#   - an oracle database
+#
+# Syntax:
+# each host must be define with a key=value line
+# key can be any unique word. Identical keys will be grouped together into the
+# same tree node in the GeoAdminSuite GUI 
+# value must contain 8 fields separated with comma (,) with different values, 
+# according to the host type:
+#
+# if host type is a folder:
+#
+#  o the first field is the name of the host (computer)
+#  o the second field is the path where geographic information will searched. this path
+#    must be accessible by the server running the GeoAdminSuite.
+#    CAUTION: IF PATH CONTAINS "\" CHARACTERS (Windows), THEY MUST BE ESCAPED (BY REPEATING THE "\").
+#    AS "\" IS A SPECIAL CHARACTER FOR PROPERTIES FILE. Ex: c:\\tmp\\shapes
+#  o the third, fourth and fifth fields must be the "null" keyword
+#  o the sixth  field must be the "null" keyword
+#  o the  seventh field tells if given folder should be recursively scanned 
+#   ("on" to enable, any other value to disable) 
+#  o the  eighth field must be "folder" keyword
+#
+# if host type is a postgis database:
+#
+#  o the first field is the name of the host  (computer)
+#  o the second field must be the null keyword
+#  o the third field is the value of the port on which PostgreSQL is running, 
+#  o the fourth field is the name of the postgresql user used for the connection
+#  o the fifth field is the password of the postgresql user used for the connection
+#  o the sixth field is the name of the postgresql template DB used for the connection
+#  o the seventh field (recurse folder) is discarded (may be the "null" keyword for instance)
+#  o the eighth field must be the "pg" keyword
+
+# if host type is a Oracle database:
+#
+#  o the first field is the name of the host (computer)
+#  o the second field must be the null keyword
+#  o the third field is the value of the port on which oracle is running, 
+#  o the fourth field is the name of the oracle user used for the connection
+#  o the fifth field is the password of the oracle user used for the connection
+#  o the sixth field is the Oracle instance name
+#  o the seventh field (recurse folder) is discarded (may be the "null" keyword for instance)
+#  o the eighth field must be the "Oracle" keyword
+#
+##
+                                    </pre>
+                                </td>
+                            </tr>
+                        </table>
+                        <br />
+                        <br />
+                        GAS application can be translated into other languages by managing Java I18N files located at:
+                        <pre>geoadminsuite/src/resources/org/geogurus/gas/resources/ApplicationResource_*.properties</pre>
+                        <br />in the source tree, and at:
+                        <pre>geoadminsuite/WEB-INF/classes/org/geogurus/gas/resources</pre>
+                        <br/>
+                        in the deployed webapp.
+                        <br />
+                        <br />
+                        Create a new file for the language to add and provide translation values into the file.
+                        For instance, to add german language support, creates a ApplicationResource_de.properties,
+                        copy keys from one of the existing ApplicationResource file, paste them into the new file and translate
+                        the values corresponding to each key.
+                        
+                        </p>
+                </div>
+            </div>
+            
+        </div>
+        
+        <div id="footer">
+            &copy; 2008 Camptocamp. All rights reserved. Original design by <a href="http://www.nodethirtythree.com/">NodeThirtyThree</a>.
+        </div>
+        
+    </body>
+</html>
