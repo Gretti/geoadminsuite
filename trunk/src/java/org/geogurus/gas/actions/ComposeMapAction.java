@@ -1,34 +1,33 @@
-/*
- * DisplayHelpAction.java
- */
-
 package org.geogurus.gas.actions;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
+import java.util.Vector;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.geogurus.data.Datasource;
+import org.geogurus.gas.forms.cartoweb.IniConfigurationForm;
 import org.geogurus.gas.managers.UserMapBeanManager;
-import org.geogurus.web.ColorGenerator;
-import org.geogurus.gas.utils.ObjectKeys;
+import org.geogurus.gas.objects.SymbologyListBean;
 import org.geogurus.gas.objects.UserMapBean;
+import org.geogurus.gas.utils.ObjectKeys;
+import org.geogurus.web.ColorGenerator;
 
 /**
  * @author Gretti
  */
 
 public class ComposeMapAction extends Action {
-    private Log log = LogFactory.getLog(ComposeMapAction.class);
     
     @Override
     public ActionForward execute(ActionMapping mapping,
@@ -37,7 +36,6 @@ public class ComposeMapAction extends Action {
             HttpServletResponse response)
             throws IOException, ServletException {
         
-        ActionForward forward = null;
         HttpSession session = request.getSession(false);
         
         StringTokenizer tok = new StringTokenizer(request.getParameter(ObjectKeys.SELECTED_IDS),"|");
@@ -56,24 +54,29 @@ public class ComposeMapAction extends Action {
             session.setAttribute(ObjectKeys.COLOR_GENERATOR, colgen);
         }
         
-        Hashtable hostList = (Hashtable)session.getAttribute(ObjectKeys.HOST_LIST);
-        Hashtable gasSymbolList = (Hashtable)getServlet().getServletConfig().getServletContext().getAttribute(ObjectKeys.GAS_SYMBOL_LIST);
-        String rp = getServlet().getServletConfig().getServletContext().getRealPath("") + File.separator;
+        Hashtable<String, Vector<Datasource>> hostList = (Hashtable<String, Vector<Datasource>>)session.getAttribute(ObjectKeys.HOST_LIST);
+        SymbologyListBean gasSymbolList = (SymbologyListBean)getServlet().getServletConfig().getServletContext().getAttribute(ObjectKeys.GAS_SYMBOL_LIST);
+        String rootPath = getServlet().getServletConfig().getServletContext().getRealPath("") + File.separator;
         UserMapBean userMapBean = new UserMapBean();
         
         try {
-            userMapBean.setRootpath(rp);
+            userMapBean.setRootpath(rootPath);
             userMapBean.setUserLayerChoice(layerChoice);
-            String mapfilePath = rp + "msFiles" + File.separator + "tmpMaps" + File.separator + "user_" + session.getId() + ".map";
+            String mapfilePath = rootPath + "msFiles" + File.separator + "tmpMaps" + File.separator + "user_" + session.getId() + ".map";
             userMapBean.setMapfilePath(mapfilePath);
             
             UserMapBeanManager umbMgr = new UserMapBeanManager();
             umbMgr.setUserMapBean(userMapBean);
             umbMgr.createUserLayerList(gasSymbolList,hostList);
             umbMgr.generateTemplateFiles();
-            umbMgr.buildFirstUserMapfile(Integer.valueOf(request.getParameter("screenWidth")).intValue(),Integer.valueOf(request.getParameter("screenHeight")).intValue(),colgen);
-            
-            
+            umbMgr.buildFirstUserMapfile(Integer.valueOf(request.getParameter("screenWidth")).intValue(),
+                    Integer.valueOf(request.getParameter("screenHeight")).intValue(),
+                    colgen);
+            // reset the cartoweb user list to force gas to regenerate a list from current layer list
+            IniConfigurationForm cwIniConf = (IniConfigurationForm)request.getSession().getAttribute(ObjectKeys.CW_INI_CONF_BEAN);
+            if (cwIniConf != null) {
+                cwIniConf.getLayerConf().setRootLayer(null);
+            } 
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -83,8 +86,6 @@ public class ComposeMapAction extends Action {
         //cleans session
         session.removeAttribute(ObjectKeys.CURRENT_GC);
         session.removeAttribute(ObjectKeys.CLASSIF_MESSAGE);
-        session.removeAttribute(ObjectKeys.CLASSIF_TYPE);
-        session.removeAttribute(ObjectKeys.TMP_CLASSIFICATION);
         
         return null;
     }

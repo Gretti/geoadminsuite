@@ -6,8 +6,6 @@
 
 package org.geogurus.tools.graphics;
 
-import java.awt.Point;
-import java.awt.Color;
 /**
  *
  * @author  Bastien VIALADE
@@ -52,7 +50,7 @@ private FreeArrowCanvas freeArrowCanvas ;
     public static void main(String args[]) {
         java.awt.Frame f = new FreeArrowFrameDemo();
         f.setSize(500,600);
-        f.show(); 
+        f.setVisible(true);; 
     }
     
     

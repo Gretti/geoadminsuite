@@ -1,10 +1,10 @@
 package org.geogurus.tools.string;
 
+import java.util.StringTokenizer;
+
 /** Title:        ConversionUtilities
  * Description:  Get the extent (BOX3D) of a parcel from postgresql database.
  *               Crop an input tif image along this extent.
- * Copyright:    Copyright (c) 2001
- * Company:      SCOT
  * @author Jerome Gasperi, aka jrom, Bastien Vialade
  * @version 1.0
  */
@@ -224,5 +224,28 @@ public class ConversionUtilities {
    public static String quotes(String s) {
         return '"' + s + '"';
    }
+ 
+    /**
+     * Returns an array containing a string entry for each token found in the given string
+     * seen as a properties file key where tokens are separated by '.' character.
+     * Key must be of the form:
+     * <token1>.<token2>.<token3>...
+     * Then, id will be extracted and returned
+     * @param key the key to extract tokens from
+     * @return a String array of extracted token. Empty array if key is invalid an array
+     * with one element, the key itself, if the key has no token separated by '.' char
+     */
+    public static String[] explodeKey(String key) {
+        if (key == null) {
+            return new String[0];
+        }
+        StringTokenizer tok = new StringTokenizer(key, ".");
+        String[] tokens = new String[tok.countTokens()];
+        int i = 0;
+        while (tok.hasMoreTokens()) {
+            tokens[i++] = tok.nextToken().trim();
+        }
+        return tokens;
+    }
    
 }

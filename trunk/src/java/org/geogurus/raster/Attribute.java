@@ -6,8 +6,6 @@
 package org.geogurus.raster;
 /**
  *
- * Copyright:    Copyright (c) 2001
- * Company: SCOT
  * @author  Bastien VIALADE
  */
 public class Attribute {

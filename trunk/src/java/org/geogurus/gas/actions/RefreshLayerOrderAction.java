@@ -8,14 +8,15 @@ package org.geogurus.gas.actions;
 
 import java.util.StringTokenizer;
 import java.util.Vector;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
 import org.geogurus.gas.managers.UserMapBeanManager;
 import org.geogurus.gas.objects.UserMapBean;
 import org.geogurus.gas.utils.ObjectKeys;
@@ -37,24 +38,25 @@ public class RefreshLayerOrderAction extends Action {
      * @throws java.lang.Exception
      * @return
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm  form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         HttpSession session = request.getSession();
         // the UserMapBean stored in session.
         UserMapBean umb = (UserMapBean)session.getAttribute(ObjectKeys.USER_MAP_BEAN);
-        Vector order = new Vector(umb.getUserLayerOrder().size());
+        Vector<String> order = new Vector<String>(umb.getUserLayerOrder().size());
         StringTokenizer tok = new StringTokenizer(request.getParameter("layerorder"), ",");
         
         while (tok.hasMoreElements()) {
             order.add(tok.nextToken());
         }
-        // sets the new list of ids to the bean. Then redirect to JSP:
         umb.setUserLayerOrder(order);
         
         UserMapBeanManager manager = new UserMapBeanManager();
         manager.setUserMapBean(umb);
-        manager.generateUserMapfile((ColorGenerator)session.getAttribute(ObjectKeys.COLOR_GENERATOR));
+        ColorGenerator colgen = (ColorGenerator)session.getAttribute(ObjectKeys.COLOR_GENERATOR);
+        manager.generateUserMapfile(colgen);
         
         return null;
         

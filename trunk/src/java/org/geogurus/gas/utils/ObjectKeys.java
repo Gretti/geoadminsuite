@@ -1,12 +1,12 @@
 /*
  * ObjectKeys.java
  *
- * Created on 31 ao�t 2002, 16:41
+ * Created on 31 aout 2002, 16:41
  */
 package org.geogurus.gas.utils;
 /**
  * The class that defines:
- * 1�) the constants that are used to identify the objects stored in different 
+ * 1) the constants that are used to identify the objects stored in different 
  * scope objects (session, request, page).<br>
  * All servlets and JSP pages should use the constants defined here.
  * <p>This class is never instantiated. 
@@ -22,11 +22,11 @@ public class ObjectKeys {
     public final static String SIG_ERROR = "SIG_ERROR";
     /** The key under which the SIG (kaboum Object validation) message is stored */
     public final static String SIG_MESSAGE = "SIG_MESSAGE";
-    /** the key to store the current mapfile object (com.scot.geonline.mapserver.objects.Map) */
+    /** the key to store the current mapfile object (mapserver.objects.Map) */
     public final static String  CURRENT_MAPFILE = "CURRENT_MAPFILE";
     /** the key to store the current object treated, set by each <obj>Configurator servlet 
      *  the full name of the object class must be used as a value: ex:
-     * com.scot.geonline.mapserver.objects.Legend
+     * mapserver.objects.Legend
      */
     public final static String  CURRENT_OBJECT = "CURRENT_OBJECT";
     
@@ -39,8 +39,9 @@ public class ObjectKeys {
     public final static String  USER_MAP_BEAN = "usermapbean";
     /** The key under which the current KaboumBean object is stored.*/
     public final static String  KABOUM_BEAN = "kaboumbean";
-    /** The key under which the bean representing the Uploaded map file object is stored.
-     */
+    /** The key under which the bean representing catalog selected layer object is stored.*/
+    public final static String  LAYER_GENERAL_PROPERTIES = "LAYER_GENERAL_PROPERTIES";
+    /** The key under which the bean representing the Uploaded map file object is stored.*/
     public final static String  USER_MAPFILE_BEAN = "USER_MAPFILE_BEAN";
     /** the key under which the Map storing all available hosts for this session is stored */
     public final static String  HOST_LIST = "HOST_LIST";
@@ -59,17 +60,12 @@ public class ObjectKeys {
     /** the key under which the list of selected catalog datasources is stored in request */
     public final static String  SELECTED_IDS = "SELECTED_IDS";
     
-    // for classification part
-    /** the key under which the classification type is stored in session.<br>
-     *  (see this class for list of supported classification types
-     */
-    public final static String  CLASSIF_TYPE = "CLASSIF_TYPE";
     /** the key under which the classification message is stored in session.<br>
      *  This message is used by JSP pages to inform end-user
      */
     public final static String  CLASSIF_MESSAGE = "CLASSIF_MESSAGE";
-    /** the key under which the List of layer (comma-separated list of GeometryClass id) is stored in session */
-    public final static String  TMP_CLASSIFICATION = "TMP_CLASSIFICATION";
+    /** error message generated during classification */
+    public final static String  LEGEND_MESSAGE = "LEGEND_MESSAGE";
     /** the key under which the where clause for a GeometryClass is stored*/
     public final static String GC_WHERE_CLAUSE = "GC_WHERE_CLAUSE";
     /** the key under which the Hashtable containing all symbols is stored (in context) */
@@ -84,4 +80,11 @@ public class ObjectKeys {
     public final static String  REFRESH_KEY = "REFRESH";
     /** size of the map changed */
     public final static String  MAP_SIZE_CHANGED = "MAP_SIZE_CHANGED";
+    public final static String CW_UPLOAD_MESSAGE = "CW_UPLOAD_MESSAGE";
+    /** the default point symbol for MS maps */
+    public final static String DEFAULT_POINT_SYMBOL = "ptgasdefsympoint";
+    /** the request parameter containing the CW Layer tree Json representation */
+    public final static String CW_LAYER_TREE_JSON = "cwLayerTreeJson";
+    /** the key under which the user IniConfigurationForm object is stored into Session */
+    public final static String CW_INI_CONF_BEAN = "org.geogurus.cartoweb.IniConfigurationForm";
 }

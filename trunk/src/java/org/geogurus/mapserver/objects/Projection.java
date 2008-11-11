@@ -3,10 +3,11 @@
  *
  * Created on 20 mars 2002, 14:41
  */
-
 package org.geogurus.mapserver.objects;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
+
 import org.geogurus.tools.string.ConversionUtilities;
 
 /**
@@ -29,24 +30,32 @@ import org.geogurus.tools.string.ConversionUtilities;
  *
  * @author  Bastien VIALADE
  */
-public class Projection extends MapServerObject implements java.io.Serializable  {
-    
+public class Projection extends MapServerObject implements java.io.Serializable {
+
     private ArrayList attributes;
-    
+
     /** Creates a new instance of Projection */
     public Projection() {
+        this.logger = Logger.getLogger(this.getClass().getName());
         attributes = new ArrayList();
     }
-    
+
     // Set and get methods
-    public boolean addAttribute(String attribute)      {
-        if (attributes==null) attributes=new ArrayList();
+    public boolean addAttribute(String attribute) {
+        if (attributes == null) {
+            attributes = new ArrayList();
+        }
         return attributes.add(attribute);
     }
-    public void setAttributes(ArrayList attributes_)   {attributes = attributes_;}
-    
-    public ArrayList getAttributes()                   {return attributes;}
-    
+
+    public void setAttributes(ArrayList attributes_) {
+        attributes = attributes_;
+    }
+
+    public ArrayList getAttributes() {
+        return attributes;
+    }
+
     /** Loads data from file
      * and fill Object parameters with.
      * @param br BufferReader containing file data to read
@@ -54,40 +63,40 @@ public class Projection extends MapServerObject implements java.io.Serializable 
      */
     public boolean load(java.io.BufferedReader br) {
         boolean result = true;
-        
+
         attributes.clear();
-        
+
         try {
             String[] tokens;
             String line;
-            
+
             while ((line = br.readLine()) != null) {
-                
+
                 // Looking for the first util line
-                while ((line.trim().length()==0)||(line.trim().startsWith("#"))||(line.trim().startsWith("%"))) {
+                while ((line.trim().length() == 0) || (line.trim().startsWith("#")) || (line.trim().startsWith("%"))) {
                     line = br.readLine();
                 }
                 tokens = ConversionUtilities.tokenize(line.trim());
                 if (!tokens[0].equalsIgnoreCase("END")) {
-                    result = this.addAttribute(line);
-                }
-                else {
+                    result = this.addAttribute(line.trim());
+                } else {
                     return true;
                 }
-                
+
                 // Stop parse file if error detected
-                if (!result) return false;
+                if (!result) {
+                    return false;
+                }
             }
-        } catch (Exception e) { // Bad coding, but works...
-            System.out.println("Projection.load(). Exception: " +  e.getMessage());
-            e.printStackTrace();
+        } catch (Exception e) { 
+            logger.warning("Projection.load(). Exception: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
-        
+
         return result;
     }
-    
+
     /** Saves data to file
      * using Object parameters with mapFile format.
      * @param bw BufferWriter containing file data to write
@@ -98,8 +107,8 @@ public class Projection extends MapServerObject implements java.io.Serializable 
         boolean result = true;
         try {
             bw.write("\t projection\n");
-            if (attributes!=null) {
-                for (int i=0; i<attributes.size(); i++) {
+            if (attributes != null) {
+                for (int i = 0; i < attributes.size(); i++) {
                     String str = (String) attributes.get(i);
                     if (str != null) {
                         bw.write("\t\t " + str + "\n");
@@ -112,11 +121,11 @@ public class Projection extends MapServerObject implements java.io.Serializable 
             return false;
         }
         return result;
-        
+
     }
+
     public String toString() {
         return "Not yet implemented";
     }
-    
 }
 

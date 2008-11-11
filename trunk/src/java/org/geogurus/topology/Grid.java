@@ -1,20 +1,15 @@
 package org.geogurus.topology;
 
-import java.awt.geom.*;
-import java.awt.*;
-import java.util.StringTokenizer;
+import java.awt.geom.Point2D;
 import java.util.Vector;
-import java.util.Iterator;
-import org.geogurus.Extent;
-import org.geogurus.Coord;
+
+import org.geogurus.data.Extent;
 
 
 /**
  *
  * Title:
  * Description:  Create a rotable grid
- * Copyright:    Copyright (c) SCOT 2001
- * Company:      SCOT
  * @author Jerome Gasperi aka jrom
  * @version 1.0
  *

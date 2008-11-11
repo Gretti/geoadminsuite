@@ -4,20 +4,21 @@
  * Created on 8 ao�t 2002, 19:48
  */
 package org.geogurus.web;
-import javax.servlet.http.*;
-import javax.servlet.*;
-import java.util.*;
-import java.sql.*;
-import java.io.*;
+
+import java.io.File;
+import java.util.Iterator;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.geogurus.data.DataAccess;
 import org.geogurus.gas.objects.UserMapBean;
 import org.geogurus.gas.utils.ObjectKeys;
-import org.geogurus.tools.LogEngine;
-import org.geogurus.tools.DataManager;
-import java.awt.Color;
-import org.geogurus.GeometryClass;
+import org.geogurus.mapserver.objects.Class;
 import org.geogurus.mapserver.objects.Layer;
-import org.geogurus.mapserver.objects.MapClass;
 import org.geogurus.mapserver.objects.RGB;
+
 /**
  * Servlet to deal with a MS Class object, and its corresponding HTML configuration page:
  * MC_mapserver_class_properties.jsp
@@ -30,21 +31,22 @@ import org.geogurus.mapserver.objects.RGB;
  * @author  nri
  */
 public class MSClassProperties extends BaseServlet {
+
     protected final String mc_mslayer_jsp = "MC_mapserver_class_properties.jsp";
-    
+
     /**
      * Main method listening to client requests:
      * See this page for the complete list of parameters names
      */
     public void process(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(true);
-debugParameters(request);
+        debugParameters(request);
         // the UserMapBean stored in session.
-        UserMapBean umb = (UserMapBean)session.getAttribute(ObjectKeys.USER_MAP_BEAN);
-        String layerid = (String)session.getAttribute(ObjectKeys.CURRENT_GC);
+        UserMapBean umb = (UserMapBean) session.getAttribute(ObjectKeys.USER_MAP_BEAN);
+        String layerid = (String) session.getAttribute(ObjectKeys.CURRENT_GC);
         // the class id is passed by the JSP in the request.
         String classID = request.getParameter("classid");
-        
+
         if (umb == null || layerid == null) {
             // session: expiration
             String error = "UserMapBean ou layerid manquant. La session a du expirer.";
@@ -56,20 +58,22 @@ debugParameters(request);
         // put in the request a parameter to refresh the mapfile in the main window
         dispatch(request, response, mc_mslayer_jsp + "?refreshmap=true&classid=" + classID);
     }
-    
+
     /**
      * update the current GeometryClass' MSLayer object with user-modified parameters.
      * The index of this GC is stored in the session under the "CURRENT_GEOMETRY_CLASS_INDEX" key
      */
     protected void doUpdate(HttpServletRequest request, UserMapBean umb, String layerid, String classID) {
-        Layer l = ((GeometryClass)umb.getUserLayerList().get(layerid)).getMSLayer(new RGB(0,0,0),false);
+        Layer l = ((DataAccess) umb.getUserLayerList().get(layerid)).getMSLayer(new RGB(0, 0, 0), false);
         // there is alwways a valid class here, as JSP page has already created at least one.
-        MapClass cl = null;
+        Class cl = null;
         for (Iterator iter = l.getMapClass().getClasses(); iter.hasNext();) {
-            cl = (MapClass)iter.next(); 
-            if (classID.equals("" + cl.getID())) break;
+            cl = (Class) iter.next();
+            if (classID.equals("" + cl.getID())) {
+                break;
+            }
         }
-        
+
         //control is done by Javascript
         if (request.getParameter("mapclass_backgroundcolor").length() > 0) {
             cl.setBackgroundColor(new RGB(request.getParameter("mapclass_backgroundcolor")));
@@ -95,7 +99,7 @@ debugParameters(request);
         cl.setMinSize(new Integer(request.getParameter("mapclass_minsize")).intValue());
         //size is always set: default value
         cl.setSize(new Integer(request.getParameter("mapclass_size")).intValue());
-        
+
         if (request.getParameter("mapclass_name").length() > 0) {
             cl.setName(request.getParameter("mapclass_name"));
         } else {
@@ -144,7 +148,7 @@ debugParameters(request);
         if (request.getParameter("mapclass_overlaysize").length() > 0) {
             cl.setOverlaySize(new Integer(request.getParameter("mapclass_overlaysize")).intValue());
         }
-        
+
         // now everything is up to date, regenerate a mapfile to keep map accurate
         //umb.generateUserMapfile();
         return;

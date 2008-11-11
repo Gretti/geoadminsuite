@@ -5,8 +5,9 @@
  */
 
 package org.geogurus.raster.gui;
-import javax.swing.* ;
-import java.util.ResourceBundle ;
+import java.util.ResourceBundle;
+
+import javax.swing.JLabel;
 
 /**
  * This class displays application usage
@@ -98,7 +99,7 @@ public class RasterRegistrarHelp extends javax.swing.JDialog {
      * @param args no args needed
      */
     public static void main(String args[]) {
-        new RasterRegistrarHelp(new javax.swing.JFrame(), true).show();
+        new RasterRegistrarHelp(new javax.swing.JFrame(), true).setVisible(true);;
     }
     
     

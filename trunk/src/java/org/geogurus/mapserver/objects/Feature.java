@@ -3,9 +3,11 @@
  *
  * Created on 20 mars 2002, 13:09
  */
-
 package org.geogurus.mapserver.objects;
+
 import java.awt.Point;
+import java.util.logging.Logger;
+
 import org.geogurus.tools.string.ConversionUtilities;
 
 /**
@@ -16,8 +18,8 @@ import org.geogurus.tools.string.ConversionUtilities;
  *
  * @author  Bastien VIALADE
  */
-public class Feature extends MapServerObject  implements java.io.Serializable {
-    
+public class Feature extends MapServerObject implements java.io.Serializable {
+
     /** A set of xy pairs terminated with an END, for example:
      * POINTS 1 1 50 50 1 50 1 1 END
      * Note that with POLYGON/POLYLINE layers POINTS must start 
@@ -25,25 +27,39 @@ public class Feature extends MapServerObject  implements java.io.Serializable {
     private Points points;
     /** String to use for labelin this feature*/
     private String text;
-    
-        
+    private String wkt;
+
     /** Creates a new instance of Feature */
     public Feature() {
+        this.logger = Logger.getLogger(this.getClass().getName());
         points = new Points();
         text = "";
     }
-    
+
     // Get and set methods
-    public boolean addPoint (Point p)        { 
-        if (points==null) points = new Points();
+    public boolean addPoint(Point p) {
+        if (points == null) {
+            points = new Points();
+        }
         return points.add(p);
     }
-    public void setPoints(Points points_) { points = points_;}
-    public void setText(String text_)        { text = text_;}
-    
-    public Points getPointsList()         { return points; }
-    public String getText()                  { return text;}
-    
+
+    public void setPoints(Points points_) {
+        points = points_;
+    }
+
+    public void setText(String text_) {
+        text = text_;
+    }
+
+    public Points getPointsList() {
+        return points;
+    }
+
+    public String getText() {
+        return text;
+    }
+
     /** Loads data from file
      * and fill Object parameters with.
      * @param br BufferReader containing file data to read
@@ -54,41 +70,51 @@ public class Feature extends MapServerObject  implements java.io.Serializable {
         try {
             String[] tokens;
             String line;
-            
+
             while ((line = br.readLine()) != null) {
-                
+
                 // Looking for the first util line
-                while ((line.trim().length()==0)||(line.trim().startsWith("#"))||(line.trim().startsWith("%"))) {
+                while ((line.trim().length() == 0) || (line.trim().startsWith("#")) || (line.trim().startsWith("%"))) {
                     line = br.readLine();
                 }
                 tokens = ConversionUtilities.tokenize(line.trim());
                 if (tokens[0].equalsIgnoreCase("TEXT")) {
-                    if (tokens.length<2) return false;
+                    if (tokens.length < 2) {
+                        MapServerObject.setErrorMessage("Feature.load: Invalid syntax for TEXT: " + line);
+                        return false;
+                    }
                     this.text = ConversionUtilities.getValueFromMapfileLine(line);
-                }
-                else if (tokens[0].equalsIgnoreCase("POINTS")) {
+                } else if (tokens[0].equalsIgnoreCase("POINTS")) {
                     points = new Points();
-                    result = points.load(tokens,br);
-                }
-                else if (tokens[0].equalsIgnoreCase("END")) {
-                    return true ;
-                }
-                else {
+                    result = points.load(tokens, br);
+                    if (!result) {
+                        MapServerObject.setErrorMessage("Class.load: cannot load POINTS object");
+                    }
+                } else if (tokens[0].equalsIgnoreCase("WKT")) {
+                    if (tokens.length < 2) {
+                        MapServerObject.setErrorMessage("Feature.load: Invalid syntax for WKT: " + line);
+                        return false;
+                    }
+                    wkt = ConversionUtilities.getValueFromMapfileLine(line);
+                } else if (tokens[0].equalsIgnoreCase("END")) {
+                    return true;
+                } else {
                     return false;
                 }
-                
+
                 // Stop parse file if error detected
-                if (!result) return false;
+                if (!result) {
+                    return false;
+                }
             }
         } catch (Exception e) { // Bad coding, but works...
-            System.out.println(".load(). Exception: " +  e.getMessage());
-            e.printStackTrace();
+            logger.warning(".load(). Exception: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
         return result;
     }
-    
+
     /** Saves data to file
      * using Object parameters with mapFile format.
      * @param bw BufferWriter containing file data to write
@@ -99,8 +125,15 @@ public class Feature extends MapServerObject  implements java.io.Serializable {
         boolean result = true;
         try {
             bw.write("\t feature\n");
-            if (text!=null)             bw.write("\t\t text "+text+"\n");
-            if (points!=null)           points.saveAsMapFile(bw);
+            if (text != null) {
+                bw.write("\t\t text " + text + "\n");
+            }
+            if (points != null) {
+                points.saveAsMapFile(bw);
+            }
+            if (wkt != null) {
+                bw.write("\t\t wkt " + wkt + "\n");
+            }
             bw.write("\t end\n");
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -108,9 +141,21 @@ public class Feature extends MapServerObject  implements java.io.Serializable {
         }
         return result;
     }
-    
+
     public String toString() {
         return "Not yet implemented";
+    }
+
+    public Points getPoints() {
+        return points;
+    }
+
+    public String getWkt() {
+        return wkt;
+    }
+
+    public void setWkt(String wkt) {
+        this.wkt = wkt;
     }
 }
 

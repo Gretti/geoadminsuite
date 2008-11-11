@@ -3,15 +3,14 @@
  *
  * Created on 20 mars 2002, 18:38
  */
-
 package org.geogurus.mapserver.objects;
 
-import java.net.URL;
-import java.io.File;
-import java.util.Vector;
 import java.io.BufferedReader;
-import org.geogurus.tools.string.ConversionUtilities;
+import java.io.File;
+import java.net.URL;
+import java.util.logging.Logger;
 
+import org.geogurus.tools.string.ConversionUtilities;
 
 /**
  * Defines how a web interface will operate.
@@ -19,9 +18,8 @@ import org.geogurus.tools.string.ConversionUtilities;
  *
  * @authorBastien VIALADE
  */
-public class Web extends MapServerObject  implements java.io.Serializable {
-    
-    
+public class Web extends MapServerObject implements java.io.Serializable {
+
     /** URL to forward users to if a query fails.
      * If not defined the value for ERROR is used */
     private String empty;
@@ -73,61 +71,137 @@ public class Web extends MapServerObject  implements java.io.Serializable {
     /** Template file or URL to use in presenting the results
      * to the user in an interactive mode (i.e. map generates map and so on ... ) */
     private String template;
-    
+
     /** Empty constructor */
     public Web() {
         this(null, null, null, null, null, null, null, -1.0, -1.0, null, null, null, null);
     }
-    
+
     /** Creates a new instance of Web */
     public Web(String empty_, URL error_, File footer_, File header_, File imagePath_, String imageURL_,
-    File log_, double maxScale_, double minScale_, String maxTemplate_,
-    String minTemplate_, MetaData metadata_, String template_) {
-        empty       = empty_;
-        error       = error_;
-        footer      = footer_;
-        header      = header;
-        imagePath   = imagePath_;
-        imageURL    = imageURL_;
-        log         = log_;
-        maxScale    = maxScale_;
+            File log_, double maxScale_, double minScale_, String maxTemplate_,
+            String minTemplate_, MetaData metadata_, String template_) {
+        this.logger = Logger.getLogger(this.getClass().getName());
+        empty = empty_;
+        error = error_;
+        footer = footer_;
+        header = header_;
+        imagePath = imagePath_;
+        imageURL = imageURL_;
+        log = log_;
+        maxScale = maxScale_;
         maxTemplate = maxTemplate_;
-        metadata    = metadata_;
-        minScale    = minScale_;
+        metadata = metadata_;
+        minScale = minScale_;
         minTemplate = minTemplate_;
-        template    = template_;
+        template = template_;
     }
-    
+
     // Set and get methods
-    public void setEmpty(String empty_)             {empty = empty_;}
-    public void setError(URL error_)                {error = error_;}
-    public void setFooter(File footer_)             {footer = footer_;}
-    public void setHeader(File header_)             {header = header;}
-    public void setImagePath(File imagePath_)       {imagePath = imagePath_;}
-    public void setImageURL(String imageURL_)       {imageURL = imageURL_;}
-    public void setLog(File log_)                   {log = log_;}
-    public void setMaxScale(double maxScale_)       {maxScale = maxScale_;}
-    public void setMaxTemplate(String maxTemplate_) {maxTemplate = maxTemplate_;}
-    public void setMinScale(double minScale_)       {minScale = minScale_;}
-    public void setMinTemplate(String minTemplate_) {minTemplate = minTemplate_;}
-    public void setTemplate(String template_)       {template = template_;}
-    public void setMetaData(MetaData metadata_)     {metadata = metadata_;}
-    
-    public String getEmpty()        {return empty;}
-    public URL getError()           {return error;}
-    public File getFooter()         {return footer;}
-    public File getHeader()         {return header;}
-    public File getImagePath()      {return imagePath;}
-    public String getImageURL()     {return imageURL;}
-    public File getLog()            {return log ;}
-    public double getMaxScale()     {return maxScale;}
-    public String getMaxTemplate()  {return maxTemplate;}
-    public MetaData getMetaData(){return metadata;}
-    public double getMinScale()     {return minScale;}
-    public String getMinTemplate()  {return minTemplate;}
-    public String getTemplate()     {return template;}
-    
-    
+    public void setEmpty(String empty_) {
+        empty = empty_;
+    }
+
+    public void setError(URL error_) {
+        error = error_;
+    }
+
+    public void setFooter(File footer_) {
+        footer = footer_;
+    }
+
+    public void setHeader(File header_) {
+        header = header_;
+    }
+
+    public void setImagePath(File imagePath_) {
+        imagePath = imagePath_;
+    }
+
+    public void setImageURL(String imageURL_) {
+        imageURL = imageURL_;
+    }
+
+    public void setLog(File log_) {
+        log = log_;
+    }
+
+    public void setMaxScale(double maxScale_) {
+        maxScale = maxScale_;
+    }
+
+    public void setMaxTemplate(String maxTemplate_) {
+        maxTemplate = maxTemplate_;
+    }
+
+    public void setMinScale(double minScale_) {
+        minScale = minScale_;
+    }
+
+    public void setMinTemplate(String minTemplate_) {
+        minTemplate = minTemplate_;
+    }
+
+    public void setTemplate(String template_) {
+        template = template_;
+    }
+
+    public void setMetaData(MetaData metadata_) {
+        metadata = metadata_;
+    }
+
+    public String getEmpty() {
+        return empty;
+    }
+
+    public URL getError() {
+        return error;
+    }
+
+    public File getFooter() {
+        return footer;
+    }
+
+    public File getHeader() {
+        return header;
+    }
+
+    public File getImagePath() {
+        return imagePath;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public File getLog() {
+        return log;
+    }
+
+    public double getMaxScale() {
+        return maxScale;
+    }
+
+    public String getMaxTemplate() {
+        return maxTemplate;
+    }
+
+    public MetaData getMetaData() {
+        return metadata;
+    }
+
+    public double getMinScale() {
+        return minScale;
+    }
+
+    public String getMinTemplate() {
+        return minTemplate;
+    }
+
+    public String getTemplate() {
+        return template;
+    }
+
     /** Loads data from file
      * and fill Object parameters with.
      * @param br BufferReader containing file data to read
@@ -138,73 +212,116 @@ public class Web extends MapServerObject  implements java.io.Serializable {
         try {
             String[] tokens;
             String line;
-            
+
             while ((line = br.readLine()) != null) {
-                
+
                 // Looking for the first util line
-                while ((line.trim().length()==0)||(line.trim().startsWith("#"))||(line.trim().startsWith("%"))) {
+                while ((line.trim().length() == 0) || (line.trim().startsWith("#")) || (line.trim().startsWith("%"))) {
                     line = br.readLine();
                 }
-                
+
                 tokens = ConversionUtilities.tokenize(line.trim());
                 if (tokens[0].equalsIgnoreCase("IMAGEPATH")) {
-                    if (tokens.length<2) return false;
+                    if (tokens.length < 2) {
+                        MapServerObject.setErrorMessage("Web.load: Invalid value for IMAGEPATH: " + line);
+                        return false;
+                    }
                     String imagePathString = ConversionUtilities.getValueFromMapfileLine(line);
                     imagePath = new File(imagePathString);
                 } else if (tokens[0].equalsIgnoreCase("EMPTY")) {
-                    if (tokens.length<2) return false;
+                    if (tokens.length < 2) {
+                        MapServerObject.setErrorMessage("Web.load: Invalid value for EMPTY: " + line);
+                        return false;
+                    }
                     empty = ConversionUtilities.getValueFromMapfileLine(line);
                 } else if (tokens[0].equalsIgnoreCase("ERROR")) {
-                    if (tokens.length<2) return false;
+                    if (tokens.length < 2) {
+                        MapServerObject.setErrorMessage("Web.load: Invalid value for ERROR: " + line);
+                        return false;
+                    }
                     error = new URL(ConversionUtilities.getValueFromMapfileLine(line));
                 } else if (tokens[0].equalsIgnoreCase("FOOTER")) {
-                    if (tokens.length<2) return false;
+                    if (tokens.length < 2) {
+                        MapServerObject.setErrorMessage("Web.load: Invalid value for FOOTER: " + line);
+                        return false;
+                    }
                     footer = new File(ConversionUtilities.getValueFromMapfileLine(line));
                 } else if (tokens[0].equalsIgnoreCase("HEADER")) {
-                    if (tokens.length<2) return false;
+                    if (tokens.length < 2) {
+                        MapServerObject.setErrorMessage("Web.load: Invalid value for HEADER: " + line);
+                        return false;
+                    }
                     header = new File(ConversionUtilities.getValueFromMapfileLine(line));
                 } else if (tokens[0].equalsIgnoreCase("LOG")) {
-                    if (tokens.length<2) return false;
+                    if (tokens.length < 2) {
+                        MapServerObject.setErrorMessage("Web.load: Invalid value for LOG: " + line);
+                        return false;
+                    }
                     log = new File(ConversionUtilities.getValueFromMapfileLine(line));
                 } else if (tokens[0].equalsIgnoreCase("MAXSCALE")) {
-                    if (tokens.length<2) return false;
+                    if (tokens.length < 2) {
+                        MapServerObject.setErrorMessage("Web.load: Invalid value for MAXSCALE: " + line);
+                        return false;
+                    }
                     maxScale = new Double(tokens[1]).doubleValue();
                 } else if (tokens[0].equalsIgnoreCase("MINSCALE")) {
-                    if (tokens.length<2) return false;
+                    if (tokens.length < 2) {
+                        MapServerObject.setErrorMessage("Web.load: Invalid value for MINSCALE: " + line);
+                        return false;
+                    }
                     minScale = new Double(tokens[1]).doubleValue();
                 } else if (tokens[0].equalsIgnoreCase("IMAGEURL")) {
-                    if (tokens.length<2) return false;
+                    if (tokens.length < 2) {
+                        MapServerObject.setErrorMessage("Web.load: Invalid value for IMAGEURL: " + line);
+                        return false;
+                    }
                     imageURL = ConversionUtilities.getValueFromMapfileLine(line);
                 } else if (tokens[0].equalsIgnoreCase("TEMPLATE")) {
-                    if (tokens.length<2) return false;
+                    if (tokens.length < 2) {
+                        MapServerObject.setErrorMessage("Web.load: Invalid value for TEMPLATE: " + line);
+                        return false;
+                    }
                     template = ConversionUtilities.getValueFromMapfileLine(line);
                 } else if (tokens[0].equalsIgnoreCase("MAXTEMPLATE")) {
-                    if (tokens.length<2) return false;
+                    if (tokens.length < 2) {
+                        MapServerObject.setErrorMessage("Web.load: Invalid value for MAXTEMPLATE: " + line);
+                        return false;
+                    }
                     maxTemplate = ConversionUtilities.getValueFromMapfileLine(line);
                 } else if (tokens[0].equalsIgnoreCase("MINTEMPLATE")) {
-                    if (tokens.length<2) return false;
+                    if (tokens.length < 2) {
+                        MapServerObject.setErrorMessage("Web.load: Invalid value for MINTEMPLATE: " + line);
+                        return false;
+                    }
                     minTemplate = ConversionUtilities.getValueFromMapfileLine(line);
                 } else if (tokens[0].equalsIgnoreCase("METADATA")) {
                     if (metadata == null) {
                         metadata = new MetaData();
                     }
                     result = metadata.load(br);
+                    if (!result) {
+                        MapServerObject.setErrorMessage("Web.load: cannot load METADATA object");
+                    }
                 } else if (tokens[0].equalsIgnoreCase("END")) {
-                    return true ;
-                } else return false;
-                
+                    return true;
+                } else {
+                    MapServerObject.setErrorMessage("Web.load: unknown token: " + line);
+                    return false;
+                }
+
                 // Stop parse file if error detected
-                if (!result) return false;
+                if (!result) {
+                    return false;
+                }
             }
         } catch (Exception e) {
-            System.out.println("Web.load. Exception: " +  e.getMessage());
+            logger.warning("Web.load. Exception: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
         return result;
     }
-    
-    
+
     /**  Saves WEB object to the given BufferedWriter
      * with MapFile style.
      */
@@ -212,29 +329,54 @@ public class Web extends MapServerObject  implements java.io.Serializable {
         boolean result = true;
         try {
             bw.write("\t web\n");
-            if (imagePath!=null)            bw.write("\t\t imagepath "+'"'+imagePath.getPath().replace('\\','/')+'/'+'"'+"\n");
-            if (imageURL!=null)             bw.write("\t\t imageURL "+'"'+imageURL+'"'+"\n");
-            if (template!=null)             bw.write("\t\t template "+'"'+template+'"'+"\n");
-            if (minTemplate!=null)          bw.write("\t\t mintemplate "+'"'+minTemplate+'"'+"\n");
-            if (maxTemplate!=null)          bw.write("\t\t maxtemplate "+'"'+maxTemplate+'"'+"\n");
-            if (empty!=null)                bw.write("\t\t empty "+'"'+empty+'"'+"\n");
-            if (error!=null)                bw.write("\t\t error "+'"'+error.toString()+'"'+"\n");
-            if (footer!=null)               bw.write("\t\t footer "+'"'+footer.getPath().replace('\\','/')+'/'+'"'+"\n");
-            if (header!=null)               bw.write("\t\t header "+'"'+header.getPath().replace('\\','/')+'/'+'"'+"\n");
-            if (log!=null)                  bw.write("\t\t log "+'"'+log.getPath().replace('\\','/')+'/'+'"'+"\n");
-            if (maxScale>0)                 bw.write("\t\t maxscale "+maxScale+"\n");
-            if (minScale>0)                 bw.write("\t\t minscale "+minScale+"\n");
-            if (metadata != null) result = metadata.saveAsMapFile(bw);
+            if (imagePath != null) {
+                bw.write("\t\t imagepath " + '"' + imagePath.getPath().replace('\\', '/') + '/' + '"' + "\n");
+            }
+            if (imageURL != null) {
+                bw.write("\t\t imageURL " + '"' + imageURL + '"' + "\n");
+            }
+            if (template != null) {
+                bw.write("\t\t template " + '"' + template + '"' + "\n");
+            }
+            if (minTemplate != null) {
+                bw.write("\t\t mintemplate " + '"' + minTemplate + '"' + "\n");
+            }
+            if (maxTemplate != null) {
+                bw.write("\t\t maxtemplate " + '"' + maxTemplate + '"' + "\n");
+            }
+            if (empty != null) {
+                bw.write("\t\t empty " + '"' + empty + '"' + "\n");
+            }
+            if (error != null) {
+                bw.write("\t\t error " + '"' + error.toString() + '"' + "\n");
+            }
+            if (footer != null) {
+                bw.write("\t\t footer " + '"' + footer.getPath().replace('\\', '/') + '/' + '"' + "\n");
+            }
+            if (header != null) {
+                bw.write("\t\t header " + '"' + header.getPath().replace('\\', '/') + '/' + '"' + "\n");
+            }
+            if (log != null) {
+                bw.write("\t\t log " + '"' + log.getPath().replace('\\', '/') + '/' + '"' + "\n");
+            }
+            if (maxScale > 0) {
+                bw.write("\t\t maxscale " + maxScale + "\n");
+            }
+            if (minScale > 0) {
+                bw.write("\t\t minscale " + minScale + "\n");
+            }
+            if (metadata != null) {
+                result = metadata.saveAsMapFile(bw);
+            }
             bw.write("\t\t end\n");
-            
+
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
         }
         return result;
     }
-    
-    
+
     /** Returns a string representation of the WEB Object
      * @return a string representation of the WEB Object.
      */
@@ -242,22 +384,20 @@ public class Web extends MapServerObject  implements java.io.Serializable {
         StringBuffer buffer = new StringBuffer();
         try {
             buffer.append("WEB OBJECT ");
-            if (imagePath!=null)
+            if (imagePath != null) {
                 buffer.append("\n* WEB imagePath          = ").append(imagePath.getPath());
-            if (imageURL!=null)
+            }
+            if (imageURL != null) {
                 buffer.append("\n* WEB imageURL           = ").append(imageURL);
-            if (template!=null)
+            }
+            if (template != null) {
                 buffer.append("\n* WEB template           = ").append(template);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
-            return "CAN'T DISPLAY WEB OBJECT\n\n"+ex;
+            return "CAN'T DISPLAY WEB OBJECT\n\n" + ex;
         }
         return buffer.toString();
     }
-    
-    
-    
-    
-    
 }
 

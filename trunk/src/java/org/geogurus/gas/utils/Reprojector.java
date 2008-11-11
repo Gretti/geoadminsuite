@@ -10,18 +10,42 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import org.geogurus.Extent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.geogurus.data.Extent;
 import org.geogurus.mapserver.objects.Projection;
-import org.geogurus.tools.sql.ConPool;
+import org.geogurus.tools.sql.ConPool2;
+import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.referencing.ReferencingFactoryFinder;
+import org.opengis.geometry.DirectPosition;
+import org.opengis.geometry.MismatchedDimensionException;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.CoordinateOperation;
+import org.opengis.referencing.operation.CoordinateOperationFactory;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
 
 /**
  *
  * @author gnguessan
+ * Utils for reprojecting data
  */
 public class Reprojector {
 
-    public static Extent returnBBox(Projection projRef, Hashtable hExtents, String host, String port, String db, String user, String pwd) 
-            throws SQLException {
+    /**
+     * Reproject given extents from original projection to destination projection using postgis specified database
+     * @param projRef
+     * @param hExtents : Hashtable<Projection,Extent>
+     * @param host
+     * @param port
+     * @param db
+     * @param user
+     * @param pwd
+     * @return Extent calculated from given data
+     */
+    public static Extent returnBBox(Projection projRef, Hashtable hExtents, String host, String port, String db, String user, String pwd) {
         Extent extent = null;
         Connection con = null;
         Statement stmt = null;
@@ -59,10 +83,12 @@ public class Reprojector {
                 sb.append(" ymax(transform(setSRID('BOX(" + strExtent + ")'::box2d, " + epsg + ")," + refEpsg + ")) as ymax");
             }
         }
-        
+
         try {
             //Connects to GAS db
-            con = ConPool.getConnection(host, port, db, user, pwd, ConPool.DBTYPE_POSTGRES);
+            ConPool2 conPool = ConPool2.getInstance();
+            con = conPool.getConnection(
+                    conPool.getConnectionURI(host, port, db, user, pwd, ConPool2.DBTYPE_POSTGRES));
             stmt = con.createStatement();
 
             rs = stmt.executeQuery(sb.toString());
@@ -76,19 +102,99 @@ public class Reprojector {
             }
 
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            Logger.getLogger(Reprojector.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (con != null) {
-                con.close();
+                try {
+                    con.close();
+                } catch (SQLException ex) {
+                }
             }
             if (stmt != null) {
-                stmt.close();
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                }
             }
             if (rs != null) {
-                rs.close();
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                }
             }
+            return extent;
         }
 
+    }
+
+    /**
+     * Reproject given extents from original projection to destination projection using geotools
+     * @param projRef
+     * @param hExtents : Hashtable<Projection,Extent>
+     * @param host
+     * @param port
+     * @param db
+     * @param user
+     * @param pwd
+     * @return Extent calculated from given data
+     */
+    public static Extent returnBBox(Projection projRef, Hashtable hExtents) {
+        Extent extent = null;
+        String refParam = (String) projRef.getAttributes().get(0);
+        String refEpsg = refParam.substring(refParam.lastIndexOf(":") + 1, refParam.lastIndexOf("\""));
+        CoordinateOperationFactory coFactory = ReferencingFactoryFinder.getCoordinateOperationFactory(null);
+        CoordinateReferenceSystem crsSrc;
+        CoordinateOperation op;
+        Extent curEx;
+        try {
+
+            CoordinateReferenceSystem crsDest = ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null).createCoordinateReferenceSystem(refEpsg);
+            
+            MathTransform trans;
+            String param;
+            String epsg;
+            
+            for (Enumeration e = hExtents.keys(); e.hasMoreElements();) {
+                Projection p = (Projection) e.nextElement();
+                param = (String) p.getAttributes().get(0);
+                epsg = param.substring(param.lastIndexOf(":") + 1, param.lastIndexOf("\""));
+
+                curEx = (Extent) hExtents.get(p);
+                if (p == projRef) {
+                    //Adds extent to map extent
+                    if (extent == null) {
+                        extent = (Extent) hExtents.get(p);
+                    } else {
+                        extent.add(curEx);
+                    }
+                } else {
+                    //calculates reprojected extent before adding to map extent
+                    crsSrc = ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null).createCoordinateReferenceSystem(epsg);
+                    op = coFactory.createOperation(crsSrc, crsDest);
+                    trans = op.getMathTransform();
+
+                    // transform given coordinatespoints
+                    DirectPosition ll = new GeneralDirectPosition(curEx.ll.x, curEx.ll.y);
+                    DirectPosition ur = new GeneralDirectPosition(curEx.ur.x, curEx.ur.y);
+
+                    ll = trans.transform(ll, null);
+                    ur = trans.transform(ur, null);
+
+                    if (extent == null) {
+                        extent = new Extent(ll.getOrdinate(0), ll.getOrdinate(1), ur.getOrdinate(0), ur.getOrdinate(1));
+                    } else {
+                        extent.add(ll.getOrdinate(0), ll.getOrdinate(1), ur.getOrdinate(0), ur.getOrdinate(1));
+                    }
+                }
+            }
+
+        } catch (MismatchedDimensionException ex) {
+            Logger.getLogger(Reprojector.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TransformException ex) {
+            Logger.getLogger(Reprojector.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (FactoryException ex) {
+            Logger.getLogger(Reprojector.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return extent;
     }
 }

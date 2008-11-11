@@ -6,7 +6,6 @@
 
 package org.geogurus.tools.string;
 
-import java.util.*;
 
 
 /**

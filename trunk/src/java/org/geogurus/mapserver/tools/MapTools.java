@@ -5,17 +5,14 @@
  */
 package org.geogurus.mapserver.tools;
 
-import java.io.*;
-import java.util.*;
-import org.geogurus.mapserver.objects.Symbol;
-import org.geogurus.tools.string.ConversionUtilities;
+import java.io.File;
 
 /**
  *
  * @author  gng
  */
 public class MapTools {
-
+    
     public static File buildFileFromMapPath(String mapFilePath, String shapePath, String dataName) {
         //mapFilePath shall not be null
         if (mapFilePath == null || dataName == null) {
@@ -49,50 +46,6 @@ public class MapTools {
 
         //creates the file to be returned
         return new File(dataName);
-    }
-
-    public static Hashtable makeHashtableFromArrayList(ArrayList symbols) {
-        Hashtable hashSym = new Hashtable();
-        Symbol s;
-        for (int i = 0; i < symbols.size(); i++) {
-            s = (Symbol) symbols.get(i);
-            hashSym.put(s.getName(), s);
-        }
-        return hashSym;
-    }
-
-    public static ArrayList getSymbolsFromSym(File symFile) {
-        ArrayList symArray = new ArrayList();
-        Symbol s = null;
-        boolean done;
-        try {
-            java.io.BufferedReader br = new java.io.BufferedReader(new java.io.FileReader(symFile));
-            String line = null;
-            // Looking for the first util line
-            while ((line = br.readLine()) != null) {
-                while ((line.trim().equals("")) || (line.trim().startsWith("#"))) {
-                    line = br.readLine();
-                }
-                // Gets array of words of the line
-                String[] tokens = ConversionUtilities.tokenize(line.trim());
-                if (tokens.length > 1) {
-                    return null;
-                }
-                if (tokens[0].equalsIgnoreCase("SYMBOL")) {
-                    s = new Symbol();
-                    done = s.load(br);
-                    if (done) {
-                        symArray.add(s);
-                    }
-                }
-            }
-            br.close();
-        } catch (Exception e) {
-            System.err.println("MapTools.getSymbolsFromSym: Exception when opening file " + symFile.getPath() + " : " + e.getMessage());
-            e.printStackTrace();
-            return null;
-        }
-        return symArray;
     }
 
     public static boolean isRelativePath(String path, boolean isUnix) {

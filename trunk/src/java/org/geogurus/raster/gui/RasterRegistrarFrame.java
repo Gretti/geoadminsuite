@@ -19,16 +19,11 @@
 package org.geogurus.raster.gui;
 
 
-import java.net.URL ;
-
-
-import javax.swing.*;
-
-
-import java.awt.*;
-
-
 import java.util.ResourceBundle;
+
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
 import org.geogurus.raster.RasterRegistrar;
 
 
@@ -401,7 +396,7 @@ public class RasterRegistrarFrame extends javax.swing.JFrame {
     private void contentAction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contentAction
 
 
-        rasterRegistrarHelp.show() ;
+        rasterRegistrarHelp.setVisible(true); ;
 
 
     }//GEN-LAST:event_contentAction
@@ -530,7 +525,7 @@ public class RasterRegistrarFrame extends javax.swing.JFrame {
         frame.pack() ;
 
 
-        frame.show() ;
+        frame.setVisible(true); ;
 
 
     }

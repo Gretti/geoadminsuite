@@ -7,14 +7,15 @@ package org.geogurus.gas.actions;
 import java.io.BufferedReader;
 import java.io.StringReader;
 import java.util.Iterator;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import javax.servlet.http.HttpSession;
+
 import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionForward;
-import org.geogurus.GeometryClass;
+import org.apache.struts.action.ActionMapping;
+import org.geogurus.data.DataAccess;
 import org.geogurus.gas.managers.UserMapBeanManager;
 import org.geogurus.gas.objects.UserMapBean;
 import org.geogurus.gas.utils.ObjectKeys;
@@ -73,7 +74,7 @@ public class SubmitMapfileAction extends org.apache.struts.action.Action {
                 //FIXME : in case of new layer declared or order modification, should map changes
                 for (Iterator it = newMap.getLayers().iterator(); it.hasNext();) {
                     Layer l = (Layer) it.next();
-                    GeometryClass gc = umb.getUserLayerByName(l.getName());
+                    DataAccess gc = umb.getUserLayerByName(l.getName());
                     if (gc != null) {
                         gc.setMSLayer(l);
                     }

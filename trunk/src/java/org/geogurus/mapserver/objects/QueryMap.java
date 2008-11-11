@@ -3,9 +3,11 @@
  *
  * Created on 20 mars 2002, 16:36
  */
-
 package org.geogurus.mapserver.objects;
+
 import java.awt.Dimension;
+import java.util.logging.Logger;
+
 import org.geogurus.tools.string.ConversionUtilities;
 
 /**
@@ -14,15 +16,14 @@ import org.geogurus.tools.string.ConversionUtilities;
  *
  * @author  Bastien VIALADE
  */
-public class QueryMap extends MapServerObject  implements java.io.Serializable {
+public class QueryMap extends MapServerObject implements java.io.Serializable {
     // Constants for status
-    public static final byte ON     = 0;
-    public static final byte OFF    = 1;
+    public static final byte ON = 0;
+    public static final byte OFF = 1;
     // Constants for style
-    public static final byte NORMAL     = 0;
-    public static final byte HILITE     = 1;
-    public static final byte SELECTED   = 2;
-    
+    public static final byte NORMAL = 0;
+    public static final byte HILITE = 1;
+    public static final byte SELECTED = 2;
     /** Color in which features are highlighted. Default is yellow. */
     private RGB color;
     /** Size of the map in pixels.
@@ -36,33 +37,54 @@ public class QueryMap extends MapServerObject  implements java.io.Serializable {
      * Hilite: Draws selected features using COLOR. Non-selected features are drawn normally.
      * Selected: draws only the selected features normally. */
     private byte style;
-    
-    
+
     /** Empty constructor */
     public QueryMap() {
         this(null, QueryMap.ON, QueryMap.HILITE);
     }
-    
+
     /** Creates a new instance of QueryMap */
     public QueryMap(Dimension size_, byte status_, byte style) {
-        color = new RGB(255,255,0);
-        size = size_;
-        status = status_;
-        style = style;
+        this.logger = Logger.getLogger(this.getClass().getName());
+        this.color = new RGB(255, 255, 0);
+        this.size = size_;
+        this.status = status_;
+        this.style = style;
     }
-    
+
     // Get and set methods
-    public void setColor(RGB color_)        {color = color_;}
-    public void setSize(Dimension size_)    {size = size_;}
-    public void setStatus(byte status_)     {status = status_;}
-    public void setStyle(byte style_)       {style = style_;}
-    
-    
-    public RGB getColor()       {return color;}
-    public Dimension getSize()  {return size;}
-    public byte getStatus()     {return status;}
-    public byte getStyle()      {return style;}
-    
+    public void setColor(RGB color_) {
+        color = color_;
+    }
+
+    public void setSize(Dimension size_) {
+        size = size_;
+    }
+
+    public void setStatus(byte status_) {
+        status = status_;
+    }
+
+    public void setStyle(byte style_) {
+        style = style_;
+    }
+
+    public RGB getColor() {
+        return color;
+    }
+
+    public Dimension getSize() {
+        return size;
+    }
+
+    public byte getStatus() {
+        return status;
+    }
+
+    public byte getStyle() {
+        return style;
+    }
+
     /** Loads data from file
      * and fill Object parameters with.
      * @param br BufferReader containing file data to read
@@ -73,58 +95,78 @@ public class QueryMap extends MapServerObject  implements java.io.Serializable {
         try {
             String[] tokens;
             String line;
-            
+
             while ((line = br.readLine()) != null) {
-                
+
                 // Looking for the first util line
-                while ((line.trim().length()==0)||(line.trim().startsWith("#"))||(line.trim().startsWith("%"))) {
+                while ((line.trim().length() == 0) || (line.trim().startsWith("#")) || (line.trim().startsWith("%"))) {
                     line = br.readLine();
                 }
                 tokens = ConversionUtilities.tokenize(line.trim());
                 if (tokens[0].equalsIgnoreCase("COLOR")) {
                     color = new RGB();
                     result = color.load(tokens);
-                }
-                else if (tokens[0].equalsIgnoreCase("SIZE")) {
-                    if (tokens.length<3) return false;
+                    if (!result) {
+                        MapServerObject.setErrorMessage("QueryMap.load: cannot load COLOR object");
+                    }
+                } else if (tokens[0].equalsIgnoreCase("SIZE")) {
+                    if (tokens.length < 3) {
+                        MapServerObject.setErrorMessage("QueryMap.load: Invalid syntax for SIZE: " + line);
+                        return false;
+                    }
                     size = new Dimension();
                     size.width = Integer.parseInt(ConversionUtilities.removeDoubleQuotes(tokens[1]));
                     size.height = Integer.parseInt(ConversionUtilities.removeDoubleQuotes(tokens[2]));
-                }
-                else if (tokens[0].equalsIgnoreCase("STATUS")) {
-                    if (tokens.length<2) return false;
+                } else if (tokens[0].equalsIgnoreCase("STATUS")) {
+                    if (tokens.length < 2) {
+                        MapServerObject.setErrorMessage("QueryMap.load: Invalid syntax for STATUS: " + line);
+                        return false;
+                    }
                     tokens[1] = ConversionUtilities.removeDoubleQuotes(tokens[1]);
-                    if (tokens[1].equalsIgnoreCase("ON")) status = this.ON;
-                    else if (tokens[1].equalsIgnoreCase("OFF")) status = this.OFF;
-                    else return false;
-                }
-                else if (tokens[0].equalsIgnoreCase("STYLE")) {
-                    if (tokens.length<2) return false;
+                    if (tokens[1].equalsIgnoreCase("ON")) {
+                        status = QueryMap.ON;
+                    } else if (tokens[1].equalsIgnoreCase("OFF")) {
+                        status = QueryMap.OFF;
+                    } else {
+                        MapServerObject.setErrorMessage("QueryMap.load: Invalid value for STATUS: " + line);
+                        return false;
+                    }
+                } else if (tokens[0].equalsIgnoreCase("STYLE")) {
+                    if (tokens.length < 2) {
+                        MapServerObject.setErrorMessage("QueryMap.load: Invalid syntax for STYLE: " + line);
+                        return false;
+                    }
                     tokens[1] = ConversionUtilities.removeDoubleQuotes(tokens[1]);
-                    if (tokens[1].equalsIgnoreCase("NORMAL")) style = this.NORMAL;
-                    else if (tokens[1].equalsIgnoreCase("HILITE")) style = this.HILITE;
-                    else if (tokens[1].equalsIgnoreCase("SELECTED")) style = this.SELECTED;
-                    else return false;
-                }
-                else if (tokens[0].equalsIgnoreCase("END")) {
-                    return true ;
-                }
-                else {
+                    if (tokens[1].equalsIgnoreCase("NORMAL")) {
+                        style = QueryMap.NORMAL;
+                    } else if (tokens[1].equalsIgnoreCase("HILITE")) {
+                        style = QueryMap.HILITE;
+                    } else if (tokens[1].equalsIgnoreCase("SELECTED")) {
+                        style = QueryMap.SELECTED;
+                    } else {
+                        MapServerObject.setErrorMessage("QueryMap.load: Invalid value for STYLE: " + line);
+                        return false;
+                    }
+                } else if (tokens[0].equalsIgnoreCase("END")) {
+                    return true;
+                } else {
+                    MapServerObject.setErrorMessage("QueryMap.load: unknown token: " + line);
                     return false;
                 }
-                
+
                 // Stop parse file if error detected
-                if (!result) return false;
+                if (!result) {
+                    return false;
+                }
             }
-        } catch (Exception e) { // Bad coding, but works...
-            System.out.println("QueryMap.load(). Exception: " +  e.getMessage());
-            e.printStackTrace();
+        } catch (Exception e) { 
+            logger.warning("QueryMap.load(). Exception: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
         return result;
     }
-    
+
     /** Saves data to file
      * using Object parameters with mapFile format.
      * @param bw BufferWriter containing file data to write
@@ -135,7 +177,7 @@ public class QueryMap extends MapServerObject  implements java.io.Serializable {
         boolean result = true;
         try {
             bw.write("\t\t querymap\n");
-            if (color!=null) {
+            if (color != null) {
                 bw.write("\t\t\t color ");
                 color.saveAsMapFile(bw);
             }
@@ -143,13 +185,23 @@ public class QueryMap extends MapServerObject  implements java.io.Serializable {
                 bw.write("\t\t\t size " + size.width + " " + size.height + "\n");
             }
             switch (status) {
-                case ON:              bw.write("\t\t\t status ON\n"); break;
-                case OFF:             bw.write("\t\t\t status OFF\n"); break;
+                case ON:
+                    bw.write("\t\t\t status ON\n");
+                    break;
+                case OFF:
+                    bw.write("\t\t\t status OFF\n");
+                    break;
             }
             switch (style) {
-                case NORMAL:              bw.write("\t\t\t style NORMAL\n"); break;
-                case HILITE:             bw.write("\t\t\t style HILITE\n"); break;
-                case SELECTED:             bw.write("\t\t\t style SELECTED\n"); break;
+                case NORMAL:
+                    bw.write("\t\t\t style NORMAL\n");
+                    break;
+                case HILITE:
+                    bw.write("\t\t\t style HILITE\n");
+                    break;
+                case SELECTED:
+                    bw.write("\t\t\t style SELECTED\n");
+                    break;
             }
             bw.write("\t\t end\n");
         } catch (Exception ex) {
@@ -157,9 +209,9 @@ public class QueryMap extends MapServerObject  implements java.io.Serializable {
             return false;
         }
         return result;
-        
+
     }
-    
+
     public String toString() {
         return "Not yet implemented";
     }

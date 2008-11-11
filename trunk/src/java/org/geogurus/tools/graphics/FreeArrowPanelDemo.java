@@ -5,8 +5,8 @@ package org.geogurus.tools.graphics;
  *
  * Created on 11 mars 2002, 10:12
  */
-import java.awt.*;
-import java.awt.image.*;
+import java.awt.Color;
+import java.awt.Point;
 /**
  * This class displays an rotrans an arrow
  * @author Bastien VIALADE  

@@ -6,7 +6,6 @@
 
 package org.geogurus.tools.graphics;
 import java.awt.Point;
-import java.awt.Polygon;
 
 /** A rotable polygon is a polygon with rotation methods
  * @author Bastien VIALADE

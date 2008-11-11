@@ -2,18 +2,22 @@ package org.geogurus.tools.raster;
 /**
  * Title:        ImageWriter
  * Description:  Write image to disk
- * Copyright:    Copyright (c) 2001
- * Company:      SCOT
  * @author       Jerome Gasperi, aka jrom
  * @version      1.0
  */
-import java.io.*;
-import java.util.*;
-import java.awt.*;
-import java.awt.image.*;
-import com.sun.media.jai.codec.*;
-import com.sun.media.jai.*;
-import javax.media.jai.*;
+import java.awt.image.RenderedImage;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
+import java.util.StringTokenizer;
+
+import javax.media.jai.JAI;
+import javax.media.jai.RenderedImageAdapter;
+
+import com.sun.media.jai.codec.JPEGEncodeParam;
+import com.sun.media.jai.codec.PNGEncodeParam;
+import com.sun.media.jai.codec.PNMEncodeParam;
+import com.sun.media.jai.codec.TIFFEncodeParam;
 public class ImageWriter {
     
     

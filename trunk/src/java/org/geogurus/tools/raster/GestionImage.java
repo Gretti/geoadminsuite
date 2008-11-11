@@ -1,9 +1,10 @@
 package org.geogurus.tools.raster;
 
 import java.awt.Image;
-import java.awt.image.*;
-import java.io.*;
 import java.awt.Toolkit;
+import java.awt.image.MemoryImageSource;
+import java.awt.image.PixelGrabber;
+
 import org.geogurus.tools.util.TabByte;
 
 public class GestionImage

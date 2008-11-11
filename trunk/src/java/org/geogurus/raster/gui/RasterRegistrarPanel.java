@@ -19,16 +19,14 @@
 package org.geogurus.raster.gui;
 
 
-import javax.swing.* ;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
 
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
-import java.io.File ;
-
-
-import java.util.*;
-
-
-import java.text.SimpleDateFormat ;
 import org.geogurus.raster.Attribute;
 import org.geogurus.raster.RasterRegistrar;
 

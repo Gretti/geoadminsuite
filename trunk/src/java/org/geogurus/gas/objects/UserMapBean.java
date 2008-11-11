@@ -12,8 +12,9 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 import java.util.Vector;
-import org.geogurus.Extent;
-import org.geogurus.GeometryClass;
+
+import org.geogurus.data.Datasource;
+import org.geogurus.data.DataAccess;
 import org.geogurus.mapserver.objects.SymbolSet;
 
 /**
@@ -25,9 +26,6 @@ import org.geogurus.mapserver.objects.SymbolSet;
  *
  * The MC_result_map.jsp page uses this bean to present a nice and useful map to the user.
  * Initialisation phase should construct the map, prepare kaboum applet code, etc...<p>
- *
- * This class is roughly equivalent to the com.scot.geonline.UserParameters, but simplified
- * for the geonline GAS context.<p>
  *
  * If several mapfiles are choosen in the catalog, this class will duplicate the first mapfile
  * and add to it all the layers of all other mapfiles.<br>
@@ -47,30 +45,29 @@ public class UserMapBean implements Serializable {
      */
     private org.geogurus.mapserver.objects.Map mapfile;
     /**
-     * The list of mapfiles for this user session.<br>
-     * this list is used when building the first map.
+     * The list of datasources (MAP type) for this user session.<br>
+     * this list is used when building the first map to use one of these map instead
+     * of a generated one.
      */
-    private Vector mapfiles;
+    private Vector<Datasource> mapfileDatasources;
     /** The list of all GeometryClass or Mapfiles choosen from the catalog. <br>
      * Indexed with the GeometryClass id. */
-    private Hashtable userLayerList;
-    /** The vector of GC identifiers used to maintain layer order in the application,
+    private Hashtable<String, DataAccess> userLayerList;
+    /** The vector of GC identifiers (String) used to maintain layer order in the application,
      * as Hashtable has no order */
-    private Vector userLayerOrder;
+    private Vector<String> userLayerOrder;
     /** the list of GeometryClass or mapfiles identifiers selected by the user from the catalog */
     private String[] userLayerChoice;
     /** the path where the mapfile is put */
     private String mapfilePath;
     /** the mapserver URL, read from the geonline.properties file */
     private String mapserverURL;
+    /** the mapfish print service URL, read from the geonline.properties file */
+    private String mapfishPrintURL;
     /** the general extent for all layers. */
     private String mapExtent;
-    /** same as above, but as Extent object: must change that for a clean extent management */
-    private Extent mExt;
     /** the URL of the working gif for kaboum applet, read from the geonline.properties file*/
     private String workingGif;
-    /** the client screen width and height */
-    private int screenWidth,  screenHeight;
     /** the kaboum width and height, derived from the mapfile dimensions */
     private int imgX;
     private int imgY;
@@ -97,13 +94,10 @@ public class UserMapBean implements Serializable {
      * => user mapfiles will be linked to a symbol file.
      */
     private SymbolSet userSymbolSet = null;
-    /** */
-    private boolean noPoint = true;
 
     /** Creates a new instance of UserMapBean */
     public UserMapBean() {
-        mExt = new Extent();
-        mapfiles = new Vector();
+        mapfileDatasources = new Vector<Datasource>();
     }
 
     ////////////////////////////////////////////////////////////////
@@ -120,16 +114,16 @@ public class UserMapBean implements Serializable {
         }
     }
 
-    public Hashtable getUserLayerList() {
+    public Hashtable<String, DataAccess> getUserLayerList() {
         return userLayerList;
     }
 
-    public GeometryClass getUserLayerByName(String layerName_) {
+    public DataAccess getUserLayerByName(String layerName_) {
         Enumeration<String> enu = userLayerList.keys();
-        GeometryClass gc = null;
+        DataAccess gc = null;
         while (enu.hasMoreElements()) {
             Object key = enu.nextElement();
-            gc = (GeometryClass)userLayerList.get(key);
+            gc = userLayerList.get(key);
             if(gc.getName().equalsIgnoreCase(layerName_)) {
                 break;
             }
@@ -137,11 +131,11 @@ public class UserMapBean implements Serializable {
         return gc;
     }
     
-    public GeometryClass getUserLayer(String id_) {
-        return (GeometryClass) userLayerList.get(id_);
+    public DataAccess getUserLayer(String id_) {
+        return userLayerList.get(id_);
     }
 
-    public Vector getUserLayerOrder() {
+    public Vector<String> getUserLayerOrder() {
         return userLayerOrder;
     }
 
@@ -161,8 +155,8 @@ public class UserMapBean implements Serializable {
         return mapfile;
     }
 
-    public Vector getMapfiles() {
-        return mapfiles;
+    public Vector<Datasource> getMapfileDatasources() {
+        return mapfileDatasources;
     }
 
     public String getUpdatedGeometry() {
@@ -193,14 +187,18 @@ public class UserMapBean implements Serializable {
         return this.userLayerChoice;
     }
 
+    public String getMapfishPrintURL() {
+        return mapfishPrintURL;
+    }
+
     ////////////////////////////////////////////////////////////////
     // SET methods
     ////////////////////////////////////////////////////////////////
-    public void setUserLayerList(Hashtable userLayerList_) {
+    public void setUserLayerList(Hashtable<String, DataAccess> userLayerList_) {
         this.userLayerList = userLayerList_;
     }
 
-    public void setUserLayerOrder(Vector vec) {
+    public void setUserLayerOrder(Vector<String> vec) {
         userLayerOrder = vec;
     }
 
@@ -210,14 +208,6 @@ public class UserMapBean implements Serializable {
 
     public void setImgY(int y) {
         imgY = y;
-    }
-
-    public void setScreenWidth(int w) {
-        screenWidth = w;
-    }
-
-    public void setScreenHeight(int h) {
-        screenHeight = h;
     }
 
     public void setMapfile(org.geogurus.mapserver.objects.Map map) {
@@ -234,6 +224,10 @@ public class UserMapBean implements Serializable {
 
     public void setMapserverURL(String msurl) {
         mapserverURL = msurl;
+    }
+
+    public void setMapfishPrintURL(String mapfishPrintURL) {
+        this.mapfishPrintURL = mapfishPrintURL;
     }
 
     public void setUpdatedGeometry(String geom) {
@@ -276,7 +270,7 @@ public class UserMapBean implements Serializable {
     public void setLayerDisplayName(String dn) {
         layerDisplayName = dn;
         StringTokenizer tok = new StringTokenizer(layerDisplayName, "|");
-        ((GeometryClass) userLayerList.get(tok.nextToken())).setName(tok.nextToken());
+        userLayerList.get(tok.nextToken()).setName(tok.nextToken());
     }
 
     /** to set the geometryClass user choice

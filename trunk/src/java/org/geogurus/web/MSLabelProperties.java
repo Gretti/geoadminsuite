@@ -4,23 +4,22 @@
  * Created on 12 janvier 2003, 16:42
  */
 package org.geogurus.web;
-import javax.servlet.http.*;
-import javax.servlet.*;
-import java.util.Vector;
+
+import java.awt.Dimension;
 import java.util.Iterator;
-import java.util.StringTokenizer;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.geogurus.data.DataAccess;
 import org.geogurus.gas.objects.UserMapBean;
 import org.geogurus.gas.utils.ObjectKeys;
-import org.geogurus.tools.LogEngine;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.io.File;
-import java.awt.Dimension;
-import org.geogurus.GeometryClass;
+import org.geogurus.mapserver.objects.Class;
 import org.geogurus.mapserver.objects.Label;
 import org.geogurus.mapserver.objects.Layer;
-import org.geogurus.mapserver.objects.MapClass;
 import org.geogurus.mapserver.objects.RGB;
+
 /**
  * Servlet to deal with a Label object, and its corresponding HTML configuration page:
  * MS_mapserver_label_properties.jsp <br>
@@ -28,18 +27,19 @@ import org.geogurus.mapserver.objects.RGB;
  * 
  * @author  nri
  */
-public class MSLabelProperties  extends BaseServlet {
+public class MSLabelProperties extends BaseServlet {
+
     protected final String mc_mslab_jsp = "MC_mapserver_label_properties.jsp";
-    
+
     /**
      * Main method listening to client requests:
      */
     public void process(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(true);
-debugParameters(request);
+        debugParameters(request);
         // the UserMapBean stored in session.
-        UserMapBean umb = (UserMapBean)session.getAttribute(ObjectKeys.USER_MAP_BEAN);
-        
+        UserMapBean umb = (UserMapBean) session.getAttribute(ObjectKeys.USER_MAP_BEAN);
+
         if (umb == null) {
             // session: expiration
             String error = "UserMapBean ou layerid manquant. La session a du expirer.";
@@ -49,21 +49,22 @@ debugParameters(request);
         }
         // the request parameter telling which MS object label is to set:
         String msObject = request.getParameter("msobject");
-        
+
         doUpdate(request, umb, msObject);
         // put in the request a parameter to refresh the mapfile in the main window
         dispatch(request, response, mc_mslab_jsp + "?refreshmap=true&msobject=" + msObject);
     }
+
     /**
      * update the current Mapfile object with user-modified parameters.
      * The current mapfile is stored in the UserMapBean bean
      */
     protected void doUpdate(HttpServletRequest request, UserMapBean umb, String msObject) {
         Label lab = getLabel(request, umb, msObject);
-        
+
         if (lab == null) {
             lab = new Label();
-            lab.setColor(new RGB(0,0,0));
+            lab.setColor(new RGB(0, 0, 0));
         }
         //control is done by Javascript
         if (request.getParameter("label_angle").length() > 0) {
@@ -77,13 +78,13 @@ debugParameters(request);
             lab.setAngle(Label.UNDEF);
         }
         lab.setAntialias((request.getParameter("label_antialias") != null));
-        
+
         if (request.getParameter("label_font").length() > 0) {
             lab.setFont(request.getParameter("label_font"));
         }
         if (request.getParameter("label_color").length() > 0) {
             lab.setColor(new RGB(request.getParameter("label_color")));
-        } 
+        }
         // for background and outline color: empty value means null color
         if (request.getParameter("label_backgroundcolor").length() > 0) {
             lab.setBackgroundColor(new RGB(request.getParameter("label_backgroundcolor")));
@@ -105,19 +106,24 @@ debugParameters(request);
         } else {
             lab.setOutlineColor(null);
         }
+        if (request.getParameter("label_outlinewidth").length() > 0) {
+            lab.setOutlineWidth(new Integer(request.getParameter("label_outlinewidth")).intValue());
+        } else {
+            lab.setOutlineWidth(1);
+        }
         if (request.getParameter("label_bgshadowsize_x").length() > 0 &&
-            request.getParameter("label_bgshadowsize_y").length() > 0) {
-                
+                request.getParameter("label_bgshadowsize_y").length() > 0) {
+
             int x = new Integer(request.getParameter("label_bgshadowsize_x")).intValue();
             int y = new Integer(request.getParameter("label_bgshadowsize_y")).intValue();
             lab.setBackgroundShadowSize(new Dimension(x, y));
         } else {
             lab.setBackgroundShadowSize(null);
         }
-        
+
         if (request.getParameter("label_shadowsize_x").length() > 0 &&
-            request.getParameter("label_shadowsize_y").length() > 0) {
-                
+                request.getParameter("label_shadowsize_y").length() > 0) {
+
             int x = new Integer(request.getParameter("label_shadowsize_x")).intValue();
             int y = new Integer(request.getParameter("label_shadowsize_y")).intValue();
             lab.setShadowSize(new Dimension(x, y));
@@ -125,8 +131,8 @@ debugParameters(request);
             lab.setShadowSize(null);
         }
         if (request.getParameter("label_offset_x").length() > 0 &&
-            request.getParameter("label_offset_y").length() > 0) {
-                
+                request.getParameter("label_offset_y").length() > 0) {
+
             int x = new Integer(request.getParameter("label_offset_x")).intValue();
             int y = new Integer(request.getParameter("label_offset_y")).intValue();
             lab.setOffset(new Dimension(x, y));
@@ -163,10 +169,10 @@ debugParameters(request);
         } else {
             lab.setMinFeatureSize(Label.UNDEF);
         }
-        
+
         lab.setForce((request.getParameter("label_force") != null));
         lab.setPartials((request.getParameter("label_partials") != null));
-        
+
         String pos = request.getParameter("label_position");
         if (pos.equalsIgnoreCase("ul")) {
             lab.setPosition(Label.UL);
@@ -212,15 +218,15 @@ debugParameters(request);
             lab.setType(Label.TRUETYPE);
         }
         if (request.getParameter("label_wrap").length() > 0) {
-            lab.setWrap(request.getParameter("label_wrap").charAt(0));
+            lab.setWrap(request.getParameter("label_wrap"));
         } else {
-            lab.setWrap('\n');
+            lab.setWrap(null);
         }
-        
+
         setLabel(request, lab, umb);
-        //umb.generateUserMapfile();
+    //umb.generateUserMapfile();
     }
-    
+
     /**
      * Returns a label object based on the given <code>msObject</code> parameter:<br>
      * <ul>
@@ -239,25 +245,29 @@ debugParameters(request);
      *@return a <code>Label</code> object
      */
     protected Label getLabel(HttpServletRequest request, UserMapBean umb, String msObject) {
-        if (msObject == null) return null;
+        if (msObject == null) {
+            return null;
+        }
         Label lab = null;
-        
+
         HttpSession session = request.getSession();
-        
+
         if ("classtarget".equalsIgnoreCase(msObject)) {
             // target MS object is a class
             // get the current GeometryClass' layer object whose class is to retrieve:
-            String layerid = (String)session.getAttribute(ObjectKeys.CURRENT_GC);
+            String layerid = (String) session.getAttribute(ObjectKeys.CURRENT_GC);
             // the layer's object of the current GeometryClass: all the GeometryClass were asked to generate
             // their layer object, as they are displayed in the map
-            GeometryClass gc = (GeometryClass)umb.getUserLayerList().get(layerid);
-            Layer gcLayer = gc.getMSLayer(new RGB(0,0,0),false);
+            DataAccess gc = (DataAccess) umb.getUserLayerList().get(layerid);
+            Layer gcLayer = gc.getMSLayer(new RGB(0, 0, 0), false);
             String classID = request.getParameter("classid");
             // find the mapClass based on the given id:
-            MapClass cl = null;
+            Class cl = null;
             for (Iterator iter = gcLayer.getMapClass().getClasses(); iter.hasNext();) {
-                cl = (MapClass)iter.next(); 
-                if (classID.equals("" + cl.getID())) break;
+                cl = (Class) iter.next();
+                if (classID.equals("" + cl.getID())) {
+                    break;
+                }
             }
             lab = cl.getLabel();
         } else if ("scalebartarget".equalsIgnoreCase(msObject)) {
@@ -269,7 +279,7 @@ debugParameters(request);
         }
         return lab;
     }
-    
+
     /**
      * Sets the given label object to a Mapserver Object:
      * Sets it according to the value of msObject:
@@ -284,26 +294,28 @@ debugParameters(request);
      *@param umb the UserMapBean containg all user-specific map informations
      **/
     protected void setLabel(
-    HttpServletRequest request, 
-    Label lab, 
-    UserMapBean umb) {
+            HttpServletRequest request,
+            Label lab,
+            UserMapBean umb) {
         String msObject = request.getParameter("msobject");
         String classID = request.getParameter("classid");
         HttpSession session = request.getSession();
-        
+
         if ("classtarget".equalsIgnoreCase(msObject)) {
             // target MS object is a class
             // get the current GeometryClass' layer object whose class is to retrieve:
-            String layerid = (String)session.getAttribute(ObjectKeys.CURRENT_GC);
+            String layerid = (String) session.getAttribute(ObjectKeys.CURRENT_GC);
             // the layer's object of the current GeometryClass: all the GeometryClass were asked to generate
             // their layer object, as they are displayed in the map
-            GeometryClass gc = (GeometryClass)umb.getUserLayerList().get(layerid);
-            Layer gcLayer = gc.getMSLayer(new RGB(0,0,0),false);
+            DataAccess gc = (DataAccess) umb.getUserLayerList().get(layerid);
+            Layer gcLayer = gc.getMSLayer(new RGB(0, 0, 0), false);
             // find the mapClass based on the given id:
-            MapClass cl = null;
+            Class cl = null;
             for (Iterator iter = gcLayer.getMapClass().getClasses(); iter.hasNext();) {
-                cl = (MapClass)iter.next(); 
-                if (classID.equals("" + cl.getID())) break;
+                cl = (Class) iter.next();
+                if (classID.equals("" + cl.getID())) {
+                    break;
+                }
             }
             cl.setLabel(lab);
         } else if ("scalebartarget".equalsIgnoreCase(msObject)) {
