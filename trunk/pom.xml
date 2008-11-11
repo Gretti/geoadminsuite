@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.geogurus</groupId>
+	<artifactId>geoadminsuite</artifactId>
+	<version>0.2-SNAPSHOT</version>
+	<name>Geoadmin Suite</name>
+	<inceptionYear>2003</inceptionYear>
+	<description>A library for managing website data and configuration 
+	</description>
+	<properties>
+		<scala.version>2.7.1</scala.version>
+		<geotools.version>2.5-M3</geotools.version>
+		<mapfish-print.version>0.3-SNAPSHOT</mapfish-print.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>struts</groupId>
+			<artifactId>struts</artifactId>
+			<version>1.2.9</version>
+		</dependency>
+		<dependency>
+			<groupId>ojdbc</groupId>
+			<artifactId>ojdbc</artifactId>
+			<version>14</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>2.2.2</version>
+			<classifier>jdk15</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20080701</version>
+		</dependency>
+		<dependency>
+			<groupId>org.postgis</groupId>
+			<artifactId>postgis-driver</artifactId>
+			<version>1.4.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.whirlycott</groupId>
+			<artifactId>whirlycache</artifactId>
+			<version>0.7.1</version>
+		</dependency>
+		
+		<!-- Geotools dependencies  -->
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-main</artifactId>
+			<version>${geotools.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-postgis</artifactId>
+			<version>${geotools.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-shapefile</artifactId>
+			<version>${geotools.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-cql</artifactId>
+			<version>${geotools.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-oracle-spatial</artifactId>
+			<version>${geotools.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-wfs</artifactId>
+			<version>${geotools.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-wms</artifactId>
+			<version>${geotools.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-mif</artifactId>
+			<version>${geotools.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-epsg-hsql</artifactId>
+			<version>${geotools.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.media</groupId>
+			<artifactId>jai_core</artifactId>
+			<version>1.1.3</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.media</groupId>
+			<artifactId>jai_codec</artifactId>
+			<version>1.1.3</version>
+		</dependency>
+		<!-- Mapfish print jar dependencies  -->
+                <dependency>
+                      <groupId>org.mapfish.print</groupId>
+                      <artifactId>print-lib</artifactId>
+                      <version>1.1-SNAPSHOT</version>
+                </dependency>		<!--
+			These are dependencies that I didn't know what they were from so made
+			up my own poms
+		-->
+		<dependency>
+			<groupId>gas</groupId>
+			<artifactId>cos</artifactId>
+			<version>UNKNOWN</version>
+		</dependency>
+		<dependency>
+			<groupId>gas</groupId>
+			<artifactId>support</artifactId>
+			<version>UNKNOWN</version>
+		</dependency>
+		<dependency>
+			<groupId>gas</groupId>
+			<artifactId>tools</artifactId>
+			<version>UNKNOWN</version>
+		</dependency> 
+		<!-- Dependencies for testing -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.4</version>
+			<scope>test</scope>
+		</dependency>
+		<!--
+			The following are only for building not required for running the
+			project
+		-->
+		<dependency>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scala-library</artifactId>
+			<version>${scala.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.scalaforge</groupId>
+			<artifactId>scalax</artifactId>
+			<version>0.1</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.scala-tools</groupId>
+			<artifactId>maven-scala-plugin</artifactId>
+			<version>2.7-JESSE</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.pragmaticdesign</groupId>
+			<artifactId>scant</artifactId>
+			<version>0.1-SNAPSHOT</version>
+			<scope>runtime</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<sourceDirectory>src/java</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>src/resources </directory>
+			</resource>
+		</resources>
+	</build>
+	<profiles>
+		<profile>
+			<id>UpdateLibrary</id>
+			<activation>
+				<property>
+					<name>lib-update</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+			<defaultGoal>validate</defaultGoal>
+				<plugins>
+					<plugin>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<version>2.0.2</version>
+						<configuration>
+							<source>1.5</source>
+							<target>1.5</target>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.scala-tools</groupId>
+						<artifactId>maven-scala-plugin</artifactId>
+						<version>2.7-JESSE</version>
+						<executions>
+							<execution>
+								<phase>validate</phase>
+								<goals>
+									<goal>script</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<scalaVersion>${scala.version}</scalaVersion>
+							<script><![CDATA[
+	import scalax.io.Implicits._	
+	val libDir = new java.io.File("${project.basedir}/web/WEB-INF/lib")
+	libDir.deleteRecursively
+	libDir.mkdirs
+							]]></script>
+							<displayCmd>false</displayCmd>
+							<keepGeneratedScript>false</keepGeneratedScript>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>validate</phase>
+								<goals>
+									<goal>copy-dependencies</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<outputDirectory>${project.basedir}/web/WEB-INF/lib</outputDirectory>
+							<excludeScope>runtime</excludeScope>
+							<excludeScope>test</excludeScope>
+							<includeScope>compile</includeScope>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>war</id>
+			<activation>
+				<property>
+					<name>lib-update</name>
+					<value>!true</value>
+				</property>
+			</activation>
+			<build>
+			    <defaultGoal>package</defaultGoal>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>copy-dependencies</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<outputDirectory>${project.build.directory}/${project.artifactId}/WEB-INF/lib</outputDirectory>
+							<excludeScope>runtime</excludeScope>
+							<excludeScope>test</excludeScope>
+							<includeScope>compile</includeScope>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.scala-tools</groupId>
+						<artifactId>maven-scala-plugin</artifactId>
+						<version>2.7-JESSE</version>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>script</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<scalaVersion>${scala.version}</scalaVersion>
+							<script><![CDATA[
+	import scant.Ant
+	import scant.Ant._
+	
+	val prepDir = "${project.build.directory}/${project.artifactId}"
+	val war = new java.io.File(prepDir+".war")
+	war.delete()
+	
+	import scalax.io.Implicits._
+	new java.io.File( prepDir+"/VERSION" ).
+		writeLine( "The version number of this release is: ${project.version}" ) 
+	
+	Ant(
+		copy( Dir(prepDir) ) {
+			fileset(Dir("${project.basedir}/web"), Nil, List( "WEB-INF/lib/" )  )
+		}, 
+		copy( File("${project.build.directory}/${project.artifactId}-${project.version}.jar"), Dir(prepDir+"/WEB-INF/lib/" )),
+		zip( Dir( prepDir ), File( war.getPath ) )
+	)	
+					]]></script>
+							<displayCmd>false</displayCmd>
+							<removeFromClasspath>ant-optional-1.5.1.jar</removeFromClasspath>
+							<keepGeneratedScript>false</keepGeneratedScript>
+						</configuration>
+					</plugin>
+					<plugin>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<version>2.0.2</version>
+						<configuration>
+							<source>1.5</source>
+							<target>1.5</target>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	<repositories>
+          <repository>
+              <id>org.mapfish</id>
+              <url>http://dev.mapfish.org/maven/repository</url>
+          </repository>            
+	  <repository>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<id>Camptocamp</id>
+			<name>Camptocamp repository</name>
+			<url>http://dev.camptocamp.com/files/m2_repo</url>
+		</repository>
+		<repository>
+			<id>scala-tools.org</id>
+			<name>Scala-Tools Maven2 Repository</name>
+			<url>http://scala-tools.org/repo-releases</url>
+		</repository>
+		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>geotools</id>
+			<name>Geotools repository</name>
+			<url>http://maven.geotools.fr/repository</url>
+		</repository>
+		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>ibiblio</id>
+			<name>Ibiblio - the public's library and digital archive</name>
+			<url>http://www.ibiblio.org/maven2</url>
+		</repository>
+		<repository>
+			<id>maven2-repository.dev.java.net</id>
+			<name>Java.net repository</name>
+			<url>http://download.java.net/maven/2</url>
+		</repository>
+	  <repository>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<id>refractions</id>
+			<name>Refractions repository</name>
+			<url>http://lists.refractions.net/m2</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>scala-tools.org</id>
+			<name>Scala-Tools Maven2 Repository</name>
+			<url>http://scala-tools.org/repo-releases</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>Camptocamp</id>
+			<name>Camptocamp repository</name>
+			<url>http://dev.camptocamp.com/files/m2_repo</url>
+		</pluginRepository>
+	</pluginRepositories>
+</project>
