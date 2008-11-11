@@ -19,7 +19,7 @@ map
 			 name "c1"
 			 color 255 0 0
 			 outlinecolor 0 0 0
-			 symbol "gasdefsympoint"
+			 symbol ""
 			 size 6
 		end
 	end
