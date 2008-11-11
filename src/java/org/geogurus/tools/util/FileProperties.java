@@ -2,9 +2,10 @@ package org.geogurus.tools.util;
 
 
 
-import java.io.*;
-
-import java.util.*;
+import java.io.InputStream;
+import java.util.Iterator;
+import java.util.Properties;
+import java.util.Vector;
 
 
 

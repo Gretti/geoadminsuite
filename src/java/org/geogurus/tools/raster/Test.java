@@ -3,20 +3,16 @@ package org.geogurus.tools.raster;
 /**
  * Title:        Test
  * Description:  Test the ImageCropFactory and the MaskFactory
- * Copyright:    Copyright (c) 2001
- * Company:      SCOT
  * @author       Jerome Gasperi, aka jrom
  * @version      1.0
  */
 
-import java.io.*;
-import java.sql.*;
-import java.util.*;
-import java.awt.*;
-import java.awt.image.*;
 import java.awt.Component;
-import javax.media.jai.*;
-import com.sun.media.jai.codec.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 
 public class Test extends Component {

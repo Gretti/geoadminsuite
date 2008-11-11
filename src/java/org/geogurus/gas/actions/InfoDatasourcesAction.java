@@ -6,18 +6,22 @@
  */
 package org.geogurus.gas.actions;
 
-import org.geogurus.web.LayerGeneralProperties;
-import org.geogurus.gas.utils.ObjectKeys;
 import java.io.IOException;
 import java.util.Hashtable;
+import java.util.Vector;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.geogurus.data.Datasource;
+import org.geogurus.gas.objects.LayerGeneralProperties;
+import org.geogurus.gas.utils.ObjectKeys;
 
 /**
  *
@@ -25,6 +29,7 @@ import org.apache.struts.action.ActionMapping;
  */
 public class InfoDatasourcesAction extends Action {
 
+    @Override
     public ActionForward execute(ActionMapping mapping,
             ActionForm form,
             HttpServletRequest request,
@@ -34,7 +39,7 @@ public class InfoDatasourcesAction extends Action {
         ActionForward forward = null;
 
         HttpSession session = request.getSession();
-        Hashtable hl = (Hashtable) session.getAttribute(ObjectKeys.HOST_LIST);
+        Hashtable<String, Vector<Datasource>> hl = (Hashtable<String, Vector<Datasource>>) session.getAttribute(ObjectKeys.HOST_LIST);
         String rp = getServlet().getServletConfig().getServletContext().getRealPath("");
         String hostName = request.getParameter("host");
         String layerID = request.getParameter("layerID");
@@ -48,7 +53,7 @@ public class InfoDatasourcesAction extends Action {
         lgp.setRootPath(rp);
         lgp.setLayerID(layerID);
 
-        request.getSession().setAttribute("dgp", lgp);
+        request.getSession().setAttribute(ObjectKeys.LAYER_GENERAL_PROPERTIES, lgp);
 
         forward = mapping.findForward("mapCatalogLayerDetail");
 

@@ -57,7 +57,13 @@ public class GeometryClassFieldBean implements Serializable {
     public String getNullable() {return nullable;}
     
     public boolean isNumeric() {
-        return (type.startsWith("int") || type.startsWith("float") || type.equalsIgnoreCase("decimal") || type.equalsIgnoreCase("numeric"));
+        return (type.startsWith("Int") || type.startsWith("int") || 
+                type.startsWith("Float") || type.startsWith("float") || 
+                type.equalsIgnoreCase("Decimal") || 
+                type.equalsIgnoreCase("Numeric") || 
+                type.equalsIgnoreCase("Double") || 
+                type.equalsIgnoreCase("Long") || 
+                type.equalsIgnoreCase("Serial"));
     };
     
     /** Setter Method : Name*/

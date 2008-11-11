@@ -1,18 +1,16 @@
 package org.geogurus.web;
 
-import java.io.File;
-import java.util.Timer;
 import java.util.Date;
-import java.util.Hashtable;
-import java.util.ArrayList;
 import java.util.Properties;
+import java.util.Timer;
+import java.util.logging.Logger;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
-import org.geogurus.gas.utils.ObjectKeys;
 
+import org.geogurus.gas.objects.SymbologyListBean;
+import org.geogurus.gas.utils.ObjectKeys;
 import org.geogurus.tools.util.FileDeletionTimerTask;
-import org.geogurus.tools.LogEngine;
-import org.geogurus.mapserver.tools.MapTools;
 
 /**
  * <strong>SIGServlet</strong> initializes and finalizes the storage of User Mapfile
@@ -23,6 +21,7 @@ import org.geogurus.mapserver.tools.MapTools;
  */
 
 public final class GOFileCleaner extends HttpServlet {
+    transient Logger logger = Logger.getLogger(getClass().getName());
     /**
      * The timer for tmp maps deletion. Active only if servlet init parameter
      * "tempMapsDeletionDelay" is set to a value in ms (delay at which temp maps must be deleted)
@@ -34,6 +33,7 @@ public final class GOFileCleaner extends HttpServlet {
      * Gracefully shut down this servlet, releasing any resources
      * that were allocated at initialization.
      */
+    @Override
     public void destroy() {
         if (timer != null) {
             timer.cancel();
@@ -60,13 +60,9 @@ public final class GOFileCleaner extends HttpServlet {
         try {
             p.load(getClass().getClassLoader().getResourceAsStream("org/geogurus/gas/resources/geonline.properties"));
         } catch (Exception e) {
-            System.out.println("cannot load properties file");
+            logger.severe("cannot load geonline.properties file");
             e.printStackTrace();
         }
-        
-        // initialize the LogEngine
-        boolean debg = (p.getProperty("DEBUG") != null && p.getProperty("DEBUG").equalsIgnoreCase("TRUE")) ? true : false;
-        LogEngine.setDebugMode(debg);
 
         // the temp mapfile deletion delay, based upon the initialisation parameter:
         // tmp maps will be deleted each <tempMapsDeletionDelay>
@@ -88,12 +84,11 @@ public final class GOFileCleaner extends HttpServlet {
             } catch (NumberFormatException nfe) {nfe.printStackTrace();}
         }
         
-        // also loads all symbols into a context Hashtable
+        // also loads all symbologies into the SymbologyListBean object and stores it in application context
         String symFile = p.getProperty("GAS_SYMBOL_FILE");
-        Hashtable symHash = new Hashtable();
-        
+        SymbologyListBean symListBean = null;
         if (symFile == null) {
-            LogEngine.log("Missing GAS_SYMBOL_FILE parameter.");
+            logger.warning("Missing GAS_SYMBOL_FILE parameter.");
         } else {
             // build full path to GAS symbol file
             if (symFile.charAt(0) != '/' && symFile.charAt(1) != ':') {
@@ -101,15 +96,17 @@ public final class GOFileCleaner extends HttpServlet {
                 symFile = getServletContext().getRealPath("").replace('\\', '/') + "/" + symFile;
             }
             
-            //loads the symbols
-            ArrayList al = MapTools.getSymbolsFromSym(new File(symFile));
-            if (al != null) {
-                symHash = MapTools.makeHashtableFromArrayList(al);
+            p = new Properties();
+            try {
+                p.load(getClass().getClassLoader().getResourceAsStream("org/geogurus/gas/resources/symbology.properties"));
+            } catch (Exception e) {
+                logger.severe("cannot load symbology.properties file");
+                e.printStackTrace();
             }
-            al = null;
+            //loads the symbols
+            symListBean = new SymbologyListBean();
+            symListBean.load(symFile, p);
         }
-        
-        getServletContext().setAttribute(ObjectKeys.GAS_SYMBOL_LIST, symHash);
-
+        getServletContext().setAttribute(ObjectKeys.GAS_SYMBOL_LIST, symListBean);
     }
 }

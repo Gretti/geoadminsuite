@@ -6,6 +6,8 @@
 
 package org.geogurus.mapserver.objects;
 
+import java.util.logging.Logger;
+
 /**
  * This abstract class contains methods to implements
  * by a MapFile Object.
@@ -19,7 +21,15 @@ package org.geogurus.mapserver.objects;
  * Modified by NRI, 11 june 2002 to change it as an abstract class
  */
 public abstract class MapServerObject implements java.io.Serializable {
-    protected String errorMessage;
+    /** object's logger */
+    protected transient Logger logger;
+    /** 
+     * the error message generated during file io on a MapServer object (exception for instance);
+     * set static to share the same variable across objects hierarchy
+     */
+    protected static String errorMessage;
+    
+    
     /** Loads data from file
      * and fill Object parameters with.
      * @param br BufferReader containing file data to read
@@ -38,7 +48,23 @@ public abstract class MapServerObject implements java.io.Serializable {
       */     
     public abstract String toString() ;
     
-    public String getErrorMessage() { return errorMessage; }
+    public static String getErrorMessage() { return errorMessage; }
+    
+    /**
+     * Appends the given string to the errorMessage
+     * @param error the error to append to the existing error message
+     * @return the appended errorMessage
+     */
+    public static String setErrorMessage(String error) {
+        if (error == null) {
+            return null;
+        }
+        if (errorMessage == null) {
+            errorMessage = "";
+        }
+        errorMessage = error + System.getProperty("line.separator") + errorMessage;
+        return errorMessage;
+    }
     
 }
 

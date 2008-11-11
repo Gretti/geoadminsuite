@@ -6,16 +6,10 @@
 
 package org.geogurus.mapserver.gui;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import javax.swing.JOptionPane;
-import java.util.StringTokenizer;
-import org.geogurus.mapserver.objects.Map;
+
 import org.geogurus.mapserver.MapFile;
-import org.geogurus.tools.string.ConversionUtilities;
+import org.geogurus.mapserver.objects.Map;
 
 /**
  * Tests mapFile utilities
@@ -173,7 +167,7 @@ public class MapFileFrame extends javax.swing.JFrame {
         if (!fileWhereToSave.save(map))
             JOptionPane.showMessageDialog(this,"Error while saving mapping file: "+fileWhereToSave.getName(),"Error",JOptionPane.ERROR_MESSAGE);
         else {
-            JOptionPane.showMessageDialog(this,"Save done for : "+fileWhereToSave.getAbsolutePath(),"Cool",JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this,"MapFile saved to : "+fileWhereToSave.getAbsolutePath(),"Cool",JOptionPane.INFORMATION_MESSAGE);
             jButton6.setEnabled(true);
         }
     }//GEN-LAST:event_saveMapping
@@ -192,8 +186,11 @@ public class MapFileFrame extends javax.swing.JFrame {
     private void mappingFile(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mappingFile
         if (fileToRead!=null)    {
             map = fileToRead.load();
-            if (map==null)
-                JOptionPane.showMessageDialog(this,"Error while mapping file.","Error",JOptionPane.ERROR_MESSAGE);
+            if (map==null) {
+                JOptionPane.showMessageDialog(this,"Error while mapping file: " + fileToRead.getMapErrorMessage(),
+                        "Error",JOptionPane.ERROR_MESSAGE);
+                System.out.println(fileToRead.getMapErrorMessage());
+            }
             else {
                 JOptionPane.showMessageDialog(this,"Mapping done.","Cool",JOptionPane.INFORMATION_MESSAGE);
                 jButton3.setEnabled(true);
@@ -231,7 +228,7 @@ public class MapFileFrame extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        new MapFileFrame().show();
+        new MapFileFrame().setVisible(true);
     }
     
     

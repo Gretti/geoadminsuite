@@ -8,6 +8,7 @@ package org.geogurus.web;
 import java.io.Serializable;
 import java.util.Properties;
 import java.util.StringTokenizer;
+
 import org.geogurus.mapserver.objects.RGB;
 
 /**

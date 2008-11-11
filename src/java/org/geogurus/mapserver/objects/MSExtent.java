@@ -6,6 +6,8 @@
 
 package org.geogurus.mapserver.objects;
 
+import java.util.logging.Logger;
+
 import org.geogurus.tools.string.ConversionUtilities;
 /**
  * This class defines a simple Extent object
@@ -13,6 +15,7 @@ import org.geogurus.tools.string.ConversionUtilities;
  * @author  Bastien VIALADE
  */
 public class MSExtent implements java.io.Serializable {
+    private transient Logger logger;
     
     private double minx;
     private double miny;
@@ -26,6 +29,7 @@ public class MSExtent implements java.io.Serializable {
     
     /** Creates a new instance of Extent */
     public MSExtent(double minx_, double miny_, double maxx_, double maxy_) {
+        this.logger = Logger.getLogger(this.getClass().getName());
         minx = minx_;
         miny = miny_;
         maxx = maxx_;
@@ -57,7 +61,7 @@ public class MSExtent implements java.io.Serializable {
             maxx = Double.parseDouble(tokens[3]);
             maxy = Double.parseDouble(ConversionUtilities.removeDoubleQuotes(tokens[4]));
         } catch (NumberFormatException ex) {
-            System.err.println("Error while loading extent: "+ex);
+            logger.warning("Error while loading extent: "+ex);
             return false;
         }
         return true;

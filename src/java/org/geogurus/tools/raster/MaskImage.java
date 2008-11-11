@@ -2,16 +2,30 @@ package org.geogurus.tools.raster;
 /**
  * Title:        MaskFactory
  * Description:  Create an image mask from an input polygon.
- * Copyright:    Copyright (c) 2001
- * Company:      SCOT
  * @author       Jerome Gasperi, aka jrom
  * @version      1.0
  */
-import java.io.*;
-import java.util.*;
-import java.awt.*;
-import java.awt.image.*;
-import com.sun.media.jai.codec.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Polygon;
+import java.awt.image.BufferedImage;
+import java.awt.image.FilteredImageSource;
+import java.awt.image.ImageFilter;
+import java.awt.image.ImageProducer;
+import java.awt.image.RGBImageFilter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Iterator;
+import java.util.Vector;
+
+import com.sun.media.jai.codec.ImageCodec;
+import com.sun.media.jai.codec.ImageEncoder;
+import com.sun.media.jai.codec.PNMEncodeParam;
 public class MaskImage extends BufferedImage {
   /** Transparent color */
   public Color transColor = Color.red;

@@ -5,10 +5,9 @@ package org.geogurus.tools.graphics;
  * Created on 11 mars 2002, 17:10
  */
 
-import java.awt.event.MouseEvent;
-import java.awt.Polygon;
-import java.awt.Point;
 import java.awt.Color;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
 
 /**
  * This canvas draws an arrow and its associated grid.

@@ -1,11 +1,13 @@
 package org.geogurus.gas.utils;
 
-import java.util.*;
-import java.beans.*;
-// Required due to JavaDoc bug
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 // Note: There is a design decision here to capture any related exceptions
 //       that may occur during the processing of this method, and wrap it

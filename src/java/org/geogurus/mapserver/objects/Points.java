@@ -5,22 +5,26 @@
  */
 
 package org.geogurus.mapserver.objects;
-import java.awt.Point;
-import org.geogurus.tools.string.ConversionUtilities;
+import java.awt.geom.Point2D;
 import java.io.BufferedReader;
+import java.util.logging.Logger;
+
+import org.geogurus.tools.string.ConversionUtilities;
 
 /**
- *  Defines Points data structure.
+ *  Defines Points data structure. (a list of Point
  *  Used by Symbol object
  *
  * @author  Bastien VIALADE
  */
 
 public class Points extends java.util.ArrayList  implements java.io.Serializable {
+    private transient Logger logger;
     
     /** Creates a new instance of Points */
     public Points() {
         super();
+        this.logger = Logger.getLogger(this.getClass().getName());
     }
     
     /** Loads data from file
@@ -29,8 +33,9 @@ public class Points extends java.util.ArrayList  implements java.io.Serializable
      * @return true is mapping done correctly
      */
     public boolean load(String[] tokens, BufferedReader br) {
+        String line = null;
         try {
-            Point p;
+            Point2D.Float p;
             
             //
             // All points could be on the same line
@@ -40,9 +45,9 @@ public class Points extends java.util.ArrayList  implements java.io.Serializable
                 if (tokens[tokens.length - 1].trim().equalsIgnoreCase("END")) {
                     if (tokens.length % 2 == 0) {
                         for (int i = 1; i< tokens.length - 2; i = i + 2) {
-                            p = new Point();
-                            p.x = Integer.parseInt(ConversionUtilities.removeDoubleQuotes(tokens[i]));
-                            p.y = Integer.parseInt(ConversionUtilities.removeDoubleQuotes(tokens[i + 1]));
+                            p = new Point2D.Float();
+                            p.x = Float.parseFloat(ConversionUtilities.removeDoubleQuotes(tokens[i]));
+                            p.y = Float.parseFloat(ConversionUtilities.removeDoubleQuotes(tokens[i + 1]));
                             this.add(p);
                         }
                     }
@@ -57,7 +62,6 @@ public class Points extends java.util.ArrayList  implements java.io.Serializable
             
             // Otherwise there is several Points to load
             else {
-                String line;
                 while ((line = br.readLine()) != null) {
                     // Looking for the first util line
                     while ((line.trim().length()==0)||(line.trim().startsWith("#"))||(line.trim().startsWith("%"))) {
@@ -66,14 +70,14 @@ public class Points extends java.util.ArrayList  implements java.io.Serializable
                     tokens = ConversionUtilities.tokenize(line.trim());
                     if (tokens[0].equalsIgnoreCase("END")) return true ;
                     if (tokens.length!=2) return false;
-                    p = new Point();
-                    p.x = Integer.parseInt(ConversionUtilities.removeDoubleQuotes(tokens[0]));
-                    p.y = Integer.parseInt(ConversionUtilities.removeDoubleQuotes(tokens[1]));
+                    p = new Point2D.Float();
+                    p.x = Float.parseFloat(ConversionUtilities.removeDoubleQuotes(tokens[0]));
+                    p.y = Float.parseFloat(ConversionUtilities.removeDoubleQuotes(tokens[1]));
                     add(p) ;
                 }
             }
         } catch (Exception e) {
-            System.err.println("Points load Error: "+e);
+            logger.warning("Points load Error: "+e+" error line: " + line);
             return false;
         }
         return true;
@@ -85,16 +89,16 @@ public class Points extends java.util.ArrayList  implements java.io.Serializable
     public synchronized boolean saveAsMapFile(java.io.BufferedWriter bw) {
         StringBuffer buffer = new StringBuffer();
         try {
-            Point p;
+            Point2D.Float p;
             buffer.append("\t\t POINTS");
             if (this.size()==1) {
-                p = (Point)this.get(0);
+                p = (Point2D.Float)this.get(0);
                 buffer.append(" "+p.x+" "+p.y+" END\n");
                 bw.write(buffer.toString());
                 return true;
             }
             for (int i=0; i<this.size(); i++) {
-                p = (Point)this.get(i);
+                p = (Point2D.Float)this.get(i);
                 buffer.append("\n\t\t\t "+p.x+" "+p.y);
             }
             buffer.append("\n\t\t END\n");
@@ -117,7 +121,7 @@ public class Points extends java.util.ArrayList  implements java.io.Serializable
         try {
             buffer.append("POINTS OBJECT ");
             for (int i=0; i<this.size(); i++) {
-                buffer.append("\n* POINT ").append(i).append("     = ").append(((Point)this.get(i)).toString());
+                buffer.append("\n* POINT ").append(i).append("     = ").append(((Point2D.Float)this.get(i)).toString());
             }
         } catch (Exception ex) {
             ex.printStackTrace();

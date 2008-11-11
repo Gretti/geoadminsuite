@@ -5,12 +5,18 @@
  */
 
 package org.geogurus.tools.util;
-import java.util.*;
-import java.util.zip.*;
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Vector;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
- *
+ * Factory useful to zip file(s)
  * @author  gng
  */
 public class ZipEngine {
@@ -24,9 +30,10 @@ public class ZipEngine {
     }
     
     /**
-     * @param zipName
-     * @param files
-     * @throws IOException
+     * Zips the given list of files into a the give zipfile name
+     * @param zipName the path+name of the zip file to write
+     * @param files The array of Files to zip.
+     * @throws IOException if an error occured during zipfile creation
      */    
     public static void zipToFile(String zipName, String[] files) throws IOException {
         FileOutputStream zipOut = new FileOutputStream(zipName);
@@ -35,18 +42,23 @@ public class ZipEngine {
     }
     
     /**
-     * @param ops
-     * @param files
-     * @throws IOException
+     * Zips the given list of files into a the give output stream
+     * @param ops the output stream to write the zipped files to.
+     * @param files The array of Files to zip.
+     * @throws IOException if an error occured during stream handling
      */    
     public static void zipToStream(OutputStream ops, String[] files) throws IOException {
         zipToStream(ops, files, null);
     }
     /**
-     * @param ops
-     * @param files
-     * @param zipPath an array of path, to appear in the zip
-     * @throws IOException
+     * Zips the given list of files into a the give output stream. The files entries will be
+     * equal to the files to zip except if zipPath is not null. If zipPath is not null, the paths contained
+     * in this array will be used as zipped file entry
+     * @param ops the output stream to write the zipped files to.
+     * Use this method with a vaild
+     * @param files The array of Files to zip.
+     * @param zipPath an array of file paths to use a zip entries for zipped files.
+     * @throws IOException if an error occured during stream handling
      */    
     public static void zipToStream(OutputStream ops, String[] files, String[] zipPath) throws IOException {
         String[] zp = zipPath == null ? files : zipPath;
@@ -75,10 +87,13 @@ public class ZipEngine {
         out.flush();
     }
     /**
-     * @param ops
-     * @param files
-     * @param zipPath an array of path, to appear in the zip
-     * @throws IOException
+     * Zips the given list of files into a the give output stream, using the given array
+     * of file path to qualify zipped files.
+     * @param ops the output stream to write the zipped files to.
+     * @param files The Vector of Files to zip.
+     * @param zipPath a Vector of file paths, with the same size as files parameter, used
+     *        to qualify the name of zipped files into the archive.
+     * @throws IOException if an error occured during stream handling
      */    
     public static void zipToStream(OutputStream ops, Vector files, Vector zipPath) throws IOException {
         String[] arr1 = new String[files.size()];

@@ -1,0 +1,42 @@
+<h2>This package handles caching in the system.</h2>  
+
+<p>
+The main entry point is the ObjectCache.  However if finer control is required the examples
+below can be used.  
+</p>
+<p>
+The caching implementation is the whirlycache cache implementation. See <a href="http://https://whirlycache.dev.java.net/sample-whirlycache-xml-file.html">https://whirlycache.dev.java.net/sample-whirlycache-xml-file.html</a>
+ for more details on it.  The main difference is that the Backing Cache that is used calls the 
+ cacheable object (when the key is cacheable) when destroy or clear is called.  See
+ DisposingCacheBackEnd for more details.    
+ </p>
+ The usage is basically:
+ 
+ <pre>
+	Datastore datastore;
+	
+	CacheManager cacheManager = CacheManager.getInstance();
+	Cache cache = cacheManager.getCache();
+
+	// internal key must be unique because it is what is used to 
+	// implement equals() and hashcode()
+	Cacheable key = new AbstractCacheable("internalKey"){
+		private static final long serialVersionUID = -6838044912776739919L;
+
+		public void onRemove(Object _value) {
+			datastore.dispose();
+		}
+		
+	};
+	
+	cache.store(key, datastore, 60000);
+
+	// to retrieve 
+	DataStore retrievedDatastore = (DataStore)cache.retrieve(key);
+	
+	cacheManager.destroy();	
+ </pre>
+ 
+ The keys are serializable so you can send them across threads.  Also any two AbstractCacheable
+ objects with the same key can be used to retrieve the same Cached object.
+ 

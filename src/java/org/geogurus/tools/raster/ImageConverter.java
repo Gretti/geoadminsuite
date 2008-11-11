@@ -3,14 +3,12 @@ package org.geogurus.tools.raster;
 /**
  * Title:        ImageConverter
  * Description:  Convert Java Image type to RenderedImage description
- * Copyright:    Copyright (c) 2001
- * Company:      SCOT
  * @author       Jerome Gasperi, aka jrom
  * @version      1.0
  */
 
-import java.awt.*;
-import java.awt.image.*;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 
 public class ImageConverter  {
    

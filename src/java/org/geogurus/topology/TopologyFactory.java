@@ -1,10 +1,13 @@
 package org.geogurus.topology;
 
-import java.awt.geom.*;
-import java.awt.*;
+import java.awt.Shape;
+import java.awt.geom.Area;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Line2D;
+import java.awt.geom.PathIterator;
+import java.awt.geom.Point2D;
 import java.util.StringTokenizer;
 import java.util.Vector;
-import java.util.Iterator;
 
 
 /**
@@ -12,8 +15,6 @@ import java.util.Iterator;
  * Title:
  * Description:  Provides a static class to perform binary CAG
  * (Constructive Area Geometry) operations
- * Copyright:    Copyright (c) SCOT 2001
- * Company: SCOT
  * @author Nicolas Ribot
  * @version 1.0
  *

@@ -67,6 +67,7 @@ public class ListHostDescriptorBean implements Serializable {
      * Replace native toString method
      * @return String
      */
+    @Override
     public String toString() {
         String s = "ListHostDescriptor " + m_listHost.size() + " element(s)\n";
         

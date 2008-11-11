@@ -4,23 +4,25 @@
  * Created on April 26, 2002, 10:41 AM
  */
 package org.geogurus.web;
-import javax.servlet.http.*;
-import javax.servlet.*;
-import org.geogurus.gas.utils.ObjectKeys;
-import org.geogurus.tools.LogEngine;
-import java.io.PrintWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Enumeration;
+import java.util.logging.Logger;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.geogurus.gas.utils.ObjectKeys;
 /**
  * Base servlet containing common features for all JSP servlets in this application.
  * All other servlets should extend this one.
  *
  * (Constants used by this class are defined in the ObjectKey class.)
- * Copyright:    Copyright (c) 2001
- * Company: SCOT
  * @author  Nicolas Ribot
  */
 public class BaseServlet extends HttpServlet {
+    protected transient Logger logger = Logger.getLogger(getClass().getName());
     /** The JSP page to deal with error messages in the application */
     public final static String JSP_ERROR_PAGE = "error.jsp";
     /** servlets accept both type of methods: get or post */
@@ -33,7 +35,7 @@ public class BaseServlet extends HttpServlet {
     
     /**
      * Main method listening to client requests.
-     * Child class must everwrite this method to define the contextual action.
+     * Child class must overwrite this method to define the contextual action.
      *
      */
     public void process(HttpServletRequest request, HttpServletResponse response) {
@@ -66,13 +68,13 @@ public class BaseServlet extends HttpServlet {
      */
     protected void debugParameters(HttpServletRequest request) {
         Enumeration en = request.getParameterNames();
-        LogEngine.log("____Request parameters_____");
+        logger.fine("____Request parameters_____");
         while (en.hasMoreElements()) {
             String nam = (String)en.nextElement();
             String[] vals = request.getParameterValues(nam);
             
             for (int i = 0; i < vals.length; i++) {
-                LogEngine.log("name: " + nam + " - value: " + vals[i]);
+                logger.fine("name: " + nam + " - value: " + vals[i]);
             }
         }
     }

@@ -6,7 +6,12 @@
 
 package org.geogurus.gas.objects;
 
-import java.beans.*;
+import java.beans.BeanDescriptor;
+import java.beans.EventSetDescriptor;
+import java.beans.IntrospectionException;
+import java.beans.MethodDescriptor;
+import java.beans.PropertyDescriptor;
+import java.beans.SimpleBeanInfo;
 
 /**
  * @author gnguessan
@@ -30,11 +35,13 @@ public class HostDescriptorBeanBeanInfo extends SimpleBeanInfo {
     private static final int PROPERTY_type = 3;
     private static final int PROPERTY_uname = 4;
     private static final int PROPERTY_upwd = 5;
+    private static final int PROPERTY_instance = 6;
+    private static final int PROPERTY_recurse = 7;
 
     // Property array 
     /*lazy PropertyDescriptor*/
     private static PropertyDescriptor[] getPdescriptor(){
-        PropertyDescriptor[] properties = new PropertyDescriptor[6];
+        PropertyDescriptor[] properties = new PropertyDescriptor[8];
     
         try {
             properties[PROPERTY_name] = new PropertyDescriptor ( "name", org.geogurus.gas.objects.HostDescriptorBean.class, "getName", "setName" ); // NOI18N
@@ -43,6 +50,8 @@ public class HostDescriptorBeanBeanInfo extends SimpleBeanInfo {
             properties[PROPERTY_type] = new PropertyDescriptor ( "type", org.geogurus.gas.objects.HostDescriptorBean.class, "getType", "setType" ); // NOI18N
             properties[PROPERTY_uname] = new PropertyDescriptor ( "uname", org.geogurus.gas.objects.HostDescriptorBean.class, "getUname", "setUname" ); // NOI18N
             properties[PROPERTY_upwd] = new PropertyDescriptor ( "upwd", org.geogurus.gas.objects.HostDescriptorBean.class, "getUpwd", "setUpwd" ); // NOI18N
+            properties[PROPERTY_instance] = new PropertyDescriptor ( "instance", org.geogurus.gas.objects.HostDescriptorBean.class, "getInstance", "setInstance" ); // NOI18N
+            properties[PROPERTY_recurse] = new PropertyDescriptor ( "recurse", org.geogurus.gas.objects.HostDescriptorBean.class, "getRecurse", "setRecurse" ); // NOI18N
         }
         catch(IntrospectionException e) {
             e.printStackTrace();

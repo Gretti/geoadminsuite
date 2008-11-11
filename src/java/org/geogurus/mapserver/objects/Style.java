@@ -4,8 +4,10 @@
  * Created on 25 juin 2003, 18:51
  */
 package org.geogurus.mapserver.objects;
-import org.geogurus.tools.string.ConversionUtilities;
 import java.io.BufferedReader;
+import java.util.logging.Logger;
+
+import org.geogurus.tools.string.ConversionUtilities;
 /**
  *  Defines Style data structure.
  *  Used by Symbol object
@@ -13,10 +15,12 @@ import java.io.BufferedReader;
  * @author  NRI
  */
 public class Style extends java.util.ArrayList  implements java.io.Serializable {
+    protected transient Logger logger;
     
     /** Creates a new instance of Points */
     public Style() {
         super();
+        this.logger = Logger.getLogger(this.getClass().getName());
     }
     
     /** Loads data from file

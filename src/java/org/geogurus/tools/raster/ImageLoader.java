@@ -4,15 +4,14 @@ package org.geogurus.tools.raster;
  * Title:        ImageLoader
  * Description:  Get the extent (BOX3D) of a parcel from postgresql database.
  *               Crop an input tif image along this extent.
- * Copyright:    Copyright (c) 2001
- * Company:      SCOT
  * @author       Jerome Gasperi, aka jrom
  * @version      1.0
  */
 
-import com.sun.media.jai.codec.*;
-import javax.media.jai.*;
 import java.awt.image.BufferedImage;
+
+import javax.media.jai.JAI;
+import javax.media.jai.PlanarImage;
 
 public class ImageLoader {
     
