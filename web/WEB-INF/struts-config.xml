@@ -11,41 +11,60 @@
   Default configuration file for GAS application.
 
 -->
-
 <struts-config>
     
     <!-- ========== Form Bean Definitions =================================== -->
-
     <form-beans type="org.apache.struts.action.ActionFormBean">
-        <form-bean name="KaboumPropertiesForm" type="org.geogurus.gas.forms.KaboumPropertiesForm" />
+        <form-bean name="IniConfigurationForm" type="org.geogurus.gas.forms.cartoweb.IniConfigurationForm"/>
+        <form-bean name="IniFileForm" type="org.geogurus.gas.forms.cartoweb.IniFileForm"/>
+        <form-bean name="CartowebIniConfigurationForm" type="org.geogurus.gas.forms.cartoweb.IniConfigurationForm"/>
+        <form-bean name="CartowebIniFileForm" type="org.geogurus.gas.forms.cartoweb.IniFileForm"/>
+        <form-bean name="CheckConfigurationForm" type="org.geogurus.gas.forms.CheckConfigurationForm"/>
+        <form-bean name="LabelForm" type="org.geogurus.gas.forms.LabelForm"/>
+        <form-bean name="WebForm" type="org.geogurus.gas.forms.WebForm"/>
+        <form-bean name="ScaleBarForm" type="org.geogurus.gas.forms.ScaleBarForm"/>
+        <form-bean name="LegendForm" type="org.geogurus.gas.forms.LegendForm"/>
         <form-bean name="LayerForm" type="org.geogurus.gas.forms.LayerForm"/>
         <form-bean name="ListHostDescriptorForm" type="org.geogurus.gas.forms.ListHostDescriptorForm"/>
         <form-bean name="ListCatalogForm" type="org.geogurus.gas.forms.ListCatalogForm"/>
         <form-bean name="MapForm" type="org.geogurus.gas.forms.MapForm"/>
-        
     </form-beans>
     
     <!-- ========== Global Forwards Definitions =================================== -->
     <global-forwards>
+        <forward name="index" path="/listDatasources.do"/>
+        <forward name="admin" path="/admin.jsp"/>
         <forward name="configServer" path="/generallayout.jsp"/>
         <forward name="mapCatalog" path="/mapCatalogLayerDetail.jsp"/>
         <forward name="mapCatalogLayerDetail" path="/mapCatalogLayerDetail.jsp"/>
         <forward name="mapConfiguration" path="/mapConfiguration.jsp"/>
         <forward name="mapConfigurationLayerProperties" path="/mapConfigurationLayerProperties.jsp"/>
         <forward name="classificationProperties" path="/composer/classification_properties.jsp"/>
-        <forward name="index" path="/index.jsp"/>
+        <forward name="labelProperties" path="/composer/label_properties.jsp"/>
         <forward name="configServerTestResult" path="/configServerTestResult.jsp"/>
-        <forward name="layerProperties" path="/MC_geonline_layer_properties.jsp"/>
-        <forward name="kaboumProperties" path="/MC_kaboum_properties.jsp"/>
-        <forward name="labelProperties" path="/MC_geonline_label_properties.jsp"/>
-        <forward name="mapProperties" path="/MC_mapserver_map_properties.jsp"/>
-        
-        <forward name="mapGenerator" path="/MapGenerator.jsp"/>
-        <forward name="mapComposer" path="/MapComposer.jsp"/>
     </global-forwards>
     
     <!-- ========== Actions Definitions =================================== -->
     <action-mappings>
+        <action path="/searchFeature" type="org.geogurus.gas.actions.SearchFeatureAction"/>
+        <action path="/saveLayerTree" type="org.geogurus.gas.actions.cartoweb.SaveLayerTreeAction"/>
+        <action path="/loadCWLayerTree"
+                name="CartowebIniConfigurationForm"
+                type="org.geogurus.gas.actions.cartoweb.LoadLayerTreeAction"
+                scope="session"
+                input="/"
+                />
+        <action input="/" name="CartowebIniFileForm" path="/CWLoadIniFile" scope="session" type="org.geogurus.gas.actions.cartoweb.LoadIniFileAction"/>
+        <action input="" 
+                name="CartowebIniConfigurationForm" 
+                path="/CWIniProperties" 
+                scope="session" 
+                type="org.geogurus.gas.actions.cartoweb.IniPropertiesAction"/>
+        <action input="/admin.jsp" name="CheckConfigurationForm" path="/checkConfiguration" scope="session" type="org.geogurus.gas.actions.CheckConfigurationAction"/>
+        <action input="/" name="LabelForm" path="/labelProperties" type="org.geogurus.gas.actions.LabelPropertiesAction"/>
+        <action input="/" name="WebForm" path="/webProperties" scope="session" type="org.geogurus.gas.actions.WebPropertiesAction" validate="false"/>
+        <action input="/" name="ScaleBarForm" path="/scaleBarProperties" scope="session" type="org.geogurus.gas.actions.ScaleBarPropertiesAction"/>
+        <action input="/" name="LegendForm" path="/legendProperties" scope="request" type="org.geogurus.gas.actions.LegendPropertiesAction"/>
         <action path="/sitePublisher" type="org.geogurus.gas.actions.SitePublisherAction"/>
         <action path="/zipDownload" type="org.geogurus.gas.actions.ZipDownloadAction"/>
         <action path="/submitMapfile" type="org.geogurus.gas.actions.SubmitMapfileAction"/>
@@ -55,15 +74,11 @@
                 type="org.geogurus.gas.actions.LayerPropertiesAction"
                 attribute="LayerForm" 
                 name="LayerForm"/>
-        <action path="/kaboumProperties" 
-                type="org.geogurus.gas.actions.KaboumPropertiesAction"
-                attribute="KaboumPropertiesForm" 
-                name="KaboumPropertiesForm"
-                input="/MC_kaboum_properties.jsp"/>
         <action path="/classificationProperties" 
                 type="org.geogurus.gas.actions.ClassificationPropertiesAction"
                 attribute="LayerForm" 
                 name="LayerForm"/>
+        <action path="/classProperties" type="org.geogurus.gas.actions.ClassPropertiesAction"/>
         <action path="/mapProperties" 
                 type="org.geogurus.gas.actions.MapPropertiesAction"
                 attribute="MapForm" 
@@ -84,7 +99,9 @@
     
     <!-- if a key is added to this bundle, be sure to modify all references to bean:message to add the "bundle" properties -->
     <message-resources  parameter="org.geogurus.gas.resources.GASResources" null="false"/>
+    <message-resources  parameter="org.geogurus.gas.resources.ApplicationResource" key="jsBundle" null="false"/>
+    <!--
     <message-resources  parameter="org.geogurus.gas.resources.KaboumPropertiesResources" key="KaboumPropertiesBundle" null="false"/>
-    
+    -->
 </struts-config>
 
