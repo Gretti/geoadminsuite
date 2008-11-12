@@ -3,13 +3,13 @@
  * and open the template in the editor.
  */
 var defaultParams = {
-    'btn-map'    :{'bgcolor':'#47882D','width':600,'height':400,'dx':25, 'dy':50,  'handles':'all'},
-    'btn-title'  :{'bgcolor':'#2D8847','width':250,'height':30, 'dx':220,'dy':10,  'handles':'e w'},
-    'btn-comment':{'bgcolor':'#666666','width':150,'height':45, 'dx':25, 'dy':470, 'handles':'e w'},
-    'btn-image'  :{'bgcolor':'#2D4788','width':40, 'height':40, 'dx':25, 'dy':10,  'handles':'all'},
-    'btn-scale'  :{'bgcolor':'#882D47','width':100,'height':10, 'dx':25, 'dy':450, 'handles':'all'},
-    'btn-north'  :{'bgcolor':'#88472D','width':50, 'height':50, 'dx':575,'dy':400, 'handles':'all'},
-    'btn-legend' :{'bgcolor':'#472D88','width':100,'height':150,'dx':525,'dy':50,  'handles':'all'}
+    'btn-map'    :{'bgcolor':'#47882D','width':646,'height':400,'dx':15, 'dy':50,  'handles':'all', 'preserveRatio':true},
+    'btn-title'  :{'bgcolor':'#2D8847','width':250,'height':30, 'dx':220,'dy':10,  'handles':'e w', 'preserveRatio':false},
+    'btn-comment':{'bgcolor':'#666666','width':150,'height':45, 'dx':25, 'dy':470, 'handles':'e w', 'preserveRatio':false},
+    'btn-image'  :{'bgcolor':'#2D4788','width':40, 'height':40, 'dx':25, 'dy':10,  'handles':'all', 'preserveRatio':false},
+    'btn-scale'  :{'bgcolor':'#882D47','width':100,'height':10, 'dx':25, 'dy':450, 'handles':'all', 'preserveRatio':false},
+    'btn-north'  :{'bgcolor':'#88472D','width':50, 'height':50, 'dx':575,'dy':400, 'handles':'all', 'preserveRatio':true},
+    'btn-legend' :{'bgcolor':'#472D88','width':100,'height':150,'dx':525,'dy':50,  'handles':'all', 'preserveRatio':false}
 };
 var nimg = 0;
 
@@ -33,7 +33,7 @@ PrintTemplate = Ext.extend(Ext.Component, {
             id             : 'printTplLayout',
             region         : 'center',
             bodyStyle      : {align:'center'},
-            html           : '<div id="conteneur"><!--spacer--></div>'
+            html           : '<div id="conteneur"><!--spacer--></div><div id="footer"><!--spacer--></div>'
         });
         
         // Panel for the components (west)
@@ -55,23 +55,26 @@ PrintTemplate = Ext.extend(Ext.Component, {
             id       : 'printTplLayoutWin',
             title    : 'Layout',
             resizable: false,
-            width    : 750,
-            height   : 600,
+            width    : 874,
+            height   : 624,
             //modal    : true,
             //border : false,
             plain    : true,
             layout   : 'border',
             bbar     : ['->',
                 {
-                    text    : 'Close',
+                    text    : 'Reset',
+                    cls     : 'x-btn-text-icon',
+                    iconCls : 'breset',
                     handler : function(){
-                        PrintTemplateMgr.printWin.json = null;
                         PrintTemplateMgr.printWin.destroy();
                     }
                 },{
                     text    : 'Apply',
+                    cls     : 'x-btn-text-icon',
+                    iconCls : 'bapply',
                     handler : function(){
-                        PrintTemplateMgr.printWin.destroy();
+                        PrintTemplateMgr.printWin.hide();
                     }
                 }
             ],
@@ -102,6 +105,7 @@ PrintTemplate = Ext.extend(Ext.Component, {
                                 width         : defaultParams[btn.id].width,
                                 height        : defaultParams[btn.id].height,
                                 dynamic       : true,
+                                preserveRatio : defaultParams[btn.id].preserveRatio,
                                 constrainTo   : Ext.get('printTplLayoutWin'),
                                 handles       : defaultParams[btn.id].handles,
                                 draggable     : true,
@@ -134,7 +138,6 @@ PrintTemplate = Ext.extend(Ext.Component, {
                                 var inputimg = Ext.get('conteneur').createChild('<img id="printTpl'+ btn.tooltip + nimg + '" src="' + text + '"/>');
                                 var relWidth = defaultParams[btn.id].width;
                                 var relHeight = defaultParams[btn.id].width*(inputimg.dom.naturalHeight/inputimg.dom.naturalWidth);
-                                console.log(inputimg);
                                 
                                 var elt = new Ext.Resizable('printTpl'+ btn.tooltip + nimg, {
                                     wrap          : true,
@@ -181,7 +184,18 @@ PrintTemplate = Ext.extend(Ext.Component, {
         this.win.hide();
     },
     destroy: function() {
-        this.win.destroy();
+        var items = Ext.getCmp('printTplComponents').items.items;
+        for(var b=0; b < items.length; b++) {
+            if(items[b].pressed) {
+                items[b].toggle(false);
+            }
+        }
+        while(Ext.get('conteneur').first() != null) {
+            Ext.get('conteneur').first().remove();
+        }
+                
+        PrintTemplateMgr.resetJson();
+        this.win.hide();
     }
 });
 
