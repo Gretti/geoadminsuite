@@ -14,34 +14,39 @@
         <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
         <title><bean:message key="main_title" /></title>
         <link rel="shortcut icon" href="favicon.ico">
+        
+        <!-- Application css --> 
         <link rel="stylesheet" type="text/css" href="scripts/colorpicker/assets/skins/sam/colorpicker-skin.css">
         <link rel="stylesheet" type="text/css" href="styles/layouts.css">
         <link rel="stylesheet" type="text/css" href="scripts/printTemplate/PrintTemplate.css">
         
-        <!-- Ext and MF scripts --> 
-        <link rel="stylesheet" type="text/css" href="scripts/refexportfiles/resources/css/ext-all.css">
-        <link rel="stylesheet" type="text/css" href="scripts/refexportfiles/resources/css/xtheme-gray.css">
-        <!--<link rel="stylesheet" type="text/css" href="scripts/refexportfiles/resources/css/xtheme-gretti.css">-->
-        
-        <script type="text/javascript" src="scripts/refexportfiles/adapter/ext/ext-base.js"></script>
-        <script type="text/javascript" src="scripts/refexportfiles/ext-all.js"></script>
         <logic:notEqual parameter="debug" value="true">
+            <!-- Ext css --> 
+            <link rel="stylesheet" type="text/css" href="scripts/mapfish/mfbase/ext/resources/css/ext-all.css">
+            <link rel="stylesheet" type="text/css" href="scripts/mapfish/mfbase/ext/resources/css/xtheme-gray.css">
             <!-- debug mode
             For this mode to work as expected the whole mapfish tree must be in the WAR file. For
                 go the project properties and remove scripts/mapfish/** from the Exlude From WAR File
                 list.
             -->
+            <script type="text/javascript" src="scripts/mapfish/mfbase/ext/adapter/ext/ext-base.js"></script>
+            <script type="text/javascript" src="scripts/mapfish/mfbase/ext/ext-all.js"></script>
             <script type="text/javascript">
                 // Because of a bug in Firefox 2 we need to specify the MapFish base path.
                 // See https://bugzilla.mozilla.org/show_bug.cgi?id=351282
                 var gMfLocation = "scripts/mapfish/mfbase/mapfish/";
             </script>
-            <!--<script type="text/javascript" src="scripts/mapfish/mfbase/openlayers/lib/Firebug/firebug.js"></script>-->
+            <script type="text/javascript" src="scripts/mapfish/mfbase/openlayers/lib/Firebug/firebug.js"></script>
             <script type="text/javascript" src="scripts/mapfish/mfbase/openlayers/lib/OpenLayers.js"></script>
             <script type="text/javascript" src="scripts/mapfish/mfbase/mapfish/MapFish.js"></script>
             <script type="text/javascript" src="scripts/mapfish/mfbase/mapfish/lang/fr.js"></script>
         </logic:notEqual>
         <logic:equal parameter="debug" value="true">
+            <!-- Ext css --> 
+            <link rel="stylesheet" type="text/css" href="scripts/refexportfiles/resources/css/ext-all.css">
+            <link rel="stylesheet" type="text/css" href="scripts/refexportfiles/resources/css/xtheme-gray.css">
+            <script type="text/javascript" src="scripts/refexportfiles/adapter/ext/ext-base.js"></script>
+            <script type="text/javascript" src="scripts/refexportfiles/ext-all.js"></script>
             <!-- production mode -->
             <script type="text/javascript" src="scripts/refexportfiles/mapfish/MapFish.js"></script>
         </logic:equal>

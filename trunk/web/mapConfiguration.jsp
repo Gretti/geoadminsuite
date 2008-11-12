@@ -68,14 +68,14 @@
                     id: "<bean:write name="geomcoll" property="ID"/>",
                     text: "<bean:write name="geomcoll" property="name"/>",
                     leaf: true,
-                    layerName: "mapserverLayer:<bean:write name="geomcoll" property="name"/>",
+                    layerName: 'mapserverLayer:<bean:write name="geomcoll" property="name"/>',
                     checked: true,
                     icon: 'images/layers.png'
                 }
             );
             </logic:iterate>
             //Must reverse children order to reflect Mapserver's layer order
-            //initialOrder.reverse();
+            initialOrder.reverse();
 
             // layer to digitalize
             var drawingLayer = new OpenLayers.Layer.Vector("Draw",{isBaseLayer:true});
@@ -255,7 +255,7 @@
                                                 {
                                                     text: 'Define Template',
                                                     handler: function(){
-                                                            GeneralLayout.printWin.create();
+                                                            if(GeneralLayout.printWin.win == null) GeneralLayout.printWin.create();
                                                             PrintTemplateMgr.printWin = GeneralLayout.printWin;
                                                             GeneralLayout.printWin.show(this);
                                                             PrintTemplateMgr.jsonOutput = Ext.getCmp('pnlComposerPrint').find('name','config')[0];
@@ -274,7 +274,6 @@
             //Add onClick event on each node of the tree
             var rootNode = GeneralLayout.layertree.getRootNode();
             var childNodes = rootNode.childNodes[0].childNodes;
-            var currentOrder = [];
             for(var i=0; i<childNodes.length; i++) {
                 childNodes[i].on('click', function() {
                         //showLayerPropertiesWin(this.id);
