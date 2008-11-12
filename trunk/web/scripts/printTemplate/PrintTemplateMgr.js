@@ -8,7 +8,6 @@ PrintTemplateMgr =
         printWin     : null,
         jsonOutput   : null,
         updateJson: function (el, x, y, url) {
-            console.log(el);
             var curid = el.id;
             if(curid.split("-").length == 2) {
                 curid = curid.split("-")[0];
@@ -60,6 +59,15 @@ PrintTemplateMgr =
                 }
             }
             return json;
+        },
+        resetJson: function () {
+            if(PrintTemplateMgr.jsonOutput != null) {
+                try {
+                  PrintTemplateMgr.jsonOutput.setValue("");
+                } catch(err) {
+                  PrintTemplateMgr.jsonOutput.value = "";
+                }
+            }
         }
 
     };

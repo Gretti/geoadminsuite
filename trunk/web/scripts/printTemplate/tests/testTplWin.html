@@ -23,9 +23,9 @@
                 Ext.QuickTips.init();
                 printWin = new PrintTemplate();
                 PrintTemplateMgr.jsonOutput = document.forms[0].spec;
+                printWin.create();
             });
             function showPrintWin(el) {
-                printWin.create();
                 PrintTemplateMgr.printWin = printWin;
                 printWin.show(el);
             }
