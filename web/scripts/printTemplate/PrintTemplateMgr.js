@@ -108,9 +108,7 @@ PrintTemplateMgr =
             refEl.createChild('<div id="printTpl' +
                 btn.tooltip + (nimg == null ? '' : nimg) + 
                 '" class="printTplbasic" style="background-color:white">' + 
-                '<img src="/gas/scripts/printTemplate/images/component_conf.png" width="10px" height="10px" onclick="javascript:alert(\'configuration\')">&nbsp;&nbsp;' +
-                nimg == null ? '' : '<img src="/gas/scripts/printTemplate/images/component_conf.png" width="10px" height="10px" onclick="javascript:alert(\'suppression\')">&nbsp;&nbsp;' +
-                '&nbsp;&nbsp;' +
+                '<img src="/gas/scripts/printTemplate/images/component_conf.png" width="10px" height="10px" onclick="javascript:alert(\'configuration\')">&nbsp;&nbsp;&nbsp;' +
                 btn.tooltip +
                 '</div>');
             
