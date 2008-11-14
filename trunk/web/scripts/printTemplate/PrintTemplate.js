@@ -3,15 +3,33 @@
  * and open the template in the editor.
  */
 var defaultParams = {
-    'btn-map'    :{'bgcolor':'#47882D','width':646,'height':400,'dx':15, 'dy':50,  'handles':'all', 'preserveRatio':true},
-    'btn-title'  :{'bgcolor':'#2D8847','width':250,'height':30, 'dx':220,'dy':10,  'handles':'e w', 'preserveRatio':false},
-    'btn-comment':{'bgcolor':'#666666','width':150,'height':45, 'dx':25, 'dy':470, 'handles':'e w', 'preserveRatio':false},
-    'btn-image'  :{'bgcolor':'#2D4788','width':40, 'height':40, 'dx':25, 'dy':10,  'handles':'all', 'preserveRatio':false},
-    'btn-scale'  :{'bgcolor':'#882D47','width':100,'height':10, 'dx':25, 'dy':450, 'handles':'all', 'preserveRatio':false},
-    'btn-north'  :{'bgcolor':'#88472D','width':50, 'height':50, 'dx':575,'dy':400, 'handles':'all', 'preserveRatio':true},
-    'btn-legend' :{'bgcolor':'#472D88','width':100,'height':150,'dx':525,'dy':50,  'handles':'all', 'preserveRatio':false}
+    'landscape' : {
+        'btn-map'    :{'bgcolor':'#47882D','width':646,'height':400,'dx':15, 'dy':50,  'handles':'all', 'preserveRatio':true},
+        'btn-title'  :{'bgcolor':'#2D8847','width':250,'height':30, 'dx':220,'dy':10,  'handles':'e w', 'preserveRatio':false},
+        'btn-comment':{'bgcolor':'#666666','width':150,'height':45, 'dx':15, 'dy':470, 'handles':'e w', 'preserveRatio':false},
+        'btn-image'  :{'bgcolor':'#2D4788','width':40, 'height':40, 'dx':15, 'dy':10,  'handles':'all', 'preserveRatio':false},
+        'btn-scale'  :{'bgcolor':'#882D47','width':100,'height':10, 'dx':15, 'dy':450, 'handles':'all', 'preserveRatio':false},
+        'btn-north'  :{'bgcolor':'#88472D','width':50, 'height':50, 'dx':575,'dy':400, 'handles':'all', 'preserveRatio':true},
+        'btn-legend' :{'bgcolor':'#472D88','width':100,'height':150,'dx':525,'dy':50,  'handles':'all', 'preserveRatio':false}
+    },
+    'page' : {
+        'btn-map'    :{'bgcolor':'#47882D','width':475,'height':294,'dx':0, 'dy':150,  'handles':'all', 'preserveRatio':true},
+        'btn-title'  :{'bgcolor':'#2D8847','width':250,'height':30, 'dx':120,'dy':10,  'handles':'e w', 'preserveRatio':false},
+        'btn-comment':{'bgcolor':'#666666','width':150,'height':45, 'dx':0, 'dy':470, 'handles':'e w', 'preserveRatio':false},
+        'btn-image'  :{'bgcolor':'#2D4788','width':40, 'height':40, 'dx':0, 'dy':10,  'handles':'all', 'preserveRatio':false},
+        'btn-scale'  :{'bgcolor':'#882D47','width':100,'height':10, 'dx':0, 'dy':450, 'handles':'all', 'preserveRatio':false},
+        'btn-north'  :{'bgcolor':'#88472D','width':50, 'height':50, 'dx':425,'dy':394, 'handles':'all', 'preserveRatio':true},
+        'btn-legend' :{'bgcolor':'#472D88','width':100,'height':150,'dx':375,'dy':150,  'handles':'all', 'preserveRatio':false}
+    }
 };
 var nimg = 0;
+//sizes are calculated with an overhead of 
+//  - 104px for width (left panel + borders)
+//  - 58px  for height (borders only)
+var orientationSizes = {
+    'landscape':{width:904, height:624},
+    'page'     :{width:599, height:758}
+};
 
 PrintTemplate = Ext.extend(Ext.Component, {
     format: 'A3',
@@ -32,8 +50,8 @@ PrintTemplate = Ext.extend(Ext.Component, {
         this.pnlLayout = new Ext.Panel({
             id             : 'printTplLayout',
             region         : 'center',
-            bodyStyle      : {align:'center'},
-            html           : '<div id="conteneur"><!--spacer--></div><div id="footer"><!--spacer--></div>'
+            bodyStyle      : {'background-color':'#CCC'},
+            html           : '<div id="printTplContainer"><!--spacer--></div>'
         });
         
         // Panel for the components (west)
@@ -42,9 +60,9 @@ PrintTemplate = Ext.extend(Ext.Component, {
             id             : 'printTplComponents',
             region         : 'west',
             split          : true,
-            width          : 50,
-            minSize        : 50,
-            maxSize        : 50,
+            width          : 80,
+            minSize        : 80,
+            maxSize        : 80,
             collapsible    : false,
             margins        : '3 0 3 3',
             cmargins       : '3 3 3 3',
@@ -55,7 +73,7 @@ PrintTemplate = Ext.extend(Ext.Component, {
             id       : 'printTplLayoutWin',
             title    : 'Layout',
             resizable: false,
-            width    : 874,
+            width    : 904,
             height   : 624,
             //modal    : true,
             //border : false,
@@ -83,96 +101,80 @@ PrintTemplate = Ext.extend(Ext.Component, {
 
     },
     initComponents: function() {
-        var buttons = [];
+        var comps = [];
+        //Format combobox and orientation chekbox
+        var formatsStore = new Ext.data.SimpleStore({
+            fields: ['name','value'],
+            data  : [['A4','A4'],['A3','A3'],['A2','A2'],['A1','A1'],['A0','A0']]
+        });
+        comps.push(new Ext.form.ComboBox({
+            id             : 'printTplCmbFormat',
+            width          : 70,
+            store          : formatsStore,
+            displayField   : 'name',
+            typeAhead      : true,
+            mode           : 'local',
+            triggerAction  : 'all',
+            selectOnFocus  : true,
+            forceSelection : true,
+            value          : 'A3',
+            listeners      : {
+                'select' : function(){
+                    PrintTemplateMgr.updateJsonFormat(this.value);
+                }
+            }
+        }));
+        comps.push(new Ext.form.Checkbox({
+            id        : 'printTplChkLandscape',
+            boxLabel  : 'landscape<br><hr>',
+            checked   : true,
+            listeners : {
+                'check' : function(){
+                    var orientation = this.checked ? 'landscape' : 'page';
+                    //Resize window to reflect orientation
+                    Ext.getCmp('printTplLayoutWin').setWidth(orientationSizes[orientation].width);
+                    Ext.getCmp('printTplLayoutWin').setHeight(orientationSizes[orientation].height);
+                    //TODO : Should resize and move all elements that fall outside the print area
+                    PrintTemplateMgr.updateJsonOrientation(orientation);
+                }
+            }
+        }));
+
+        //Buttons
         for (var i = 0; i < this.components.length; i++) {
             if(this.components[i].id != 'btn-image') {
-                buttons.push(new Ext.Button({
+                comps.push(new Ext.Button({
                     id            : this.components[i].id,
                     tooltip       : this.components[i].text,
                     iconCls       : this.components[i].cls,
-                    enableToggle : true,
+                    enableToggle  : true,
                     toggleHandler   : function(btn, state){
                         if(!state) {
                             Ext.get('printTpl'+ btn.tooltip).remove();
                             PrintTemplateMgr.removeFromJson('printTpl'+ btn.tooltip);
                         } else {
-                            Ext.get('conteneur').createChild('<div id="printTpl'+ btn.tooltip + '" class="printTplbasic" style="background-color:white">' + btn.tooltip + '</div>');
-                            var refX = Ext.get('conteneur').getLeft();
-                            var refY = Ext.get('conteneur').getTop();
-                            var elt = new Ext.Resizable('printTpl'+ btn.tooltip, {
-                                minWidth      : 10,
-                                minHeight     : 10,
-                                width         : defaultParams[btn.id].width,
-                                height        : defaultParams[btn.id].height,
-                                dynamic       : true,
-                                preserveRatio : defaultParams[btn.id].preserveRatio,
-                                constrainTo   : Ext.get('printTplLayoutWin'),
-                                handles       : defaultParams[btn.id].handles,
-                                draggable     : true,
-                                listeners     :{
-                                    'resize':function(){
-                                        PrintTemplateMgr.updateJson(this.getEl());
-                                        this.proxy.setBox(Ext.get('conteneur').getBox());
-                                        this.proxy.update();
-                                    }
-                                }
-                            });
-                            elt.dd.constrainTo(Ext.get('conteneur'));
-                            elt.dd.endDrag = function(){
-                                PrintTemplateMgr.updateJson(Ext.get(this.id), null, null);
-                                elt.dd.constrainTo(Ext.get('conteneur'));
-                            };
-                            elt.el.moveTo(refX + defaultParams[btn.id].dx, refY + defaultParams[btn.id].dy,true);
-                            PrintTemplateMgr.updateJson(elt.el,refX + defaultParams[btn.id].dx,refY + defaultParams[btn.id].dy);
+                            var orientation = Ext.getCmp('printTplChkLandscape').checked ? 'landscape' : 'page';
+                            PrintTemplateMgr.createComponent(btn, defaultParams[orientation][btn.id], null, null);
                         }
                     }
                 }));
             } else {
-                buttons.push(new Ext.Button({
+                comps.push(new Ext.Button({
                     id            : this.components[i].id,
                     tooltip       : this.components[i].text,
                     iconCls       : this.components[i].cls,
                     handler   : function(btn){
                         Ext.Msg.prompt('Image URL', 'Please enter url for image:', function(bouton, text){
                             if (bouton == 'ok'){
-                                var inputimg = Ext.get('conteneur').createChild('<img id="printTpl'+ btn.tooltip + nimg + '" src="' + text + '"/>');
-                                var relWidth = defaultParams[btn.id].width;
-                                var relHeight = defaultParams[btn.id].width*(inputimg.dom.naturalHeight/inputimg.dom.naturalWidth);
-                                
-                                var elt = new Ext.Resizable('printTpl'+ btn.tooltip + nimg, {
-                                    wrap          : true,
-                                    width         : relWidth,
-                                    height        : relHeight,
-                                    minWidth      : 10,
-                                    minHeight     : 10,
-                                    dynamic       : true,
-                                    constrainTo   : Ext.get('conteneur'),
-                                    draggable     : true,
-                                    listeners     :{
-                                        'resize':function(){
-                                            PrintTemplateMgr.updateJson(Ext.get(this.getEl()));
-                                            this.proxy.setBox(Ext.get('conteneur').getBox());
-                                            this.proxy.update();
-                                        }
-                                    }
-                                });
-                                var refX = Ext.get('conteneur').getLeft();
-                                var refY = Ext.get('conteneur').getTop();
-                                elt.dd.constrainTo(Ext.get('conteneur'));
-                                elt.dd.endDrag = function(){
-                                    PrintTemplateMgr.updateJson(Ext.get(this.id), null, null);
-                                    elt.dd.constrainTo(Ext.get('conteneur'));
-                                };
-                                elt.el.moveTo(refX + defaultParams[btn.id].dx, refY + defaultParams[btn.id].dy,true);
-                                PrintTemplateMgr.updateJson(Ext.get('printTpl'+ btn.tooltip + nimg),refX + defaultParams[btn.id].dx,refY + defaultParams[btn.id].dy,text);
-                                nimg++;
+                                var orientation = Ext.getCmp('printTplChkLandscape').checked ? 'landscape' : 'page';
+                                nimg = PrintTemplateMgr.createComponent(btn, defaultParams[orientation][btn.id], text, nimg);
                             }
                         });
                     }
                 }));
             }
         }
-        return buttons;
+        return comps;
     },
     getPrintTplJson: function() {
         return this.json;
@@ -190,8 +192,8 @@ PrintTemplate = Ext.extend(Ext.Component, {
                 items[b].toggle(false);
             }
         }
-        while(Ext.get('conteneur').first() != null) {
-            Ext.get('conteneur').first().remove();
+        while(Ext.get('printTplContainer').first() != null) {
+            Ext.get('printTplContainer').first().remove();
         }
                 
         PrintTemplateMgr.resetJson();
