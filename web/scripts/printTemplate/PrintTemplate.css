@@ -14,27 +14,14 @@ Purpose of the stylesheet follows.
     cursor:move;
 }
 
-#conteneur {
-    width:99%;
-    height:95%;
+#printTplContainer {
+    width:97%;
+    height:94%;
     position:relative;
     background-color:#EEE;
-    margin-left:3px;
-    margin-top:3px;
-    margin-bottom:0px;
-    margin-right:3px;
-    padding:1px 1px 1px 1px;
-}
-#footer {
-    width:99%;
-    height:5%;
-    position:relative;
-    background-color:#CCC;
-    margin-left:3px;
-    margin-top:0px;
-    margin-bottom:0px;
-    margin-right:3px;
-    padding:1px 1px 1px 1px;
+    margin-left:11px;
+    margin-right:11px;
+    margin-top:10px;
 }
 
 /*Buttons*/
@@ -64,6 +51,12 @@ Purpose of the stylesheet follows.
 }
 .btitle {
     background-image:url(images/title.png) !important;
+}
+.bcompdel {
+    background-image:url(images/component_delete.png) !important;
+}
+.bcompconf {
+    background-image:url(images/component_conf.png) !important;
 }
 
 
