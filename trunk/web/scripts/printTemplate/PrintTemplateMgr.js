@@ -73,6 +73,15 @@ PrintTemplateMgr =
             return json;
         },
         removeFromJson: function (hid) {
+            //TODO: There is still a strange behaviour with left components moving
+            //when deleting the current may be we should reset constraints to fix it
+            Ext.get(hid).fadeOut({
+                endOpacity: 0,
+                easing: 'easeOut',
+                duration: .5,
+                remove: true,
+                useDisplay: false
+            });
             var json = PrintTemplateMgr.printWin.json;
             delete json.components[hid];
             if(PrintTemplateMgr.jsonOutput != null) {
@@ -108,57 +117,48 @@ PrintTemplateMgr =
             refEl.createChild('<div id="printTpl' +
                 btn.tooltip + (nimg == null ? '' : nimg) + 
                 '" class="printTplbasic" style="background-color:white">' + 
-                '<img src="/gas/scripts/printTemplate/images/component_conf.png" width="10px" height="10px" onclick="javascript:alert(\'configuration\')">&nbsp;&nbsp;&nbsp;' +
-                btn.tooltip +
-                '</div>');
+                '<span class="bcompconf" onclick="javascript:alert(\'configuration\')">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;' +
+                (nimg == null ? '' : '<span class="bcompdel" onclick="javascript:PrintTemplateMgr.removeFromJson(\'printTpl' + btn.tooltip + nimg + '\')">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;') +
+                (nimg == null ? '<span>' + btn.tooltip + '</span>' : '<span class="bimginfo" id="printTpl' + btn.tooltip + nimg + '_img">&nbsp;&nbsp;&nbsp;&nbsp;</span>') + '</div>');
             
             if(nimg != null) {
                 new Ext.ToolTip({
-                    target: 'printTpl'+ btn.tooltip + nimg,
+                    target: 'printTpl' + btn.tooltip + nimg + '_img',
+                    width: 200,
                     html: '<img src="' + text + '">',
-                    title: 'Image',
-                    dismissDelay: 5000
+                    dismissDelay: 5000 // auto hide after 5 seconds
                 });
             }
 
-            /*new Ext.Button({
-                iconCls  : 'compconf',
-                renderTo : Ext.get('printTpl'+ btn.tooltip + (nimg == null ? '' : nimg)),
-                handler  : function(){
-                    alert('configuration');
-                }
-            });*/
-            if(nimg != null) {
-                new Ext.Button({
-                    iconCls  : 'compdel',
-                    renderTo : Ext.get('printTpl'+ btn.tooltip + (nimg == null ? '' : nimg)),
-                    handler  : function(){
-                        alert('suppression');
-                    }
-                });
-            }
+            
+            
             var elt = new Ext.Resizable('printTpl'+ btn.tooltip + (nimg == null ? '' : nimg), {
                 width         : relWidth,
                 height        : relHeight,
                 minWidth      : 10,
                 minHeight     : 10,
                 dynamic       : true,
+                handles       : params.handles,
                 preserveRatio : params.preserveRatio,
                 constrainTo   : Ext.get('printTplContainer'),
                 draggable     : true,
                 listeners     :{
                     'resize':function(){
+                        //Must manage DD too ... Weird ...
+                        this.dd.resetConstraints(true);
+                        this.dd.constrainTo(Ext.get('printTplContainer'));
+                        //Update json
                         PrintTemplateMgr.updateJsonComponent(this.getEl());
-                        this.proxy.setBox(Ext.get('printTplContainer').getBox());
-                        this.proxy.update();
                     }
                 }
             });
             
             elt.dd.constrainTo(Ext.get('printTplContainer'));
             elt.dd.endDrag = function(){
-                PrintTemplateMgr.updateJsonComponent(Ext.get(this.id));
+                //Restores DD constraints to container
+                elt.dd.resetConstraints(true);
                 elt.dd.constrainTo(Ext.get('printTplContainer'));
+                PrintTemplateMgr.updateJsonComponent(Ext.get(this.id));
             };
             elt.el.moveTo(refX + params.dx, refY + params.dy,true);
             PrintTemplateMgr.updateJsonComponent(Ext.get('printTpl'+ btn.tooltip + (nimg == null ? '' : nimg)),refX + params.dx,refY + params.dy,text);

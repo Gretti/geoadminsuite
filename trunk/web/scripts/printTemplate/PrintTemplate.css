@@ -49,14 +49,32 @@ Purpose of the stylesheet follows.
 .blegend {
     background-image:url(images/legend.png) !important;
 }
+.boverview {
+    background-image:url(images/overview.png) !important;
+}
 .btitle {
     background-image:url(images/title.png) !important;
 }
 .bcompdel {
     background-image:url(images/component_delete.png) !important;
+    background-repeat:no-repeat;
+    width:10px;
+    height:10px;
+    cursor:pointer;
 }
 .bcompconf {
     background-image:url(images/component_conf.png) !important;
+    background-repeat:no-repeat;
+    width:10px;
+    height:10px;
+    cursor:pointer;
+}
+.bimginfo {
+    background-image:url(images/information.png) !important;
+    background-repeat:no-repeat;
+    width:10px;
+    height:10px;
+    cursor:pointer;
 }
 
 

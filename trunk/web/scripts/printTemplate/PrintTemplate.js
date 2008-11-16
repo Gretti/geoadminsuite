@@ -4,24 +4,38 @@
  */
 var defaultParams = {
     'landscape' : {
-        'btn-map'    :{'bgcolor':'#47882D','width':646,'height':400,'dx':15, 'dy':50,  'handles':'all', 'preserveRatio':true},
-        'btn-title'  :{'bgcolor':'#2D8847','width':250,'height':30, 'dx':220,'dy':10,  'handles':'e w', 'preserveRatio':false},
-        'btn-comment':{'bgcolor':'#666666','width':150,'height':45, 'dx':15, 'dy':470, 'handles':'e w', 'preserveRatio':false},
-        'btn-image'  :{'bgcolor':'#2D4788','width':40, 'height':40, 'dx':15, 'dy':10,  'handles':'all', 'preserveRatio':false},
-        'btn-scale'  :{'bgcolor':'#882D47','width':100,'height':10, 'dx':15, 'dy':450, 'handles':'all', 'preserveRatio':false},
-        'btn-north'  :{'bgcolor':'#88472D','width':50, 'height':50, 'dx':575,'dy':400, 'handles':'all', 'preserveRatio':true},
-        'btn-legend' :{'bgcolor':'#472D88','width':100,'height':150,'dx':525,'dy':50,  'handles':'all', 'preserveRatio':false}
+        'btn-map'     :{'bgcolor':'#47882D','width':646,'height':400,'dx':15, 'dy':50,  'handles':'all', 'preserveRatio':true},
+        'btn-title'   :{'bgcolor':'#2D8847','width':250,'height':30, 'dx':220,'dy':10,  'handles':'e w', 'preserveRatio':false},
+        'btn-comment' :{'bgcolor':'#666666','width':150,'height':45, 'dx':15, 'dy':470, 'handles':'e w', 'preserveRatio':false},
+        'btn-image'   :{'bgcolor':'#2D4788','width':40, 'height':40, 'dx':15, 'dy':10,  'handles':'all', 'preserveRatio':false},
+        'btn-scale'   :{'bgcolor':'#882D47','width':100,'height':10, 'dx':15, 'dy':450, 'handles':'all', 'preserveRatio':false},
+        'btn-north'   :{'bgcolor':'#88472D','width':50, 'height':50, 'dx':575,'dy':400, 'handles':'all', 'preserveRatio':true},
+        'btn-overview':{'bgcolor':'#47882D','width':161,'height':100,'dx':525,'dy':450, 'handles':'all', 'preserveRatio':true},
+        'btn-legend'  :{'bgcolor':'#472D88','width':100,'height':150,'dx':525,'dy':50,  'handles':'all', 'preserveRatio':false}
     },
     'page' : {
-        'btn-map'    :{'bgcolor':'#47882D','width':475,'height':294,'dx':0, 'dy':150,  'handles':'all', 'preserveRatio':true},
-        'btn-title'  :{'bgcolor':'#2D8847','width':250,'height':30, 'dx':120,'dy':10,  'handles':'e w', 'preserveRatio':false},
-        'btn-comment':{'bgcolor':'#666666','width':150,'height':45, 'dx':0, 'dy':470, 'handles':'e w', 'preserveRatio':false},
-        'btn-image'  :{'bgcolor':'#2D4788','width':40, 'height':40, 'dx':0, 'dy':10,  'handles':'all', 'preserveRatio':false},
-        'btn-scale'  :{'bgcolor':'#882D47','width':100,'height':10, 'dx':0, 'dy':450, 'handles':'all', 'preserveRatio':false},
-        'btn-north'  :{'bgcolor':'#88472D','width':50, 'height':50, 'dx':425,'dy':394, 'handles':'all', 'preserveRatio':true},
-        'btn-legend' :{'bgcolor':'#472D88','width':100,'height':150,'dx':375,'dy':150,  'handles':'all', 'preserveRatio':false}
+        'btn-map'     :{'bgcolor':'#47882D','width':475,'height':294,'dx':0,  'dy':150, 'handles':'all', 'preserveRatio':true},
+        'btn-title'   :{'bgcolor':'#2D8847','width':250,'height':30, 'dx':120,'dy':10,  'handles':'e w', 'preserveRatio':false},
+        'btn-comment' :{'bgcolor':'#666666','width':150,'height':45, 'dx':0,  'dy':470, 'handles':'e w', 'preserveRatio':false},
+        'btn-image'   :{'bgcolor':'#2D4788','width':40, 'height':40, 'dx':0,  'dy':10,  'handles':'all', 'preserveRatio':false},
+        'btn-scale'   :{'bgcolor':'#882D47','width':100,'height':10, 'dx':0,  'dy':444, 'handles':'all', 'preserveRatio':false},
+        'btn-north'   :{'bgcolor':'#88472D','width':50, 'height':50, 'dx':425,'dy':394, 'handles':'all', 'preserveRatio':true},
+        'btn-overview':{'bgcolor':'#47882D','width':161,'height':100,'dx':314,'dy':444, 'handles':'all', 'preserveRatio':true},
+        'btn-legend'  :{'bgcolor':'#472D88','width':100,'height':150,'dx':375,'dy':150, 'handles':'all', 'preserveRatio':false}
     }
 };
+
+var formconfigs = {
+    'btn-map'     :[],
+    'btn-title'   :[],
+    'btn-comment' :[],
+    'btn-image'   :[],
+    'btn-scale'   :[],
+    'btn-north'   :[],
+    'btn-overview':[],
+    'btn-legend'  :[]
+};
+
 var nimg = 0;
 //sizes are calculated with an overhead of 
 //  - 104px for width (left panel + borders)
@@ -34,13 +48,14 @@ var orientationSizes = {
 PrintTemplate = Ext.extend(Ext.Component, {
     format: 'A3',
     components: [
-        {'id':'btn-map','text':'Map','width':'100','height':'100','cls':'bmap'},
-        {'id':'btn-title','text':'Title','width':'100','height':'100','cls':'btitle'},
-        {'id':'btn-comment','text':'Comment','width':'100','height':'100','cls':'bcomment'},
-        {'id':'btn-image','text':'Image','width':'100','height':'100','cls':'bimage'},
-        {'id':'btn-scale','text':'Scale','width':'100','height':'100','cls':'bscale'},
-        {'id':'btn-north','text':'North','width':'100','height':'100','cls':'bnorth'},
-        {'id':'btn-legend','text':'Legend','width':'100','height':'100','cls':'blegend'}
+        {'id':'btn-map',     'text':'Map',     'width':'100','height':'100','cls':'bmap'},
+        {'id':'btn-title',   'text':'Title',   'width':'100','height':'100','cls':'btitle'},
+        {'id':'btn-comment', 'text':'Comment', 'width':'100','height':'100','cls':'bcomment'},
+        {'id':'btn-image',   'text':'Image',   'width':'100','height':'100','cls':'bimage'},
+        {'id':'btn-scale',   'text':'Scale',   'width':'100','height':'100','cls':'bscale'},
+        {'id':'btn-north',   'text':'North',   'width':'100','height':'100','cls':'bnorth'},
+        {'id':'btn-overview','text':'Overview','width':'100','height':'100','cls':'bmap'},
+        {'id':'btn-legend',  'text':'Legend',  'width':'100','height':'100','cls':'blegend'}
     ],
     win: null,
     pnlLayout: null,
@@ -76,7 +91,6 @@ PrintTemplate = Ext.extend(Ext.Component, {
             width    : 904,
             height   : 624,
             //modal    : true,
-            //border : false,
             plain    : true,
             layout   : 'border',
             bbar     : ['->',
@@ -150,7 +164,6 @@ PrintTemplate = Ext.extend(Ext.Component, {
                     enableToggle  : true,
                     toggleHandler   : function(btn, state){
                         if(!state) {
-                            Ext.get('printTpl'+ btn.tooltip).remove();
                             PrintTemplateMgr.removeFromJson('printTpl'+ btn.tooltip);
                         } else {
                             var orientation = Ext.getCmp('printTplChkLandscape').checked ? 'landscape' : 'page';
