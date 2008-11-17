@@ -24,16 +24,134 @@ var defaultParams = {
         'btn-legend'  :{'bgcolor':'#472D88','width':100,'height':150,'dx':375,'dy':150, 'handles':'all', 'preserveRatio':false}
     }
 };
+var cmbFonts = new Ext.form.ComboBox({
+    id             : 'printTplCmbFonts',
+    width          : 70,
+    store          : new Ext.data.SimpleStore({
+        fields: ['name','value'],
+        data  : [
+            ['Courrier','Courrier'],
+            ['Helvetica','Helvetica'],
+            ['Times','Times'],
+            ['Symbol','Symbol'],
+            ['ZapfDingbats','ZapfDingbats']
+        ]}),
+    displayField   : 'name',
+    typeAhead      : true,
+    mode           : 'local',
+    triggerAction  : 'all',
+    selectOnFocus  : true,
+    forceSelection : true,
+    value          : 'Helvetica'
+});
+var cmbFontDecos = new Ext.form.ComboBox({
+    id             : 'printTplCmbFontDecos',
+    width          : 70,
+    store          : new Ext.data.SimpleStore({
+        fields: ['name','value'],
+        data  : [
+            ['Bold','Bold'],
+            ['Oblique','Oblique'],
+            ['BoldOblique','BoldOblique']
+        ]}),
+    displayField   : 'name',
+    typeAhead      : true,
+    mode           : 'local',
+    triggerAction  : 'all',
+    selectOnFocus  : true,
+    forceSelection : false
+});
+var cmbPrintUnits = new Ext.form.ComboBox({
+    id             : 'printTplCmbPrintUnits',
+    width          : 70,
+    store          : new Ext.data.SimpleStore({
+        fields: ['name','value'],
+        data  : [
+            ['m','m'],
+            ['ft','ft'],
+            ['degrees','degrees']
+        ]}),
+    displayField   : 'name',
+    typeAhead      : true,
+    mode           : 'local',
+    triggerAction  : 'all',
+    selectOnFocus  : true,
+    forceSelection : true,
+    value          : 'm'
+});
+var cmbScaleTypes = new Ext.form.ComboBox({
+    id             : 'printTplCmbPrintUnits',
+    width          : 70,
+    store          : new Ext.data.SimpleStore({
+        fields: ['name','value'],
+        data  : [
+            ['line','line'],
+            ['bar','bar'],
+            ['bar_sub','bar_sub']
+        ]}),
+    displayField   : 'name',
+    typeAhead      : true,
+    mode           : 'local',
+    triggerAction  : 'all',
+    selectOnFocus  : true,
+    forceSelection : true,
+    value          : 'line'
+});
 
 var formconfigs = {
-    'btn-map'     :[],
-    'btn-title'   :[],
-    'btn-comment' :[],
-    'btn-image'   :[],
-    'btn-scale'   :[],
-    'btn-north'   :[],
-    'btn-overview':[],
-    'btn-legend'  :[]
+    'btn-map'     :[
+        {name: 'map',xtype:'textfield',value:'map'}
+    ],
+    'btn-title'   :[
+        {font: 'Helvetica'},
+        {name:'fontSize',xtype:'numberfield',value: 12},
+        {fontColor: 'black'},
+        {backgroundColor: '#FFFFFF'}
+    ],
+    'btn-comment' :[
+        {font: 'Helvetica'},
+        {name:'fontSize',xtype:'numberfield',value: 12},
+        {fontColor: 'black'},
+        {backgroundColor: '#FFFFFF'}
+    ],
+    'btn-image'   :[
+        {backgroundColor: '#FFFFFF'}
+    ],
+    'btn-scale'   :[
+        {type: 'line'},
+        {intervals: 3},
+        {subIntervals: false},
+        {units: 'm'},
+        {barSize: 5},
+        {lineWidth: 1},
+        {barDirection: 'up'},
+        {textDirection: 'up'},
+        {labelDistance: 3},
+        {font: 'Helvetica'},
+        {fontSize: 12},
+        {fontColor: 'black'},
+        {color: '#000000'},
+        {barBgColor: null}
+    ],
+    'btn-north'   :[
+        {backgroundColor: '#FFFFFF'},
+        {image: 'default'}
+    ],
+    'btn-overview':[
+        {name:'overviewmap',xtype:'numberfield',value: 2},
+    ],
+    'btn-legend'  :[
+        {maxIconWidth: 8},
+        {maxIconHeight: 8},
+        {classIndentation: 20},
+        {layerSpace: 5},
+        {classSpace: 2},
+        {backgroundColor: '#FFFFFF'},
+        {layerFont: 'Helvetica'},
+        {layerFontSize: 10},
+        {classFont: 'Helvetica'},
+        {classFontSize: 8}
+    ]
 };
 
 var nimg = 0;
@@ -85,15 +203,16 @@ PrintTemplate = Ext.extend(Ext.Component, {
         }); 
 
         this.win = new Ext.Window({
-            id       : 'printTplLayoutWin',
-            title    : 'Layout',
-            resizable: false,
-            width    : 904,
-            height   : 624,
-            //modal    : true,
-            plain    : true,
-            layout   : 'border',
-            bbar     : ['->',
+            id          : 'printTplLayoutWin',
+            title       : 'Layout',
+            resizable   : false,
+            width       : 904,
+            height      : 624,
+            closeAction : 'hide',
+            //modal     : true,
+            plain       : true,
+            layout      : 'border',
+            bbar        : ['->',
                 {
                     text    : 'Reset',
                     cls     : 'x-btn-text-icon',
@@ -110,7 +229,7 @@ PrintTemplate = Ext.extend(Ext.Component, {
                     }
                 }
             ],
-            items    : [pnlComponents, this.pnlLayout]
+            items       : [pnlComponents, this.pnlLayout]
         });
 
     },
