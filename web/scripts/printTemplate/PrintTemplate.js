@@ -2,157 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-var defaultParams = {
-    'landscape' : {
-        'btn-map'     :{'bgcolor':'#47882D','width':646,'height':400,'dx':15, 'dy':50,  'handles':'all', 'preserveRatio':true},
-        'btn-title'   :{'bgcolor':'#2D8847','width':250,'height':30, 'dx':220,'dy':10,  'handles':'e w', 'preserveRatio':false},
-        'btn-comment' :{'bgcolor':'#666666','width':150,'height':45, 'dx':15, 'dy':470, 'handles':'e w', 'preserveRatio':false},
-        'btn-image'   :{'bgcolor':'#2D4788','width':40, 'height':40, 'dx':15, 'dy':10,  'handles':'all', 'preserveRatio':false},
-        'btn-scale'   :{'bgcolor':'#882D47','width':100,'height':10, 'dx':15, 'dy':450, 'handles':'all', 'preserveRatio':false},
-        'btn-north'   :{'bgcolor':'#88472D','width':50, 'height':50, 'dx':575,'dy':400, 'handles':'all', 'preserveRatio':true},
-        'btn-overview':{'bgcolor':'#47882D','width':161,'height':100,'dx':525,'dy':450, 'handles':'all', 'preserveRatio':true},
-        'btn-legend'  :{'bgcolor':'#472D88','width':100,'height':150,'dx':525,'dy':50,  'handles':'all', 'preserveRatio':false}
-    },
-    'page' : {
-        'btn-map'     :{'bgcolor':'#47882D','width':475,'height':294,'dx':0,  'dy':150, 'handles':'all', 'preserveRatio':true},
-        'btn-title'   :{'bgcolor':'#2D8847','width':250,'height':30, 'dx':120,'dy':10,  'handles':'e w', 'preserveRatio':false},
-        'btn-comment' :{'bgcolor':'#666666','width':150,'height':45, 'dx':0,  'dy':470, 'handles':'e w', 'preserveRatio':false},
-        'btn-image'   :{'bgcolor':'#2D4788','width':40, 'height':40, 'dx':0,  'dy':10,  'handles':'all', 'preserveRatio':false},
-        'btn-scale'   :{'bgcolor':'#882D47','width':100,'height':10, 'dx':0,  'dy':444, 'handles':'all', 'preserveRatio':false},
-        'btn-north'   :{'bgcolor':'#88472D','width':50, 'height':50, 'dx':425,'dy':394, 'handles':'all', 'preserveRatio':true},
-        'btn-overview':{'bgcolor':'#47882D','width':161,'height':100,'dx':314,'dy':444, 'handles':'all', 'preserveRatio':true},
-        'btn-legend'  :{'bgcolor':'#472D88','width':100,'height':150,'dx':375,'dy':150, 'handles':'all', 'preserveRatio':false}
-    }
-};
-var cmbFonts = new Ext.form.ComboBox({
-    id             : 'printTplCmbFonts',
-    width          : 70,
-    store          : new Ext.data.SimpleStore({
-        fields: ['name','value'],
-        data  : [
-            ['Courrier','Courrier'],
-            ['Helvetica','Helvetica'],
-            ['Times','Times'],
-            ['Symbol','Symbol'],
-            ['ZapfDingbats','ZapfDingbats']
-        ]}),
-    displayField   : 'name',
-    typeAhead      : true,
-    mode           : 'local',
-    triggerAction  : 'all',
-    selectOnFocus  : true,
-    forceSelection : true,
-    value          : 'Helvetica'
-});
-var cmbFontDecos = new Ext.form.ComboBox({
-    id             : 'printTplCmbFontDecos',
-    width          : 70,
-    store          : new Ext.data.SimpleStore({
-        fields: ['name','value'],
-        data  : [
-            ['Bold','Bold'],
-            ['Oblique','Oblique'],
-            ['BoldOblique','BoldOblique']
-        ]}),
-    displayField   : 'name',
-    typeAhead      : true,
-    mode           : 'local',
-    triggerAction  : 'all',
-    selectOnFocus  : true,
-    forceSelection : false
-});
-var cmbPrintUnits = new Ext.form.ComboBox({
-    id             : 'printTplCmbPrintUnits',
-    width          : 70,
-    store          : new Ext.data.SimpleStore({
-        fields: ['name','value'],
-        data  : [
-            ['m','m'],
-            ['ft','ft'],
-            ['degrees','degrees']
-        ]}),
-    displayField   : 'name',
-    typeAhead      : true,
-    mode           : 'local',
-    triggerAction  : 'all',
-    selectOnFocus  : true,
-    forceSelection : true,
-    value          : 'm'
-});
-var cmbScaleTypes = new Ext.form.ComboBox({
-    id             : 'printTplCmbPrintUnits',
-    width          : 70,
-    store          : new Ext.data.SimpleStore({
-        fields: ['name','value'],
-        data  : [
-            ['line','line'],
-            ['bar','bar'],
-            ['bar_sub','bar_sub']
-        ]}),
-    displayField   : 'name',
-    typeAhead      : true,
-    mode           : 'local',
-    triggerAction  : 'all',
-    selectOnFocus  : true,
-    forceSelection : true,
-    value          : 'line'
-});
-
-var formconfigs = {
-    'btn-map'     :[
-        {name: 'map',xtype:'textfield',value:'map'}
-    ],
-    'btn-title'   :[
-        {font: 'Helvetica'},
-        {name:'fontSize',xtype:'numberfield',value: 12},
-        {fontColor: 'black'},
-        {backgroundColor: '#FFFFFF'}
-    ],
-    'btn-comment' :[
-        {font: 'Helvetica'},
-        {name:'fontSize',xtype:'numberfield',value: 12},
-        {fontColor: 'black'},
-        {backgroundColor: '#FFFFFF'}
-    ],
-    'btn-image'   :[
-        {backgroundColor: '#FFFFFF'}
-    ],
-    'btn-scale'   :[
-        {type: 'line'},
-        {intervals: 3},
-        {subIntervals: false},
-        {units: 'm'},
-        {barSize: 5},
-        {lineWidth: 1},
-        {barDirection: 'up'},
-        {textDirection: 'up'},
-        {labelDistance: 3},
-        {font: 'Helvetica'},
-        {fontSize: 12},
-        {fontColor: 'black'},
-        {color: '#000000'},
-        {barBgColor: null}
-    ],
-    'btn-north'   :[
-        {backgroundColor: '#FFFFFF'},
-        {image: 'default'}
-    ],
-    'btn-overview':[
-        {name:'overviewmap',xtype:'numberfield',value: 2},
-    ],
-    'btn-legend'  :[
-        {maxIconWidth: 8},
-        {maxIconHeight: 8},
-        {classIndentation: 20},
-        {layerSpace: 5},
-        {classSpace: 2},
-        {backgroundColor: '#FFFFFF'},
-        {layerFont: 'Helvetica'},
-        {layerFontSize: 10},
-        {classFont: 'Helvetica'},
-        {classFontSize: 8}
-    ]
-};
 
 var nimg = 0;
 //sizes are calculated with an overhead of 
@@ -286,7 +135,7 @@ PrintTemplate = Ext.extend(Ext.Component, {
                             PrintTemplateMgr.removeFromJson('printTpl'+ btn.tooltip);
                         } else {
                             var orientation = Ext.getCmp('printTplChkLandscape').checked ? 'landscape' : 'page';
-                            PrintTemplateMgr.createComponent(btn, defaultParams[orientation][btn.id], null, null);
+                            PrintTemplateMgr.createComponent(btn, orientation, null, null);
                         }
                     }
                 }));
@@ -299,7 +148,7 @@ PrintTemplate = Ext.extend(Ext.Component, {
                         Ext.Msg.prompt('Image URL', 'Please enter url for image:', function(bouton, text){
                             if (bouton == 'ok'){
                                 var orientation = Ext.getCmp('printTplChkLandscape').checked ? 'landscape' : 'page';
-                                nimg = PrintTemplateMgr.createComponent(btn, defaultParams[orientation][btn.id], text, nimg);
+                                nimg = PrintTemplateMgr.createComponent(btn, orientation, text, nimg);
                             }
                         });
                     }
