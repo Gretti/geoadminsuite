@@ -19,6 +19,7 @@
         <link rel="stylesheet" type="text/css" href="scripts/colorpicker/assets/skins/sam/colorpicker-skin.css">
         <link rel="stylesheet" type="text/css" href="styles/layouts.css">
         <link rel="stylesheet" type="text/css" href="scripts/printTemplate/PrintTemplate.css">
+        <link rel="stylesheet" type="text/css" href="scripts/printTemplate/ext.ux.ColorField.css" />
         
         <logic:notEqual parameter="debug" value="true">
             <!-- Ext css --> 
@@ -56,6 +57,7 @@
         <script type="text/javascript" src="scripts/Utils.js"></script>
         <script type="text/javascript" src="scripts/GeneralLayout.js"></script>
         <script type="text/javascript" src="scripts/Host.js"></script>
+        <script type="text/javascript" src="scripts/printTemplate/ext.ux.ColorField.js"></script>
         <script language="javascript" src="scripts/printTemplate/PrintTemplateMgr.js"></script>
         <script language="javascript" src="scripts/printTemplate/PrintTemplate.js"></script>
         
@@ -69,6 +71,7 @@
         <script type="text/javascript">
             Ext.BLANK_IMAGE_URL = 'scripts/refexportfiles/resources/images/default/s.gif';
             var i18n = <bean:write name="I18N" scope="request" filter="false"/>;
+            var colorFieldImagePath = 'scripts/printTemplate/images/';
             Ext.onReady(function() {
                 GeneralLayout.init();
                 //GeneralLayout.printurl='http://localhost:8084/geoadminsuite/pdf/info.json';
@@ -106,24 +109,22 @@
             <div id="confApp" style="width:600px;"></div>
             <div id="frmServer" style="width:600px;"></div>
             <script type="text/javascript">
-                <!--
                 var hostList = [];
                 var initialHostList = [];
-                <logic:iterate id="host" name="listHostDescriptorBean" property="listHostDescriptor" indexId="cntDs">
-                    var curhost = new Host ({
-                        type:      '<bean:write name="host" property="type"/>',
-                        recurse:   '<bean:write name="host" property="recurse"/>',
-                        name:      '<bean:write name="host" property="name"/>',
-                        path:      '<bean:write name="host" property="path"/>',
-                        port:      '<bean:write name="host" property="port"/>',
-                        uname:     '<bean:write name="host" property="uname"/>',
-                        upwd:      '<bean:write name="host" property="upwd"/>',
-                        instance:  '<bean:write name="host" property="instance"/>'
-                    });
-                    hostList[hostList.length] = curhost;
-                    initialHostList[initialHostList.length] = curhost;
-                </logic:iterate>
-                    //-->
+                    <logic:iterate id="host" name="listHostDescriptorBean" property="listHostDescriptor" indexId="cntDs">
+                        var curhost = new Host ({
+                            type:      '<bean:write name="host" property="type"/>',
+                            recurse:   '<bean:write name="host" property="recurse"/>',
+                            name:      '<bean:write name="host" property="name"/>',
+                            path:      '<bean:write name="host" property="path"/>',
+                            port:      '<bean:write name="host" property="port"/>',
+                            uname:     '<bean:write name="host" property="uname"/>',
+                            upwd:      '<bean:write name="host" property="upwd"/>',
+                            instance:  '<bean:write name="host" property="instance"/>'
+                        });
+                        hostList[hostList.length] = curhost;
+                        initialHostList[initialHostList.length] = curhost;
+                    </logic:iterate>
             </script>                
         </div>
         <div id="catalog">

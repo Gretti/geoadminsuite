@@ -123,6 +123,7 @@ PrintTemplate = Ext.extend(Ext.Component, {
         }));
 
         //Buttons
+        var orientation = Ext.getCmp('printTplChkLandscape').checked ? 'landscape' : 'page';
         for (var i = 0; i < this.components.length; i++) {
             if(this.components[i].id != 'btn-image') {
                 comps.push(new Ext.Button({
@@ -134,7 +135,6 @@ PrintTemplate = Ext.extend(Ext.Component, {
                         if(!state) {
                             PrintTemplateMgr.removeFromJson('printTpl'+ btn.tooltip);
                         } else {
-                            var orientation = Ext.getCmp('printTplChkLandscape').checked ? 'landscape' : 'page';
                             PrintTemplateMgr.createComponent(btn, orientation, null, null);
                         }
                     }
@@ -145,9 +145,8 @@ PrintTemplate = Ext.extend(Ext.Component, {
                     tooltip       : this.components[i].text,
                     iconCls       : this.components[i].cls,
                     handler   : function(btn){
-                        Ext.Msg.prompt('Image URL', 'Please enter url for image:', function(bouton, text){
+                        Ext.Msg.prompt('Image URL', 'Please enter an url for the image to add :', function(bouton, text){
                             if (bouton == 'ok'){
-                                var orientation = Ext.getCmp('printTplChkLandscape').checked ? 'landscape' : 'page';
                                 nimg = PrintTemplateMgr.createComponent(btn, orientation, text, nimg);
                             }
                         });
