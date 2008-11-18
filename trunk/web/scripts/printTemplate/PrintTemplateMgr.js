@@ -24,15 +24,12 @@ var defaultParams = {
         'btn-legend'  :{'bgcolor':'#472D88','width':100,'height':150,'dx':375,'dy':150, 'handles':'all', 'preserveRatio':false}
     }
 };
-function getCmbsFonts (cmbid,cmbname,cmblabel){
-    if(cmbid == null) cmbid='printTplCmbFonts';
-    if(cmbname == null) cmbname='cmbFont';
-    if(cmblabel == null) cmblabel='Font';
+function getCmbsFonts (cmbname,cmblabel){
     return [
-        new Ext.form.ComboBox({
-            id             : cmbid,
+        {
+            xtype          : 'combo',
             fieldLabel     : cmblabel,
-            'name'         : cmbname,
+            name         : cmbname,
             width          : 90,
             store          : new Ext.data.SimpleStore({
                 fields: ['name','value'],
@@ -50,11 +47,10 @@ function getCmbsFonts (cmbid,cmbname,cmblabel){
             selectOnFocus  : true,
             forceSelection : true,
             value          : 'Helvetica'
-        }),
-        new Ext.form.ComboBox({
-            id             : cmbid + 'Decos',
+        },{
+            xtype          : 'combo',
             fieldLabel     : cmblabel + ' style',
-            'name'         : cmbname + 'decos',
+            'name'         : cmbname + 'Style',
             width          : 90,
             store          : new Ext.data.SimpleStore({
                 fields: ['name','value'],
@@ -71,93 +67,135 @@ function getCmbsFonts (cmbid,cmbname,cmblabel){
             selectOnFocus  : true,
             forceSelection : true,
             value          : 'None'
-        })
+        }
     ];
 }
-var cmbPrintUnits = new Ext.form.ComboBox({
-    id             : 'printTplCmbPrintUnits',
-    fieldLabel     : 'Units',
-    width          : 70,
-    store          : new Ext.data.SimpleStore({
-        fields: ['name','value'],
-        data  : [
-            ['meters','m'],
-            ['feet','ft'],
-            ['degrees','degrees']
-        ]}),
-    displayField   : 'name',
-    typeAhead      : true,
-    mode           : 'local',
-    triggerAction  : 'all',
-    selectOnFocus  : true,
-    forceSelection : true,
-    value          : 'm'
-});
-var cmbScaleTypes = new Ext.form.ComboBox({
-    id             : 'printTplCmbScaleTypes',
-    fieldLabel     : 'Type',
-    width          : 70,
-    store          : new Ext.data.SimpleStore({
-        fields: ['name','value'],
-        data  : [
-            ['line','line'],
-            ['bar','bar'],
-            ['bar_sub','bar_sub']
-        ]}),
-    displayField   : 'name',
-    typeAhead      : true,
-    mode           : 'local',
-    triggerAction  : 'all',
-    selectOnFocus  : true,
-    forceSelection : true,
-    value          : 'line'
-});
 
+//Items to push in the configuration form for components. The field's name MUST
+//match real yaml keys as servlet will just wrap key: value in the yaml string.
 var formconfigs = {
     'btn-map'     :[
-        {name: 'map',value:'map',xtype:'textfield',fieldLabel:'PDF layer name)'}
+        {name: 'name',value:'map',xtype:'textfield',fieldLabel:'PDF layer name'}
     ],
     'btn-title'   :[
-        getCmbsFonts('printTplCmbTitleFonts','titleFonts','Font')[0],
-        getCmbsFonts('printTplCmbTitleFonts','titleFonts','Font')[1],
+        getCmbsFonts('font','Font')[0],
+        getCmbsFonts('font','Font')[1],
         {name:'fontSize',value: 12, fieldLabel:'Font size'},
-        {name: 'fontColor',value:'#000000',xtype:'textfield',fieldLabel:'Font color'},
-        {name: 'backgroundColor',value:'#FFFFFF',xtype:'textfield',fieldLabel:'Background'}
+        {xtype:'colorfield',name: 'fontColor',fieldLabel: 'Font color', value: '#000000'},
+        {xtype:'colorfield',name: 'backgroundColor',fieldLabel: 'Background', value: '#FFFFFF'}
     ],
     'btn-comment' :[
-        getCmbsFonts('printTplCmbCommentFonts','commentFonts','Font')[0],
-        getCmbsFonts('printTplCmbCommentFonts','commentFonts','Font')[1],
+        getCmbsFonts('font','Font')[0],
+        getCmbsFonts('font','Font')[1],
         {name:'fontSize',value: 12, fieldLabel:'Font size'},
-        {name: 'fontColor',value:'#000000',xtype:'textfield',fieldLabel:'Font color'},
-        {name: 'backgroundColor',value:'#FFFFFF',xtype:'textfield',fieldLabel:'Background'}
+        {xtype:'colorfield',name: 'fontColor',fieldLabel: 'Font color', value: '#000000'},
+        {xtype:'colorfield',name: 'backgroundColor',fieldLabel: 'Background', value: '#FFFFFF'}
     ],
     'btn-image'   :[
-        {name: 'backgroundColor',value:'#FFFFFF',xtype:'textfield',fieldLabel:'Background'}
+        {xtype:'colorfield',name: 'backgroundColor',fieldLabel: 'Background', value: '#FFFFFF'}
     ],
     'btn-scale'   :[
-        cmbScaleTypes,
-        getCmbsFonts('printTplCmbScaleFonts','scaleFonts','Font')[0],
-        getCmbsFonts('printTplCmbScaleFonts','scaleFonts','Font')[1],
+        {
+            xtype          : 'combo',
+            fieldLabel     : 'Type',
+            name           : 'type',
+            width          : 70,
+            store          : new Ext.data.SimpleStore({
+                fields: ['name','value'],
+                data  : [
+                    ['line','line'],
+                    ['bar','bar'],
+                    ['bar_sub','bar_sub']
+                ]}),
+            displayField   : 'name',
+            typeAhead      : true,
+            mode           : 'local',
+            triggerAction  : 'all',
+            selectOnFocus  : true,
+            forceSelection : true,
+            value          : 'line'
+        },
+        getCmbsFonts('font','Font')[0],
+        getCmbsFonts('font','Font')[1],
         {name:'fontSize',value: 12, fieldLabel:'Font size'},
         {name:'scaleIntervals',value: 3, fieldLabel:'Intervals'},
-        new Ext.form.Checkbox({
-            id        : 'printTplChkSubInt',
-            boxLabel  : 'Sub intervals',
+        {
+            xtype      : 'checkbox',
+            fieldLabel: 'Sub intervals',
             checked   : false
-        }),
-        cmbPrintUnits,
+        },
+        {
+            xtype          : 'combo',
+            name           : 'units',
+            fieldLabel     : 'Units',
+            width          : 70,
+            store          : new Ext.data.SimpleStore({
+                fields: ['name','value'],
+                data  : [
+                    ['meters','m'],
+                    ['feet','ft'],
+                    ['degrees','degrees']
+                ]}),
+            displayField   : 'name',
+            typeAhead      : true,
+            mode           : 'local',
+            triggerAction  : 'all',
+            selectOnFocus  : true,
+            forceSelection : true,
+            value          : 'm'
+        },
         {name:'barSize',value: 5, fieldLabel:'Bar size'},
         {name:'lineWidth',value: 1, fieldLabel:'LineWidth'},
-        {barDirection: 'up'},
-        {textDirection: 'up'},
+        {
+            xtype          : 'combo',
+            name           : 'barDirection',
+            fieldLabel     : 'Bar direction',
+            width          : 70,
+            store          : new Ext.data.SimpleStore({
+                fields: ['name','value'],
+                data  : [
+                    ['up','right'],
+                    ['down','right'],
+                    ['left','right'],
+                    ['right','right']
+                ]}),
+            displayField   : 'name',
+            typeAhead      : true,
+            mode           : 'local',
+            triggerAction  : 'all',
+            selectOnFocus  : true,
+            forceSelection : true,
+            value          : 'up'
+        },
+        {
+            xtype          : 'combo',
+            name           : 'textDirection',
+            fieldLabel     : 'Text direction',
+            width          : 70,
+            store          : new Ext.data.SimpleStore({
+                fields: ['name','value'],
+                data  : [
+                    ['up','right'],
+                    ['down','right'],
+                    ['left','right'],
+                    ['right','right']
+                ]}),
+            displayField   : 'name',
+            typeAhead      : true,
+            mode           : 'local',
+            triggerAction  : 'all',
+            selectOnFocus  : true,
+            forceSelection : true,
+            value          : 'up'
+        },
         {name:'labelDistance',value: 3, fieldLabel:'LineWidth'},
-        {name: 'fontColor',value:'#000000',xtype:'textfield',fieldLabel:'Font color'},
-        {name: 'color',value:'#000000',xtype:'textfield',fieldLabel:'Color'},
-        {name: 'barBgColor',value:'',xtype:'textfield',fieldLabel:'Bar Background'}
+        {xtype:'colorfield',name: 'fontColor',fieldLabel: 'Font color', value: '#000000'},
+        {xtype:'colorfield',name: 'color',fieldLabel: 'Color', value: '#000000'},
+        {xtype:'colorfield',name: 'barBgColor',fieldLabel: 'Background', value: '#FFFFFF'}
     ],
     'btn-north'   :[
-        {name: 'backgroundColor',value:'#FFFFFF',xtype:'textfield',fieldLabel:'Background'},
-        {name: 'Image',value:'default',xtype:'textfield',fieldLabel:'Image'}
+        {xtype:'colorfield',name: 'barckgroundColor',fieldLabel: 'Background', value: '#FFFFFF'},
+        {name: 'northimage',value:'default',xtype:'textfield',fieldLabel:'Image'}
     ],
     'btn-overview':[
         {name:'overviewmap',value: 2,fieldLabel:'Scale factor'},
@@ -168,12 +206,10 @@ var formconfigs = {
         {name:'classIndentation',value: 20, fieldLabel:'Class identation'},
         {name:'layerSpace',value: 5, fieldLabel:'Layer space'},
         {name:'classSpace',value: 2, fieldLabel:'Class space'},
-        {name: 'backgroundColor',value:'#FFFFFF',xtype:'textfield',fieldLabel:'Background'},
-        getCmbsFonts('printTplCmbLayerFonts','layerFonts','Layer font')[0],
-        getCmbsFonts('printTplCmbLayerFonts','layerFonts','Layer font')[1],
+        {xtype:'colorfield',name: 'barckgroundColor',fieldLabel: 'Background', value: '#FFFFFF'},
+        getCmbsFonts('layerFont','Layer font')[0],
         {name:'layerFontSize',value: 12, fieldLabel:'Layer font size'},
-        getCmbsFonts('printTplCmbClassFonts','classFonts','Class font')[0],
-        getCmbsFonts('printTplCmbClassFonts','classFonts','Class font')[1],
+        getCmbsFonts('classFont','Class font')[0],
         {name:'classFontSize',value: 8, fieldLabel:'Class font size'},
     ]
 };
@@ -183,7 +219,6 @@ PrintTemplateMgr =
     return {
         printWin     : null,
         jsonOutput   : null,
-        currentComp  : null,
         updateJsonFormat: function (format) {
             var json = this.printWin.json;
             json.layout = format;
@@ -232,14 +267,33 @@ PrintTemplateMgr =
             var width = el.getWidth();
             var height = el.getHeight();
             url = url != null ? url : "";
-            
-            json.components[curid] = {
-                'dX'    : Math.round((left - refLeft)*100/refWidth)/100,
-                'dY'    : Math.round((refBottom - top)*100/refHeight)/100,
-                'width' : Math.round(width * 100 / refWidth)/100,
-                'height': Math.round(height * 100 /refHeight)/100,
-                'url'   : url
-            };
+            if(json.components[curid] == null) {
+                json.components[curid] = {
+                    'dX'        : Math.round((left - refLeft)*100/refWidth)/100,
+                    'dY'        : Math.round((refBottom - top)*100/refHeight)/100,
+                    'width'     : Math.round(width * 100 / refWidth)/100,
+                    'height'    : Math.round(height * 100 /refHeight)/100,
+                    'url'       : url
+                };
+            } else {
+                json.components[curid]['dX'] = Math.round((left - refLeft)*100/refWidth)/100;
+                json.components[curid]['dY'] = Math.round((refBottom - top)*100/refHeight)/100;
+                json.components[curid]['width'] = Math.round(width * 100 / refWidth)/100;
+                json.components[curid]['height']= Math.round(height * 100 /refHeight)/100;
+                json.components[curid]['url']   = url;
+            }
+            if(PrintTemplateMgr.jsonOutput != null) {
+                try {
+                    this.jsonOutput.setValue(Ext.util.JSON.encode(json));
+                } catch(err) {
+                    this.jsonOutput.value = Ext.util.JSON.encode(json);
+                }
+            }
+            return json;
+        },
+        updateJsonValues: function (id,values) {
+            var json = this.printWin.json;
+            json.components[id].attributes = values;
             if(PrintTemplateMgr.jsonOutput != null) {
                 try {
                     this.jsonOutput.setValue(Ext.util.JSON.encode(json));
@@ -279,20 +333,20 @@ PrintTemplateMgr =
                 }
             }
         },
-        showConfig:function(){
-            var btn = PrintTemplateMgr.currentComp;
+        showConfig:function(btn_tooltip,btn_id,nimg){
             var h = 400;
             var w = 300;
             var form = new Ext.form.FormPanel({
+                id         : 'printTplFormConfig',
                 baseCls    : 'x-plain',
                 labelWidth : 100,
                 defaultType: 'numberfield',
-                items      : formconfigs[btn.id]
+                items      : formconfigs[btn_id]
             });
 
             var window = new Ext.Window({
-                id         : 'winCompConfig',
-                title      : btn.tooltip,
+                id         : 'printTplWinConfig',
+                title      : btn_tooltip,
                 width      : w,
                 height     : h,
                 layout     : 'fit',
@@ -303,17 +357,24 @@ PrintTemplateMgr =
                 items      : form,
                 buttons    : [{
                         text: 'Apply',
-                        handler: function(){Ext.getCmp('winCompConfig').close();}
+                        handler: function(){
+                            var cmpid = 'printTpl' + btn_tooltip + (nimg == null ? '' : nimg);
+                            var vals = Ext.getCmp('printTplFormConfig').form.getValues();
+                            PrintTemplateMgr.updateJsonValues(cmpid,vals);
+                            Ext.getCmp('printTplFormConfig').destroy();
+                            Ext.getCmp('printTplWinConfig').close();
+                        }
                     },{
                         text: 'Cancel',
-                        handler: function(){Ext.getCmp('winCompConfig').close();}
+                        handler: function(){
+                            Ext.getCmp('printTplWinConfig').close();
+                        }
                     }]
             });
 
             window.show();
         },
         createComponent:function(btn,orientation,text,nimg) {
-            PrintTemplateMgr.currentComp = btn;
             var relWidth, relHeight;
             var refEl = Ext.get('printTplLayout');
             var refX = refEl.getLeft();
@@ -329,7 +390,7 @@ PrintTemplateMgr =
             refEl.createChild('<div id="printTpl' +
                 btn.tooltip + (nimg == null ? '' : nimg) + 
                 '" class="printTplbasic" style="background-color:white">' + 
-                '<span class="bcompconf" onclick="javascript:PrintTemplateMgr.showConfig();">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;' +
+                '<span class="bcompconf" onclick="javascript:PrintTemplateMgr.showConfig(\'' + btn.tooltip + '\',\'' + btn.id + '\',' + nimg + ');">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;' +
                 (nimg == null ? '' : '<span class="bcompdel" onclick="javascript:PrintTemplateMgr.removeFromJson(\'printTpl' + btn.tooltip + nimg + '\');">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;') +
                 (nimg == null ? '<span>' + btn.tooltip + '</span>' : '<span class="bimginfo" id="printTpl' + btn.tooltip + nimg + '_img">&nbsp;&nbsp;&nbsp;&nbsp;</span>') + '</div>');
             
@@ -341,8 +402,6 @@ PrintTemplateMgr =
                     dismissDelay: 5000 // auto hide after 5 seconds
                 });
             }
-
-            
             
             var elt = new Ext.Resizable('printTpl'+ btn.tooltip + (nimg == null ? '' : nimg), {
                 width         : relWidth,
