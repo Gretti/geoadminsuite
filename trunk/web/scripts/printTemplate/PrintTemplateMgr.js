@@ -1,17 +1,73 @@
-/* 
+/*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 var defaultParams = {
     'landscape' : {
-        'btn-map'     :{'bgcolor':'#47882D','width':646,'height':400,'dx':15, 'dy':50,  'handles':'all', 'preserveRatio':true},
-        'btn-title'   :{'bgcolor':'#2D8847','width':250,'height':30, 'dx':220,'dy':10,  'handles':'e w', 'preserveRatio':false},
-        'btn-comment' :{'bgcolor':'#666666','width':150,'height':45, 'dx':15, 'dy':470, 'handles':'e w', 'preserveRatio':false},
-        'btn-image'   :{'bgcolor':'#2D4788','width':40, 'height':40, 'dx':15, 'dy':10,  'handles':'all', 'preserveRatio':false},
-        'btn-scale'   :{'bgcolor':'#882D47','width':100,'height':10, 'dx':15, 'dy':450, 'handles':'all', 'preserveRatio':false},
-        'btn-north'   :{'bgcolor':'#88472D','width':50, 'height':50, 'dx':575,'dy':400, 'handles':'all', 'preserveRatio':true},
-        'btn-overview':{'bgcolor':'#47882D','width':161,'height':100,'dx':525,'dy':450, 'handles':'all', 'preserveRatio':true},
-        'btn-legend'  :{'bgcolor':'#472D88','width':100,'height':150,'dx':525,'dy':50,  'handles':'all', 'preserveRatio':false}
+        'btn-map'     :{
+            'width':'90%',
+            'height':'w*0.58',
+            'dx':'5%',
+            'dy':'middle',
+            'handles':'all',
+            'preserveRatio':true
+        },
+        'btn-title'   :{
+            'width':250,
+            'height':30,
+            'dx':'center',
+            'dy':'5%',
+            'handles':'e w',
+            'preserveRatio':false
+        },
+        'btn-comment' :{
+            'width':150,
+            'height':45,
+            'dx':'5%',
+            'dy':'bottom',
+            'handles':'e w',
+            'preserveRatio':false
+        },
+        'btn-image'   :{
+            'width':40,
+            'height':40,
+            'dx':'5%',
+            'dy':'top',
+            'handles':'all',
+            'preserveRatio':false
+        },
+        'btn-scale'   :{
+            'width':100,
+            'height':10,
+            'dx':'5%',
+            'dy':'ref-Map-under',
+            'handles':'all',
+            'preserveRatio':false
+        },
+        'btn-north'   :{
+            'width':50,
+            'height':50,
+            'dx':'ref-Map-right',
+            'dy':'ref-Map-bottom',
+            'handles':'all',
+            'preserveRatio':true
+        },
+        'btn-overview':{
+            'width':'15%',
+            'height':'w*0.58',
+            'dx':'right',
+            'dy':'bottom',
+            'handles':'all',
+            'preserveRatio':true
+        },
+        'btn-legend'  :{
+            'width':100,
+            'height':150,
+            'dx':'ref-Map-right',
+            'dy':'ref-Map-top',
+            'handles':'all',
+            'preserveRatio':false
+        }
     },
     'page' : {
         'btn-map'     :{'bgcolor':'#47882D','width':475,'height':294,'dx':0,  'dy':150, 'handles':'all', 'preserveRatio':true},
@@ -214,7 +270,7 @@ var formconfigs = {
     ]
 };
 
-PrintTemplateMgr = 
+PrintTemplateMgr =
     function(){
     return {
         printWin     : null,
@@ -252,7 +308,7 @@ PrintTemplateMgr =
             /*
              * Variables to calculate a ratio and store in json :
              *  - X and Y are upper left corner of the element calculated regarding to
-             *   bottom left corner of the page as a ratio 
+             *   bottom left corner of the page as a ratio
              *   (dX, dY / page-width and page-height)
              *  - Width and height are a strict ratio from refWidth and refHeight
              */
@@ -377,23 +433,35 @@ PrintTemplateMgr =
         createComponent:function(btn,orientation,text,nimg) {
             var relWidth, relHeight;
             var refEl = Ext.get('printTplLayout');
-            var refX = refEl.getLeft();
-            var refY = refEl.getTop();
             if(nimg!=null) {
                 var inputimg = new Image();
                 inputimg.src = text;
             }
             var params = defaultParams[orientation][btn.id];
-            
-            relWidth = params.width;
-            relHeight = params.height;
+            if(isNaN(params.width)) {
+                //percentage of container width
+                relWidth = Math.round(Ext.get('printTplContainer').getWidth() * parseInt(params.width.split("%")[0])/100);
+            } else {
+                relWidth = params.width;
+            }
+            if(isNaN(params.height)) {
+                if(params.height.indexOf("%") > -1) {
+                    //percentage of container height
+                    relHeight = Math.round(Ext.get('printTplContainer').getHeight() * parseInt(params.height.split("%")[0])/100);
+                }else if(params.height.indexOf("*") > -1) {
+                    //ratio on width
+                    relHeight = Math.round(relWidth * parseFloat(params.height.split("*")[1]));
+                }
+            } else {
+                relHeight = params.height;
+            }
             refEl.createChild('<div id="printTpl' +
-                btn.tooltip + (nimg == null ? '' : nimg) + 
-                '" class="printTplbasic" style="background-color:white">' + 
+                btn.tooltip + (nimg == null ? '' : nimg) +
+                '" class="printTplbasic" style="background-color:white">' +
                 '<span class="bcompconf" onclick="javascript:PrintTemplateMgr.showConfig(\'' + btn.tooltip + '\',\'' + btn.id + '\',' + nimg + ');">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;' +
                 (nimg == null ? '' : '<span class="bcompdel" onclick="javascript:PrintTemplateMgr.removeFromJson(\'printTpl' + btn.tooltip + nimg + '\');">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;') +
                 (nimg == null ? '<span>' + btn.tooltip + '</span>' : '<span class="bimginfo" id="printTpl' + btn.tooltip + nimg + '_img">&nbsp;&nbsp;&nbsp;&nbsp;</span>') + '</div>');
-            
+
             if(nimg != null) {
                 new Ext.ToolTip({
                     target: 'printTpl' + btn.tooltip + nimg + '_img',
@@ -402,7 +470,7 @@ PrintTemplateMgr =
                     dismissDelay: 5000 // auto hide after 5 seconds
                 });
             }
-            
+
             var elt = new Ext.Resizable('printTpl'+ btn.tooltip + (nimg == null ? '' : nimg), {
                 width         : relWidth,
                 height        : relHeight,
@@ -423,7 +491,7 @@ PrintTemplateMgr =
                     }
                 }
             });
-            
+
             elt.dd.constrainTo(Ext.get('printTplContainer'));
             elt.dd.endDrag = function(){
                 //Restores DD constraints to container
@@ -431,8 +499,84 @@ PrintTemplateMgr =
                 elt.dd.constrainTo(Ext.get('printTplContainer'));
                 PrintTemplateMgr.updateJsonComponent(Ext.get(this.id));
             };
-            elt.el.moveTo(refX + params.dx, refY + params.dy,true);
-            PrintTemplateMgr.updateJsonComponent(Ext.get('printTpl'+ btn.tooltip + (nimg == null ? '' : nimg)),refX + params.dx,refY + params.dy,text);
+            var dx = 0;
+            var dy = 0;
+            var strDx = params.dx;
+            var strDy = params.dy;
+            var refObj;
+            //Delta x calculation
+            if(isNaN(strDx)) {
+                refObj = Ext.get('printTplContainer');
+                var xref = refObj.getLeft();
+                if(strDx.indexOf("%") > -1) {
+                    //percentage of container
+                    dx = Math.round(refObj.getWidth() * parseInt(strDx.split("%")[0])/100);
+                } else {
+                    //key string for page alignement
+                    if(strDx == 'left') {
+                        dx = 0;
+                    } else if(strDx == 'center') {
+                        dx = Math.round(refObj.getWidth()/2) - Math.round(relWidth/2);
+                    } else if(strDx == 'right') {
+                        dx = refObj.getWidth() - relWidth;
+                    } else if(strDx.split('-').length > 1) {
+                        //key strings for ref-Object-alignement
+                        refObj = Ext.get('printTpl' + strDx.split('-')[1]);
+                        if(refObj != null) {
+                            xref = refObj.getLeft() - Ext.get('printTplContainer').getLeft();
+                            if(strDx.split('-')[2] == 'left') {
+                                dx = xref;
+                            } else if(strDx.split('-')[2] == 'center') {
+                                dx = xref + Math.round(refObj.getWidth()/2) - Math.round(relWidth.getWidth()/2);
+                            } else if(strDx.split('-')[2] == 'right') {
+                                dx = xref + refObj.getWidth() - relWidth;
+                            }
+                        }
+                    }
+                }
+            } else {
+                dx = strDx;
+            }
+
+
+            if(isNaN(strDy)) {
+                refObj = Ext.get('printTplContainer');
+                var yref = refObj.getTop();
+                if(strDy.indexOf("%") > -1) {
+                    //percentage of container
+                    dy = Math.round(refObj.getHeight() * parseInt(strDy.split("%")[0])/100);
+                } else {
+                    //key string for page alignement
+                    if(strDy == 'top') {
+                        dy = 0;
+                    } else if(strDy == 'middle') {
+                        dy = Math.round(refObj.getHeight()/2) - Math.round(relHeight/2);
+                    } else if(strDy == 'bottom') {
+                        dy = refObj.getHeight() - relHeight;
+                    } else if(strDy.split('-').length > 1) {
+                        //key strings for ref-Object-alignement
+                        refObj = Ext.get('printTpl' + strDy.split('-')[1]);
+                        if(refObj != null) {
+                            yref = refObj.getTop() - Ext.get('printTplContainer').getTop();
+                            if(strDy.split('-')[2] == 'top') {
+                                dy = yref;
+                            } else if(strDy.split('-')[2] == 'middle') {
+                                dy = yref + Math.round(refObj.getHeight()/2);
+                            } else if(strDy.split('-')[2] == 'bottom') {
+                                dy = yref + refObj.getHeight() - relHeight;
+                            } else if(strDy.split('-')[2] == 'under') {
+                                dy = yref + refObj.getHeight();
+                            }
+                        }
+                    }
+                }
+            } else {
+                dy = strDy;
+            }
+            var refX = Ext.get('printTplContainer').getLeft();
+            var refY = Ext.get('printTplContainer').getTop();
+            elt.el.moveTo(refX + dx, refY + dy,true);
+            PrintTemplateMgr.updateJsonComponent(Ext.get('printTpl'+ btn.tooltip + (nimg == null ? '' : nimg)),refX + dx,refY + dy,text);
             if(nimg != null) {
                 nimg++;
             }
