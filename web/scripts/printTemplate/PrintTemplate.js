@@ -1,15 +1,35 @@
-/* 
+/*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 
 var nimg = 0;
-//sizes are calculated with an overhead of 
+//sizes are calculated with an overhead of
 //  - 104px for width (left panel + borders)
 //  - 58px  for height (borders only)
 var orientationSizes = {
-    'landscape':{width:904, height:624},
-    'page'     :{width:599, height:758}
+    'landscape':{
+        width:904,
+        height:624,
+        dims:{
+            A0 : {hmargin:9,vmargin:9,width:789,height:553},
+            A1 : {hmargin:13,vmargin:13,width:785,height:549},
+            A2 : {hmargin:19,vmargin:19,width:779,height:543},
+            A3 : {hmargin:27,vmargin:27,width:771,height:535},
+            A4 : {hmargin:38,vmargin:38,width:760,height:524}
+        }
+    },
+    'page'     :{
+        width:599,
+        height:758,
+        dims:{
+            A0 : {hmargin:8,vmargin:8,width:485,height:688},
+            A1 : {hmargin:12,vmargin:12,width:481,height:684},
+            A2 : {hmargin:17,vmargin:17,width:476,height:679},
+            A3 : {hmargin:23,vmargin:23,width:470,height:673},
+            A4 : {hmargin:33,vmargin:33,width:460,height:663}
+        }
+    }
 };
 
 PrintTemplate = Ext.extend(Ext.Component, {
@@ -35,7 +55,7 @@ PrintTemplate = Ext.extend(Ext.Component, {
             bodyStyle      : {'background-color':'#CCC'},
             html           : '<div id="printTplContainer"><!--spacer--></div>'
         });
-        
+
         // Panel for the components (west)
         var itemsComponents = this.initComponents();
         var pnlComponents = new Ext.Panel({
@@ -49,7 +69,7 @@ PrintTemplate = Ext.extend(Ext.Component, {
             margins        : '3 0 3 3',
             cmargins       : '3 3 3 3',
             items          : itemsComponents
-        }); 
+        });
 
         this.win = new Ext.Window({
             id          : 'printTplLayoutWin',
@@ -102,6 +122,14 @@ PrintTemplate = Ext.extend(Ext.Component, {
             value          : 'A3',
             listeners      : {
                 'select' : function(){
+                    //resize container to reflect margins
+                    var orientation = Ext.getCmp('printTplChkLandscape').checked ? 'landscape' : 'page';
+                    var curSize = orientationSizes[orientation].dims[this.value];
+                    Ext.get('printTplContainer').dom.style.marginLeft = Math.round(curSize.hmargin/2);
+                    Ext.get('printTplContainer').dom.style.marginTop = Math.round(curSize.vmargin/2);
+                    Ext.get('printTplContainer').setWidth(curSize.width);
+                    Ext.get('printTplContainer').setHeight(curSize.height);
+                    //update json only on format key
                     PrintTemplateMgr.updateJsonFormat(this.value);
                 }
             }
@@ -116,6 +144,15 @@ PrintTemplate = Ext.extend(Ext.Component, {
                     //Resize window to reflect orientation
                     Ext.getCmp('printTplLayoutWin').setWidth(orientationSizes[orientation].width);
                     Ext.getCmp('printTplLayoutWin').setHeight(orientationSizes[orientation].height);
+                    //resize container to reflect margins
+                    var curSize = orientationSizes[orientation].dims[Ext.getCmp('printTplCmbFormat').value];
+                    console.log(curSize);
+                    if(curSize) {
+                        Ext.get('printTplContainer').dom.style.marginLeft = Math.round(curSize.hmargin/2);
+                        Ext.get('printTplContainer').dom.style.marginTop = Math.round(curSize.vmargin/2);
+                        Ext.get('printTplContainer').setWidth(curSize.width);
+                        Ext.get('printTplContainer').setHeight(curSize.height);
+                    }
                     //TODO : Should resize and move all elements that fall outside the print area
                     PrintTemplateMgr.updateJsonOrientation(orientation);
                 }
@@ -175,7 +212,7 @@ PrintTemplate = Ext.extend(Ext.Component, {
         while(Ext.get('printTplContainer').first() != null) {
             Ext.get('printTplContainer').first().remove();
         }
-                
+
         PrintTemplateMgr.resetJson();
         this.win.hide();
     }

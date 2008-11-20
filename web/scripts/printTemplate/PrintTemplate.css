@@ -15,13 +15,12 @@ Purpose of the stylesheet follows.
 }
 
 #printTplContainer {
-    width:97%;
-    height:94%;
+    width:771px;
+    height:536px;
     position:relative;
     background-color:#EEE;
-    margin-left:11px;
-    margin-right:11px;
-    margin-top:10px;
+    margin-left:13px;
+    margin-top:13px;
 }
 
 /*Buttons*/
