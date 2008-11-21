@@ -313,9 +313,9 @@ PrintTemplateMgr =
              *  - Width and height are a strict ratio from refWidth and refHeight
              */
             var refLeft = Ext.get('printTplLayout').getLeft();
-            var refBottom = Ext.get('printTplLayout').getBottom();
-            var refWidth = Ext.get('printTplLayout').getWidth();
-            var refHeight = Ext.get('printTplLayout').getHeight();
+            var refBottom = Ext.getCmp('printTplLayout').getEl().getTop() + Ext.getCmp('printTplLayout').lastSize.height;
+            var refWidth = Ext.getCmp('printTplLayout').lastSize.width - 2;//2px for borders
+            var refHeight = Ext.getCmp('printTplLayout').lastSize.height - 2;
 
             var json = this.printWin.json;
             var left = x != null ? x : el.getLeft();
