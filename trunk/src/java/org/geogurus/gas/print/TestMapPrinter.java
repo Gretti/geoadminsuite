@@ -4,6 +4,9 @@
  */
 package org.geogurus.gas.print;
 
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Rectangle;
+import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
@@ -31,7 +34,8 @@ public class TestMapPrinter {
         // TODO code application logic here
         //testFromFile();
         //testFromInputStream();
-        testFromString();
+        //testFromString();
+        testPageSizes();
     }
 
     public static void testFromFile() {
@@ -99,6 +103,47 @@ public class TestMapPrinter {
             Logger.getLogger(TestMapPrinter.class.getName()).log(Level.SEVERE, null, ex);
         } catch (JSONException ex) {
             Logger.getLogger(TestMapPrinter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public static void testPageSizes() {
+        String[] formats = {"A0","A1","A2","A3","A4"};
+        Rectangle r;
+        Dimension dimCalcContainer = new Dimension();
+        int hMargins = 40;
+        int vMargins = 40;
+        Dimension dimLayout = new Dimension();
+        //LANDSCAPE
+        System.out.println("LANDSCAPE");
+        dimLayout.setSize(798.0, 562.0);
+        for (String format : formats) {
+            r = PageSize.getRectangle(format).rotate();
+            
+            //margins ratio
+            int hMarginSize = Math.round(hMargins/r.getWidth()* dimLayout.width);
+            int vMarginSize = Math.round(vMargins/r.getHeight()* dimLayout.height);
+            dimCalcContainer.setSize(dimLayout.width - hMarginSize, dimLayout.height - vMarginSize);
+            System.out.println(format + " : {" + 
+                    "hmargin:" + hMarginSize + 
+                    ",vmargin:" + vMarginSize + 
+                    ",width:" + dimCalcContainer.width + 
+                    ",height:" + dimCalcContainer.height +
+                    "},");
+        }
+        //PAGE
+        System.out.println("PAGE");
+        dimLayout.setSize(493.0, 696.0);
+        for (String format : formats) {
+            r = PageSize.getRectangle(format);
+            //margins ratio
+            int hMarginSize = Math.round(hMargins/r.getWidth()* dimLayout.width);
+            int vMarginSize = Math.round(vMargins/r.getHeight()* dimLayout.height);
+            dimCalcContainer.setSize(dimLayout.width - hMarginSize, dimLayout.height - vMarginSize);
+            System.out.println(format + " : {" + 
+                    "hmargin:" + hMarginSize + 
+                    ",vmargin:" + vMarginSize + 
+                    ",width:" + dimCalcContainer.width + 
+                    ",height:" + dimCalcContainer.height +
+                    "},");
         }
     }
 }
