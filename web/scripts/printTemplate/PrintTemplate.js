@@ -146,14 +146,14 @@ PrintTemplate = Ext.extend(Ext.Component, {
                     Ext.getCmp('printTplLayoutWin').setHeight(orientationSizes[orientation].height);
                     //resize container to reflect margins
                     var curSize = orientationSizes[orientation].dims[Ext.getCmp('printTplCmbFormat').value];
-                    console.log(curSize);
                     if(curSize) {
                         Ext.get('printTplContainer').dom.style.marginLeft = Math.round(curSize.hmargin/2);
                         Ext.get('printTplContainer').dom.style.marginTop = Math.round(curSize.vmargin/2);
                         Ext.get('printTplContainer').setWidth(curSize.width);
                         Ext.get('printTplContainer').setHeight(curSize.height);
                     }
-                    //TODO : Should resize and move all elements that fall outside the print area
+                    //TODO : Should resize and move all elements that fall outside 
+                    //the print area or at least alert user
                     PrintTemplateMgr.updateJsonOrientation(orientation);
                 }
             }
