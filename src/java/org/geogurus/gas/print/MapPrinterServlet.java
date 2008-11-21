@@ -18,7 +18,6 @@
  */
 package org.geogurus.gas.print;
 
-import org.mapfish.print.*;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
@@ -37,11 +36,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import org.json.JSONObject;
+import org.mapfish.print.MapPrinter;
 
 /**
  * Main print servlet.
@@ -122,130 +121,123 @@ public class MapPrinterServlet extends BaseMapServlet {
                         "hosts:\n" +
                         "  - !localMatch\n" +
                         "    dummy: true\n" +
+                        //Very wide white list (watch out open proxy !)
                         "  - !ipMatch\n" +
-                        "    ip: www.camptocamp.org\n" +
-                        "  - !dnsMatch\n" +
-                        "    host: labs.metacarta.com\n" +
-                        "    port: 80\n" +
+                        "    ip: 0.0.0.0\n" +
+                        "    mask: 0.0.0.0\n" +
                         "\n" +
                         "layouts:\n" +
                         "  User Defined:\n" +
                         "   mainPage:\n" +
                         "      pageSize: [pagesize]\n" +
+                        "      marginLeft: 20\n" +
+                        "      marginRight: 20\n" +
                         "      rotation: true\n" +
                         "      landscape:[orientation]\n";
                 break;
             case map:
-                yaml = "            - !map\n" +
-                        "              absoluteX: $x\n" +
-                        "              absoluteY: $y\n" +
-                        "              width: $w\n" +
-                        "              height: $h\n";
+                yaml =
+                        "            - !map\n" +
+                        "              absoluteX: $absoluteX\n" +
+                        "              absoluteY: $absoluteY\n" +
+                        "              width: $width\n" +
+                        "              height: $height\n" +
+                        "              $optionals";
+//                        "              name: $name\n";
                 break;
             case title:
-                yaml = 
+                yaml =
                         "            - !columns\n" +
-                        "              absoluteX: $x\n" +
-                        "              absoluteY: $y\n" +
-                        "              width: $w\n" +
+                        "              absoluteX: $absoluteX\n" +
+                        "              absoluteY: $absoluteY\n" +
+                        "              width: $width\n" +
                         "              items: \n" +
                         "                - !text\n" +
-                        "                  font: Helvetica\n" +
-                        "                  fontSize: 30\n" +
-                        "                  text: '${mapTitle}'\n";
+                        "                  text: '${mapTitle}'\n" +
+                        "                  $optionals";
                 break;
             case comment:
-                yaml = 
+                yaml =
                         "            - !columns\n" +
-                        "              absoluteX: $x\n" +
-                        "              absoluteY: $y\n" +
-                        "              width: $w\n" +
+                        "              absoluteX: $absoluteX\n" +
+                        "              absoluteY: $absoluteY\n" +
+                        "              width: $width\n" +
                         "              items: \n" +
                         "                - !text\n" +
                         "                  text: |\n" +
                         "                    ${comment}\n" +
                         "                    \n" +
-                        "                    Angle: ${rotation}°   Scale: 1:${format %,d scale}\n";
+                        "                    Angle: ${rotation}°   Scale: 1:${format %,d scale}\n" +
+                        "                  $optionals";
                 break;
             case scale:
-                yaml = 
+                yaml =
                         "            - !columns\n" +
-                        "              absoluteX: $x\n" +
-                        "              absoluteY: $y\n" +
-                        "              width: $w\n" +
+                        "              absoluteX: $absoluteX\n" +
+                        "              absoluteY: $absoluteY\n" +
+                        "              width: $width\n" +
                         "              items: \n" +
                         "                - !scalebar\n" +
-                        "                  maxSize: $w\n" +
-                        "                  height: $h\n" +
-                        "                  type: 'bar'\n" +
-                        "                  units: m\n" +
-                        "                  intervals: 5\n";
+                        "                  maxSize: $width\n" +
+                        "                  height: $height\n" +
+                        "                  $optionals";
                 break;
             case legend:
-                yaml = 
+                yaml =
                         "            - !columns\n" +
-                        "              absoluteX: $x\n" +
-                        "              absoluteY: $y\n" +
-                        "              width: $w\n" +
+                        "              absoluteX: $absoluteX\n" +
+                        "              absoluteY: $absoluteY\n" +
+                        "              width: $width\n" +
                         "              items: \n" +
                         "                - !legends\n" +
-                        "                  maxIconWidth: 8\n" +
-                        "                  maxIconHeight: 8\n" +
-                        "                  classIndentation: 20\n" +
-                        "                  layerSpace: 5\n" +
-                        "                  classSpace: 2\n" +
-                        "                  layerFont: Helvetica\n" +
-                        "                  layerFontSize: 10\n" +
-                        "                  classFont: Helvetica\n" +
-                        "                  classFontSize: 8\n";
+                        "                  $optionals";
                 break;
             case image:
-                yaml = 
+                yaml =
                         "            - !columns\n" +
-                        "              absoluteX: $x\n" +
-                        "              absoluteY: $y\n" +
-                        "              width: $w\n" +
+                        "              absoluteX: $absoluteX\n" +
+                        "              absoluteY: $absoluteY\n" +
+                        "              width: $width\n" +
                         "              items: \n" +
                         "                - !image\n" +
-                        "                  maxWidth: $w\n" +
-                        "                  maxHeight: $w\n" +
-                        "                  url: '$u'\n";
+                        "                  maxWidth: $width\n" +
+                        "                  maxHeight: $width\n" +
+                        "                  url: '$url'\n";
                 break;
             case north:
-                yaml = 
+                yaml =
                         "            - !columns\n" +
-                        "              absoluteX: $x\n" +
-                        "              absoluteY: $y\n" +
-                        "              width: $w\n" +
+                        "              absoluteX: $absoluteX\n" +
+                        "              absoluteY: $absoluteY\n" +
+                        "              width: $width\n" +
                         "              items: \n" +
                         "                - !image\n" +
-                        "                  maxWidth: $w\n" +
-                        "                  maxHeight: $h\n" +
+                        "                  maxWidth: $width\n" +
+                        "                  maxHeight: $height\n" +
                         "                  rotation: '${rotation}'\n" +
                         "                  url: 'http://localhost:8084/geoadminsuite/images/north.gif'\n              rotation: '${rotation}'\n";
                 break;
             case overview:
-                yaml = "            - !map\n" +
-                        "              width: $w\n" +
-                        "              height: $h\n" +
-                        "              overviewMap: 2\n" +
-                        "              absoluteX: $x\n" +
-                        "              absoluteY: $y\n";
+                yaml =
+                        "            - !map\n" +
+                        "              width: $width\n" +
+                        "              height: $height\n" +
+                        "              absoluteX: $absoluteX\n" +
+                        "              absoluteY: $absoluteY\n" +
+                        "              $optionals";
                 break;
             case footer:
-                yaml = "      footer:\n" +
+                yaml =
+                        "      footer:\n" +
                         "        height: 30\n" +
                         "        items:\n" +
                         "          - !columns\n" +
                         "            items:\n" +
                         "              - !text\n" +
-                        "                align: left\n" +
+                        "                align: center\n" +
                         "                text: Produced by geoadminsuite\n" +
-                        "                fontSize:8\n" +
-                        "              - !text\n" +
-                        "                align: right\n" +
-                        "                fontSize:8\n" +
-                        "                text: 'Page ${pageNum}'";
+                        "                font: Helvetica-Oblique\n" +
+                        "                fontSize:8\n";
                 break;
         }
         return yaml;
@@ -353,17 +345,16 @@ public class MapPrinterServlet extends BaseMapServlet {
                 printer = getMapPrinter();
                 strSpec = spec.toString();
             } else {
-
+                //creates a specific user defined entry in yaml layouts
+                /* TODO : should come from client side so that user may still
+                 * existing pre-parametrized entries even if a user defined entry
+                 * exists.
+                 */
                 jsonSpec.put("layout", "User Defined");
                 strSpec = jsonSpec.toString();
-                int marginLeft = 40;
-                int marginRight = 40;
-                int marginTop = 20;
-                int marginBottom = 20;
-                JSONObject jsonConf = new JSONObject(jsonSpec.getJSONArray("pages").getJSONObject(0).getString("config"));
-
-                StringBuilder yamlString = new StringBuilder("");
                 //Builds a new yaml string to build printer from config key sent
+                JSONObject jsonConf = new JSONObject(jsonSpec.getJSONArray("pages").getJSONObject(0).getString("config"));
+                StringBuilder yamlString = new StringBuilder("");
                 //First dumps a yaml config with header and footer pre-parametrized
                 String header = getPrintComponentYaml(PrintComponent.header);
                 header = header.replace("[orientation]", String.valueOf(jsonConf.getString("orientation").equals("landscape")));
@@ -371,16 +362,16 @@ public class MapPrinterServlet extends BaseMapServlet {
                 yamlString.append(header);
 
                 //Fills layouts part with passed userconfig
+                //Gets reference width and height of page and recalculate
+                //it taking into account margins
                 Rectangle rect = PageSize.getRectangle(jsonConf.getString("layout"));
-                float height = rect.getHeight() - (marginTop + marginBottom);
-                float width = rect.getWidth() - (marginLeft + marginRight);
                 if (jsonConf.getString("orientation").equals("landscape")) {
-                    width = rect.getHeight() - (marginTop + marginBottom);
-                    height = rect.getWidth() - (marginLeft + marginRight);
+                    rect = rect.rotate();
                 }
-                float left = rect.getLeft() + marginLeft;
-                float bottom = rect.getBottom() + marginBottom;
-
+                float height = rect.getHeight();
+                float width = rect.getWidth();
+                //wrap components in page from json. A specific treatment is needed
+                //for images as key is built using and autoincrement suffix
                 JSONObject components = new JSONObject(jsonConf.getString("components"));
                 yamlString.append("      items:\n");
                 for (Iterator iteComp = components.keys(); iteComp.hasNext();) {
@@ -389,33 +380,90 @@ public class MapPrinterServlet extends BaseMapServlet {
                     if (compkey.contains("Image")) {
                         compModKey = "printTplImage";
                     }
-                    PrintComponent printComp = PrintComponent.valueOf(compModKey.substring(USER_CONFIG_COMPONENTS_PREFIX.length()).toLowerCase());
+                    //get yaml string piece from enum
+                    String strPrintComp = compModKey.substring(USER_CONFIG_COMPONENTS_PREFIX.length()).toLowerCase();
+                    PrintComponent printComp = PrintComponent.valueOf(strPrintComp);
                     String compString = getPrintComponentYaml(printComp);
+                    //replaces keys in string (i.e. $...) with recalculated 
+                    //values (given as percentage of page size)
                     JSONObject comp = new JSONObject(components.getString(compkey));
                     long w = Math.round((comp.getDouble("width") * width));
                     long h = Math.round((comp.getDouble("height") * height));
-                    long x = Math.round((comp.getDouble("dX") * width) + left);
-                    long y = Math.round((comp.getDouble("dY") * height) + bottom);
+                    long x = Math.round((comp.getDouble("dX") * width));
+                    long y = Math.round((comp.getDouble("dY") * height));
                     String url = comp.getString("url");
-                    
-                    compString = compString.replace("$x", String.valueOf(x));
-                    compString = compString.replace("$y", String.valueOf(y));
-                    compString = compString.replace("$w", String.valueOf(w));
-                    if (compString.contains("$h")) {
-                        compString = compString.replace("$h", String.valueOf(h));
+
+                    compString = compString.replace("$absoluteX", String.valueOf(x));
+                    compString = compString.replace("$absoluteY", String.valueOf(y));
+                    compString = compString.replace("$width", String.valueOf(w));
+                    if (compString.contains("$height")) {
+                        compString = compString.replace("$height", String.valueOf(h));
                     }
-                    if (compString.contains("$u")) {
-                        compString = compString.replace("$u", url);
+                    if (compString.contains("$url")) {
+                        compString = compString.replace("$url", url);
                     }
+
+                    //Replaces optional values by passed ones
+                    //First tries to figure out identation spaces necessary
+                    String[] lines = compString.split("\\n");
+                    String lastLine = lines[lines.length - 1];
+                    String strIndent = "";
+                    String strAttr = "";
+                    for (int indent = 0; indent < lastLine.indexOf('$'); indent++) {
+                        strIndent += " ";
+                    }
+                    //builds string for optionals
+                    if (comp.has("attributes")) {
+                        JSONObject attr = new JSONObject(comp.getString("attributes"));
+                        for (Iterator attributes = attr.keys(); attributes.hasNext();) {
+                            String k = (String) attributes.next();
+                            String val = attr.getString(k);
+                            //treats font and font deco style : font style must be
+                            //concatenanted with a "-" to font name only if not "None"
+                            if (k.equalsIgnoreCase("font") && attr.has("fontStyle")) {
+                                if (!attr.getString("font").equals("Symbol") && 
+                                        !attr.getString("font").equals("ZapfDingbat") && 
+                                        !attr.getString("fontStyle").equals("None")) {
+                                    val +=  "-" + attr.getString("fontStyle");
+                                }
+                            } else if (k.equalsIgnoreCase("fontStyle")) {
+                                //already treated with font key
+                                continue;
+                            } else if (k.equalsIgnoreCase("backgroundColor") &&
+                                    (printComp.equals(PrintComponent.image) ||
+                                    printComp.equals(PrintComponent.map) ||
+                                    printComp.equals(PrintComponent.north))) {
+                                continue;
+                            }
+                            //background color must be treated especially as it is not
+                            //always an item property. When not, shall put this property
+                            //on the cell containing the component
+                            strAttr += strIndent + k + ": " + val + "\n";
+                        }
+                    } else if (printComp.equals(PrintComponent.legend)) {
+                        //Particular case for legends as all attributes are optional
+                        strAttr =
+                                "                  maxIconWidth: 8\n" +
+                                "                  maxIconHeight: 8\n" +
+                                "                  classIndentation: 20\n" +
+                                "                  layerSpace: 5\n" +
+                                "                  classSpace: 2\n";
+                    } else if (printComp.equals(PrintComponent.overview)) {
+                        //If no factor fixed, default value to 2
+                        strAttr =
+                                "              overviewMap: 2\n";
+
+                    }
+                    //replaces $optionals with built string
+                    compString = compString.replace(strIndent + "$optionals", strAttr);
                     yamlString.append(compString);
                 }
                 String footer = getPrintComponentYaml(PrintComponent.footer);
                 yamlString.append(footer);
 
-                System.out.println("YAML = \n" + yamlString.toString());
+                System.out.println("USER CONFIG YAML = \n" + yamlString.toString());
 
                 printer = new MapPrinter(yamlString.toString(), ".");
-            //printer = getMapPrinter();
             }
 
 
