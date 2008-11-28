@@ -1,4 +1,4 @@
-package org.geogurus.gas.actions;
+package org.geogurus.data.operations;
 
 import org.geogurus.data.OperationAdapter;
 import org.opengis.feature.simple.SimpleFeature;
@@ -25,8 +25,9 @@ public class MinMaxAttributeOperation<T extends Comparable<T>> extends
     @SuppressWarnings("unchecked")
     @Override
     public synchronized boolean operate(SimpleFeature operatee, Object context) {
-        String strvalue = String.valueOf(operatee.getAttribute(attName));
-        double value = (new Double(strvalue)).doubleValue();
+        //As attribute can be of all numeric types, need to transit by a string
+        String strValue = String.valueOf(operatee.getAttribute(attName));
+        double value = (new Double(strValue)).doubleValue();
         if (value < min || min == Double.MIN_VALUE) {
             min = value;
         }

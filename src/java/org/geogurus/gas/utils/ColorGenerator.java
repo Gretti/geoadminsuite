@@ -3,7 +3,7 @@
  *
  * Created on 7 ao�t 2002, 20:27
  */
-package org.geogurus.web;
+package org.geogurus.gas.utils;
 
 import java.io.Serializable;
 import java.util.Properties;

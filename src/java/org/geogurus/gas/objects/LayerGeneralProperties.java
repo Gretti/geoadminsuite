@@ -63,7 +63,7 @@ public class LayerGeneralProperties implements Serializable {
     /**
      * the size of the quickview for this geodata,
      */
-    private int imgX, imgY;
+    private int imgX,  imgY;
     /** the geometry Class dealt by this bean */
     private DataAccess gc;
     /** the hostList session object */
@@ -113,12 +113,13 @@ public class LayerGeneralProperties implements Serializable {
                 if (ds.getDataList().get(layerID) != null) {
                     gc = (DataAccess) (ds.getDataList().get(layerID));
                     if (!gc.loadMetadata()) {
-                        logger
-                                .warning("Bean: getGeometryClass: could not get Metadata for GC: "
-                                        + gc.getName());
+                        logger.warning("Bean: getGeometryClass: could not get Metadata for GC: " + gc.getName());
                     }
                     break;
                 }
+            }
+            if (gc == null) {
+                logger.severe("Bean: getGeometryClass: could not find GC " + gc.getName());
             }
         }
         return gc;
@@ -164,8 +165,7 @@ public class LayerGeneralProperties implements Serializable {
             rp += File.separator;
         }
         this.rootPath = rp;
-        rootPath += "msFiles" + File.separator + "tmpMaps" + File.separator
-                + "quickview_" + sessionID + ".map";
+        rootPath += "msFiles" + File.separator + "tmpMaps" + File.separator + "quickview_" + sessionID + ".map";
     }
 
     // get methods
@@ -194,8 +194,7 @@ public class LayerGeneralProperties implements Serializable {
     }
 
     public Vector getFields() {
-        return getDataAccess().getAttributeData() != null ? getDataAccess()
-                .getAttributeData() : new Vector();
+        return getDataAccess().getAttributeData() != null ? getDataAccess().getAttributeData() : new Vector();
     }
 
     public Vector getAttributes() {
@@ -240,7 +239,7 @@ public class LayerGeneralProperties implements Serializable {
     public String getImgURL() {
         gc = getDataAccess();
 
-        if (gc.getNumGeometries() == 0 || 
+        if (gc.getNumGeometries() == 0 ||
                 (gc.featureType().isNone() &&
                 gc.getDatasourceType() != DataAccessType.WMS &&
                 gc.getDatasourceType() != DataAccessType.IMG &&
@@ -280,8 +279,7 @@ public class LayerGeneralProperties implements Serializable {
 
         msLayer.setStatus(Layer.ON);
 
-        if (gc.getType() == Geometry.POINT
-                || gc.getType() == Geometry.MULTIPOINT) {
+        if (gc.getType() == Geometry.POINT || gc.getType() == Geometry.MULTIPOINT) {
             msLayer.setType(Layer.POINT);
             c.setColor(ptCol);
             c.setSymbol(ObjectKeys.DEFAULT_POINT_SYMBOL);
@@ -299,8 +297,7 @@ public class LayerGeneralProperties implements Serializable {
             s.setPoints(points);
             m.addSymbol(s);
 
-        } else if (gc.getType() == Geometry.POLYGON
-                || gc.getType() == Geometry.MULTIPOLYGON) {
+        } else if (gc.getType() == Geometry.POLYGON || gc.getType() == Geometry.MULTIPOLYGON) {
             msLayer.setType(Layer.POLYGON);
             c.setColor(pgCol);
             c.setOutlineColor(new RGB(0, 0, 0));
@@ -334,8 +331,7 @@ public class LayerGeneralProperties implements Serializable {
         try {
             // String imgURL = "/cgi-bin/mapserv.exe?mode=map&map=";
             imgUrl = DataManager.getProperty("MAPSERVERURL") + "?mode=map&map=";
-            imgUrl += URLEncoder.encode(rootPath, "UTF-8") + "&layer="
-                    + gc.getName();
+            imgUrl += URLEncoder.encode(rootPath, "UTF-8") + "&layer=" + gc.getName();
             // must construct unique URL to avoid displaying the cached image
             imgUrl += "&ts=" + (new java.util.Date().getTime());
             return imgUrl;

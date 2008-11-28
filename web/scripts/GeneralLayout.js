@@ -778,45 +778,45 @@ GeneralLayout =
                            }
                         }
 
-                        top = new Ext.FormPanel({
-                            url: 'hostLoader.do',
-                            labelAlign: 'right',
-                            frame:true,
-                            title: i18n.server_list,
-                            bodyStyle:'padding:5px 5px 0',
-                            width: 600,
-                            items: [{
-                                layout:'column',
-                                html: GeneralLayout.createBoxHelp('<img src="images/help.png">','toInternat:Ce panneau pr&eacute;sente la liste des serveurs pr&eacute;configur&eacute;s. Il est possible d\'ajouter de nouveau serveurs ainsi que de modifier ou supprimer des serveurs de la liste. Un bouton de test permet de v&eacute;rifier l\'accessibilit&eacute; aux serveurs configur&eacute;s.'),
-                                items:[{
-                                    columnWidth:1,
-                                    layout: 'form',
-                                    items: hostItems
+                        var frmHosts = new Ext.FormPanel({
+                            'url': 'hostLoader.do',
+                            'labelAlign': 'right',
+                            'frame':true,
+                            'title': i18n.server_list,
+                            'bodyStyle':'padding:5px 5px 0',
+                            'width': 600,
+                            'items': [{
+                                'layout':'column',
+                                'html': GeneralLayout.createBoxHelp('<img src="images/help.png">','toInternat:Ce panneau pr&eacute;sente la liste des serveurs pr&eacute;configur&eacute;s. Il est possible d\'ajouter de nouveau serveurs ainsi que de modifier ou supprimer des serveurs de la liste. Un bouton de test permet de v&eacute;rifier l\'accessibilit&eacute; aux serveurs configur&eacute;s.'),
+                                'items':[{
+                                    'columnWidth':1,
+                                    'layout': 'form',
+                                    'items': hostItems
                                 }]
                             }],
-                            buttons:[{
-                                        text:i18n.reset,
+                            'buttons':[{
+                                        'text':i18n.reset,
                                         handler:function() {
                                                     Ext.get('frmServer').update('');
                                                     hostList = [].concat(initialHostList);
                                                     GeneralLayout.renderHosts(initialHostList, 'frmServer');
                                                 },
-                                        tooltip: i18n.init_list,
-                                        iconCls: 'brefresh'
+                                        'tooltip': i18n.init_list,
+                                        'iconCls': 'brefresh'
                                     },{
-                                        text: i18n.add,
-                                        handler: GeneralLayout.addHost,
-                                        tooltip: i18n.add_server,
-                                        iconCls: 'badd'
+                                        'text': i18n.add,
+                                        'handler': GeneralLayout.addHost,
+                                        'tooltip': i18n.add_server,
+                                        'iconCls': 'badd'
                                     },{
-                                        text: i18n.next,
-                                        handler: GeneralLayout.gotoCatalog,
-                                        tooltip: i18n.goto_catalog,
-                                        iconCls: 'bnext'
+                                        'text': i18n.next,
+                                        'handler': GeneralLayout.gotoCatalog,
+                                        'tooltip': i18n.goto_catalog,
+                                        'iconCls': 'bnext'
                                     }]
                         });
 
-                        top.render(el);
+                        frmHosts.render(el);
 
            },
 

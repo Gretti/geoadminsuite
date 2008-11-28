@@ -30,14 +30,15 @@
                 go the project properties and remove scripts/mapfish/** from the Exlude From WAR File
                 list.
             -->
-            <script type="text/javascript" src="scripts/mapfish/mfbase/ext/adapter/ext/ext-base.js"></script>
-            <script type="text/javascript" src="scripts/mapfish/mfbase/ext/ext-all.js"></script>
             <script type="text/javascript">
                 // Because of a bug in Firefox 2 we need to specify the MapFish base path.
                 // See https://bugzilla.mozilla.org/show_bug.cgi?id=351282
                 var gMfLocation = "scripts/mapfish/mfbase/mapfish/";
             </script>
-            <script type="text/javascript" src="scripts/mapfish/mfbase/openlayers/lib/Firebug/firebug.js"></script>
+            <script type="text/javascript" src="scripts/mapfish/mfbase/ext/adapter/ext/ext-base.js"></script>
+            <script type="text/javascript" src="scripts/mapfish/mfbase/ext/ext-all.js"></script>
+            <!--<script type="text/javascript" src="scripts/mapfish/mfbase/openlayers/lib/Firebug/firebug.js"></script>
+            <script type='text/javascript' src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script>-->
             <script type="text/javascript" src="scripts/mapfish/mfbase/openlayers/lib/OpenLayers.js"></script>
             <script type="text/javascript" src="scripts/mapfish/mfbase/mapfish/MapFish.js"></script>
             <script type="text/javascript" src="scripts/mapfish/mfbase/mapfish/lang/fr.js"></script>
@@ -58,8 +59,8 @@
         <script type="text/javascript" src="scripts/GeneralLayout.js"></script>
         <script type="text/javascript" src="scripts/Host.js"></script>
         <script type="text/javascript" src="scripts/printTemplate/ext.ux.ColorField.js"></script>
-        <script language="javascript" src="scripts/printTemplate/PrintTemplateMgr.js"></script>
-        <script language="javascript" src="scripts/printTemplate/PrintTemplate.js"></script>
+        <script type="text/javascript" src="scripts/printTemplate/PrintTemplateMgr.js"></script>
+        <script type="text/javascript" src="scripts/printTemplate/PrintTemplate.js"></script>
         
         <!-- YUI Dependencies --> 
         <script type="text/javascript" src="scripts/colorpicker/utilities/utilities.js" ></script>

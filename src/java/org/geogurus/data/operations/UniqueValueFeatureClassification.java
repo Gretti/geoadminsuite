@@ -1,4 +1,4 @@
-package org.geogurus.gas.actions;
+package org.geogurus.data.operations;
 
 import java.util.Set;
 
@@ -6,7 +6,7 @@ import org.geogurus.data.OperationAdapter;
 import org.geogurus.gas.objects.ListClassesBean;
 import org.geogurus.mapserver.objects.Class;
 import org.geogurus.mapserver.objects.RGB;
-import org.geogurus.web.ColorGenerator;
+import org.geogurus.gas.utils.ColorGenerator;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**
@@ -36,7 +36,7 @@ public class UniqueValueFeatureClassification extends OperationAdapter<SimpleFea
 
     public boolean operate(SimpleFeature operatee, Set<Integer> context) {
 
-        String attribute = (String) operatee.getAttribute(attributeName);
+        String attribute = String.valueOf(operatee.getAttribute(attributeName));
 
         if (context.size() < classLimit) {
             if (context.add(attribute.hashCode())) {

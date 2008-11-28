@@ -21,7 +21,7 @@ import org.geogurus.gas.managers.UserMapBeanManager;
 import org.geogurus.gas.objects.SymbologyListBean;
 import org.geogurus.gas.objects.UserMapBean;
 import org.geogurus.gas.utils.ObjectKeys;
-import org.geogurus.web.ColorGenerator;
+import org.geogurus.gas.utils.ColorGenerator;
 
 /**
  * @author Gretti
@@ -69,9 +69,7 @@ public class ComposeMapAction extends Action {
             umbMgr.setUserMapBean(userMapBean);
             umbMgr.createUserLayerList(gasSymbolList,hostList);
             umbMgr.generateTemplateFiles();
-            umbMgr.buildFirstUserMapfile(Integer.valueOf(request.getParameter("screenWidth")).intValue(),
-                    Integer.valueOf(request.getParameter("screenHeight")).intValue(),
-                    colgen);
+            umbMgr.buildFirstUserMapfile(1280,1024,colgen);
             // reset the cartoweb user list to force gas to regenerate a list from current layer list
             IniConfigurationForm cwIniConf = (IniConfigurationForm)request.getSession().getAttribute(ObjectKeys.CW_INI_CONF_BEAN);
             if (cwIniConf != null) {

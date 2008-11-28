@@ -20,7 +20,7 @@ import org.apache.struts.action.ActionMapping;
 import org.geogurus.gas.managers.UserMapBeanManager;
 import org.geogurus.gas.objects.UserMapBean;
 import org.geogurus.gas.utils.ObjectKeys;
-import org.geogurus.web.ColorGenerator;
+import org.geogurus.gas.utils.ColorGenerator;
 /**
  *
  * @author postgres

@@ -1,4 +1,4 @@
-package org.geogurus.gas.actions;
+package org.geogurus.data.operations;
 
 import java.io.IOException;
 import java.util.logging.Level;
