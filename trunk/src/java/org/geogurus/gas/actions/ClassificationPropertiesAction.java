@@ -5,6 +5,8 @@
  */
 package org.geogurus.gas.actions;
 
+import org.geogurus.data.operations.MinMaxAttributeOperation;
+import org.geogurus.data.operations.UniqueValueFeatureClassification;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -35,7 +37,7 @@ import org.geogurus.mapserver.objects.Class;
 import org.geogurus.mapserver.objects.Layer;
 import org.geogurus.mapserver.objects.RGB;
 import org.geogurus.tools.DataManager;
-import org.geogurus.web.ColorGenerator;
+import org.geogurus.gas.utils.ColorGenerator;
 import org.geotools.data.Query;
 
 /**
@@ -152,10 +154,6 @@ public class ClassificationPropertiesAction extends Action {
                     classitem, classLimit, colorGenerator, list, symName,
                     symSize);
             Set<Integer> hashcodes = new HashSet<Integer>();
-            /*FIXME : can not have this query work
-            Query query = new DefaultQuery("Feature", Filter.INCLUDE,
-            new String[]{classitem});
-             */
             gc.run(op, hashcodes, Query.ALL);
         } catch (Exception e) {
             // either a bad URL or another exception: should track it
@@ -250,10 +248,9 @@ public class ClassificationPropertiesAction extends Action {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        minMax = new double[]{op.min(), op.max()};
-        double range = minMax[1] - minMax[0];
+        double range = op.max() - op.min();
         double step = range / numClasses;
-        double curmin = minMax[0];
+        double curmin = op.min();
         Class cl = null;
         StringBuffer exp = null;
         NumberFormat f = NumberFormat.getInstance(Locale.US);

@@ -47,7 +47,7 @@ import org.geogurus.mapserver.objects.ScaleBar;
 import org.geogurus.mapserver.objects.SymbolSet;
 import org.geogurus.mapserver.objects.Web;
 import org.geogurus.tools.DataManager;
-import org.geogurus.web.ColorGenerator;
+import org.geogurus.gas.utils.ColorGenerator;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -290,8 +290,8 @@ public class UserMapBeanManager {
                     new MSExtent(mExt.ll.x, mExt.ll.y, mExt.ur.x, mExt.ur.y));
             m_userMapBean.getMapfile().setSize(
                     new Dimension(m_userMapBean.getImgX(), m_userMapBean.getImgY()));
-            //Maxsize, so that we may draw large maps (set to 20000, should be a user param)
-            m_userMapBean.getMapfile().setMaxSize(20000);
+            //Maxsize, so that we may draw large maps (set to 30000, should be a user param)
+            m_userMapBean.getMapfile().setMaxSize(30000);
             // sets fontset according to GAS default font list
             m_userMapBean.getMapfile().setFontSet(
                     new File(m_userMapBean.getRootPath() + File.separator + "msFiles" + File.separator + "fonts" + File.separator + "font.list"));

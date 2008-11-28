@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 import org.geogurus.data.Pair;
 import org.geogurus.data.ParameterizedCallable;
-import org.geogurus.gas.actions.UniqueValueFeatureClassification;
+import org.geogurus.data.operations.UniqueValueFeatureClassification;
 import org.geogurus.gas.objects.ListClassesBean;
 import org.geogurus.mapserver.objects.Class;
 import org.geogurus.mapserver.objects.RGB;

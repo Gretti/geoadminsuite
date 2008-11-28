@@ -28,7 +28,7 @@ import org.geogurus.data.Option;
 import org.geogurus.data.ParameterizedCallable;
 import org.geogurus.data.cache.DataStoreCacheable;
 import org.geogurus.data.cache.ObjectCache;
-import org.geogurus.gas.actions.UniqueValueFeatureClassification;
+import org.geogurus.data.operations.UniqueValueFeatureClassification;
 import org.geogurus.gas.objects.GeometryClassFieldBean;
 import org.geogurus.mapserver.objects.Layer;
 import org.geogurus.mapserver.objects.MsLayer;
