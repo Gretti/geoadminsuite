@@ -15,20 +15,21 @@
                 var i, j, k, img, nodeServer, nodeDatasource, nodeLayer;
                 var catalogMsUrl, nodeText;
                 var nodeSchemas = [];
-                var imgserver = 'images/server.png';
-                var imgdatabase = 'images/database.png';
-                var imgfolder = 'images/folder.gif';
-                var imgfile = 'images/page_url.gif';
-                var imglayer = 'images/layers.png';
-                var imglayerPg = 'images/layers_pg.png';
-                var imglayerTiff = 'images/layers_tiff.png';
-                var imglayerShp = 'images/layers_shp.png';
-                var imglayerImg = 'images/layers_img.png';
-                var imglayerEcw = 'images/layers_ecw.png';
-                var imglayerMap = 'images/layers_map.png';
-                var imglayerOra = 'images/layers_ora.png';
-                var imglayerWms = 'images/layers_map.png';
-                var imgschema = 'images/database_table.png';
+                var imgbase = 'images/';
+                var imgserver    = imgbase + 'server.png';
+                var imgdatabase  = imgbase + 'database.png';
+                var imgfolder    = imgbase + 'folder.gif';
+                var imgfile      = imgbase + 'page_url.gif';
+                var imglayer     = imgbase + 'layers.png';
+                var imglayerPg   = imgbase + 'layers_pg.png';
+                var imglayerTiff = imgbase + 'layers_tiff.png';
+                var imglayerShp  = imgbase + 'layers_shp.png';
+                var imglayerImg  = imgbase + 'layers_img.png';
+                var imglayerEcw  = imgbase + 'layers_ecw.png';
+                var imglayerMap  = imgbase + 'layers_map.png';
+                var imglayerOra  = imgbase + 'layers_ora.png';
+                var imglayerWms  = imgbase + 'layers_map.png';
+                var imgschema    = imgbase + 'database_table.png';
 
                 //destroy previous tree and panel if existing
                 if(Ext.getCmp('treeHost')) {
@@ -90,7 +91,7 @@
                 
                 //datasource UI id will be comma-separated list of host name and datasource id
                 nodeDatasource = new Ext.tree.TreeNode({
-                    text: '<bean:write name="datasource" property="name"/>', 
+                    text: '<bean:write name="datasource" property="escapedName"/>',
                     id: "<bean:write name="datasource" property="host"/>," + j, 
                     checked:false, 
                     icon: img});
@@ -181,13 +182,13 @@
                 </logic:equal>
                 
                 nodeLayer = new Ext.tree.TreeNode({
-                    text: nodeText, 
+                    text: nodeText,
                     id: "<bean:write name="datasource" property="host"/>,<bean:write name="gc" property="ID"/>", 
                     checked: false,
                     icon:imglayer, 
                     leaf:true});
                 
-                nodeLayer.on('click',function(n){
+                nodeLayer.on('click',function(){
                                 var paramstr = 'st=data&host=<bean:write name="host" property="key" filter="false"/>&layerID=<bean:write name="gc" property="ID"/>&dsID=<bean:write name="cntDs"/>';
 
                                 Ext.MessageBox.show({

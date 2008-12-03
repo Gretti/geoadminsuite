@@ -41,7 +41,7 @@
         if(Ext.getCmp('layerGeneralInfo')) Ext.getCmp('layerGeneralInfo').destroy();
         
         var c = '<div class="res-block"><div class="res-block-inner">' +
-                '<h3 align="center"><bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="name"/></h3>' + 
+                '<h3 align="center"><bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="name"/></h3>' +
                 '<ul>' + 
                 '<li><img src="images/server.png" title=\'<bean:message key="server"/>\' alt=\'<bean:message key="server"/>\'>&nbsp;' + 
                 '<bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="host"/></li>'+

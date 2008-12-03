@@ -9,21 +9,18 @@ html, body {
 .x-layout-panel-north {
     border:0px none;
 }
-#nav {
-}
+
 #autoTabs, #catalog, #composer, #publisher, #west {
-    padding:10px;
+    padding:5px;
 }
+
 #north, #south{
     font:normal 8pt arial, helvetica;
     padding:4px;
 }
+
 .x-layout-panel-center p {
     margin:5px;
-}
-#props-panel .x-grid-col-0{
-}
-#props-panel .x-grid-col-1{
 }
 
 .help {
@@ -85,12 +82,12 @@ html, body {
     background-image:url(mapfish/pan.png) !important;
 }
 
-.bprint {
-    background-image:url(printer.png) !important;
-}
-
 .bzoomtomax {
     background-image:url(mapfish/zoomfull.png) !important;
+}
+
+.bzoomtolayer {
+    background-image:url(mapfish/zoomlayer.png) !important;
 }
 
 .binfotool {
