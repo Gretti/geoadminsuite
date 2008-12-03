@@ -51,11 +51,6 @@ public class SearchFeatureAction extends org.apache.struts.action.Action {
         //Builds featuresource using geotools
         SimpleFeature feature = DatasourceBuilder.getFeature(gc, lon, lat);
 
-        //Checks for big features and replaces by centroïd in case
-        if (((Geometry) feature.getDefaultGeometry()).getNumPoints() > 500) {
-            feature.setDefaultGeometry(((Geometry) feature.getDefaultGeometry()).getCentroid());
-        }
-
         //Finds feature of current layer
         NumberFormat f = NumberFormat.getInstance(Locale.US);
         if (f instanceof DecimalFormat) {
