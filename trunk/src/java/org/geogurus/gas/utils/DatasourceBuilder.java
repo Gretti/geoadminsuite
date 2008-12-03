@@ -64,7 +64,6 @@ public class DatasourceBuilder {
     public static DataStore getDataStore(DataAccess gc)
             throws MalformedURLException, IOException {
         DataStore ds = null;
-        Map params = new HashMap();
 
         if (gc instanceof ShpDataAccess) {
             String fileName = gc.getOwner().getName();

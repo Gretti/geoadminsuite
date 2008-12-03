@@ -396,7 +396,7 @@ public class OracleDataAccess extends DataAccess {
                 strData += " UNIQUE " + getUniqueField();
             }
             if (getSRText() != null) {
-                strData += " SRID=" + getSRID() + " FILTER";
+                strData += " SRID=" + getSrid() + " FILTER";
             }
             if (dbVersion == 8) {
                 strData += " VERSION 8i";

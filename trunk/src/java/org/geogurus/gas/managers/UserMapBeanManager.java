@@ -209,7 +209,7 @@ public class UserMapBeanManager {
                 // FIXME :
                 // retrieves projection attributes (default to 4326 if none
                 // found)
-                attr = "\"init=epsg:" + (gc.getSRID() <= 0 ? 4326 : gc.getSRID()) + "\"";
+                attr = "\"init=epsg:" + (gc.getSrid() <= 0 ? 4326 : gc.getSrid()) + "\"";
                 ArrayList projAttr = new ArrayList(1);
                 Projection proj = new Projection();
                 projAttr.add(attr);

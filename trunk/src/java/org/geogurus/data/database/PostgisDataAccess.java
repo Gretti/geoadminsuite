@@ -403,7 +403,7 @@ public class PostgisDataAccess extends DataAccess {
                 strData += " USING UNIQUE " + uniqueField;
             }
             if (getSRText() != null) {
-                strData += " USING SRID=" + getSRID();
+                strData += " USING SRID=" + getSrid();
             }
         }
         msLayer.setData(strData);

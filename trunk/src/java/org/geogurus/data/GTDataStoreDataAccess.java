@@ -136,7 +136,11 @@ public abstract class GTDataStoreDataAccess extends DataAccess {
             } else {
                 cs = source.getSchema().getCoordinateReferenceSystem();
                 SRText = cs.toWKT();
-                SRID = CRS.lookupEpsgCode(cs, true).intValue();
+                try {
+                    SRID = CRS.lookupEpsgCode(cs, true).intValue();
+                } catch (NullPointerException npe) {
+                    SRID = -1;
+                }
             }
             ret = true;
         } catch (Exception e) {

@@ -418,7 +418,7 @@ public class ZipDownloadAction extends org.apache.struts.action.Action {
         String dataFile = gc.resource(File.class).get().getAbsolutePath();
 
         // builds the command
-        cmd.append(" -s ").append(gc.getSRID()).append(" ");
+        cmd.append(" -s ").append(gc.getSrid()).append(" ");
         cmd.append(dataFile);
         cmd.append(" ");
         cmd.append(dbName);
@@ -652,7 +652,7 @@ public class ZipDownloadAction extends org.apache.struts.action.Action {
             rs = null;
             strCreate += ");\n";
             strCreate += "select AddGeometryColumn('" + dbName + "','"
-                    + basename + "','the_geom','" + gc.getSRID() + "','"
+                    + basename + "','the_geom','" + gc.getSrid() + "','"
                     + Geometry.getTypeString(gc.getType()) + "',2);\n";
             sout.write(strCreate);
             sout.write("begin;");
@@ -675,7 +675,7 @@ public class ZipDownloadAction extends org.apache.struts.action.Action {
                         sout.write("'" + dblQuoted + "'");
                         if (rs.getMetaData().getColumnName(k).equalsIgnoreCase(
                                 "astext")) {
-                            sout.write("," + gc.getSRID() + ")");
+                            sout.write("," + gc.getSrid() + ")");
                         }
                         if (k != rs.getMetaData().getColumnCount()) {
                             sout.write(",");

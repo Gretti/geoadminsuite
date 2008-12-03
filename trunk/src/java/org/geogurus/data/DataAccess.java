@@ -369,7 +369,7 @@ public abstract class DataAccess implements Serializable,
     }
 
     /** MISSING JAVADOC ! */
-    public int getSRID() {
+    public int getSrid() {
         return this.SRID;
     }
 
