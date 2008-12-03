@@ -54,7 +54,7 @@ public class LayerGeneralProperties implements Serializable {
     private String layerID;
     /** the unique GeometryClass identifier */
     private String strType;
-    /** the SRTEXT projection field, or at least the firts part */
+    /** the SRTEXT projection field, or at least the firts part (srid given in barkets) */
     private String projection;
     /** the vector of array of attributes for this geodata */
     private Vector attributes;
@@ -266,7 +266,7 @@ public class LayerGeneralProperties implements Serializable {
 
         if (gc instanceof WmsDataAccess) {
             Projection proj = new Projection();
-            proj.addAttribute("\"init=epsg:" + gc.getSRID() + "\"");
+            proj.addAttribute("\"init=epsg:" + gc.getSrid() + "\"");
             m.setProjection(proj);
 
             Web web = new Web();
@@ -336,20 +336,19 @@ public class LayerGeneralProperties implements Serializable {
             imgUrl += "&ts=" + (new java.util.Date().getTime());
             return imgUrl;
         } catch (UnsupportedEncodingException uee) {
-            return "images/noobjects.gif";
+            return "null";
         }
     }
 
     public String getProjection() {
         projection = getDataAccess().getSRText();
+        int srid = getDataAccess().getSrid();
         if (projection == null) {
-            return "NULL";
+            return "no projection defined";
         }
-        // Tokenize the full projection string to get only the displayable part
-        // :
+        // Tokenize the full projection string to get only the displayable part:
         // after first square braket and then before first comma for SRText,
-        // before
-        // the | for proj4 text
+        // before the | for proj4 text
         if (projection.indexOf("|") != -1) {
             // a proj4 projection
             return projection.substring(0, projection.indexOf("|"));
@@ -357,9 +356,9 @@ public class LayerGeneralProperties implements Serializable {
             StringTokenizer s = new StringTokenizer(this.projection, "\"");
             if (s.countTokens() > 1) {
                 s.nextToken();
-                return s.nextToken();
+                return (s.nextToken() + "/" + (srid >= 0 ? srid : "unrecognized"));
             } else {
-                return this.projection;
+                return (this.projection + "/" + (srid >= 0 ? srid : "unrecognized"));
             }
         }
     }

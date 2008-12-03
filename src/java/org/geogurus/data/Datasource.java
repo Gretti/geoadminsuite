@@ -13,9 +13,7 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.geogurus.data.cache.ObjectCache;
 
-import com.whirlycott.cache.Cacheable;
 
 /**
  * A class mapping a datasource = place where to find geo data. It can be a
@@ -129,6 +127,11 @@ public abstract class Datasource implements Serializable,
 
     public String getName() {
         return name;
+    }
+
+    /*Needs to be escaped for Windows path*/
+    public String getEscapedName() {
+        return this.name.replace('\\', '/');
     }
 
     public void setName(String name) {

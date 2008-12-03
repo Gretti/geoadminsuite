@@ -559,7 +559,7 @@ public class MapPrinterServlet extends BaseMapServlet {
         try {
             FileOutputStream out = new FileOutputStream(tempFile);
 
-            printer.print(spec, out);
+            printer.print(spec, out, null);
             out.close();
             return tempFile;
         } catch (IOException e) {
