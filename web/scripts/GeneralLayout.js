@@ -175,6 +175,7 @@ GeneralLayout =
                         tooltip: i18n.infoTool,
                         toggleGroup: 'map',
                         enableToggle: true,
+                        disabled: true,
                         toggleHandler: function(){
                             if(this.pressed) {
                                 GeneralLayout.searcher.activate();
