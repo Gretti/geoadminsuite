@@ -60,6 +60,8 @@
                     GeneralLayout.composermap.addControl(new OpenLayers.Control.ScaleLine());
 
                     //Adds a searcher to the map
+                    if(Ext.getCmp('infoTool').pressed) Ext.getCmp('infoTool').toggle();
+                    Ext.getCmp('infoTool').disable();
                     if(GeneralLayout.searcher) GeneralLayout.searcher.destroy();
                     var protocol = mapfish.Protocol.decorateProtocol({
                         protocol: new mapfish.Protocol.MapFish({
@@ -330,7 +332,7 @@
                     var childNodes = rootNode.childNodes[0].childNodes;
                     for(var i=0; i<childNodes.length; i++) {
                         childNodes[i].on('click', function() {
-
+                            if(Ext.getCmp('infoTool').disabled) Ext.getCmp('infoTool').enable();
                             if(activeLayer != null) {
                                 var exActiveLayer = GeneralLayout.layertree.root.firstChild.findChild('id',activeLayer);
                                 if(exActiveLayer != null) {
