@@ -68,7 +68,10 @@
                     id:'gridData',
                     cm: new Ext.grid.ColumnModel(GeneralLayout.columnsModels),
                     store: GeneralLayout.store,
-                    viewConfig: {forceFit:true},
+                    viewConfig: {
+                        //forceFit:true
+                        autoFill:true
+                    },
                     bbar: new Ext.PagingToolbar({
                         pageSize: 50,
                         store: GeneralLayout.store,
@@ -115,21 +118,21 @@
                 //updates previous form if existing
                 if(Ext.getCmp('frmFileInfo')) {
                     Ext.getCmp('frmFileInfo').getForm().setValues({
-                        metadata_name:"<bean:write name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="name"/>",
-                        metadata_source_type:"<bean:message name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="dsType"/>",
-                        metadata_object_type:"<bean:write name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="geoType"/>",
-                        metadata_num_objects:"<bean:write name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="numRecords"/>",
-                        metadata_projection:"<bean:write name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="projection"/>"
+                        metadata_name:       '<bean:write name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="name"/>',
+                        metadata_source_type:'<bean:message name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="dsType"/>',
+                        metadata_object_type:'<bean:write name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="geoType"/>',
+                        metadata_num_objects:'<bean:write name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="numRecords"/>',
+                        metadata_projection: '<bean:write name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="projection"/>'
                     });
                 } else {
                     //builds new form
                     var frmFileInfo= new Ext.FormPanel({
                         id:'frmFileInfo',
-                        labelWidth: 75, // label settings here cascade unless overridden
+                        labelWidth: 75,
                         frame:true,
                         bodyStyle:'padding:5px 5px 0',
-                        width: 350,
-                        defaults: {width: 230},
+                        width: '100%',
+                        defaults: {width: 260},
                         defaultType: 'textfield',
 
                         items: [{
@@ -239,7 +242,7 @@
                 if(layer) {
                     layer.destroy();
                 }
-                if(imgUrl != 'images/noobjects.gif') {
+                if(imgUrl != 'null') {
                     layer = new OpenLayers.Layer.MapServer('<bean:write name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="name"/>', 
                              '<%=DataManager.getProperty("MAPSERVERURL")%>?mode=map&map=<bean:write name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="escapedRootPath"/>',
                              {layers: '<bean:write name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="name"/>'}, 

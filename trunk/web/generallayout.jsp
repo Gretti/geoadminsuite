@@ -90,17 +90,6 @@
         of the openlayers maps used in the composer and publisher windows -->
         <script type="text/javascript" src="scripts/General_user.js"></script>
     </head>
-    <!--
-    <script type="text/javascript">
-        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-    </script>
-    <script type="text/javascript">
-        var pageTracker = _gat._getTracker("UA-5143159-1");
-        pageTracker._initData();
-        pageTracker._trackPageview();
-    </script>
-    -->
     <body>
         <!--<div id="north" style="align:center;">
             <img src="images/geogurus.png"><img src="images/adminsuite.png">
