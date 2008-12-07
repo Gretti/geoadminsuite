@@ -73,14 +73,7 @@ GeneralLayout =
                         id: 'view',
                         title: i18n.view,
                         xtype: 'panel',
-                        bbar: [/*{
-                                       id:'infoTool',
-                                       handler: function(){
-                                           GeneralLayout.searcher.enable();
-                                       },
-                                       iconCls: 'bzoomtomax'
-                                   },*/
-                        '->',testMap]
+                        bbar: ['->',testMap]
                     },{
                         id: 'data',
                         title: i18n.data,
@@ -642,11 +635,13 @@ GeneralLayout =
             },
            
             renderHosts : function(hosts, el) {
-                        
                 hostItems = [];
-                var dis;
+                var IMG_FOLDER = 'images/folderclose.gif';
+                var IMG_PG = 'images/pg.gif';
+                var IMG_ORA = 'images/ORA.gif';
+                var IMG_WMS = 'images/wms.png';
+                var IMG_WFS = 'images/wms.png';
                 for (var i = 0; i < hosts.length; i++) {
-                           
                     var comboType = new Ext.form.ComboBox({
                         fieldLabel: i18n.type,
                         id:'host[' + i + '].type',
@@ -668,6 +663,20 @@ GeneralLayout =
                             this.collapse();
                             this.setValue(record.data.type);
                             var curHost = this.name.split('.')[0];
+                            var hostImage = document.getElementById('img_' + curHost);
+                            if(hostImage) {
+                                if (record.data.type == 'folder') {
+                                    hostImage.src = IMG_FOLDER;
+                                } else if (record.data.type == 'pg') {
+                                    hostImage.src = IMG_PG;
+                                } else if (record.data.type == 'oracle') {
+                                    hostImage.src = IMG_ORA;
+                                } else if (record.data.type == 'wms') {
+                                    hostImage.src = IMG_WMS;
+                                } else if (record.data.type == 'wfs') {
+                                    hostImage.src = IMG_WFS;
+                                }
+                            }
                             if(record.data.type == 'folder') {
                                 Ext.getCmp(curHost + '.name').enable();
                                 Ext.getCmp(curHost + '.path').enable();
@@ -676,29 +685,14 @@ GeneralLayout =
                                 Ext.getCmp(curHost + '.upwd').disable();
                                 Ext.getCmp(curHost + '.instance').disable();
                                 Ext.getCmp(curHost + '.recurse').enable();
-                            } else if(record.data.type == 'pg') {
+                            } else if (record.data.type == 'pg' || record.data.type == 'oracle'){
                                 Ext.getCmp(curHost + '.port').enable();
                                 Ext.getCmp(curHost + '.uname').enable();
                                 Ext.getCmp(curHost + '.upwd').enable();
                                 Ext.getCmp(curHost + '.path').disable();
                                 Ext.getCmp(curHost + '.instance').enable();
                                 Ext.getCmp(curHost + '.recurse').disable();
-                            } else if (record.data.type == 'oracle'){
-                                Ext.getCmp(curHost + '.port').enable();
-                                Ext.getCmp(curHost + '.uname').enable();
-                                Ext.getCmp(curHost + '.upwd').enable();
-                                Ext.getCmp(curHost + '.path').disable();
-                                Ext.getCmp(curHost + '.instance').enable();
-                                Ext.getCmp(curHost + '.recurse').disable();
-                            } else if (record.data.type == 'wms'){
-                                Ext.getCmp(curHost + '.name').enable();
-                                Ext.getCmp(curHost + '.path').enable();
-                                Ext.getCmp(curHost + '.port').disable();
-                                Ext.getCmp(curHost + '.uname').disable();
-                                Ext.getCmp(curHost + '.upwd').disable();
-                                Ext.getCmp(curHost + '.instance').disable();
-                                Ext.getCmp(curHost + '.recurse').disable();
-                            } else if (record.data.type == 'wfs'){
+                            } else if (record.data.type == 'wms' || record.data.type == 'wfs'){
                                 Ext.getCmp(curHost + '.name').enable();
                                 Ext.getCmp(curHost + '.path').enable();
                                 Ext.getCmp(curHost + '.port').disable();
@@ -740,7 +734,7 @@ GeneralLayout =
                         grow:true,
                         growMax:400,
                         value:hosts[i].port,
-                        disabled:(hosts[i].type == 'folder'||hosts[i].type == 'wms')
+                        disabled:(hosts[i].type == 'folder'||hosts[i].type == 'wms'||hosts[i].type == 'wfs')
                     });
                     var txtUname = new Ext.form.TextField({
                         fieldLabel: i18n.user_name,
@@ -749,7 +743,7 @@ GeneralLayout =
                         grow:true,
                         growMax:400,
                         value:hosts[i].uname,
-                        disabled:(hosts[i].type == 'folder'||hosts[i].type == 'wms')
+                        disabled:(hosts[i].type == 'folder'||hosts[i].type == 'wms'||hosts[i].type == 'wfs')
                     });
                     var txtUpwd = new Ext.form.TextField({
                         fieldLabel: i18n.user_pwd,
@@ -759,7 +753,7 @@ GeneralLayout =
                         growMax:400,
                         inputType: 'password',
                         value:hosts[i].upwd,
-                        disabled:(hosts[i].type == 'folder'||hosts[i].type == 'wms')
+                        disabled:(hosts[i].type == 'folder'||hosts[i].type == 'wms'||hosts[i].type == 'wfs')
                     });
                     var txtinstance = new Ext.form.TextField({
                         fieldLabel: 'Template',
@@ -768,7 +762,7 @@ GeneralLayout =
                         grow:true,
                         growMax:400,
                         value:hosts[i].instance,
-                        disabled:(hosts[i].type == 'folder'||hosts[i].type == 'wms')
+                        disabled:(hosts[i].type == 'folder'||hosts[i].type == 'wms'||hosts[i].type == 'wfs')
                     });
                                     
                     var checkRecurse = new Ext.form.Checkbox({
@@ -830,15 +824,18 @@ GeneralLayout =
                     });
                     img = '<img src="';
                     if (hosts[i].type == 'folder') {
-                        img += 'images/folderclose.gif';
+                        img += IMG_FOLDER;
                     } else if (hosts[i].type == 'pg') {
-                        img += 'images/pg.gif';
+                        img += IMG_PG;
                     } else if (hosts[i].type == 'oracle') {
-                        img += 'images/ORA.gif';
+                        img += IMG_ORA;
                     } else if (hosts[i].type == 'wms') {
-                        img += 'images/wms.png';
+                        img += IMG_WMS;
+                    } else if (hosts[i].type == 'wfs') {
+                        img += IMG_WFS;
                     }
                            
+                    img += '" id="img_host[' + i + ']"';
                     img += '" alt="' + hosts[i].type + ' datasource"';
                     img += '" title="' + hosts[i].type + ' datasource">';
                     hostItems[i] = {

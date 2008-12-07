@@ -171,7 +171,7 @@ Ext.extend(Ext.ux.ColorPicker, Ext.ColorPalette, {
             this.drawGradient();
         }.createDelegate(this);
         //finds out current directory to point images
-        this.wheelImage.src = (colorFieldImagePath != null ? colorFieldImagePath : 'images/') + 'wheel.png';
+        this.wheelImage.src = (colorFieldImagePath != null ? colorFieldImagePath : this.imagePath) + 'wheel.png';
         
         Ext.get(this.wheel).on('click', this.select, this);
         
@@ -254,7 +254,7 @@ Ext.extend(Ext.ux.ColorPicker, Ext.ColorPalette, {
             this.gradientImage.onload = function(){
                 this.gradient.getContext('2d').drawImage(this.gradientImage, 33, 32);
             }.createDelegate(this);
-            this.gradientImage.src = (colorFieldImagePath != null ? colorFieldImagePath : 'images/') + 'gradient.png';
+            this.gradientImage.src = (colorFieldImagePath != null ? colorFieldImagePath : this.imagePath) + 'gradient.png';
         }else
             this.gradient.getContext('2d').drawImage(this.gradientImage, 33, 32);
         

@@ -1,6 +1,7 @@
 package org.geogurus.data.webservices;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +19,7 @@ import org.geotools.ows.ServiceException;
  */
 final class GasWmsDatastoreFactory implements
         Factory<WebMapServer, Map<String, Object>> {
+
     private Logger logger;
 
     /**
@@ -30,20 +32,29 @@ final class GasWmsDatastoreFactory implements
     }
 
     public boolean canCreateFrom(Map<String, Object> params) {
-        return params.containsKey("url");
+        boolean ret = false;
+        if (params.containsKey("url")) {
+            try {
+                new URL(params.get("url").toString());
+                ret = true;
+            } catch (MalformedURLException ex) {
+                logger.log(Level.SEVERE, "Error in WebMapServer URL : " + params.get("url"), ex);
+            }
+
+        }
+        return ret;
     }
 
     public WebMapServer create(Map<String, Object> params) {
+        WebMapServer wms = null;
         try {
-            return new WebMapServer((URL) params.get("url"));
+            wms = new WebMapServer((URL) params.get("url"));
         } catch (IOException e) {
-            logger.log(Level.SEVERE, "Error creating WebMapServer from: "
-                    + params, e);
+            logger.log(Level.SEVERE, "Error creating WebMapServer from: " + params, e);
         } catch (ServiceException e) {
-            logger.log(Level.SEVERE, "Error creating WebMapServer from: "
-                    + params, e);
+            logger.log(Level.SEVERE, "Error creating WebMapServer from: " + params, e);
         }
-        return null;
+        return wms;
     }
 
     public static Map<String, Object> createParams(URL host) {

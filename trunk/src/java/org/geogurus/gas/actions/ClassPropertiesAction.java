@@ -53,7 +53,8 @@ public class ClassPropertiesAction extends org.apache.struts.action.Action {
         String bgColor = request.getParameter("classBGColor");
         String olColor = request.getParameter("classOLColor");
         String message = "";
-        int classId = Integer.parseInt(request.getParameter("selectedClassId"));
+        //ClassId is of form c<classid> (e.g : c9589072)
+        int classId = Integer.parseInt(request.getParameter("selectedClassId").substring(1));
         Class cl = null;
         String classIcon = "";
         LegendGenerator lg = new LegendGenerator();

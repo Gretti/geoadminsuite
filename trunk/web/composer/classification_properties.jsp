@@ -10,108 +10,95 @@
 <%@page import="org.geogurus.mapserver.objects.RGB" %>
 <%@page import="org.geogurus.mapserver.objects.Layer" %>
 
-<link rel="stylesheet" href="css/gas.css" type="text/css">
 <script type="text/javascript">
-    var spl = [];
-    var sym;
     var layerType = <bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.type"/>;
-    
-    // the lists of numeric attributes columns for the choosen GC. 
-    var elOptNew;
-    var numericColList = [];
-<logic:iterate name="<%=ObjectKeys.CURRENT_GC%>" property="numericAttributeData" id="col">
-    elOptNew = document.createElement('option');
-    elOptNew.text = "<bean:write name="col"/>";
-    elOptNew.value = "<bean:write name="col"/>";
-    numericColList[numericColList.length] = elOptNew;
-</logic:iterate>
-        
-    var fullColList = [];
-<logic:iterate name="<%=ObjectKeys.CURRENT_GC%>" property="attributeDataNames" id="col">
-    elOptNew = document.createElement('option');
-    elOptNew.text = "<bean:write name="col"/>";
-    elOptNew.value = "<bean:write name="col"/>";
-    fullColList[fullColList.length] = elOptNew;
-</logic:iterate>
-
-    var legendMessage = "";
-<logic:present name="<%=ObjectKeys.LEGEND_MESSAGE%>">
-    legendMessage = "<bean:write name='<%=ObjectKeys.LEGEND_MESSAGE%>' filter='true'/>";
-    if (legendMessage.length > 0) {
-        Ext.MessageBox.show({
-           title: 'Legend error',
-           msg: legendMessage,
-           buttons: Ext.MessageBox.OK,
-           icon: Ext.MessageBox.WARNING
+    var dataClassifResult = [];
+    var symbolsInfo = {};
+    var selectedClassId = null;
+    var selectedSymbologyId = null;
+    // Emphasize the classification icon
+    function makeItBig(img) {
+        img.style.width = '40px';
+        img.style.height = '22px';
+    }
+    // Restores the small classification icon
+    function makeItSmall(img) {
+        img.style.width = '20px';
+        img.style.height = '11px';
+    }
+    // Nothing for the moment
+    function editSymbol(img) {
+        var clid = 'c' + img.id.split('_')[2];
+        openRepresentationWindow(clid);
+    }
+    // Generate a new classification based on specified params in form
+    function generate() {
+        Ext.Ajax.request({
+            url: "classificationProperties.do",
+            params: Ext.Ajax.serializeForm(Ext.getCmp('formProps').form.getEl().dom),
+            success: function(result){
+                //Gets the new classification reading response
+                //response is a string : "cl1_icon,cl1_name,cl1_expression|cl2_icon,cl2_name,cl2_expression|..."
+                var strDataClasses = result.responseText;
+                var arrayDataClasses = [];
+                var splittedClasses = strDataClasses.split("|");
+                var arrayClassInfo;
+                symbolsInfo = new Array(0);
+                for(var c = 0;c < splittedClasses.length; c++) {
+                    arrayClassInfo = splittedClasses[c].split("&&&");
+                    arrayDataClasses.push([
+                        '<img id=\'img_class_' + arrayClassInfo[0] + '\''+
+                        'style="width:20px;height:11px;border:0;" ' +
+                        'onmouseover="javascript:makeItBig(this);" ' +
+                        'onmouseout="javascript:makeItSmall(this);" ' +
+                        'onclick="javascript:editSymbol(this);" ' +
+                        'src=\'' + arrayClassInfo[1] + '\'>',
+                        arrayClassInfo[2],
+                        arrayClassInfo[3]
+                    ]);
+                    symbolInfo['c'+arrayClassInfo[0]] = {
+                        'color':arrayClassInfo[4],
+                        'bgcolor':arrayClassInfo[5] == 'null' ? '' : arrayClassInfo[5],
+                        'olcolor':arrayClassInfo[6] == 'null' ? '' : arrayClassInfo[6]
+                    };
+                }
+                storeClassifResult.loadData(arrayDataClasses);
+                gridClassifResult.view.render();
+                gridClassifResult.view.refresh();
+                refreshComposerMap();
+            }
         });
     }
-</logic:present>
-
-<logic:present name="<%=ObjectKeys.CLASSIF_MESSAGE%>">
-    var classifMessage = "<bean:write name='<%=ObjectKeys.CLASSIF_MESSAGE%>'/>";
-    spl = classifMessage.split(",");
-</logic:present>
-    if (spl.length == 2) {
-            var txt = 'Classification error';
-
-            // servlet generated a message concerning the number of classes
-            if (spl[0] == "classlimitation") {
-                    <%//txt = '<bean:message key="msg_class_limit_1" />' + "\n" + spl[1] + "\n" + '<bean:message key="msg_class_limit_2" />';%>
-                    Ext.MessageBox.show({
-                       title: 'Classification error',
-                       msg: txt,
-                       buttons: Ext.MessageBox.OK,
-                       icon: Ext.MessageBox.WARNING
-                    });
-            }
-            // servlet generated a message concerning the column type: not eligible
-            // for a range classif
-            if (spl[0] == "classrange") {
-                    <%//txt = '<bean:message key="msg_item_type"/>';%>
-                    Ext.MessageBox.show({
-                       title: 'Classification error',
-                       msg: txt,
-                       buttons: Ext.MessageBox.OK,
-                       icon: Ext.MessageBox.WARNING
-                    });
-            }
+    // Submit GridEditor content to reflect changes in current classification
+    function sub() {
+        refreshComposerMap();
     }
-
-    //toggles all checkboxes status
-    function allCheck() {
-        for (var i = 0; i < document.forms["LayerForm"].elements.length; i++) {
-            if (document.forms["LayerForm"].elements[i].type == "checkbox" && document.forms["LayerForm"].elements[i].name != "labels") {
-                document.forms["LayerForm"].elements[i].checked = !document.forms["LayerForm"].elements[i].checked;
-            }
-        }
-    }
-    
+    // Opens the classification representation window
     function openRepresentationWindow(classid) {
-        var layerform = document.forms['LayerForm'];
-        layerform.selectedClassId.value = classid;
-        if(Ext.getCmp('symbology-win')) Ext.getCmp('symbology-win').destroy();
-        var symwin = createSymbologyWin();
-        symwin.show(this);
-        var strcolor = layerform.elements['c'+ classid +'color'];
-        var strbgcolor = layerform.elements['c'+ classid +'bgcolor'];
-        var strolcolor = layerform.elements['c'+ classid +'olcolor'];
+        selectedClassId = classid;
+        var strcolor = symbolsInfo[classid].color;
+        var strbgcolor = symbolsInfo[classid].bgcolor;
+        var strolcolor = symbolsInfo[classid].olcolor;
         var color = null;
         var bgcolor = null;
         var olcolor = null;
         var vals;
+        if(Ext.getCmp('symbology-win')) Ext.getCmp('symbology-win').destroy();
+        var symwin = createSymbologyWin();
+        symwin.show(this);
         //instanciate color values reading hidden fields
-        if( strcolor && strcolor.value != "") {
-            vals = strcolor.value.split(" ");
+        if( strcolor && strcolor != "") {
+            vals = strcolor.split(" ");
             color = 'rgb(' + vals[0] + ',' + vals[1] + ',' + vals[2]+ ')';
             $('selected-foreground-color').style.backgroundColor = color;
             $('selected-foreground-color').innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;';
         } else {
             $('selected-foreground-color').style.backgroundColor = "white";
             $('selected-foreground-color').innerHTML = '&nbsp;&nbsp;/&nbsp;&nbsp;';
-        } 
+        }
         if($('selected-background-color')) {
-            if(strbgcolor && strbgcolor.value != "") {
-                vals = strbgcolor.value.split(" ");
+            if(strbgcolor && strbgcolor != "") {
+                vals = strbgcolor.split(" ");
                 bgcolor = 'rgb(' + vals[0] + ',' + vals[1] + ',' + vals[2]+ ')';
                 $('selected-background-color').style.backgroundColor = bgcolor;
                 $('selected-background-color').innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -121,8 +108,8 @@
             }
         }
         if($('selected-border-color')) {
-            if(strolcolor && strolcolor.value != "") {
-                vals = strolcolor.value.split(" ");
+            if(strolcolor && strolcolor != "") {
+                vals = strolcolor.split(" ");
                 olcolor = 'rgb(' + vals[0] + ',' + vals[1] + ',' + vals[2]+ ')';
                 $('selected-border-color').style.backgroundColor = olcolor;
                 $('selected-border-color').innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -132,7 +119,6 @@
             }
         }
     }
-    
     // Resets the color of the given component writing a red bold '/' on a white background
     function deleteColor(id) {
         $(id).style.backgroundColor = 'white';
@@ -144,108 +130,53 @@
     //  if "symbol", value is the symbol name;
     //  if "color", value is the color, val2 is bgcolor, val3 is outlinecolor;
     function refreshClassRepresentation(symbol_, fgcolor_, bgcolor_, olcolor_) {
-        var layerform = document.forms['LayerForm'];
-        var color = layerform.elements['c' + currentClassID  + 'color'];
-        var bgcolor = layerform.elements['c' + currentClassID  + 'bgcolor'];
-        var olcolor = layerform.elements['c' + currentClassID  + 'olcolor'];
-        layerform.value = symbol_;
-        var currentClassID = layerform.selectedClassId.value;
+        var color = symbolsInfo[selectedClassId].color;
+        var bgcolor = symbolsInfo[selectedClassId].bgcolor;
+        var olcolor = symbolsInfo[selectedClassId].olcolor;
         //builds Servlet URL with parameters to refresh this image
         //updates class color parameters hidden fields
-        var servletURL = "GOClassRepresentation.jsv?classid=" + currentClassID;
-        if(sym != null) {
+        var servletURL = "GOClassRepresentation.jsv?classid=" + selectedClassId;
+        if(symbol_ != null) {
             servletURL += "&symbolkey=" + symbol_;
         }
         if(color && fgcolor_ != null && fgcolor_.length > 0) {
             servletURL += "&color=" + escape(fgcolor_);
-            color.value = fgcolor_;
+            symbolsInfo[selectedClassId].color = fgcolor_;
         } else if(color) {
-                color.value = '';
+            symbolsInfo[selectedClassId].color = '';
         }
         if(bgcolor && bgcolor_ != null && bgcolor_.length > 0) {
             servletURL += "&bgcolor=" + escape(bgcolor_);
-            bgcolor.value = bgcolor_;
+            symbolsInfo[selectedClassId].bgcolor = bgcolor_;
         } else if(bgcolor) {
-            bgcolor.value = '';
+            symbolsInfo[selectedClassId].bgcolor = '';
         }
         if(olcolor && olcolor_ != null && olcolor_.length > 0) {
             servletURL += "&outcolor=" + escape(olcolor_);
-            olcolor.value = olcolor_;
+            symbolsInfo[selectedClassId].olcolor = olcolor_;
         } else if(olcolor) {
-            olcolor.value = '';
+            symbolsInfo[selectedClassId].olcolor = '';
         }
         servletURL += "&id=" + getUniqueID();
         // refreshes the image source
-        document.images["img_class_" + currentClassID].src = servletURL;
+        document.images["img_class_" + selectedClassId.substring(1)].src = servletURL;
     }
-
     // generates a unique identifier
     function getUniqueID() {
         var d = new Date();
         return "id" + d.getDay() + d.getMonth() + d.getHours() + d.getMinutes() + d.getSeconds();
     }
-    
-    // fills the column list select element with correct values (either the full list of columns
-    // in case of unique value classif. or the list of numeric columns in case of range classif.   
-    // @param classifType (the curent classification type: "range" or "uniqueavalue" strings)
-    function fillColumnList(classifType) {
-        var colSelect = document.forms['LayerForm'].elements['defaultMsLayer.classItem'];
-        var curOptions;
-        if ("range" == classifType) {
-            curOptions = numericColList
-        } else if ("uniquevalue" == classifType) {
-            curOptions = fullColList;
-        } else {
-            return;
-        }
-        for (i = colSelect.options.length - 1; i>=0; i--) {
-            colSelect.remove(i);
-        }
-        for (i = 0; i < curOptions.length; i++) {
-            colSelect.options[i] = curOptions[i];
-        }
-    }
-
-    function showFields() {
-
-        trNumClasses = document.getElementById("class_number");
-        trClassifItem = document.getElementById("classif_item");
-        if(document.forms["LayerForm"].classificationType.value == "range") {
-            fillColumnList("range");
-            trNumClasses.style.display = "";
-            trClassifItem.style.display = "";
-        } else if (document.forms["LayerForm"].classificationType.value == "uniquevalue") {
-            fillColumnList("uniquevalue");
-            trNumClasses.style.display = "none";
-            trClassifItem.style.display = "";
-        } else if (document.forms["LayerForm"].classificationType.value == "singleclass") {
-            trNumClasses.style.display = "none";
-            trClassifItem.style.display = "none";
-        }
-    }
-
-    function sub() {
-        Ext.getCmp("contentProps").load({
-            url: "classificationProperties.do",
-            params: Ext.Ajax.serializeForm(document.forms["LayerForm"]),
-            scripts:true,
-            callback: function(){
-                refreshComposerMap();
-            }
-        });
-    }
-
+    //Updates selected symbol in representation window
     function selectSymbol(imgsrc, sym_) {
-        sym = sym_;
-        document.LayerForm.selectedSymbologyId.value = sym_;
+        selectedSymbologyId = sym_;
         $('selected-symbol').innerHTML = '<img src="' + imgsrc + '">';
     }
-    
+    //Resets selected symbol
     function deleteSymbol() {
-        document.LayerForm.selectedSymbologyId.value = "";
+        selectedSymbologyId = null;
         $('selected-symbol').innerHTML = '';
     }
-    
+    //Creates a table containing all available symbols for selected layer type
     function loadSymbols() {
         var lstImages;
         if(layerType == <%=Layer.POINT%>) {
@@ -264,7 +195,7 @@
             var newTr = 0;
             var n = 4;
             var i = 0;
-            for (symName in lstImages) {
+            for (var symName in lstImages) {
                 //Starts a new line each n symbols
                 var symIcon = lstImages[symName];
                 if(newTr == 0) {
@@ -291,7 +222,7 @@
         }
         return false;
     }
-    
+    //Transforms background-color property style to a RGB triplet
     function bgColorToRgb(bgColor) {
         if (bgColor.length == 0) {
             return "";
@@ -299,13 +230,12 @@
         var arrayRGB = bgColor.split('(')[1].split(')')[0].split(',');
         return arrayRGB[0] + " " + arrayRGB[1] + " " + arrayRGB[2];
     }
-    
+    //Creates and displays Symbology window
     function createSymbologyWin() {
             /*************************************************************************************************************************/
             /*********************************************SYMBOLOGY WINDOW************************************************************/
             /*************************************************************************************************************************/
-            //var reminderHtml = '<form name="frmSelSymbolColor">Symbol : <span id="selected-symbol"></span>&nbsp;' + 
-            var reminderHtml = '<form name="frmSelSymbolColor"><span id="selected-symbol"></span>&nbsp;' + 
+            var reminderHtml = '<form name="frmSelSymbolColor"><span id="selected-symbol"></span>&nbsp;' +
                                /*'<img src="images/trashcan.png" onclick="deleteSymbol()" title="Transparent" alt="Transparent">&nbsp;&nbsp;' + */
                                '  - <input type="radio" name="sellayer" value="selected-foreground-color" checked="checked">&nbsp;' +
                                'Foreground : <span class="reminderColor" ' +
@@ -377,12 +307,11 @@
                                $('selected-border-color').innerHTML.lastIndexOf('/') == -1) {
                                 olcol = bgColorToRgb($('selected-border-color').style.backgroundColor);
                             }
-                            refreshClassRepresentation(sym, fgcol, bgcol, olcol, txtcol);
+                            refreshClassRepresentation(selectedSymbologyId, fgcol, bgcol, olcol, txtcol);
                             var actionParams = "selectedClassId=";
-                            actionParams += document.forms['LayerForm'].selectedClassId.value;
+                            actionParams += selectedClassId;
                             actionParams += "&selectedSymbologyId=";
-                            actionParams += document.forms['LayerForm'].selectedSymbologyId.value == 'undefined' ? '' :
-                                document.forms['LayerForm'].selectedSymbologyId.value; 
+                            actionParams += selectedSymbologyId == null ? '' : selectedSymbologyId;
                             actionParams += "&classColor=";
                             actionParams += fgcol;
                             actionParams += "&classBGColor=";
@@ -392,17 +321,17 @@
                             Ext.Ajax.request({
                                 url:'classProperties.do',
                                 params: actionParams,
-                                success: function (result, request) {
+                                success: function (result) {
                                         var res = Ext.util.JSON.decode(result.responseText);
                                         // sets image for choosen class
                                         if (res.message.length > 0) {
                                             Ext.Msg.alert("Class properties error", res.message);
                                         } else {
-                                            document.images["img_class_" + document.forms['LayerForm'].selectedClassId.value].src = res.classIcon;
+                                            document.images["img_class_" + selectedClassId.substring(1)].src = res.classIcon;
                                         }
                                 },
-                                failure: function (result, request) {
-                                        Ext.Msg.alert("Class properties error", 
+                                failure: function (result) {
+                                        Ext.Msg.alert("Class properties error",
                                         "Server was unable to process request. see server logs. Sent params: " + actionParams +
                                         "\n server response:" + result.responseText);
                                 }
@@ -436,83 +365,249 @@
             });
             return winSymbology;
     }
-    
-    Ext.onReady(function() {            
-            /*************************************************************************************************************************/
-            /*************************************************FIELD DISPLAY***********************************************************/
-            /*************************************************************************************************************************/
-            showFields();
+
+    // the lists of numeric attributes columns for the choosen GC.
+    var numericFields = [];
+    var allFields = [];
+<logic:iterate name="<%=ObjectKeys.CURRENT_GC%>" property="numericAttributeData" id="numcol">
+    numericFields.push(['<bean:write name="numcol"/>','<bean:write name="numcol"/>']);
+</logic:iterate>
+<logic:iterate name="<%=ObjectKeys.CURRENT_GC%>" property="attributeDataNames" id="allcol">
+    allFields.push(['<bean:write name="allcol"/>','<bean:write name="allcol"/>']);
+</logic:iterate>
+
+<logic:present name="<%=ObjectKeys.LEGEND_MESSAGE%>">
+    var legendMessage = '<bean:write name="<%=ObjectKeys.LEGEND_MESSAGE%>" filter="true"/>';
+    Ext.MessageBox.show({
+        title: 'Legend error',
+        msg: legendMessage,
+        buttons: Ext.MessageBox.OK,
+        icon: Ext.MessageBox.WARNING
+    });
+</logic:present>
+
+<logic:present name="<%=ObjectKeys.CLASSIF_MESSAGE%>">
+    var classifMessage = '<bean:write name="<%=ObjectKeys.CLASSIF_MESSAGE%>"/>';
+    var spl = classifMessage.split(",");
+    if (spl.length == 2) {
+        var txt = 'Classification error';
+        // servlet generated a message concerning the number of classes
+        if (spl[0] == "classlimitation") {
+            <%//txt = '<bean:message key="msg_class_limit_1" />' + "\n" + spl[1] + "\n" + '<bean:message key="msg_class_limit_2" />';%>
+                        Ext.MessageBox.show({
+                            title: 'Classification error',
+                            msg: txt,
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.WARNING
+                        });
+                    }
+                    // servlet generated a message concerning the column type: not eligible
+                    // for a range classif
+                    if (spl[0] == "classrange") {
+            <%//txt = '<bean:message key="msg_item_type"/>';%>
+                        Ext.MessageBox.show({
+                            title: 'Classification error',
+                            msg: txt,
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.WARNING
+                        });
+                    }
+                }
+</logic:present>
+    var classifTypes = [
+        ["singleclass","<bean:message key="unique_class"/>"],
+        ["uniquevalue","<bean:message key="unique_value"/>"],
+    ];
+    if(numericFields.length > 0) {
+        classifTypes.push(["range","<bean:message key="interval"/>"]);
+    }
+    var cmbClassifType = new Ext.form.ComboBox({
+        id:'cmbClassifType',
+        fieldLabel: '<bean:message key="classif_type"/>',
+        hiddenName: 'classificationType',
+        store: new Ext.data.SimpleStore({
+            fields: ['value','type'],
+            data : classifTypes
+        }),
+        displayField:'type',
+        valueField:'value',
+        value: "singleclass",
+        typeAhead: true,
+        autoWidth: true,
+        mode: 'local',
+        triggerAction: 'all',
+        forceSelection: true,
+        selectOnFocus:true,
+        listClass: 'x-combo-list-small',
+        onSelect: function(record) {
+            this.collapse();
+            this.setValue(record.data.value);
+            if(record.data.value == "singleclass") {
+                Ext.getCmp('cmbClassItem').hide();
+                Ext.getCmp('cmbClassItem').getEl().
+                    up('.x-form-item').dom.className = "x-form-item x-hide-label";
+                Ext.getCmp('nbrNumClasses').hide();
+                Ext.getCmp('nbrNumClasses').getEl()
+                .up('.x-form-item').dom.className = "x-form-item x-hide-label";
+            }else if(record.data.value == "uniquevalue") {
+                Ext.getCmp('cmbClassItem').store.loadData(allFields,false);
+                Ext.getCmp('cmbClassItem').show();
+                Ext.getCmp('cmbClassItem').getEl().
+                    up('.x-form-item').dom.className = "x-form-item";
+                if(Ext.getCmp('cmbClassItem').getValue() == '') {
+                    Ext.getCmp('cmbClassItem').setValue(allFields[0][0]);
+                }
+
+                Ext.getCmp('nbrNumClasses').hide();
+                Ext.getCmp('nbrNumClasses').getEl().
+                    up('.x-form-item').dom.className = "x-form-item x-hide-label";
+            }else if(record.data.value == "range") {
+                Ext.getCmp('cmbClassItem').store.loadData(numericFields,false);
+                Ext.getCmp('cmbClassItem').show();
+                Ext.getCmp('cmbClassItem').getEl().
+                    up('.x-form-item').dom.className = "x-form-item";
+                if(Ext.getCmp('cmbClassItem').getValue() == '') {
+                    Ext.getCmp('cmbClassItem').setValue(numericFields[0][0]);
+                } else {
+                    var resetValue = true;
+                    for(var idxFld = 0 ; idxFld < numericFields.length; idxFld++) {
+                        if(Ext.getCmp('cmbClassItem').getValue() == numericFields[idxFld][0]) {
+                            resetValue = false;
+                            break;
+                        }
+                    }
+                    if(resetValue) Ext.getCmp('cmbClassItem').setValue(numericFields[0][0]);
+                }
+
+                Ext.getCmp('nbrNumClasses').show();
+                Ext.getCmp('nbrNumClasses').getEl().
+                    up('.x-form-item').dom.className = "x-form-item";
+            }
+        }
+    });
+    var cmbClassItem = new Ext.form.ComboBox({
+        id:'cmbClassItem',
+        fieldLabel: "<bean:message key="classif_item"/>",
+        name: 'defaultMsLayer.classItem',
+        store: new Ext.data.SimpleStore({
+            fields: ['value','type'],
+            data : allFields
+        }),
+        hidden : true,
+        hideLabel : true,
+        displayField:'type',
+        valueField:'value',
+        typeAhead: true,
+        autoWidth: true,
+        mode: 'local',
+        allowBlank : false,
+        blankText : 'Select a field',
+        triggerAction: 'all',
+        forceSelection: true,
+        selectOnFocus:true,
+        listClass: 'x-combo-list-small'
+    });
+    var fldNumClasses = new Ext.form.NumberField({
+        id:'nbrNumClasses',
+        fieldLabel: "<bean:message key="class_number"/>",
+        name: 'numClasses',
+        value: 5,
+        allowDecimals: false,
+        allowNegative: false,
+        allowBlank: false,
+        hidden: true,
+        hideLabel : true,
+        decimalPrecision: 0,
+        minValue: 0,
+        maxValue: 250
+    });
+
+    /**Panel handling classification choices**/
+    if(Ext.getCmp('formProps')) Ext.getCmp('formProps').destroy();
+    var formProps = new Ext.FormPanel({
+        id: 'formProps',
+        collapsible: true,
+        labelWidth: 150,
+        title:'<bean:message key="classif"/>',
+        frame:true,
+        bodyStyle:'padding:5px 5px 0',
+        autoWidth: true,
+        autoHeight: false,
+        height: 155,
+        items: [cmbClassifType,cmbClassItem,fldNumClasses],
+        buttons:[{
+                text:'Generate',
+                handler: function() {
+                    generate();
+                }
+            }]
+    });
+
+    /**Panel handling grid of classes**/
+    var cmClassifResult = new Ext.grid.ColumnModel([
+        {
+            id:'classifColIcon',
+            header: "<bean:message key="color"/>",
+            dataIndex: 'icon',
+            width: 70
+        },{
+            id:'classifColName',
+            header: "<bean:message key="name_lower"/>",
+            dataIndex: 'name',
+            width: 150,
+            editor: new Ext.form.TextField({
+                allowBlank: false
+            })
+        },{
+            id:'classifColExpr',
+            header: "<bean:message key="expression"/>",
+            dataIndex: 'expression',
+            editor: new Ext.form.TextField({
+                allowBlank: true
+            })
+        }
+    ]);
+
+    <logic:iterate name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.mapClass.classes" id="cl" indexId="cntCl">
+        dataClassifResult.push([
+            '<img id=\'img_class_<bean:write name="cl" property="ID"/>\''+
+            'style="width:20px;height:11px;border:0;" ' +
+            'onmouseover="javascript:makeItBig(this);" ' +
+            'onmouseout="javascript:makeItSmall(this);" ' +
+            'onclick="javascript:editSymbol(this);" ' +
+            'src=\'<bean:write name="cl" property="legendURL"/>\'>',
+            '<bean:write name="cl" property="name"/>',
+            '<bean:write name="cl" property="expression" ignore="true"/>'
+        ]);
+        symbolsInfo['c<bean:write name="cl" property="ID"/>'] = {
+                'color':'<bean:write name="cl" property="color" ignore="true"/>',
+                'bgcolor':'<bean:write name="cl" property="backgroundColor" ignore="true"/>',
+                'olcolor':'<bean:write name="cl" property="outlineColor" ignore="true"/>'
+            };
+    </logic:iterate>
+
+        var storeClassifResult = new Ext.data.SimpleStore({
+            fields: [
+                {name: 'icon'},
+                {name: 'name'},
+                {name: 'expression'}
+            ]
         });
+        var gridClassifResult = new Ext.grid.EditorGridPanel({
+            id: 'gridClassifResult',
+            store: storeClassifResult,
+            cm: cmClassifResult,
+            autoExpandColumn:'classifColExpr',
+            border: false
+        });
+
+        storeClassifResult.loadData(dataClassifResult);
+
+        /**Add panels to content panel**/
+        Ext.getCmp('contentProps').add(formProps);
+        Ext.getCmp('contentProps').add(gridClassifResult);
+        Ext.getCmp('contentProps').doLayout();
+        Ext.getCmp('formProps').setHeight(155);
+        gridClassifResult.view.render();
+        gridClassifResult.view.refresh();
 </script>
-<html:form method="post" action="classificationProperties.do">
-    <input type='hidden' value="" name="selectedClassId"/>
-    <input type='hidden' value="" name="selectedSymbologyId"/>
-    <!--classification field-->
-    <table class="tableb" cellpadding="0" cellspacing="1" width="100%">
-        <tr align="center">
-            <th class="th0" colspan="2"><bean:message key="classif"/></th>
-        </tr>
-        <tr>
-            <td class="td4tiny"><bean:message key="classif_type"/></td>
-            <td class="td4tiny">
-                <html:select name="LayerForm" property="classificationType" styleClass="tiny"  onchange="javascript:showFields();">
-                    <html:option value="singleclass"><bean:message key="unique_class"/></html:option>
-                    <html:option value="uniquevalue"><bean:message key="unique_value"/></html:option>
-                    <html:option value="range"><bean:message key="interval"/></html:option>
-                </html:select>
-            </td>
-        </tr>
-        <tr id="class_number" style="display:none;">
-            <td class="td4tiny"><bean:message key="class_number"/></td>
-            <td class="td4tiny">
-                <input type="text" name="numClasses" value="10" class="tiny" size="5">
-            </td>
-        </tr>
-        <tr id="classif_item" style="display:none;">
-        <td class="td4tiny"><bean:message key="classif_item"/></td>
-        <td class="td4tiny">
-            <html:select name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.classItem" styleClass="tiny">
-                <html:options name="<%=ObjectKeys.CURRENT_GC%>" property="attributeDataNames" styleClass="tiny"/>
-            </html:select>
-        </td>
-        </tr>
-        <tr>
-            <td class="td4tiny" align="center" colspan="2">
-                <table class="tablec" cellspacing="1" cellpadding='1'>
-                    <tr>
-                        <!--<th class="th0" align="center"><a href="#" class='tinynocolor' onclick="allCheck()"><bean:message key="all"/></a></th>-->
-                        <th class="th0" align="center">&nbsp;</th>
-                        <th class="th0" align="center"><bean:message key="color"/></th>
-                        <th class="th0" align="center"><bean:message key="name_lower"/></th>
-                        <th class="th0" align="center"><bean:message key="expression"/></th>
-                    </tr>
-                    <bean:define id="classes" name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.mapClass"/>
-                    <logic:iterate name="classes" property="classes" id="cl" indexId="cntCl">
-                    <tr>
-                        <tr>
-                            <!--<td class="td4tiny"><input type='checkbox' name='c<bean:write name="cl" property="ID"/>_check' value='checkbox' CHECKED></td>-->
-                            <td class="td4tiny" align='center' valign='middle'>
-                                <img src='images/properties.gif' style="width:15px;height:15px;border:0;">
-                            </td>
-                            <td class="td4tiny" align='center' valign='middle'>
-                                <a href = '#' onClick="openRepresentationWindow(<bean:write name="cl" property="ID"/>);">
-                                    <img  style="width:40px;height:22px;border:0;" src='<bean:write name="cl" property="legendURL"/>' name='img_class_<bean:write name="cl" property="ID"/>'>
-                                    <input type='hidden' name='c<bean:write name="cl" property="ID"/>color' value='<bean:write name="cl" property="color" ignore="true"/>'>
-                                    <input type='hidden' name='c<bean:write name="cl" property="ID"/>bgcolor' value='<bean:write name="cl" property="backgroundColor" ignore="true"/>'>
-                                    <input type='hidden' name='c<bean:write name="cl" property="ID"/>olcolor' value='<bean:write name="cl" property="outlineColor" ignore="true"/>'>
-                                </a>
-                            </td>
-                            <td class="td4tiny">
-                                <input type='text' name='<bean:write name="cl" property="ID"/>_name' value='<bean:write name="cl" property="name"/>' class='tiny'>
-                            </td>
-                            <td class="td4tiny">
-                                <input type='text' name='<bean:write name="cl" property="ID"/>_expression' value='<bean:write name="cl" property="expression"/>' class='tiny'>
-                            </td>
-                        </tr>
-                    </tr>
-                    </logic:iterate>
-                </table>
-            </td>
-        </tr>
-    </table>
-</html:form>

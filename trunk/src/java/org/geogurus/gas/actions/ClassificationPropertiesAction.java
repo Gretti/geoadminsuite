@@ -9,6 +9,7 @@ import org.geogurus.data.operations.MinMaxAttributeOperation;
 import org.geogurus.data.operations.UniqueValueFeatureClassification;
 import java.io.File;
 import java.io.IOException;
+import java.io.Writer;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.HashSet;
@@ -49,9 +50,6 @@ import org.geotools.data.Query;
 public class ClassificationPropertiesAction extends Action {
 
     private Logger logger = Logger.getLogger(ClassificationPropertiesAction.class.getName());
-
-    /* forward name="success" path="" */
-    private final String CLASSIF_FORWARD = "classificationProperties";
 
     /**
      * This is the action called from the Struts framework.
@@ -122,13 +120,47 @@ public class ClassificationPropertiesAction extends Action {
         } catch (Exception e) {
             logger.warning(e.getMessage());
         }
-
+        /*
         // Prepare forward and keys for map refreshing
         session.setAttribute(ObjectKeys.CURRENT_GC, gc);
         request.setAttribute(ObjectKeys.CLASSIF_MESSAGE, gc.getDefaultMsLayer().getMapClass().getMessage());
         request.setAttribute(ObjectKeys.LEGEND_MESSAGE, lg.getErrorResponse());
         request.setAttribute(ObjectKeys.REFRESH_KEY, ObjectKeys.REFRESH_KEY);
         return mapping.findForward(CLASSIF_FORWARD);
+         */
+
+        //Makes a json objects with generated classes
+        Iterator classes = gc.getDefaultMsLayer().getMapClass().getClasses();
+        StringBuilder strDataClasses = new StringBuilder();
+        boolean first = true;
+        while (classes.hasNext()) {
+            if (!first) {
+                strDataClasses.append("|");
+            }
+            org.geogurus.mapserver.objects.Class cl = (org.geogurus.mapserver.objects.Class) classes.next();
+            strDataClasses.append(cl.getID());
+            strDataClasses.append("&&&");
+            strDataClasses.append(cl.getLegendURL());
+            strDataClasses.append("&&&");
+            strDataClasses.append(cl.getName());
+            strDataClasses.append("&&&");
+            strDataClasses.append(cl.getExpression());
+            strDataClasses.append("&&&");
+            strDataClasses.append(cl.getColor());
+            strDataClasses.append("&&&");
+            strDataClasses.append(cl.getBackgroundColor());
+            strDataClasses.append("&&&");
+            strDataClasses.append(cl.getOutlineColor());
+            first = false;
+        }
+        response.setContentType("text/html");
+        Writer out = response.getWriter();
+        out.write(strDataClasses.toString());
+        out.flush();
+        out.close();
+        //Release memory
+        System.gc();
+        return null;
     }
 
     /**
