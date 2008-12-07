@@ -17,7 +17,6 @@
 %>
 
 <script type="text/javascript" charset="utf-8">
-    <!--
     var generalPropsTree;
     var myLayers = [];
     var children = [];
@@ -454,38 +453,66 @@
                     var url, title;
                     var width = 500;
                     var height = 300;
-                    if (id == "genLayProps")         {url = 'composer/general_properties.jsp';       title='General Properties';}
-                    else if (id == "clasLayProps")   {url = 'composer/classification_properties.jsp';title='Layer Classification Properties';}
-                    else if (id == "clasLabProps")   {url = 'loadLabelProperties.do';                title='Label Properties';}
-                    else if (id == "layLayProps")    {url = 'composer/layer_properties.jsp';         title='Layer Object Properties';}
-                    else if (id == "layClasProps")   {url = 'composer/classes_properties.jsp';       title='Layer Classes Properties';}
-                    else if (id == "CWLocationProps") {
+                    if (id == "genLayProps") {
+                        url = 'composer/general_properties.jsp';
+                        title='General Properties';
+                    } else if (id == "clasLayProps") {
+                        url = 'composer/classif_properties.jsp';
+                        title='Layer Classification Properties';
+                    } else if (id == "clasLabProps") {
+                        url = 'loadLabelProperties.do';
+                        title='Label Properties';
+                    } else if (id == "layLayProps") {
+                        url = 'composer/layer_properties.jsp';
+                        title='Layer Object Properties';
+                    } else if (id == "layClasProps") {
+                        url = 'composer/classes_properties.jsp';
+                        title='Layer Classes Properties';
+                    } else if (id == "CWLocationProps") {
                         url = 'composer/cartoweb/location_ini_properties.jsp';
                         title='Cartoweb3 Location.ini Properties';
-                        // changes height to test a taller windows
                         height = 500;
-                    }
-                    else if (id == "CWImagesProps")  {url = 'composer/cartoweb/images_ini_properties.jsp'; title='Cartoweb3 Images.ini Properties';}
-                    else if (id == "CWQueryProps")   {
+                    } else if (id == "CWImagesProps") {
+                        url = 'composer/cartoweb/images_ini_properties.jsp';
+                        title='Cartoweb3 Images.ini Properties';
+                    } else if (id == "CWQueryProps") {
                         url = 'composer/cartoweb/query_ini_properties.jsp';
                         title='Cartoweb3 Query.ini Properties';
                         height = 500;
-                    }
-                    else if (id == "CWLayerProps")   {
+                    } else if (id == "CWLayerProps") {
                         url = 'composer/cartoweb/layer_ini_properties.jsp';
                         title='Cartoweb3 Layer.ini Properties';
                         width = 300;
                         height = 550;
+                    } else if (id == "CWLoadIniFiles") {
+                        url = 'composer/cartoweb/load_ini_files.jsp';
+                        title='Cartoweb3 Configuration files';
+                    } else if (id == "mapProps")       {
+                        url = 'composer/map_properties.jsp';
+                        title='Map Object Properties';
+                    } else if (id == "legendProps")    {
+                        url = 'composer/legend_properties.jsp';
+                        title='Legend Object Properties';
+                    } else if (id == "referenceProps") {
+                        url = 'composer/reference_properties.jsp';
+                        title='Reference Object Properties';
+                    } else if (id == "scalebarProps")  {
+                        url = 'composer/scalebar_properties.jsp';
+                        title='Scalebar Object Properties';
+                    } else if (id == "webProps")       {
+                        url = 'composer/web_properties.jsp';
+                        title='Web Object Properties';
+                    } else if (id == "querymapProps")  {
+                        url = 'composer/web_properties.jsp';
+                        title='QueryMap Object Properties';
+                    } else if (id == "mapfileProps")   {
+                        url = 'zipDownload.do?exporttype=EXPORT_TYPE_HTML&cols=90&rows=20';
+                        title='Full Mapfile';
+                        width=800;
+                        height=400;
+                    } else {
+                        return;
                     }
-                    else if (id == "CWLoadIniFiles") {url = 'composer/cartoweb/load_ini_files.jsp';  title='Cartoweb3 Configuration files';}
-                    else if (id == "mapProps")       {url = 'composer/map_properties.jsp';           title='Map Object Properties';}
-                    else if (id == "legendProps")    {url = 'composer/legend_properties.jsp';        title='Legend Object Properties';}
-                    else if (id == "referenceProps") {url = 'composer/reference_properties.jsp';     title='Reference Object Properties';}
-                    else if (id == "scalebarProps")  {url = 'composer/scalebar_properties.jsp';      title='Scalebar Object Properties';}
-                    else if (id == "webProps")       {url = 'composer/web_properties.jsp';           title='Web Object Properties';}
-                    else if (id == "querymapProps")  {url = 'composer/web_properties.jsp';           title='QueryMap Object Properties';}
-                    else if (id == "mapfileProps")   {url = 'zipDownload.do?exporttype=EXPORT_TYPE_HTML&cols=90&rows=20';width=800;height=400;title='Full Mapfile';}
-                    else {return;}
 
                     //var contentProps = new Ext.Panel({
                     contentProps = new Ext.Panel({
@@ -501,12 +528,8 @@
                         title: title,
                         width: width,
                         height: height,
-                        minWidth: 300,
-                        minHeight: 200,
-                        layout: 'fit',
-                        plain:true,
+                        //layout: 'fit',
                         modal:true,
-                        shadow: true,
                         bodyStyle:'padding:5px;align:center;',
                         items:[contentProps],
                         buttonAlign:'center',
@@ -520,8 +543,7 @@
                                 id:'floatingPropsCloseBtn',
                                 text: 'Close',
                                 handler: function(){
-                                    Ext.getCmp("floatingProps").hide();
-                                    Ext.getCmp("floatingProps").destroy();
+                                    Ext.getCmp("floatingProps").close();
                                 }
                             }]
                     });
@@ -537,6 +559,4 @@
                 Ext.onReady(function(){
                     loadMap();
                 });
-
-                //-->
 </script>

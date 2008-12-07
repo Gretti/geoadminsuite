@@ -353,7 +353,7 @@ public abstract class DataAccess implements Serializable,
 
     /** MISSING JAVADOC ! */
     public String getDatasourceName() {
-        return owner.getName();
+        return owner.getEscapedName();
     }
 
     /**
