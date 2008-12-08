@@ -457,7 +457,7 @@
                         url = 'composer/general_properties.jsp';
                         title='General Properties';
                     } else if (id == "clasLayProps") {
-                        url = 'composer/classif_properties.jsp';
+                        url = 'composer/classification_properties.jsp';
                         title='Layer Classification Properties';
                     } else if (id == "clasLabProps") {
                         url = 'loadLabelProperties.do';
