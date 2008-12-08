@@ -7,9 +7,7 @@ package org.geogurus.gas.utils;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.geogurus.data.DataAccess;
@@ -30,7 +28,7 @@ import org.opengis.filter.Filter;
  */
 public class DatasourceBuilder {
 
-    public static SimpleFeature getFeature(DataAccess gc, String lon, String lat)
+    public static SimpleFeature getFeature(DataAccess gc, String lon, String lat, String tolerance, String toleranceUnit)
             throws MalformedURLException, IOException, CQLException {
     	SimpleFeature feature = null;
 
@@ -43,8 +41,7 @@ public class DatasourceBuilder {
             source = dataStore.getFeatureSource(gc.getName());
         }
 
-        Filter filter = CQL.toFilter("INTERSECT (the_geom, POINT(" + lon + " "
-                + lat + "))");
+        Filter filter = CQL.toFilter("DWITHIN (the_geom, POINT(" + lon + " " + lat + ")," + tolerance + "," + toleranceUnit + ")");
         FeatureCollection<SimpleFeatureType,SimpleFeature> collection = source.getFeatures(filter);
         Iterator<SimpleFeature> iterator = collection.iterator();
         try {
