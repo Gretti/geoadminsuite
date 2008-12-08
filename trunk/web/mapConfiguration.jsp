@@ -528,7 +528,7 @@
                         title: title,
                         width: width,
                         height: height,
-                        //layout: 'fit',
+                        layout: 'fit',
                         modal:true,
                         bodyStyle:'padding:5px;align:center;',
                         items:[contentProps],
