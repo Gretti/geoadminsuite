@@ -56,7 +56,7 @@
                         arrayClassInfo[2],
                         arrayClassInfo[3]
                     ]);
-                    symbolInfo['c'+arrayClassInfo[0]] = {
+                    symbolsInfo['c'+arrayClassInfo[0]] = {
                         'color':arrayClassInfo[4],
                         'bgcolor':arrayClassInfo[5] == 'null' ? '' : arrayClassInfo[5],
                         'olcolor':arrayClassInfo[6] == 'null' ? '' : arrayClassInfo[6]
