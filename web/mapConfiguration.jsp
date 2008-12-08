@@ -70,6 +70,10 @@
                         TriggerEventDecorator: {
                             eventListeners: {
                                 crudfinished: function(reponse) {
+                                    if(reponse.priv.responseText == '') {
+                                        Ext.Msg.alert('Empty result','No features found');
+                                        return;
+                                    }
                                     var feats = Ext.util.JSON.decode(reponse.priv.responseText);
                                     var fields = feats.fields;
                                     var attributes = feats.attributes;
