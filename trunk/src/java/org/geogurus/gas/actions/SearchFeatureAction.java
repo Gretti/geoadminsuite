@@ -15,7 +15,6 @@ import org.geogurus.gas.utils.DatasourceBuilder;
 import org.geogurus.gas.utils.ObjectKeys;
 import org.opengis.feature.simple.SimpleFeature;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.Writer;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
