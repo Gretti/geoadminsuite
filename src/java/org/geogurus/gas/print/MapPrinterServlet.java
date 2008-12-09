@@ -215,7 +215,7 @@ public class MapPrinterServlet extends BaseMapServlet {
                         "                  maxWidth: $width\n" +
                         "                  maxHeight: $height\n" +
                         "                  rotation: '${rotation}'\n" +
-                        "                  url: 'http://localhost:8084/geoadminsuite/images/north.gif'\n              rotation: '${rotation}'\n";
+                        "                  url: 'http://localhost:8084/gas/images/north.gif'\n              rotation: '${rotation}'\n";
                 break;
             case overview:
                 yaml =
