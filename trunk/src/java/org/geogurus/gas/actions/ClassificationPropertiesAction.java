@@ -239,6 +239,7 @@ public class ClassificationPropertiesAction extends Action {
         //classification becomes a unique value one
         if (numClasses >= gc.getNumGeometries()) {
             classifyUniqueValue(session, gc, classitem);
+            return;
         }
         ListClassesBean listClassesBean = gc.getDefaultMsLayer().getMapClass();
         if (listClassesBean.getFirstClass() == null) {
