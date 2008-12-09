@@ -418,6 +418,11 @@
         ["singleclass","<bean:message key="unique_class"/>"],
         ["uniquevalue","<bean:message key="unique_value"/>"],
     ];
+    var classifModes = [
+        ["minmax","Arythmetic division"],
+        ["percentile","Percentiles"]/*,
+        ["sqrt","Standard deviation"]*/
+    ];
     if(numericFields.length > 0) {
         classifTypes.push(["range","<bean:message key="interval"/>"]);
     }
@@ -446,10 +451,29 @@
                 Ext.getCmp('cmbClassItem').hide();
                 Ext.getCmp('cmbClassItem').getEl().
                     up('.x-form-item').dom.className = "x-form-item x-hide-label";
+                Ext.getCmp('cmbClassifModes').hide();
+                Ext.getCmp('cmbClassifModes').getEl().
+                    up('.x-form-item').dom.className = "x-form-item x-hide-label";
+                Ext.getCmp('clrClassFieldFrom').hide();
+                Ext.getCmp('clrClassFieldFrom').getEl().
+                    up('.x-form-item').dom.className = "x-form-item x-hide-label";
+                Ext.getCmp('clrClassFieldTo').hide();
+                Ext.getCmp('clrClassFieldTo').getEl().
+                    up('.x-form-item').dom.className = "x-form-item x-hide-label";
                 Ext.getCmp('nbrNumClasses').hide();
                 Ext.getCmp('nbrNumClasses').getEl()
                 .up('.x-form-item').dom.className = "x-form-item x-hide-label";
+                Ext.getCmp('formProps').setHeight(110);
             }else if(record.data.value == "uniquevalue") {
+                Ext.getCmp('cmbClassifModes').hide();
+                Ext.getCmp('cmbClassifModes').getEl().
+                    up('.x-form-item').dom.className = "x-form-item x-hide-label";
+                Ext.getCmp('clrClassFieldFrom').hide();
+                Ext.getCmp('clrClassFieldFrom').getEl().
+                    up('.x-form-item').dom.className = "x-form-item x-hide-label";
+                Ext.getCmp('clrClassFieldTo').hide();
+                Ext.getCmp('clrClassFieldTo').getEl().
+                    up('.x-form-item').dom.className = "x-form-item x-hide-label";
                 Ext.getCmp('cmbClassItem').store.loadData(allFields,false);
                 Ext.getCmp('cmbClassItem').show();
                 Ext.getCmp('cmbClassItem').getEl().
@@ -457,14 +481,23 @@
                 if(Ext.getCmp('cmbClassItem').getValue() == '') {
                     Ext.getCmp('cmbClassItem').setValue(allFields[0][0]);
                 }
-
                 Ext.getCmp('nbrNumClasses').hide();
                 Ext.getCmp('nbrNumClasses').getEl().
                     up('.x-form-item').dom.className = "x-form-item x-hide-label";
+                Ext.getCmp('formProps').setHeight(140);
             }else if(record.data.value == "range") {
+                Ext.getCmp('cmbClassifModes').show();
+                Ext.getCmp('cmbClassifModes').getEl().
+                    up('.x-form-item').dom.className = "x-form-item";
                 Ext.getCmp('cmbClassItem').store.loadData(numericFields,false);
                 Ext.getCmp('cmbClassItem').show();
                 Ext.getCmp('cmbClassItem').getEl().
+                    up('.x-form-item').dom.className = "x-form-item";
+                Ext.getCmp('clrClassFieldFrom').show();
+                Ext.getCmp('clrClassFieldFrom').getEl().
+                    up('.x-form-item').dom.className = "x-form-item";
+                Ext.getCmp('clrClassFieldTo').show();
+                Ext.getCmp('clrClassFieldTo').getEl().
                     up('.x-form-item').dom.className = "x-form-item";
                 if(Ext.getCmp('cmbClassItem').getValue() == '') {
                     Ext.getCmp('cmbClassItem').setValue(numericFields[0][0]);
@@ -478,13 +511,69 @@
                     }
                     if(resetValue) Ext.getCmp('cmbClassItem').setValue(numericFields[0][0]);
                 }
-
                 Ext.getCmp('nbrNumClasses').show();
                 Ext.getCmp('nbrNumClasses').getEl().
                     up('.x-form-item').dom.className = "x-form-item";
+                Ext.getCmp('formProps').setHeight(215);
             }
         }
     });
+    var cmbClassifModes = new Ext.form.ComboBox({
+        id:'cmbClassifModes',
+        fieldLabel: "Modes",
+        hiddenName: 'classifMode',
+        store: new Ext.data.SimpleStore({
+            fields: ['value','type'],
+            data : classifModes
+        }),
+        hidden : true,
+        hideLabel : true,
+        displayField:'type',
+        valueField:'value',
+        typeAhead: true,
+        autoWidth: true,
+        mode: 'local',
+        allowBlank : false,
+        blankText : 'Select a field',
+        value:'minmax',
+        triggerAction: 'all',
+        forceSelection: true,
+        selectOnFocus:true,
+        listClass: 'x-combo-list-small'
+    });
+    var clrClassifFields = new Ext.Panel({
+            id:'clrClassifFields',
+            layout:'column',
+            border : false,
+            items:[{
+                columnWidth:.5,
+                layout: 'form',
+                labelWidth: 50,
+                items: [{
+                    id:'clrClassFieldFrom',
+                    xtype:'colorfield',
+                    hidden : true,
+                    hideLabel : true,
+                    name: 'fromColor',
+                    fieldLabel: 'from',
+                    value: '#FFFFFF'
+                }]
+            },{
+                columnWidth:.5,
+                layout: 'form',
+                labelWidth: 50,
+                items: [{
+                    id:'clrClassFieldTo',
+                    xtype:'colorfield',
+                    hidden : true,
+                    hideLabel : true,
+                    name: 'toColor',
+                    fieldLabel: 'to',
+                    value: '#FF0000'
+                }]
+            }]
+    });
+
     var cmbClassItem = new Ext.form.ComboBox({
         id:'cmbClassItem',
         fieldLabel: "<bean:message key="classif_item"/>",
@@ -533,8 +622,8 @@
         bodyStyle:'padding:5px 5px 0',
         autoWidth: true,
         autoHeight: false,
-        height: 155,
-        items: [cmbClassifType,cmbClassItem,fldNumClasses],
+        height: 185,
+        items: [cmbClassifType,cmbClassifModes,cmbClassItem,fldNumClasses,clrClassifFields],
         buttons:[{
                 text:'Generate',
                 handler: function() {
@@ -607,7 +696,7 @@
         Ext.getCmp('contentProps').add(formProps);
         Ext.getCmp('contentProps').add(gridClassifResult);
         Ext.getCmp('contentProps').doLayout();
-        Ext.getCmp('formProps').setHeight(155);
+        Ext.getCmp('formProps').setHeight(110);
         gridClassifResult.view.render();
         gridClassifResult.view.refresh();
 </script>
