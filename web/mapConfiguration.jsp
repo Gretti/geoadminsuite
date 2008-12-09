@@ -521,7 +521,7 @@
                     //var contentProps = new Ext.Panel({
                     contentProps = new Ext.Panel({
                         id: 'contentProps',
-                        layout:'fit',
+                        //layout:'fit',
                         autoScroll: true,
                         border: false
                     });
