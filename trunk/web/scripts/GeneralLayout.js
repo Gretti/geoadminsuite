@@ -428,6 +428,13 @@ GeneralLayout =
                                     name: 'mapfile_path',
                                     value: '/path/to/my/mapfile/geonline.map',
                                     allowBlank:true
+                                },
+                                {
+                                    fieldLabel: i18n.keep_absolute_data_path,
+                                    xtype: 'checkbox',
+                                    id: 'keepAbsoluteDataPath',
+                                    name: 'keepAbsoluteDataPath',
+                                    checked: false
                                 }],
                                 buttons: [{
                                     text:i18n.continuer,
@@ -464,7 +471,7 @@ GeneralLayout =
                                 layout:'fit',
                                 title: '<img src="styles/cog_edit.png">&nbsp;' + i18n.export_parameters,
                                 width:350,
-                                height:150,
+                                height:200,
                                 closeAction:'hide',
                                 modal: true,
                                 fill:true,
