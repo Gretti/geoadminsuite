@@ -192,7 +192,6 @@ html, body {
     outline-style:none;
     outline-width:0px;
     position:absolute;
-    top:116px;
     width:14px;
 }
 
@@ -214,7 +213,6 @@ html, body {
     height:60px;
     left:350px;
     position:absolute;
-    top:116px;
     width:55px;
 }
 
@@ -229,7 +227,6 @@ html, body {
     left:240px;
     line-height:normal;
     position:absolute;
-    top:116px;
 }
 
 .yui-picker-controls {
@@ -243,7 +240,6 @@ html, body {
     left:240px;
     line-height:normal;
     position:absolute;
-    top:116px;
 }
 
 .yui-picker-hue-thumb {
