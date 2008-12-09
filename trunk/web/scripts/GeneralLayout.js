@@ -1,12 +1,14 @@
 GeneralLayout = 
     function(){
+        
         var layout,top;
         var cpServerConfigConf;
         var cpDataList,cpDataDetail;
         var cpComposerMap,cpComposerProps,cpComposerCtrl,composerMsUrl;
         var composermap,composernav,searcher,zoombox,zoomoutbox,dragpan,zoomtomax,layertree, composerlayers,printurl,winProperties,formParamXport;
-        var cpPublisherMapfish,cpPublisherDownload,publishermap,publishertree,publishertoolbar,publisherlayers,correspControls;
+        var cpPublisherMapfish,cpPublisherDownload,publishermap,publishertree,publishertoolbar,publisherlayers,correspControls,paramXportWin;
         var catalogInst, composerInst, publisherInst;
+        
         return {
             
             headers : [],
