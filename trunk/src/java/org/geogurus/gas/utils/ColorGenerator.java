@@ -82,4 +82,38 @@ public class ColorGenerator implements Serializable {
         currentColorIndex++;
         return col;
     }
+
+    public static RGB[] getRampColors(RGB fromColor, RGB toColor, int numClasses) {
+        RGB[] cols = new RGB[numClasses];
+        int fromRed = fromColor.getRed();
+        int fromGreen = fromColor.getGreen();
+        int fromBlue = fromColor.getBlue();
+
+        int toRed = toColor.getRed();
+        int toGreen = toColor.getGreen();
+        int toBlue = toColor.getBlue();
+
+        int stepRed = Math.round((fromRed - toRed)/numClasses);
+        int stepGreen = Math.round((fromGreen - toGreen)/numClasses);
+        int stepBlue = Math.round((fromBlue - toBlue)/numClasses);
+        int i=0;
+        while(i<numClasses) {
+            cols[i] = new RGB(fromRed,fromGreen,fromBlue);
+            fromRed -= stepRed;
+            fromGreen -= stepGreen;
+            fromBlue -= stepBlue;
+            i++;
+        }
+
+        return cols;
+    }
+
+    public static RGB hexToRgb(String hexa) throws NumberFormatException {
+        RGB col = null;
+        String red = "0x" + hexa.substring(0, 2);
+        String green = "0x" + hexa.substring(2, 4);
+        String blue = "0x" + hexa.substring(4, 6);
+        col = new RGB(Integer.decode(red), Integer.decode(green), Integer.decode(blue));
+        return col;
+    }
 }

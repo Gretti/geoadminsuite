@@ -5,7 +5,6 @@
  */
 package org.geogurus.gas.actions;
 
-import org.geogurus.data.operations.MinMaxAttributeOperation;
 import org.geogurus.data.operations.UniqueValueFeatureClassification;
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +26,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.geogurus.data.DataAccess;
+import org.geogurus.data.operations.RangeAttributeOperation;
 import org.geogurus.gas.forms.LayerForm;
 import org.geogurus.gas.managers.UserMapBeanManager;
 import org.geogurus.gas.objects.GeometryClassFieldBean;
@@ -231,7 +231,15 @@ public class ClassificationPropertiesAction extends Action {
      */
     protected void classifyRange(HttpServletRequest request,
             HttpSession session, DataAccess gc, String classitem) {
-        // the message for JSP
+        int numClasses = new Integer(request.getParameter("numClasses")).intValue();
+        //Retrieves colors without #
+        RGB fromColor = ColorGenerator.hexToRgb(request.getParameter("fromColor").substring(1));
+        RGB toColor = ColorGenerator.hexToRgb(request.getParameter("toColor").substring(1));
+        //if number of classes is greater than number of records in table then
+        //classification becomes a unique value one
+        if (numClasses >= gc.getNumGeometries()) {
+            classifyUniqueValue(session, gc, classitem);
+        }
         ListClassesBean listClassesBean = gc.getDefaultMsLayer().getMapClass();
         if (listClassesBean.getFirstClass() == null) {
             return;
@@ -242,9 +250,7 @@ public class ClassificationPropertiesAction extends Action {
         String s = DataManager.getProperty("MAPSERVER_CLASS_LIMIT");
         // the mapserver class limit
         int classLimit = (s == null ? 256 : new Integer(s).intValue());
-        int numClasses = new Integer(request.getParameter("numClasses")).intValue();
-        // the array of min and max value for the concerned attribute
-        double[] minMax = null;
+        String classifMode = request.getParameter("classifMode");
 
         // very the class limit:
         if (numClasses > classLimit) {
@@ -270,7 +276,7 @@ public class ClassificationPropertiesAction extends Action {
             }
         }
 
-        MinMaxAttributeOperation<Double> op = new MinMaxAttributeOperation<Double>(
+        RangeAttributeOperation<Double> op = new RangeAttributeOperation<Double>(
                 classitem, Double.MIN_VALUE, Double.MAX_VALUE);
         //Query query = new DefaultQuery("Feature", Filter.INCLUDE,
         //        new String[] { classitem });
@@ -281,7 +287,9 @@ public class ClassificationPropertiesAction extends Action {
             e.printStackTrace();
         }
         double range = op.max() - op.min();
-        double step = range / numClasses;
+        double stepMinMax = range / numClasses;
+        op.sortValues();
+        double slicePercentile = 100/numClasses;
         double curmin = op.min();
         Class cl = null;
         StringBuffer exp = null;
@@ -291,11 +299,11 @@ public class ClassificationPropertiesAction extends Action {
         }
 
         String className = null;
-
         // build the classes and the range formulae for each one
+        RGB[] colors = ColorGenerator.getRampColors(fromColor, toColor, numClasses);
         for (int i = 0; i < numClasses; i++) {
             cl = new Class();
-            cl.setColor(((ColorGenerator) session.getAttribute(ObjectKeys.COLOR_GENERATOR)).getNextColor());
+            cl.setColor(colors[i]);
             cl.setOutlineColor(new RGB(0, 0, 0));
             // Uses first class of defaultMsLayer of gc to assign to all other
             // classes
@@ -314,7 +322,11 @@ public class ClassificationPropertiesAction extends Action {
                 // non-strict inequality to allow last value to be represented
                 exp.append(" AND [").append(classitem).append("] <= ");
             }
-            curmin += step;
+            if (classifMode.equals("minmax")) {
+                curmin += stepMinMax;
+            } else if (classifMode.equals("percentile")) {
+                curmin = op.percentile((i+1)*slicePercentile);
+            }
             exp.append(f.format(curmin)).append(")");
             className = "range_" + i;
 
