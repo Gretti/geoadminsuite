@@ -58,6 +58,7 @@ import org.postgis.Geometry;
  * @author gnguessan
  */
 public class ZipDownloadAction extends org.apache.struts.action.Action {
+
     Logger log = Logger.getLogger(ZipDownloadAction.class.getName());
     /* forward name="success" path="" */
     private static String EXPORT_TYPE_TEXT = "EXPORT_TYPE_TEXT";
@@ -85,15 +86,13 @@ public class ZipDownloadAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         HttpSession session = request.getSession(true);
-        UserMapBean usermapbean = (UserMapBean) session
-                .getAttribute(ObjectKeys.USER_MAP_BEAN);
+        UserMapBean usermapbean = (UserMapBean) session.getAttribute(ObjectKeys.USER_MAP_BEAN);
         // the current layer identifier
         String currentLayer = request.getParameter("currentlayer");
         String exportType = request.getParameter("exporttype");
         String dbName = request.getParameter("dbname");
 
-        Hashtable<String, DataAccess> layerList = usermapbean
-                .getUserLayerList();
+        Hashtable<String, DataAccess> layerList = usermapbean.getUserLayerList();
         // needed only for data export, not for mapfile export
         DataAccess gc = null;
         if (currentLayer != null) {
@@ -117,40 +116,31 @@ public class ZipDownloadAction extends org.apache.struts.action.Action {
             return exportToText(response, session);
         } else if (exportType.equals(EXPORT_TYPE_HTML)) {
             return exportToHTML(request, response, session);
-        } else if (gc instanceof PostgisDataAccess
-                && exportType.equals(DataAccessType.POSTGIS.name())) {
+        } else if (gc instanceof PostgisDataAccess && exportType.equals(DataAccessType.POSTGIS.name())) {
             // builds SQL file before zipping
             params.files = generateSQLDump(gc, dbName);
             params.shouldRemoveFiles = true;
-        } else if (gc instanceof ShpDataAccess
-                && exportType.equals(DataAccessType.SHP.name())) {
+        } else if (gc instanceof ShpDataAccess && exportType.equals(DataAccessType.SHP.name())) {
             // builds the 3 files corresponding to the shapefile
             params.files = new String[3];
             params.files[0] = gc.resource(File.class).get().getName();
             // look if filename is lower or upper case
-            boolean isUpper = params.files[0].charAt(params.files[0]
-                    .lastIndexOf(".") + 1) == 'S';
-            params.files[1] = params.files[0].substring(0, params.files[0]
-                    .lastIndexOf("."))
-                    + (isUpper ? ".DBF" : ".dbf");
-            params.files[2] = params.files[0].substring(0, params.files[0]
-                    .lastIndexOf("."))
-                    + (isUpper ? ".SHX" : ".shx");
+            boolean isUpper = params.files[0].charAt(params.files[0].lastIndexOf(".") + 1) == 'S';
+            params.files[1] = params.files[0].substring(0, params.files[0].lastIndexOf(".")) + (isUpper ? ".DBF" : ".dbf");
+            params.files[2] = params.files[0].substring(0, params.files[0].lastIndexOf(".")) + (isUpper ? ".SHX" : ".shx");
 
             params.zipName = gc.getName() + ".zip";
         } else if (gc instanceof TiffDataAccess) {
             params.files = new String[1];
             params.files[0] = gc.resource(File.class).get().getAbsolutePath();
             params.zipName = gc.getName() + ".zip";
-        } else if (gc instanceof ShpDataAccess
-                && exportType.equals(DataAccessType.POSTGIS.name())) {
+        } else if (gc instanceof ShpDataAccess && exportType.equals(DataAccessType.POSTGIS.name())) {
             // a call to shp2pgsql is required
             params.files = wrapShp2Pgsql(gc, dbName, session.getId(),
                     params.msg);
             params.zipName = gc.getName() + ".sql.zip";
             params.shouldRemoveFiles = true;
-        } else if (gc instanceof PostgisDataAccess
-                && exportType.equals(DataAccessType.SHP.name())) {
+        } else if (gc instanceof PostgisDataAccess && exportType.equals(DataAccessType.SHP.name())) {
             // a call to pgsql2shp is required
             params.files = Pgsql2Shp(gc, session.getId(), params.msg);
             params.zipName = gc.getName() + ".zip";
@@ -174,8 +164,7 @@ public class ZipDownloadAction extends org.apache.struts.action.Action {
         }
 
         // creating zip filename and outpustream
-        response.setHeader("Content-Disposition", "filename=\""
-                + params.zipName + "\"");
+        response.setHeader("Content-Disposition", "filename=\"" + params.zipName + "\"");
         response.setContentType("application/x-zip-compressed");
 
         try {
@@ -199,7 +188,7 @@ public class ZipDownloadAction extends org.apache.struts.action.Action {
         if (params.shouldRemoveFiles) {
             removeFiles(params.files);
         }
-        
+
         return null;
     }
 
@@ -214,9 +203,7 @@ public class ZipDownloadAction extends org.apache.struts.action.Action {
         // try to change the download name of the mapfile, and force a
         // download window
         // build the path to the mapfile
-        File userMapfile = new File(getServlet().getServletContext()
-                .getRealPath("")
-                + "/msFiles/tmpMaps/user_" + session.getId() + ".map");
+        File userMapfile = new File(getServlet().getServletContext().getRealPath("") + "/msFiles/tmpMaps/user_" + session.getId() + ".map");
         // set a binary MIME to force download window in user browser
         response.setContentType("text/html");
         try {
@@ -228,27 +215,43 @@ public class ZipDownloadAction extends org.apache.struts.action.Action {
             String l = null;
             pwOut.println("<script type=\"text/javascript\">");
             pwOut.println("function sub() {");
-            pwOut
-                    .println("    Ext.Ajax.request({"
-                            + "url:'submitMapfile.do',"
-                            + "params: Ext.Ajax.serializeForm(document.forms['frmFullMapfile']),"
-                            + "callback: function(){"
-                            + "        GeneralLayout.composermap.layers[1].mergeNewParams({'timestamp':Math.random()}); "
-                            + "        Ext.getCmp('floatingProps').hide();"
-                            + "        Ext.getCmp('floatingProps').destroy();"
-                            + "    }" + "});");
+            pwOut.println("    Ext.Ajax.request({\n" +
+                    "        url:'submitMapfile.do',\n" +
+                    "        params: {fullMapfile:Ext.getCmp('txtFullMapfile').value},\n" +
+                    "        callback: function(){\n" +
+                    "            GeneralLayout.composermap.layers[1].mergeNewParams({'timestamp':Math.random()});\n" +
+                    "            Ext.getCmp('floatingProps').destroy();\n" +
+                    "        }\n" +
+                    "    });\n");
             pwOut.println("}");
+            StringBuilder fullMapFile = new StringBuilder();
+            while ((l = in.readLine()) != null) {
+                l = l.replaceAll("\\\\", "/");
+                fullMapFile.append(l+"\\n");
+            }
+            pwOut.println("var formProps = new Ext.form.FormPanel({\n" +
+                    "    id: 'frmFullMapfile',\n" +
+                    "    baseCls: 'x-plain',\n" +
+                    "    labelWidth: 55,\n" +
+                    "    items: [{\n" +
+                    "        id: 'txtFullMapfile',\n" +
+                    "        xtype: 'textarea',\n" +
+                    "        hideLabel: true,\n" +
+                    "        name: 'fullMapfile',\n" +
+                    "        anchor: '100%',\n" +
+                    "        value:'" + fullMapFile.toString() + "'\n" +
+                    "    }]\n" +
+                    "});\n");
+            pwOut.println("Ext.getCmp('contentProps').add(formProps);");
+            pwOut.println("Ext.getCmp('contentProps').doLayout();");
+            pwOut.println("Ext.getCmp('txtFullMapfile').setHeight(Ext.getCmp('contentProps').body.getHeight() * 0.98);");
             pwOut.println("</script>");
 
-            pwOut
-                    .println("<form name='frmFullMapfile' action='submitMapfile.do'><textarea style='width:100%;height:100%;' name='fullMapfile' rows='"
-                            + request.getParameter("rows")
-                            + "' cols='"
-                            + request.getParameter("cols") + "'>");
-            while ((l = in.readLine()) != null) {
-                pwOut.println(l);
-            }
-            pwOut.print("</textarea></form>");
+//            pwOut.println("<form name='frmFullMapfile' action='submitMapfile.do'><textarea style='width:100%;height:100%;' name='fullMapfile' rows='" + request.getParameter("rows") + "' cols='" + request.getParameter("cols") + "'>");
+//            while ((l = in.readLine()) != null) {
+//                pwOut.println(l);
+//            }
+//            pwOut.print("</textarea></form>");
             pwOut.flush();
             pwOut.close();
             in.close();
@@ -268,9 +271,7 @@ public class ZipDownloadAction extends org.apache.struts.action.Action {
         // try to change the download name of the mapfile, and force a
         // download window
         // build the path to the mapfile
-        File userMapfile = new File(getServlet().getServletContext()
-                .getRealPath("")
-                + "/msFiles/tmpMaps/user_" + session.getId() + ".map");
+        File userMapfile = new File(getServlet().getServletContext().getRealPath("") + "/msFiles/tmpMaps/user_" + session.getId() + ".map");
         // set a binary MIME to force download window in user browser
         response.setContentType("text/plain");
         response.setHeader("Content-Disposition", "filename=\"geonline.map\"");
@@ -303,12 +304,9 @@ public class ZipDownloadAction extends org.apache.struts.action.Action {
         // and fonts used in mapfile (for labels, ...)
 
         params.files = new String[3];
-        params.files[0] = getServlet().getServletContext().getRealPath("")
-                + "/msFiles/tmpMaps/user_" + session.getId() + ".map";
-        params.files[1] = getServlet().getServletContext().getRealPath("")
-                + "/msFiles/templates/symbols.sym";
-        params.files[2] = getServlet().getServletContext().getRealPath("")
-                + "/msFiles/fonts/font.list";
+        params.files[0] = getServlet().getServletContext().getRealPath("") + "/msFiles/tmpMaps/user_" + session.getId() + ".map";
+        params.files[1] = getServlet().getServletContext().getRealPath("") + "/msFiles/templates/symbols.sym";
+        params.files[2] = getServlet().getServletContext().getRealPath("") + "/msFiles/fonts/font.list";
         params.fileNames = new String[3];
         params.fileNames[0] = "map.map";
         params.fileNames[1] = "/symbols/symbols.sym";
@@ -333,26 +331,22 @@ public class ZipDownloadAction extends org.apache.struts.action.Action {
         IniConfigurationForm cwIniConf = request.getSession().getAttribute(
                 ObjectKeys.CW_INI_CONF_BEAN) == null ? new IniConfigurationForm()
                 : (IniConfigurationForm) request.getSession().getAttribute(
-                        ObjectKeys.CW_INI_CONF_BEAN);
+                ObjectKeys.CW_INI_CONF_BEAN);
 
         params.files = new String[4];
-        params.files[0] = getServlet().getServletContext().getRealPath("")
-                + "/msFiles/tmpMaps/location.ini";
+        params.files[0] = getServlet().getServletContext().getRealPath("") + "/msFiles/tmpMaps/location.ini";
         if (!cwIniConf.getLocationConf().saveAsFile(new File(params.files[0]))) {
             log.warning("cannot save ini file: " + params.files[0]);
         }
-        params.files[1] = getServlet().getServletContext().getRealPath("")
-                + "/msFiles/tmpMaps/images.ini";
+        params.files[1] = getServlet().getServletContext().getRealPath("") + "/msFiles/tmpMaps/images.ini";
         if (!cwIniConf.getImagesConf().saveAsFile(new File(params.files[1]))) {
             log.warning("cannot save ini file: " + params.files[1]);
         }
-        params.files[2] = getServlet().getServletContext().getRealPath("")
-                + "/msFiles/tmpMaps/layers.ini";
+        params.files[2] = getServlet().getServletContext().getRealPath("") + "/msFiles/tmpMaps/layers.ini";
         if (!cwIniConf.getLayerConf().saveAsFile(new File(params.files[2]))) {
             log.warning("cannot save ini file: " + params.files[2]);
         }
-        params.files[3] = getServlet().getServletContext().getRealPath("")
-                + "/msFiles/tmpMaps/query.ini";
+        params.files[3] = getServlet().getServletContext().getRealPath("") + "/msFiles/tmpMaps/query.ini";
         if (!cwIniConf.getQueryConf().saveAsFile(new File(params.files[3]))) {
             log.warning("cannot save ini file: " + params.files[3]);
         }
@@ -410,9 +404,7 @@ public class ZipDownloadAction extends org.apache.struts.action.Action {
 
         StringBuffer cmd = new StringBuffer(exePath);
         // path to the generated SQL file, to be zipped
-        String sqlFile = getServlet().getServletContext().getRealPath("")
-                + File.separator + "msFiles" + File.separator + "tmpMaps"
-                + File.separator + "tmp" + id + ".sql";
+        String sqlFile = getServlet().getServletContext().getRealPath("") + File.separator + "msFiles" + File.separator + "tmpMaps" + File.separator + "tmp" + id + ".sql";
 
         // full path to the shapefile
         String dataFile = gc.resource(File.class).get().getAbsolutePath();
@@ -443,6 +435,7 @@ public class ZipDownloadAction extends org.apache.struts.action.Action {
     }
 
     enum ShpExt {
+
         SHP, DBF, SHX, PRJ, QIX, FIX
     }
 
@@ -462,8 +455,7 @@ public class ZipDownloadAction extends org.apache.struts.action.Action {
     protected String[] Pgsql2Shp(DataAccess gc, String id, StringBuffer msg) {
         String shpFileName = getServlet().getServletContext().getRealPath("");
         String name = gc.getName() + id;
-        shpFileName += File.separator + "msFiles" + File.separator + "tmpMaps"
-                + File.separator + name;
+        shpFileName += File.separator + "msFiles" + File.separator + "tmpMaps" + File.separator + name;
 
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName(name);
@@ -474,7 +466,7 @@ public class ZipDownloadAction extends org.apache.struts.action.Action {
             ds = new ShapefileDataStore(new URL(shpFileName + ".shp"));
             ds.createSchema(builder.buildFeatureType());
 
-            FeatureStore<SimpleFeatureType,SimpleFeature> featureSource = (FeatureStore<SimpleFeatureType,SimpleFeature>) ds.getFeatureSource();
+            FeatureStore<SimpleFeatureType, SimpleFeature> featureSource = (FeatureStore<SimpleFeatureType, SimpleFeature>) ds.getFeatureSource();
             ToFeatureStoreOp op = new ToFeatureStoreOp();
 
             gc.run(op, featureSource, Query.ALL);
@@ -491,86 +483,85 @@ public class ZipDownloadAction extends org.apache.struts.action.Action {
             return files.toArray(new String[files.size()]);
         } catch (IOException e) {
             e.printStackTrace();
-            msg.append("Error writing shapefiles from Postgis database: "
-                    + e.getMessage());
+            msg.append("Error writing shapefiles from Postgis database: " + e.getMessage());
         }
         return new String[3];
 
-        // String[] res = new String[3];
-        // String exePath = DataManager.getProperty("PGSQL2SHP");
-        //
-        // if (exePath == null) {
-        // return res;
-        // }
-        //
-        // Process p = null;
-        // StringBuffer cmd = new StringBuffer(exePath);
-        // // generates the name and path of the shapefile: in the applicatin
-        // tmp
-        // // directory,
-        // // to allow us to delete these files after zipping
-        // String fileName = getServlet().getServletContext().getRealPath("");
-        // fileName += File.separator + "msFiles" + File.separator + "tmpMaps"
-        // + File.separator + gc.getTableName() + id;
-        //
-        // // builds the command
-        // cmd.append(" -f ").append(fileName);
-        // cmd.append(" -h ").append(gc.getHost()).append(" -p ").append(
-        // gc.getDBPort());
-        // cmd.append(" -P ").append(gc.getUserPwd()).append(" -u ").append(
-        // gc.getUserName());
-        // cmd.append(" ").append(gc.getDatasourceName()).append(" ").append(
-        // gc.getTableName());
-        //
-        // log.fine("cmd sent by wrapPgsql2Shp: " + cmd.toString());
-        //
-        // try {
-        // SysCommandExecutor cmdExecutor = new SysCommandExecutor();
-        // int exitStatus = cmdExecutor.runCommand(cmd.toString());
-        // String cmdMessage = cmdExecutor.getCommandOutput();
-        //
-        // // Analyses the command result: if it contains an error, saves it
-        // if (cmdMessage.indexOf("ERROR") != -1) {
-        // msg
-        // .append(
-        // "<font color=red>PGSQL2SHP returned an error message:</font><br>");
-        // msg.append(cmdMessage.substring(cmdMessage.indexOf("ERROR")));
-        // msg
-        // .append(
-        // "<br>This probably means that the table contains null values.<br>Export cannot be done."
-        // );
-        // msg
-        //.append("<p>One solution is to create a view without null values:<br>"
-        // );
-        // msg
-        // .append(
-        // "<code>create view v1 as (select * from mytable where geo_column is not null)</code>"
-        // );
-        // }
-        // log.warning("msg: " + msg);
-        // // p.waitFor();
-        // } catch (Exception e) {
-        // // must manage errors gracefully
-        // e.printStackTrace();
-        // }
-        // // Nicolas 28/03/2008: if GC has a SRText value, writes a .prj file
-        // if (gc.getSRText() != null && gc.getSRText().length() > 0) {
-        // try {
-        // BufferedWriter br = new BufferedWriter(new FileWriter(fileName
-        // + ".prj"));
-        // br.write(gc.getSRText());
-        // br.close();
-        // res = new String[4];
-        // res[3] = fileName + ".prj";
-        // } catch (IOException ioe) {
-        // log.severe(ioe.getMessage());
-        // }
-        //
-        // }
-        // res[0] = fileName + ".shp";
-        // res[1] = fileName + ".shx";
-        // res[2] = fileName + ".dbf";
-        // return res;
+    // String[] res = new String[3];
+    // String exePath = DataManager.getProperty("PGSQL2SHP");
+    //
+    // if (exePath == null) {
+    // return res;
+    // }
+    //
+    // Process p = null;
+    // StringBuffer cmd = new StringBuffer(exePath);
+    // // generates the name and path of the shapefile: in the applicatin
+    // tmp
+    // // directory,
+    // // to allow us to delete these files after zipping
+    // String fileName = getServlet().getServletContext().getRealPath("");
+    // fileName += File.separator + "msFiles" + File.separator + "tmpMaps"
+    // + File.separator + gc.getTableName() + id;
+    //
+    // // builds the command
+    // cmd.append(" -f ").append(fileName);
+    // cmd.append(" -h ").append(gc.getHost()).append(" -p ").append(
+    // gc.getDBPort());
+    // cmd.append(" -P ").append(gc.getUserPwd()).append(" -u ").append(
+    // gc.getUserName());
+    // cmd.append(" ").append(gc.getDatasourceName()).append(" ").append(
+    // gc.getTableName());
+    //
+    // log.fine("cmd sent by wrapPgsql2Shp: " + cmd.toString());
+    //
+    // try {
+    // SysCommandExecutor cmdExecutor = new SysCommandExecutor();
+    // int exitStatus = cmdExecutor.runCommand(cmd.toString());
+    // String cmdMessage = cmdExecutor.getCommandOutput();
+    //
+    // // Analyses the command result: if it contains an error, saves it
+    // if (cmdMessage.indexOf("ERROR") != -1) {
+    // msg
+    // .append(
+    // "<font color=red>PGSQL2SHP returned an error message:</font><br>");
+    // msg.append(cmdMessage.substring(cmdMessage.indexOf("ERROR")));
+    // msg
+    // .append(
+    // "<br>This probably means that the table contains null values.<br>Export cannot be done."
+    // );
+    // msg
+    //.append("<p>One solution is to create a view without null values:<br>"
+    // );
+    // msg
+    // .append(
+    // "<code>create view v1 as (select * from mytable where geo_column is not null)</code>"
+    // );
+    // }
+    // log.warning("msg: " + msg);
+    // // p.waitFor();
+    // } catch (Exception e) {
+    // // must manage errors gracefully
+    // e.printStackTrace();
+    // }
+    // // Nicolas 28/03/2008: if GC has a SRText value, writes a .prj file
+    // if (gc.getSRText() != null && gc.getSRText().length() > 0) {
+    // try {
+    // BufferedWriter br = new BufferedWriter(new FileWriter(fileName
+    // + ".prj"));
+    // br.write(gc.getSRText());
+    // br.close();
+    // res = new String[4];
+    // res[3] = fileName + ".prj";
+    // } catch (IOException ioe) {
+    // log.severe(ioe.getMessage());
+    // }
+    //
+    // }
+    // res[0] = fileName + ".shp";
+    // res[1] = fileName + ".shx";
+    // res[2] = fileName + ".dbf";
+    // return res;
     }
 
     /**
@@ -596,13 +587,7 @@ public class ZipDownloadAction extends org.apache.struts.action.Action {
             // sql out file:
             PostgisDataAccess gc = (PostgisDataAccess) da;
             String tableName = gc.getName();
-            dataPath = getServlet().getServletConfig().getServletContext()
-                    .getRealPath("")
-                    + File.separator
-                    + "msFiles"
-                    + File.separator
-                    + "tmpMaps"
-                    + File.separator + tableName + ".sql";
+            dataPath = getServlet().getServletConfig().getServletContext().getRealPath("") + File.separator + "msFiles" + File.separator + "tmpMaps" + File.separator + tableName + ".sql";
             String basename = tableName;
 
             BufferedWriter sout = new BufferedWriter(new FileWriter(dataPath));
@@ -642,18 +627,14 @@ public class ZipDownloadAction extends org.apache.struts.action.Action {
                         query.append(columnName + ", ");
                     }
                 }
-                if (columnType.equalsIgnoreCase("varchar")
-                        || columnType.equalsIgnoreCase("text")
-                        || columnType.equalsIgnoreCase("char")) {
+                if (columnType.equalsIgnoreCase("varchar") || columnType.equalsIgnoreCase("text") || columnType.equalsIgnoreCase("char")) {
                     alString.add("" + f);
                 }
                 f++;
             }
             rs = null;
             strCreate += ");\n";
-            strCreate += "select AddGeometryColumn('" + dbName + "','"
-                    + basename + "','the_geom','" + gc.getSrid() + "','"
-                    + Geometry.getTypeString(gc.getType()) + "',2);\n";
+            strCreate += "select AddGeometryColumn('" + dbName + "','" + basename + "','the_geom','" + gc.getSrid() + "','" + Geometry.getTypeString(gc.getType()) + "',2);\n";
             sout.write(strCreate);
             sout.write("begin;");
             sout.newLine();
@@ -702,6 +683,7 @@ public class ZipDownloadAction extends org.apache.struts.action.Action {
 
     private static class ZipDownloadParams {
         // The list of filenames to zip
+
         String[] files = null;
         String[] fileNames = null;
         String zipName = null;
@@ -711,6 +693,5 @@ public class ZipDownloadAction extends org.apache.struts.action.Action {
         boolean shouldRemoveFiles = false;
         // the export error message, if any
         StringBuffer msg = new StringBuffer();
-
     }
 }
