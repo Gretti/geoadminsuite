@@ -17,9 +17,16 @@ import org.geogurus.gas.objects.GeometryClassFieldBean;
 import org.geogurus.mapserver.objects.Layer;
 import org.geogurus.mapserver.objects.RGB;
 import org.geogurus.raster.RasterRegistrar;
+import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.data.DataSourceException;
 import org.geotools.data.Query;
+import org.geotools.factory.Hints;
+import org.geotools.gce.geotiff.GeoTiffReader;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Access a Tiff Format
@@ -48,7 +55,17 @@ public class TiffDataAccess extends DataAccess {
             // empty column information for rasters
             metadata = new Vector<GeometryClassFieldBean>();
         }
-        SRText = DataAccessHelper.readProjectionFile(file, logger);
+        try {
+            GeoTiffReader reader = new GeoTiffReader(file, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
+            GridCoverage2D coverage = (GridCoverage2D) reader.read(null);
+            CoordinateReferenceSystem crs = coverage.getCoordinateReferenceSystem2D();
+            SRText = crs.toWKT();
+            SRID = CRS.lookupEpsgCode(crs, true).intValue();
+        } catch (Exception ex) {
+            logger.warning(ex.getMessage());
+            SRText = DefaultGeographicCRS.WGS84.toWKT();
+            SRID = 4326;
+        }
 
         // computes tif extent based on its tfw file
         this.extent = RasterRegistrar.getTifExtent(file.getAbsolutePath());
