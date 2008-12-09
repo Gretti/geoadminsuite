@@ -284,35 +284,37 @@ public class SitePublisherAction extends org.apache.struts.action.Action {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
+        if (request.getParameter("keepAbsoluteDataPath") == null) {
 
-        m.setShapePath(new File(dataPath));
+            m.setShapePath(new File(dataPath));
 
-        // replaces all layer path information to be relative to the datapath
-        // from the GAS, all file layers (LOCAL) have a full path: it contains
-        // either a / or a \
-        // looks for the last one, cut filename and adds it to the dataPath
-        String lData = null;
-        for (Iterator iter = m.getLayers().iterator(); iter.hasNext();) {
-            Layer l = (Layer) iter.next();
+            // replaces all layer path information to be relative to the datapath
+            // from the GAS, all file layers (LOCAL) have a full path: it contains
+            // either a / or a \
+            // looks for the last one, cut filename and adds it to the dataPath
+            String lData = null;
+            for (Iterator iter = m.getLayers().iterator(); iter.hasNext();) {
+                Layer l = (Layer) iter.next();
 
-            // update path to header and footer:
-            l.setFooter(new File("../msfooter.html"));
-            l.setHeader(new File("../msheader.html"));
+                // update path to header and footer:
+                l.setFooter(new File("../msfooter.html"));
+                l.setHeader(new File("../msheader.html"));
 
-            if (l.getConnectionType() == null
-                    || l.getConnectionType() == MsLayer.LOCAL) {
-                // a file layer
-                lData = l.getData();
-                int idx = lData.lastIndexOf("/");
-                if (idx == -1) {
-                    idx = lData.lastIndexOf("\\");
+                if (l.getConnectionType() == null
+                        || l.getConnectionType() == MsLayer.LOCAL) {
+                    // a file layer
+                    lData = l.getData();
+                    int idx = lData.lastIndexOf("/");
+                    if (idx == -1) {
+                        idx = lData.lastIndexOf("\\");
+                    }
+                    l.setData(dataPath + lData.substring(idx + 1));
+                    // updates template path
+                    l.setTemplate("../" + l.getTemplate());
                 }
-                l.setData(dataPath + lData.substring(idx + 1));
-                // updates template path
-                l.setTemplate("../" + l.getTemplate());
             }
         }
-
         // Modifies the parameters by setting the usermapbean properties to what
         // has been specified in the parameters
         // Set extent
