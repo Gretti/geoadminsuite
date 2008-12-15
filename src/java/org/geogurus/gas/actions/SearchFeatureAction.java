@@ -20,6 +20,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 import org.geogurus.data.DataAccess;
+import org.geogurus.data.DataAccessType;
 import org.geogurus.gas.objects.UserMapBean;
 import org.geogurus.mapserver.objects.Map;
 
@@ -49,74 +50,81 @@ public class SearchFeatureAction extends org.apache.struts.action.Action {
         HttpSession session = request.getSession();
 
         DataAccess gc = (DataAccess) session.getAttribute(ObjectKeys.CURRENT_GC);
-        //We also need units of current map
-        UserMapBean umb = (UserMapBean) session.getAttribute(ObjectKeys.USER_MAP_BEAN);
-        byte units = umb.getMapfile().getUnits();
-        String toleranceUnit;
-        switch (units) {
-            case Map.INCHES:
-            case Map.FEET:
-                toleranceUnit = "feet";
-                break;
-            case Map.METERS:
-                toleranceUnit = "meters";
-                break;
-            case Map.KILOMETERS:
-                toleranceUnit = "kilometers";
-                break;
-            case Map.MILES:
-                toleranceUnit = "statute miles";
-                break;
-            case Map.DD:
-                toleranceUnit = "kilometers";
-                /*in this case tolerance is given in decimal degrees so we must
-                approximately convert tolerance in kilometers*/
-                //tolerance = String.valueOf(Double.parseDouble(tolerance) * 110);
-                break;
-            default:
-                toleranceUnit = "kilometers";
-        }
-
-        //Builds featuresource using geotools
-        SimpleFeature feature = DatasourceBuilder.getFeature(gc, lon, lat, tolerance, toleranceUnit);
-
-        //Finds feature of current layer
-        NumberFormat f = NumberFormat.getInstance(Locale.US);
-        if (f instanceof DecimalFormat) {
-            ((DecimalFormat) f).applyPattern("0.000");
-        }
         StringBuilder json = new StringBuilder("");
-        if (feature != null) {
-            json.append("{type:\"FeatureCollection\",");
-            StringBuilder fields = new StringBuilder("fields:[");
-            StringBuilder attributes = new StringBuilder("attributes:[");
-            for (int o = 0; o < feature.getAttributeCount(); o++) {
-                if (feature.getFeatureType().getType(o) != null &&
-                        !feature.getFeatureType().getType(o).getName().getLocalPart().equals(
-                        feature.getDefaultGeometryProperty().getType().getName().getLocalPart())) {
-                    String name = feature.getFeatureType().getType(o).getName().getLocalPart();
-                    String value = String.valueOf(feature.getAttribute(name));
-                    try {
-                        double v = Double.parseDouble(value);
-                        value = String.valueOf(f.format(v));
-                    } catch (NumberFormatException nfe) {
-                        //Do nothing -> not a number
-                    }
-                    fields.append("\"" + name + "\"");
-                    attributes.append("\"" + value + "\"");
-                    if (o < feature.getAttributeCount() - 1) {
-                        fields.append(",");
-                        attributes.append(",");
+
+        if (gc.getDatasourceType() != DataAccessType.ECW &&
+                gc.getDatasourceType() != DataAccessType.IMG &&
+                gc.getDatasourceType() != DataAccessType.TIFF &&
+                gc.getDatasourceType() != DataAccessType.WMS) {
+            //We also need units of current map
+            UserMapBean umb = (UserMapBean) session.getAttribute(ObjectKeys.USER_MAP_BEAN);
+            byte units = umb.getMapfile().getUnits();
+            String toleranceUnit;
+            switch (units) {
+                case Map.INCHES:
+                case Map.FEET:
+                    toleranceUnit = "feet";
+                    break;
+                case Map.METERS:
+                    toleranceUnit = "meters";
+                    break;
+                case Map.KILOMETERS:
+                    toleranceUnit = "kilometers";
+                    break;
+                case Map.MILES:
+                    toleranceUnit = "statute miles";
+                    break;
+                case Map.DD:
+                    toleranceUnit = "kilometers";
+                    /*in this case tolerance is given in decimal degrees so we must
+                    approximately convert tolerance in kilometers*/
+                    //tolerance = String.valueOf(Double.parseDouble(tolerance) * 110);
+                    break;
+                default:
+                    toleranceUnit = "kilometers";
+            }
+
+            //Builds featuresource using geotools
+            //TODO: check projection of gc => reproject given point and
+            //recalculate tolerance if necessary
+            SimpleFeature feature = DatasourceBuilder.getFeature(gc, lon, lat, tolerance, toleranceUnit);
+
+            //Finds feature of current layer
+            NumberFormat f = NumberFormat.getInstance(Locale.US);
+            if (f instanceof DecimalFormat) {
+                ((DecimalFormat) f).applyPattern("0.000");
+            }
+            if (feature != null) {
+                json.append("{type:\"FeatureCollection\",");
+                StringBuilder fields = new StringBuilder("fields:[");
+                StringBuilder attributes = new StringBuilder("attributes:[");
+                for (int o = 0; o < feature.getAttributeCount(); o++) {
+                    if (feature.getFeatureType().getType(o) != null &&
+                            !feature.getFeatureType().getType(o).getName().getLocalPart().equals(
+                            feature.getDefaultGeometryProperty().getType().getName().getLocalPart())) {
+                        String name = feature.getFeatureType().getType(o).getName().getLocalPart();
+                        String value = String.valueOf(feature.getAttribute(name));
+                        try {
+                            double v = Double.parseDouble(value);
+                            value = String.valueOf(f.format(v));
+                        } catch (NumberFormatException nfe) {
+                            //Do nothing -> not a number
+                        }
+                        fields.append("\"" + name + "\"");
+                        attributes.append("\"" + value + "\"");
+                        if (o < feature.getAttributeCount() - 1) {
+                            fields.append(",");
+                            attributes.append(",");
+                        }
                     }
                 }
+                fields.append("],");
+                attributes.append("]");
+                json.append(fields.toString());
+                json.append(attributes.toString());
+                json.append("}");
             }
-            fields.append("],");
-            attributes.append("]");
-            json.append(fields.toString());
-            json.append(attributes.toString());
-            json.append("}");
         }
-
         response.setContentType("application/x-json");
         Writer out = response.getWriter();
         out.write(json.toString());
