@@ -3,7 +3,7 @@ package org.geogurus.data.operations;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.apache.commons.math.stat.descriptive.rank.Percentile;
+import org.apache.commons.math.stat.StatUtils;
 import org.geogurus.data.OperationAdapter;
 import org.opengis.feature.simple.SimpleFeature;
 
@@ -60,7 +60,14 @@ public class RangeAttributeOperation<T extends Comparable<T>> extends OperationA
     }
 
     public double percentile(double p) {
-        Percentile percentile = new Percentile();
-        return percentile.evaluate(values, p);
+        return StatUtils.percentile(values, p);
+    }
+
+    public double mean() {
+        return StatUtils.mean(values);
+    }
+
+    public double stddev() {
+        return Math.sqrt(StatUtils.variance(values, mean()));
     }
 }
