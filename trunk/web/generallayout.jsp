@@ -105,12 +105,11 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
             // calls the ResetSessionAction and display result in an ext window
             function resetUserSession() {
                 Ext.Ajax.request({
-                    url:'ResetSession.do',
-                    method: 'POST',
-                    success: function(response, options){
+                    url:'resetSession.do',
+                    success: function(response){
                             Ext.Msg.alert('Message', Ext.util.JSON.decode(response.responseText).message);
                         },
-                    failure: function(){
+                    failure: function(response){
                             Ext.Msg.alert('Error', Ext.util.JSON.decode(response.responseText).message);
                         }
                 });
