@@ -64,9 +64,13 @@ public class SaveLayerTreeAction extends org.apache.struts.action.Action {
             (IniConfigurationForm)request.getSession().getAttribute(ObjectKeys.CW_INI_CONF_BEAN);
 
         String layerJson = request.getParameter(ObjectKeys.CW_LAYER_TREE_JSON);
+        Boolean autoClassLegend = Boolean.valueOf(request.getParameter("autoClassLegend"));
+        
         CartowebUtil cwUtil = new CartowebUtil();
-        logger.info("CW Layer Tree JSON representation from client: " + layerJson);
+        //logger.info("CW Layer Tree JSON representation from client: " + layerJson);
+        
         CartowebLayer layer = cwUtil.buildLayerFromJson(layerJson);
+        cwIniConf.getLayerConf().setAutoClassLegend(autoClassLegend);
         if (layer == null) {
             message = cwUtil.getMessage();
             
