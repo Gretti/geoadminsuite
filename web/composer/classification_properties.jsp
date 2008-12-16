@@ -420,8 +420,8 @@
     ];
     var classifModes = [
         ["minmax","Arythmetic division"],
-        ["percentile","Percentiles"]/*,
-        ["sqrt","Standard deviation"]*/
+        ["percentile","Percentiles"],
+        ["stddev","Standard deviation"]
     ];
     if(numericFields.length > 0) {
         classifTypes.push(["range","<bean:message key="interval"/>"]);
@@ -539,6 +539,52 @@
         triggerAction: 'all',
         forceSelection: true,
         selectOnFocus:true,
+        listClass: 'x-combo-list-small',
+        onSelect: function(record) {
+            this.collapse();
+            this.setValue(record.data.value);
+            if(record.data.value == "stddev") {
+                Ext.getCmp('nbrNumClasses').hide();
+                Ext.getCmp('nbrNumClasses').getEl().
+                    up('.x-form-item').dom.className = "x-form-item x-hide-label";
+                Ext.getCmp('cmbClassifStdDevClasses').show();
+                Ext.getCmp('cmbClassifStdDevClasses').getEl().
+                    up('.x-form-item').dom.className = "x-form-item";
+            } else {
+                Ext.getCmp('cmbClassifStdDevClasses').hide();
+                Ext.getCmp('cmbClassifStdDevClasses').getEl().
+                    up('.x-form-item').dom.className = "x-form-item x-hide-label";
+                Ext.getCmp('nbrNumClasses').show();
+                Ext.getCmp('nbrNumClasses').getEl().
+                    up('.x-form-item').dom.className = "x-form-item";
+            }
+        }
+    });
+    var cmbClassifStdDevClasses = new Ext.form.ComboBox({
+        id:'cmbClassifStdDevClasses',
+        fieldLabel: "Classes",
+        hiddenName: 'stddevClasses',
+        store: new Ext.data.SimpleStore({
+            fields: ['value','type'],
+            data : [
+                ['quater','1/4 sqrt'],
+                ['half','1/2 sqrt'],
+                ['one','1 sqrt']
+            ]
+        }),
+        hidden : true,
+        hideLabel : true,
+        displayField:'type',
+        valueField:'value',
+        typeAhead: true,
+        autoWidth: true,
+        mode: 'local',
+        allowBlank : false,
+        blankText : 'Select a step',
+        value:'quater',
+        triggerAction: 'all',
+        forceSelection: true,
+        selectOnFocus:true,
         listClass: 'x-combo-list-small'
     });
     var clrClassifFields = new Ext.Panel({
@@ -623,7 +669,7 @@
         autoWidth: true,
         autoHeight: false,
         height: 185,
-        items: [cmbClassifType,cmbClassifModes,cmbClassItem,fldNumClasses,clrClassifFields],
+        items: [cmbClassifType,cmbClassifModes,cmbClassItem,fldNumClasses,cmbClassifStdDevClasses,clrClassifFields],
         buttons:[{
                 text:'Generate',
                 handler: function() {
