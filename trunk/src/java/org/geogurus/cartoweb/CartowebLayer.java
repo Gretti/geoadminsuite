@@ -81,7 +81,8 @@ public class CartowebLayer extends CartowebObject {
         if (this.id.equals(id)) {
             return this;
         }
-        if (layers != null) {            for (CartowebLayer l : layers) {
+        if (layers != null) {            
+            for (CartowebLayer l : layers) {
                 if (l.getLayer(id) != null) {
                     return l;
                 }
@@ -103,31 +104,31 @@ public class CartowebLayer extends CartowebObject {
     public String toString() {
         StringBuilder b = new StringBuilder();
         
-        if (getClassName() != null) {
+        if (getClassName() != null && getClassName().length() > 0) {
             b.append("layers.").append(this.id).append(".className = ");
             b.append(getClassName().toString()).append(this.lineSep);
         }
-        if (getMsLayer() != null) {
+        if (getMsLayer() != null && getMsLayer().length() > 0) {
             b.append("layers.").append(this.id).append(".msLayer = ");
             b.append(getMsLayer()).append(this.lineSep);
         }
-        if (getLabel() != null) {
+        if (getLabel() != null && getLabel().length() > 0) {
             b.append("layers.").append(this.id).append(".label = ");
             b.append(label).append(this.lineSep);
         }
-        if (getIcon() != null) {
+        if (getIcon() != null && getIcon().length() > 0) {
             b.append("layers.").append(this.id).append(".icon = ");
             b.append(getIcon()).append(this.lineSep);
         }
-        if (getLink() != null) {
+        if (getLink() != null && getLink().length() > 0) {
             b.append("layers.").append(this.id).append(".link = ");
             b.append(getLink()).append(this.lineSep);
         }
-        if (getChildren() != null) {
+        if (getChildren() != null && getChildren().length() > 0) {
             b.append("layers.").append(this.id).append(".children = ");
             b.append(getChildren()).append(this.lineSep);
         }
-        if (getSwitchId() != null) {
+        if (getSwitchId() != null && getSwitchId().length() > 0) {
             b.append("layers.").append(this.id).append(".switchId = ");
             b.append(getSwitchId()).append(this.lineSep);
         }
@@ -135,7 +136,7 @@ public class CartowebLayer extends CartowebObject {
             b.append("layers.").append(this.id).append(".aggregate = ");
             b.append(getAggregate()).append(this.lineSep);
         }
-        if (getRendering() != null) {
+        if (getRendering() != null && getRendering().length() > 0) {
             b.append("layers.").append(this.id).append(".rendering = ");
             b.append(getRendering()).append(this.lineSep);
         }
@@ -212,79 +213,34 @@ public class CartowebLayer extends CartowebObject {
 
     
     /**
-     * Copies all not null attributes of the given layer to this object (if the same
-     * attribute is null
-     * by creating a new Object base on the layer's attribute
-     * 
-     * @param l the layer to synchronize with
-     */
-    public void synchronize(CartowebLayer l) {
-        if (l == null) {
-            return;
-        }
-        if (l.children != null && this.children == null) {
-            this.children = new String(l.children);
-        }
-
-        if (l.className != null && this.className == null) {
-            this.className = new String(l.className);
-        }
-        if (l.id != null && this.id == null) {
-            this.id = new String(l.id);
-        }
-        if (l.msLayer != null && this.msLayer == null) {
-            this.msLayer = new String(l.msLayer);
-        }
-        if (l.label != null && this.label == null) {
-            this.label = new String(l.label);
-        }
-        if (l.icon != null && this.icon == null) {
-            this.icon = new String(l.icon);
-        }
-        if (l.link != null && this.link == null) {
-            this.link = new String(l.link);
-        }
-        if (l.switchId != null && this.switchId == null) {
-            this.switchId = new String(l.switchId);
-        }
-        if (l.aggregate != null && this.aggregate == null) {
-            this.aggregate = new Boolean(l.aggregate);
-        }
-        if (l.rendering != null && this.rendering == null) {
-            this.rendering = new String(l.rendering);
-        }
-        if (l.mdMinScale != null && this.mdMinScale == null) {
-            this.mdMinScale = new Float(l.mdMinScale);
-        }
-        if (l.mdMaxScale != null && this.mdMaxScale == null) {
-            this.mdMaxScale = new Float(l.mdMaxScale);
-        }
-    }
-    
-    /**
-     * adds each given layer to the root layer node, in the corresponding layer group
+     * Recursively adds each given layer to the root layer node, in the corresponding layer group
      * @param layersToCopy the layers to copy into each 
-     * @return the number of remaining layers into layersToCopy
      */
     public int addLayers(Hashtable<String, CartowebLayer> layersToCopy) {
         if (layersToCopy == null || this.getChildren() == null ) {
             return -1;
         }
+        int lCount = 0;
         StringTokenizer tok = new StringTokenizer(this.getChildren(), ",");
         while (tok.hasMoreTokens()) {
             String layerId = tok.nextToken().trim();
+            //System.out.println("searching for layerid: " + layerId + " for parent: " + this.getId());
+            //System.out.println("keys: " + layersToCopy.keySet());
             CartowebLayer l = layersToCopy.get(layerId);
+            
             if (l == null) {
                 logger.warning("layers.ini: no layer definition found for: " + 
                         layerId + ". This layerId is defined in the children of layer: " + this.getId());
             } else {
                 this.addLayer(l);
+                lCount++;
                 // removes added layers from the list of layers.
-                layersToCopy.remove(layerId);
-                l.addLayers(layersToCopy);
+                //layersToCopy.remove(layerId);
+                int subCount = l.addLayers(layersToCopy);
+                lCount += subCount > 0 ? subCount : 0;
             }
         }
-        return layersToCopy.size();
+        return lCount;
     }
     
     /** writes this object into the given properties object, using
@@ -313,7 +269,7 @@ public class CartowebLayer extends CartowebObject {
         }
         b.append("{\"text\":").append("\"").append(this.id).append("\",");
         b.append("\"id\":").append("\"").append(this.id).append("\",");
-        b.append("\"cwattributes\":").append(getAttributesJson(true)).append(",");
+        b.append("\"cwattributes\":").append(getAttributesJson(false)).append(",");
         if (layers == null || layers.size() == 0) {
             b.append("\"leaf\":").append("true").append(",");
             b.append("\"cls\":").append("\"file\"").append(",");

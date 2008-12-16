@@ -46,10 +46,11 @@ public class IniConfigurationForm extends org.apache.struts.action.ActionForm {
     private QueryConf queryConf;
     private ImagesConf imagesConf;
     private LocationConf locationConf;
-    
+
     private Logger logger;
     public IniConfigurationForm() {
         logger = Logger.getLogger(this.getClass().getName());
+        logger.info("ini conf initialized...");
     }
     
     /**
@@ -128,7 +129,8 @@ public class IniConfigurationForm extends org.apache.struts.action.ActionForm {
     @Override
     public void reset(ActionMapping arg0, HttpServletRequest arg1) {
         super.reset(arg0, arg1);
-        getLayerConf().setAutoClassLegend(Boolean.FALSE);
+        //reset layers.ini properties
+        getLayerConf().setAutoClassLegendStruts(false);
         
         getImagesConf().setCollapsibleKeymap(Boolean.FALSE);
         getImagesConf().setMapSizesActive(Boolean.FALSE);

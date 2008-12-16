@@ -60,7 +60,7 @@ public class ImagesConf extends CartowebConf {
         logger = Logger.getLogger(this.getClass().getName());
         mapSizesActive = Boolean.FALSE;
         collapsibleKeymap = Boolean.FALSE;
-        noDrawKeymap = Boolean.FALSE;
+        noDrawKeymap = Boolean.TRUE;
         noDrawScalebar = Boolean.FALSE;
     }
 
@@ -290,7 +290,7 @@ public class ImagesConf extends CartowebConf {
                     mapSizes.put(mapSize.getId(), mapSize);
                 }
             }
-            logger.info("mapSizes object re-initialized with: " + mapSizesAsString.length + " elements");
+            //logger.info("mapSizes object re-initialized with: " + mapSizesAsString.length + " elements");
         } 
         this.mapSizesAsString = mapSizesAsString;
     }

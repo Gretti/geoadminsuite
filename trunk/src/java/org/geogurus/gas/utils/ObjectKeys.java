@@ -105,5 +105,5 @@ public class ObjectKeys {
     /** the request parameter containing the CW Layer tree Json representation */
     public final static String CW_LAYER_TREE_JSON = "cwLayerTreeJson";
     /** the key under which the user IniConfigurationForm object is stored into Session */
-    public final static String CW_INI_CONF_BEAN = "org.geogurus.cartoweb.IniConfigurationForm";
+    public final static String CW_INI_CONF_BEAN = "org.geogurus.gas.forms.cartoweb.IniConfigurationForm";
 }
