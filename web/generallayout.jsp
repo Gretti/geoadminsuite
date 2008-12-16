@@ -101,6 +101,21 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
             function changeLanguage(lang) {
                 document.location = "switchLang.do?lang=" + lang + "&cty=" + lang.toUpperCase();
             }
+
+            // calls the ResetSessionAction and display result in an ext window
+            function resetUserSession() {
+                Ext.Ajax.request({
+                    url:'ResetSession.do',
+                    method: 'POST',
+                    success: function(response, options){
+                            Ext.Msg.alert('Message', Ext.util.JSON.decode(response.responseText).message);
+                        },
+                    failure: function(){
+                            Ext.Msg.alert('Error', Ext.util.JSON.decode(response.responseText).message);
+                        }
+                });
+
+            }
         </script>
         
         <!-- this script contains user defined functions to override the default behavior
