@@ -601,8 +601,12 @@ GeneralLayout =
                     '<img alt="EN" style="cursor:pointer;" src="images/us.png" onclick="javascript:changeLanguage(\'en\');"></span><br />'+
                     '<span style="width:100%" class="label">' + i18n.access_admin + '<a href="admin.jsp">' +
                     '<img src="images/link_conf.png" alt="Administration" title="Administration">' +
+                    '</a></span>' /* +
+                    '<br />&nbsp;' +
+                    '<span style="width:100%" class="label">' + i18n.reset_session + '<a href="admin.jsp">' +
+                    '<img src="images/link_conf.png" alt="Administration" title="Administration">' +
                     '</a></span>' +
-                    '<br />&nbsp;'
+                    '<br />&nbsp;'*/
                 });
                 cpServerConfigConf.render('confApp');
                 //renders Server form in server config form div element (frmServer)
