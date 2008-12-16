@@ -33,10 +33,24 @@
     }
     // Generate a new classification based on specified params in form
     function generate() {
+        var maskClassif = new Ext.LoadMask(Ext.getCmp('formProps').getEl(),{
+            msg:'processing ...'
+        });
+        maskClassif.show();
         Ext.Ajax.request({
             url: "classificationProperties.do",
             params: Ext.Ajax.serializeForm(Ext.getCmp('formProps').form.getEl().dom),
+            failure: function(){
+                maskClassif.hide();
+                Ext.MessageBox.show({
+                    title: 'Classification error',
+                    msg: 'Error during classification process !',
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.WARNING
+                });
+            },
             success: function(result){
+                maskClassif.hide();
                 //Gets the new classification reading response
                 //response is a string : "cl1_icon,cl1_name,cl1_expression|cl2_icon,cl2_name,cl2_expression|..."
                 var strDataClasses = result.responseText;
