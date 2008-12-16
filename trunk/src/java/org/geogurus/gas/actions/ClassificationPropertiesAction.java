@@ -231,38 +231,20 @@ public class ClassificationPropertiesAction extends Action {
      */
     protected void classifyRange(HttpServletRequest request,
             HttpSession session, DataAccess gc, String classitem) {
-        int numClasses = new Integer(request.getParameter("numClasses")).intValue();
+
+        String colName;
+        GeometryClassFieldBean gcfb;
+        String classifMode = request.getParameter("classifMode");
         //Retrieves colors without #
         RGB fromColor = ColorGenerator.hexToRgb(request.getParameter("fromColor").substring(1));
         RGB toColor = ColorGenerator.hexToRgb(request.getParameter("toColor").substring(1));
-        //if number of classes is greater than number of records in table then
-        //classification becomes a unique value one
-        if (numClasses >= gc.getNumGeometries()) {
-            classifyUniqueValue(session, gc, classitem);
-            return;
-        }
         ListClassesBean listClassesBean = gc.getDefaultMsLayer().getMapClass();
         if (listClassesBean.getFirstClass() == null) {
             return;
         }
-        String symName = listClassesBean.getFirstClass().getSymbol();
-        int symSize = listClassesBean.getFirstClass().getSize();
-        listClassesBean.clear();
-        String s = DataManager.getProperty("MAPSERVER_CLASS_LIMIT");
-        // the mapserver class limit
-        int classLimit = (s == null ? 256 : new Integer(s).intValue());
-        String classifMode = request.getParameter("classifMode");
-
-        // very the class limit:
-        if (numClasses > classLimit) {
-            numClasses = classLimit;
-            listClassesBean.setMessage("classlimitation," + classLimit);
-        }
 
         // Look at the sql type for the classitem: only numeric types are
         // allowed for ranges
-        String colName;
-        GeometryClassFieldBean gcfb;
         for (Iterator<GeometryClassFieldBean> iter = gc.getAttributeData().iterator(); iter.hasNext();) {
             gcfb = iter.next();
             colName = gcfb.getName();
@@ -276,6 +258,35 @@ public class ClassificationPropertiesAction extends Action {
                 }
             }
         }
+        String symName = listClassesBean.getFirstClass().getSymbol();
+        int symSize = listClassesBean.getFirstClass().getSize();
+        listClassesBean.clear();
+        String s = DataManager.getProperty("MAPSERVER_CLASS_LIMIT");
+        // the mapserver class limit
+        int classLimit = (s == null ? 256 : new Integer(s).intValue());
+        int numClasses = 5;
+        float portionOfStdDev = 1.0f;
+        if (classifMode.equals("stddev")) {
+            if (request.getParameter("stddevClasses").equals("half")) {
+                portionOfStdDev = 0.5f;
+            } else if (request.getParameter("stddevClasses").equals("quater")) {
+                portionOfStdDev = 0.25f;
+            }
+        } else {
+            numClasses = new Integer(request.getParameter("numClasses")).intValue();
+        }
+        //if number of classes is greater than number of records in table then
+        //classification becomes a unique value one
+        if (numClasses >= gc.getNumGeometries()) {
+            classifyUniqueValue(session, gc, classitem);
+            return;
+        }
+
+        // very the class limit:
+        if (numClasses > classLimit) {
+            numClasses = classLimit;
+            listClassesBean.setMessage("classlimitation," + classLimit);
+        }
 
         RangeAttributeOperation<Double> op = new RangeAttributeOperation<Double>(
                 classitem, Double.MIN_VALUE, Double.MAX_VALUE);
@@ -284,14 +295,25 @@ public class ClassificationPropertiesAction extends Action {
         Query query = Query.ALL;
         try {
             gc.run(op, (Object) null, query);
+            op.sortValues();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        double range = op.max() - op.min();
+        double min = op.min();
+        double max = op.max();
+        double stddev = op.stddev();
+        double mean = op.mean();
+        double range = max - min;
+        //Step for bounds depending on classification mode
+        //MinMax mode
         double stepMinMax = range / numClasses;
-        op.sortValues();
-        double slicePercentile = 100/numClasses;
-        double curmin = op.min();
+        //Percentile mode
+        double slicePercentile = 100 / numClasses;
+        //Std Dev mode
+        double stepStdDev = stddev * portionOfStdDev;
+        double stepDown = Math.min(3.0d , (mean - min) / stddev);
+        double stepUp = Math.min(3.0d, (max - mean) / stddev);
+        double curmin = min;
         Class cl = null;
         StringBuffer exp = null;
         NumberFormat f = NumberFormat.getInstance(Locale.US);
@@ -300,6 +322,35 @@ public class ClassificationPropertiesAction extends Action {
         }
 
         String className = null;
+        double[] upperBounds = null;
+        if (classifMode.equals("stddev")) {
+            /* classes are calculated as follows :
+             * min to mean - 3*stddev if mean-3*stddev > min
+             * -x*stddev to +x*stddev with a step of portionOfStdDev
+             * mean + 3*stddev to max if mean+3*stddev < max
+             * x = round((mean-min)/stddev) maximum 3 + round((max-mean)/stddev) maximum 3
+             */
+            numClasses = (int)Math.round((stepDown+stepUp) / portionOfStdDev);
+            if (stepDown == 3) {
+                numClasses += 1;
+            }
+            if (stepUp == 3) {
+                numClasses += 1;
+            }
+            upperBounds = new double[numClasses];
+            int suivant = 0;
+            for(double c = Math.floor(stepDown/portionOfStdDev);c >= 0;c--) {
+                upperBounds[suivant] = mean - (stepStdDev * c);
+                suivant++;
+            }
+            for(double c = portionOfStdDev; c <= Math.floor(stepUp/portionOfStdDev); c++) {
+                upperBounds[suivant] = mean + (stepStdDev * c);
+                suivant++;
+            }
+            if (stepUp == 3) {
+                upperBounds[numClasses-1] = max;
+            }
+        }
         // build the classes and the range formulae for each one
         RGB[] colors = ColorGenerator.getRampColors(fromColor, toColor, numClasses);
         for (int i = 0; i < numClasses; i++) {
@@ -326,7 +377,9 @@ public class ClassificationPropertiesAction extends Action {
             if (classifMode.equals("minmax")) {
                 curmin += stepMinMax;
             } else if (classifMode.equals("percentile")) {
-                curmin = op.percentile((i+1)*slicePercentile);
+                curmin = op.percentile((i + 1) * slicePercentile);
+            } else if (classifMode.equals("stddev")) {
+                curmin += upperBounds[i];
             }
             exp.append(f.format(curmin)).append(")");
             className = "range_" + i;
