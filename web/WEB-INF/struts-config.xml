@@ -49,7 +49,7 @@
     
     <!-- ========== Actions Definitions =================================== -->
     <action-mappings>
-        <action path="/ResetSession" type="org.geogurus.gas.actions.ResetSessionAction"/>
+        <action path="/resetSession" type="org.geogurus.gas.actions.ResetSessionAction"/>
         <action path="/searchFeature" type="org.geogurus.gas.actions.SearchFeatureAction"/>
         <action path="/saveLayerTree" type="org.geogurus.gas.actions.cartoweb.SaveLayerTreeAction"/>
         <action path="/loadCWLayerTree"
