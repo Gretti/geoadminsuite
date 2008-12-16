@@ -49,6 +49,5 @@ function GASremoveElement(el) {
           el.remove(i);
         }
     }
-    el.selectedIndex = el.options.length-1;
+   el.selectedIndex = el.options.length-1;
 }
-            
