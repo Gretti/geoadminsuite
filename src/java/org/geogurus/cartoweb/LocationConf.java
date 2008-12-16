@@ -542,7 +542,7 @@ public class LocationConf extends CartowebConf {
                     scales.put(scale.getId(), scale);
                 }
             }
-            logger.info("scales object re-initialized with: " + scalesAsString.length + " elements");
+            //logger.info("scales object re-initialized with: " + scalesAsString.length + " elements");
         } 
         this.scalesAsString = scalesAsString;
     }
@@ -577,7 +577,7 @@ public class LocationConf extends CartowebConf {
                     shortcuts.put(shortcut.getId(), shortcut);
                 }
             }
-            logger.info("shortcuts object re-initialized with: " + shortcutsAsString.length + " elements");
+            //logger.info("shortcuts object re-initialized with: " + shortcutsAsString.length + " elements");
         } 
         this.shortcutsAsString = shortcutsAsString;
     }

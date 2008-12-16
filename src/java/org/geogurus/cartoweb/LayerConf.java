@@ -53,7 +53,6 @@ public class LayerConf extends CartowebConf {
      */
     public LayerConf() {
         logger = Logger.getLogger(this.getClass().getName());
-        newLayers = new Hashtable<String, CartowebLayer>();
     }
     
     /**
@@ -92,6 +91,9 @@ public class LayerConf extends CartowebConf {
             // error logged by superclass
             return false;
         }
+        // build a fresh list of layers here; not in the ctor...
+        newLayers = new Hashtable<String, CartowebLayer>();
+        
         Enumeration e = iniProps.propertyNames();
         while (e.hasMoreElements()) {
             String prop = (String) e.nextElement();
@@ -157,11 +159,14 @@ public class LayerConf extends CartowebConf {
         //parsing done, reorder layers now:
         int res = rootLayer.addLayers(newLayers);
         if (res == -1) {
-            logger.warning("Invalid layers.ini file: missing layers definition or root layer does not children");
-        } else if (res > 0) {
+            logger.warning("Invalid layers.ini file: missing layers definition or root layer does not have children");
+        }
+        /*
+        else if (res > 0) {
             logger.warning("layers.ini: " + res + " defined layer(s) do(es) not belong to any group: " + newLayers.keySet());
         }
-        logger.info("num layers remaining: " + res);
+         */
+        logger.info("num layers added to root and its children: " + res);
         return true;
     }
 
@@ -230,6 +235,10 @@ public class LayerConf extends CartowebConf {
         this.autoClassLegend = autoClassLegend;
     }
 
+    public void setAutoClassLegendStruts(boolean autoClassLegend) {
+        this.autoClassLegend = new Boolean(autoClassLegend);
+    }
+
     public CartowebLayer getRootLayer() {
         return rootLayer;
     }
@@ -237,7 +246,6 @@ public class LayerConf extends CartowebConf {
     public void setRootLayer(CartowebLayer rootLayer) {
         this.rootLayer = rootLayer;
     }
-
     
     public Hashtable<String, CartowebLayer> getNewLayers() {
         return newLayers;

@@ -25,7 +25,7 @@
 package org.geogurus.gas.actions.cartoweb;
 
 import java.io.PrintWriter;
-
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -42,7 +42,7 @@ import org.geogurus.gas.utils.ObjectKeys;
  * @author nicolas
  */
 public class LoadIniFileAction extends org.apache.struts.action.Action {
-    
+    private Logger logger = Logger.getLogger(LoadIniFileAction.class.getName());
     /**
      * This is the action called from the Struts framework.
      * @param mapping The ActionMapping used to select this instance.

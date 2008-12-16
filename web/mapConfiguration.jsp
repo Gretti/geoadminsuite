@@ -33,6 +33,7 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
         rootPath = rootPath.replace('\\', '/');
 %>
 
+<script type="text/javascript" SRC="scripts/Utils.js"></script>
 <script type="text/javascript" charset="utf-8">
     var generalPropsTree;
     var myLayers = [];

@@ -15,9 +15,12 @@
     
     <!-- ========== Form Bean Definitions =================================== -->
     <form-beans type="org.apache.struts.action.ActionFormBean">
-        <form-bean name="IniConfigurationForm" type="org.geogurus.gas.forms.cartoweb.IniConfigurationForm"/>
-        <form-bean name="IniFileForm" type="org.geogurus.gas.forms.cartoweb.IniFileForm"/>
-        <form-bean name="CartowebIniConfigurationForm" type="org.geogurus.gas.forms.cartoweb.IniConfigurationForm"/>
+        <!-- a fully qualified name is required in order to use the same object both for Cartoweb properties and
+             standard Struts ActionForm bean management (this name ensure that a new object will not be created by struts
+             but instead reused from the Session -->
+        <form-bean name="org.geogurus.gas.forms.cartoweb.IniConfigurationForm" type="org.geogurus.gas.forms.cartoweb.IniConfigurationForm"/>
+        <form-bean name="CartowebIniFileForm" type="org.geogurus.gas.forms.cartoweb.IniFileForm"/>
+        <form-bean name="org.geogurus.gas.forms.cartoweb.IniConfigurationForm" type="org.geogurus.gas.forms.cartoweb.IniConfigurationForm"/>
         <form-bean name="CartowebIniFileForm" type="org.geogurus.gas.forms.cartoweb.IniFileForm"/>
         <form-bean name="CheckConfigurationForm" type="org.geogurus.gas.forms.CheckConfigurationForm"/>
         <form-bean name="LabelForm" type="org.geogurus.gas.forms.LabelForm"/>
@@ -56,7 +59,7 @@
                 />
         <action input="/" name="CartowebIniFileForm" path="/CWLoadIniFile" scope="session" type="org.geogurus.gas.actions.cartoweb.LoadIniFileAction"/>
         <action input="" 
-                name="CartowebIniConfigurationForm" 
+                name="org.geogurus.gas.forms.cartoweb.IniConfigurationForm"
                 path="/CWIniProperties" 
                 scope="session" 
                 type="org.geogurus.gas.actions.cartoweb.IniPropertiesAction"/>
