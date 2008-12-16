@@ -29,7 +29,7 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
 <%@ page import="org.geogurus.gas.utils.ObjectKeys" %>
 
         <script type="text/javascript">
-                var i, j, k, img, nodeServer, nodeDatasource, nodeLayer;
+                var i, j, k, curimg, nodeServer, nodeDatasource, nodeLayer;
                 var catalogMsUrl, nodeText;
                 var nodeSchemas = [];
                 var imgbase = 'images/';
@@ -98,12 +98,12 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
                 <logic:iterate id="datasource" indexId="cntDs" name="host" property="value">
                 nodeSchema = null;
                 j = '<bean:write name="datasource" property="id"/>';
-                img = imgdatabase;
+                curimg = imgdatabase;
                 <logic:equal name="datasource" property="type" value="<%=DatasourceType.FOLDER.toString()%>">
-                img = imgfolder;
+                curimg = imgfolder;
                 </logic:equal>
                 <logic:equal name="datasource" property="type" value="<%=DatasourceType.MAPFILE.toString()%>">
-                img = imgfile;
+                curimg = imgfile;
                 </logic:equal>
                 
                 //datasource UI id will be comma-separated list of host name and datasource id
@@ -111,7 +111,7 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
                     text: '<bean:write name="datasource" property="escapedName"/>',
                     id: "<bean:write name="datasource" property="host"/>," + j, 
                     checked:false, 
-                    icon: img});
+                    icon: curimg});
                 
                 nodeServer.appendChild(nodeDatasource);
                 var nodeSchema;
