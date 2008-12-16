@@ -18,8 +18,8 @@
     var selectedSymbologyId = null;
     // Emphasize the classification icon
     function makeItBig(img) {
-        img.style.width = '40px';
-        img.style.height = '22px';
+        img.style.width = '30px';
+        img.style.height = '16px';
     }
     // Restores the small classification icon
     function makeItSmall(img) {
