@@ -55,6 +55,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -234,7 +235,8 @@ public class MapPrinterServlet extends BaseMapServlet {
                         "                  maxWidth: $width\n" +
                         "                  maxHeight: $height\n" +
                         "                  rotation: '${rotation}'\n" +
-                        "                  url: 'http://localhost:8084/gas/images/north.gif'\n              rotation: '${rotation}'\n";
+                        "                  url: '$north'\n";
+//                        "                  url: 'http://localhost:8084/gas/images/north.gif'\n";
                 break;
             case overview:
                 yaml =
@@ -421,6 +423,11 @@ public class MapPrinterServlet extends BaseMapServlet {
                     if (compString.contains("$url")) {
                         compString = compString.replace("$url", url);
                     }
+                    if (compString.contains("$north")) {
+                        URL reconstructedURL = new URL(httpServletRequest.getScheme(),httpServletRequest.getServerName(),httpServletRequest.getServerPort(),httpServletRequest.getContextPath() + "/images/north.gif");
+                        System.out.println("reconstructedURL=" + reconstructedURL);
+                        compString = compString.replace("$north", reconstructedURL.toString());
+                    }
 
                     //Replaces optional values by passed ones
                     //First tries to figure out identation spaces necessary
@@ -440,10 +447,10 @@ public class MapPrinterServlet extends BaseMapServlet {
                             //treats font and font deco style : font style must be
                             //concatenanted with a "-" to font name only if not "None"
                             if (k.equalsIgnoreCase("font") && attr.has("fontStyle")) {
-                                if (!attr.getString("font").equals("Symbol") && 
-                                        !attr.getString("font").equals("ZapfDingbat") && 
+                                if (!attr.getString("font").equals("Symbol") &&
+                                        !attr.getString("font").equals("ZapfDingbat") &&
                                         !attr.getString("fontStyle").equals("None")) {
-                                    val +=  "-" + attr.getString("fontStyle");
+                                    val += "-" + attr.getString("fontStyle");
                                 }
                             } else if (k.equalsIgnoreCase("fontStyle")) {
                                 //already treated with font key
