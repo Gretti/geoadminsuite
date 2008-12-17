@@ -74,7 +74,7 @@ layouts:
               - !text
                 backgroundColor: #666666
                 align: left
-                text: Copyright Camptocamp SA
+                text: Copyright GeoAdminSuite
               - !text
                 align: right
                 text: 'Page ${pageNum}'
@@ -108,7 +108,7 @@ layouts:
               - !text
                 backgroundColor: #666666
                 align: left
-                text: Copyright Camptocamp SA
+                text: Copyright GeoAdminSuite
               - !text
                 align: right
                 text: 'Page ${pageNum}'
@@ -141,7 +141,7 @@ layouts:
               - !text
                 backgroundColor: #666666
                 align: left
-                text: Copyright Camptocamp SA
+                text: Copyright GeoAdminSuite
               - !text
                 align: right
                 text: 'Page ${pageNum}'
@@ -174,7 +174,7 @@ layouts:
               align: right
               maxWidth: 60
               maxHeight: 60
-              url: 'http://localhost:8084/geoadminsuite/images/north.gif'
+              url: 'file:///${configDir}/images/north.gif'
               rotation: '${rotation}'
         - !columns
           config: 
@@ -211,7 +211,7 @@ layouts:
             items:
               - !text
                 align: left
-                text: Copyright Camptocamp SA
+                text: Copyright GeoAdminSuite
                 fontSize:8
               - !text
                 align: right
