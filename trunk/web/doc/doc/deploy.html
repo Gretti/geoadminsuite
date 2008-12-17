@@ -36,7 +36,7 @@
                         <li><a href="#"><b>Install/Deploy</b><span></span></a></li>
                         <li><a href="documentation.html">Documentation<span></span></a></li>
                         <li><a href="about.html">About<span></span></a></li>
-                        <li><a href="../../trac/geojava">Trac<span></span></a></li>
+                        <li><a href="http://code.google.com/p/geoadminsuite">Google Code<span></span></a></li>
                     </ul>
                 </div>
                 <div id="menu_end"></div>
@@ -134,13 +134,12 @@
                             <li>Download and install <a href="http://maven.apache.org/">Maven 2</a></li>
                             <br/>
                             <li>Launch NetBeans and go to Versionning -> Suberversion -> Checkout, 
-                                Enter the GeoAdminSuite SVN repository URL: <pre>https://geojava.camptocamp.net/svn/geojava</pre>
+                                Enter the GeoAdminSuite SVN repository URL: <pre>ttp://geoadminsuite.googlecode.com/svn/trunk/</pre>
                                 <br/><br /><img src="../images/nb_checkout.png"/>
                             </li>
                             <br/>
                             <li>
-                                Click Next, Browse repository folder to choose tags/geoadminsuite_1_0RC1 folder
-                                (or trunk/geoadminsuite for the current development version):
+                                Click Next, Browse repository folder to choose trunk folder:
                                 <br/><br /><img src="../images/nb_browse_folder.png"/>
                             </li>
                             <br/>
@@ -187,22 +186,18 @@
                     <p>
                         <ol>
                             <li>Download and install <a href="http://www.mortbay.org/jetty-6/">Jetty</a></li>
-                            <li>Download <a href="http://geojava.camptocamp.net/trac/geojava/browser/tags/geoadminsuite_0_9/bin/geoadminsuite.war?format=raw">geoadminsuite.war</a> 
-                            and copy/move it to &lt;jetty folder&gt;/webapps/</li>
+                            <li>Download <a href="http://sd-11986.dedibox.fr/bin/gas.war">gas.war</a> 
+                            and copy/move it to &lt;jetty folder&gt;/webapps/ and extract it into a "gas" folder</li>
                             <li>Run Jetty:
-                                <pre>java -jar start.jar etc/jetty.xml</pre>
-                                Note the Message telling in which folder geoadmin webapp was deployed. Something like:
-                                <pre> Extract jar:file:/jetty-6.1.10/webapps/geoadminsuite.war!/ 
-                                to /tmp/Jetty_0_0_0_0_8080_geoadminsuite.war__geoadminsuite__tmh58n/webapp</pre>
-                                
+                                <pre>./jetty.sh start</pre>
                             </li>
                             <li>
-                                Change "&lt;jetty deployment folder&gt;/msFiles/tmpMaps" folder permissions to be writable by the MapServer process, for instance:
-                                <pre>chmod a+w  /tmp/Jetty_0_0_0_0_8080_geoadminsuite.war__geoadminsuite__tmh58n/webapp/msFiles/tmpMaps</pre>
+                                Change "jetty/webapps/gas/msFiles/tmpMaps" folder permissions to be writable by the MapServer process, for instance:
+                                <pre>chmod a+w  /home/toto/bin/jetty/webapps/msFiles/tmpMaps</pre>
                             </li>
                             <li><a href="#configure">Configure</a> the geoadminsuite Webapp</li>
                             <li>Restart Jetty</li>
-                            <li><a href="http://localhost:8080/geoadminsuite">Test</a> the application</li>
+                            <li><a href="http://localhost:8080/gas">Test</a> the application</li>
                         </ol>
                     </p>
                     <a name="tomcat"></a>
@@ -210,17 +205,17 @@
                     <p>
                         <ol>
                             <li>Download and install <a href="http://tomcat.apache.org/">Tomcat</a></li>
-                            <br/><li>Download <a href="http://geojava.camptocamp.net/trac/geojava/browser/tags/geoadminsuite_0_9/bin/geoadminsuite.war?format=raw">geoadminsuite.war</a> 
+                            <br/><li>Download <a href="http://sd-11986.dedibox.fr/bin/gas.war">gas.war</a> 
                             and copy/move it to &lt;tomcat folder&gt;/webapps/</li>
                             <li>Follow Tomcat doc to deploy geoadminsuite webapp
                             <br/></li>
                             <li>
-                                Change "&lt;tomcat deployment folder&gt;/msFiles/tmpMaps" folder permissions to be writable by the MapServer process, for instance:
-                                <pre>chmod a+w  [tomcat webapps folder]/geoadminsuite/msFiles/tmpMaps</pre>
+                                Change "&lt;tomcat deployment folder&gt;/webapps/gas/msFiles/tmpMaps" folder permissions to be writable by the MapServer process, for instance:
+                                <pre>chmod a+w  [tomcat webapps folder]/gas/msFiles/tmpMaps</pre>
                             </li>
                             <li><a href="#configure">Configure</a> the geoadminsuite Webapp</li>
                             <li>Restart Tomcat</li><br/>
-                            <li><a href="http://localhost:8081/geoadminsuite">Test</a> the application</li><br/>
+                            <li><a href="http://localhost:8081/gas">Test</a> the application (port number may differ. Check Tomcat config)</li><br/>
                         </ol>
                     </p>
                     <a name="configure_application"></a>
