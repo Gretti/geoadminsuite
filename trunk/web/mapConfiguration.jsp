@@ -33,13 +33,14 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
         rootPath = rootPath.replace('\\', '/');
 %>
 
-<script type="text/javascript" SRC="scripts/Utils.js"></script>
+<script type="text/javascript" src="scripts/Utils.js"></script>
 <script type="text/javascript" charset="utf-8">
     var generalPropsTree;
     var myLayers = [];
     var children = [];
     var initialOrder = [];
     var activeLayer = null;
+    var locChildren = [];
 
     // the globally-defined properties windows content displaying classes, labels, CW, etc. properties
     // this is an ext Panel with .url properties.
@@ -48,6 +49,9 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
     function loadMap() {
         //MAPFISH MAP COMPONENT
         var bounds = new OpenLayers.Bounds(<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapExtent"/>);
+        //var bounds = new OpenLayers.Bounds(-20037508, -20037508,20037508, 20037508.34);
+
+
         GeneralLayout.composerActiveExtent = bounds;
         var options = {maxResolution: 'auto',maxExtent: bounds};
             <logic:notEmpty name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapfile.projection">
@@ -55,12 +59,13 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
                     if (proj.length > 2) {
                         proj = proj.split('=')[1].split("&")[0];
                     }
-                    //options.push({projection: proj});
                     options.projection = proj;
             </logic:notEmpty>
             <logic:equal name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapfile.units" value="<%=String.valueOf(Map.METERS)%>">
                     options.units = 'm';
             </logic:equal>
+//                    options.projection = new OpenLayers.Projection("EPSG:900913");
+//                    options.displayProjection = new OpenLayers.Projection("EPSG:4326");
 
                     GeneralLayout.zoombox = new OpenLayers.Control.ZoomBox();
                     GeneralLayout.zoomoutbox = new OpenLayers.Control.ZoomBox({out:true});
@@ -163,20 +168,71 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
                     {transitionEffect:'resize',singleTile:true,isBaseLayer:false});
 
                     GeneralLayout.composerMsUrl = '<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapserverURL"/>?mode=map&map=<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapfilePath"/>';
-
+                    var locSces = '<bean:write name="<%=ObjectKeys.LOCALIZATION_SERVICES%>"/>';
+                    var layerSelection;
+                    var layersLoc = [];
+                    if(locSces.length > 0) {
+                        var aryLocSces = locSces.split('|');
+                        for (var ls = 0; ls < aryLocSces.length; ls++) {
+                            var curLs = aryLocSces[ls];
+                            if(curLs == 'google') {
+                                locChildren.push({
+                                    id: "locScesGoogle",
+                                    text: "Google Maps",
+                                    leaf: true,
+                                    layerName: 'google',
+                                    checked: true,
+                                    icon: 'images/layers.png'
+                                });
+                                layersLoc.push(new OpenLayers.Layer.Google(
+                                    "google",
+                                    {'sphericalMercator':true}
+                                ));
+                            }
+                            if(curLs == 'yahoo') {
+                                locChildren.push({
+                                    id: "locScesYahoo",
+                                    text: "Yahoo Maps",
+                                    leaf: true,
+                                    layerName: 'yahoo',
+                                    checked: true,
+                                    icon: 'images/layers.png'
+                                });
+                                layersLoc.push(new OpenLayers.Layer.Yahoo(
+                                    "yahoo",
+                                    {'sphericalMercator':true}
+                                ));
+                            }
+                        }
+                        layerSelection = [{
+                            id:'gasuserLayerSelection',
+                            text:'Layers',
+                            expanded:true,
+                            children:children
+                        },{
+                            id:'gasuserLocSelection',
+                            text:'Localization',
+                            expanded:true,
+                            children:locChildren
+                        }];
+                    } else {
+                        layerSelection = children;
+                    }
                     var model = [
                         {
                             text: "Layer tree",
                             expanded: true,
                             checked: true,
-                            children: children
+                            children: layerSelection
                         }
                     ];
-
                     GeneralLayout.composerlayers[GeneralLayout.composerlayers.length] = layer;
 
-                    GeneralLayout.composermap.addLayer(drawingLayer);
                     GeneralLayout.composermap.addLayers(GeneralLayout.composerlayers);
+                    if(layersLoc.length > 0)
+                        GeneralLayout.composermap.addLayers(layersLoc);
+                    
+                    GeneralLayout.composermap.addLayer(drawingLayer);
 
                     //MAPFISH TREE COMPONENT
                     if(GeneralLayout.layertree) Ext.getCmp('layerTree').destroy();
@@ -350,7 +406,13 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
 
                     //Add onClick event on each node of the tree
                     var rootNode = GeneralLayout.layertree.getRootNode();
-                    var childNodes = rootNode.childNodes[0].childNodes;
+                    //if there is a location layer, then childnodes are one level downer
+                    var childNodes;
+                    if(locSces.length > 0) {
+                        childNodes = rootNode.childNodes[0].childNodes[0].childNodes;
+                    } else {
+                        childNodes = rootNode.childNodes[0].childNodes;
+                    }
                     for(var i=0; i<childNodes.length; i++) {
                         childNodes[i].on('click', function() {
                             if(Ext.getCmp('infoTool').disabled) Ext.getCmp('infoTool').enable();

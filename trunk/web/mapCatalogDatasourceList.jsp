@@ -253,13 +253,40 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
                 //           BUTTON NEXT       //
                 //-----------------------------//
                     
-                   var action = new Ext.Action({
+                   var nextAction = new Ext.Action({
                         text: i18n.next,
                         handler: GeneralLayout.gotoComposer,
                         iconCls: 'bnext'
                    });
-                    
-                   var panel = new Ext.Panel({
+                   var chooseServicePanel = new Ext.FormPanel({
+                        id: 'chooseServicePanel',
+                        bodyStyle: 'padding:5px;',
+                        autoWidth: true,
+                        title: 'Localization services',
+                        items:[{
+                            title: 'Use a service',
+                            xtype: 'fieldset',
+                            autoHeight:true,
+                            checkboxToggle:true,
+                            checkboxName : 'chkUseSce',
+                            collapsed: true,
+                            defaultType: 'checkbox',
+                            items : [{
+                                cls : 'font-size:8',
+                                fieldLabel: 'Google',
+                                name: 'google'
+                            },{
+                                cls : 'font-size:8',
+                                fieldLabel: 'Yahoo',
+                                name: 'yahoo'
+                            },{
+                                cls : 'font-size:8',
+                                fieldLabel: 'Live Local',
+                                name: 'live'
+                            }]
+                        }]
+                   });
+                   var gotoComposerPanel = new Ext.Panel({
                         id:'btnGotoComposer',
                         bodyStyle: 'padding:10px;',
                         autoHeight: true,
@@ -267,11 +294,12 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
                         html:'<br>' + GeneralLayout.createBoxHelp('<img src="images/help.png">','To Internat:Ce panneau pr&eacute;sente sous forme d\'arbre la liste des sources de donn&eacute;es trouv&eacute;es sur les serveurs. En cliquant sur les noms des couches, le panneau de d&eacute;tail ci-contre propose : <ul><li>une vue rapide navigable dans l\'onglet Vue,</li><li>une navigation dans la table attributaire pour les donn&eacute;es vectorielles dans l\'onglet Donn&eacute;es</li><li>une pr&eacute;sentation de quelques informations descriptives de la donn&eacute;e dans l\'onglet Metadonn&eacute;es.</li></ul> Le bouton Suivant permet d\'acc&eacute;der au composeur de cartes.'),
                         buttonAlign: 'center',
                         items: [
-                           new Ext.Button(action)
+                           new Ext.Button(nextAction)
                         ]
                     });
                     
-                    Ext.getCmp('pnlDataList').add(panel);
+                    Ext.getCmp('pnlDataList').add(chooseServicePanel);
+                    Ext.getCmp('pnlDataList').add(gotoComposerPanel);
     
                     // render the tree
                     Ext.getCmp('pnlDataList').doLayout();

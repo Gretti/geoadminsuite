@@ -58,14 +58,14 @@ public class ComposeMapAction extends Action {
         HttpSession session = request.getSession(false);
         
         StringTokenizer tok = new StringTokenizer(request.getParameter(ObjectKeys.SELECTED_IDS),"|");
-        
+        String services = request.getParameter("services");
         String[] layerChoice = new String[tok.countTokens()];
         int i = 0;
         while (tok.hasMoreTokens()) {
             layerChoice[i] = tok.nextToken();
             i++;
         }
-        
+
         // the colorGenerator object, stored in session
         ColorGenerator colgen = (ColorGenerator)session.getAttribute(ObjectKeys.COLOR_GENERATOR);
         if (colgen == null) {
@@ -88,7 +88,7 @@ public class ComposeMapAction extends Action {
             umbMgr.setUserMapBean(userMapBean);
             umbMgr.createUserLayerList(gasSymbolList,hostList);
             umbMgr.generateTemplateFiles();
-            umbMgr.buildFirstUserMapfile(1280,1024,colgen);
+            umbMgr.buildFirstUserMapfile(colgen, services);
             // reset the cartoweb user list to force gas to regenerate a list from current layer list
             IniConfigurationForm cwIniConf = (IniConfigurationForm)request.getSession().getAttribute(ObjectKeys.CW_INI_CONF_BEAN);
             if (cwIniConf != null) {
@@ -103,7 +103,8 @@ public class ComposeMapAction extends Action {
         //cleans session
         session.removeAttribute(ObjectKeys.CURRENT_GC);
         session.removeAttribute(ObjectKeys.CLASSIF_MESSAGE);
-        
+        //stores some variables in request
+        session.setAttribute(ObjectKeys.LOCALIZATION_SERVICES, services);
         return null;
     }
 }

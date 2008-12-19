@@ -85,7 +85,9 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
         
         <!-- YUI Color Picker source files for CSS and JavaScript -->
         <script type="text/javascript" src="scripts/colorpicker/colorpicker-min.js" ></script>
-        
+        <!-- Webmapping services (Google, Yahoo, etc.)-->
+        <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<%=DataManager.getProperty("GOOGLE_KEY")%>" type="text/javascript"></script>
+
         <script type="text/javascript">
             Ext.BLANK_IMAGE_URL = 'scripts/refexportfiles/resources/images/default/s.gif';
             var i18n = <bean:write name="I18N" scope="request" filter="false"/>;

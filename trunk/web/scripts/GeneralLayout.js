@@ -601,12 +601,10 @@ GeneralLayout =
                     '<img alt="EN" style="cursor:pointer;" src="images/us.png" onclick="javascript:changeLanguage(\'en\');"></span><br />'+
                     '<span style="width:100%" class="label">' + i18n.access_admin + '<a href="admin.jsp">' +
                     '<img src="images/link_conf.png" alt="Administration" title="Administration">' +
-                    '</a></span>'  +
-                    '<br />&nbsp;' +
+                    '</a></span><br />' +
                     '<span style="width:100%" class="label">' + i18n.reset_session + '<a href="javascript:resetUserSession()">' +
-                    '<img src="styles/cancel.png" alt="Administration" title="Administration">' +
-                    '</a></span>' +
-                    '<br />&nbsp;'
+                    '<img src="styles/application_home.png" alt="Reset session" title="Reset session">' +
+                    '</a></span>'
                 });
                 cpServerConfigConf.render('confApp');
                 //renders Server form in server config form div element (frmServer)
@@ -976,6 +974,15 @@ GeneralLayout =
                 //gets the checked nodes in the tree
                 var checkedNodes = Ext.getCmp('treeHost').getChecked();
                 var selectedIds = '';
+                var strSelServices = '';
+                if(Ext.getCmp('chooseServicePanel').items.items[0].collapsed == false) {
+                    if(Ext.getCmp('chooseServicePanel').form.getValues().google == 'on')
+                        strSelServices += 'google|';
+                    if(Ext.getCmp('chooseServicePanel').form.getValues().yahoo == 'on')
+                        strSelServices += 'yahoo|';
+                    if(Ext.getCmp('chooseServicePanel').form.getValues().live == 'on')
+                        strSelServices += 'live|';
+                }
                 //passes the ids to the ComposeMapAction
                 if(checkedNodes.length == 0) {
                     if(Ext.getCmp('pnlCatalog').ownerCt.activeTab != Ext.getCmp('pnlCatalog'))
@@ -1015,9 +1022,8 @@ GeneralLayout =
                     Ext.Ajax.request({
                         url:'composeMap.do',
                         params: {
-                            SELECTED_IDS:selectedIds,
-                            screenWidth:window.innerWidth,
-                            screenHeight:window.innerWidth
+                            'SELECTED_IDS':selectedIds,
+                            'services':strSelServices
                             },
                         timeout: 60000,
                         success: function(){

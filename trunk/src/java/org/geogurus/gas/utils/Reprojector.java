@@ -36,6 +36,7 @@ import org.geogurus.data.Extent;
 import org.geogurus.mapserver.objects.Projection;
 import org.geogurus.tools.sql.ConPool2;
 import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -150,11 +151,6 @@ public class Reprojector {
      * Reproject given extents from original projection to destination projection using geotools
      * @param projRef
      * @param hExtents : Hashtable<Projection,Extent>
-     * @param host
-     * @param port
-     * @param db
-     * @param user
-     * @param pwd
      * @return Extent calculated from given data
      */
     public static Extent returnBBox(Projection projRef, Hashtable hExtents) {
@@ -163,16 +159,23 @@ public class Reprojector {
         String refEpsg = refParam.substring(refParam.lastIndexOf(":") + 1, refParam.lastIndexOf("\""));
         CoordinateOperationFactory coFactory = ReferencingFactoryFinder.getCoordinateOperationFactory(null);
         CoordinateReferenceSystem crsSrc;
+        CoordinateReferenceSystem crsDest = null;
         CoordinateOperation op;
         Extent curEx;
         try {
+            if (!refEpsg.equals("900913")) {
+                crsDest = ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null).createCoordinateReferenceSystem(refEpsg);
+            } else {
+                try {
+                    crsDest = CRS.parseWKT("PROJCS[\"Google Mercator\",GEOGCS[\"WGS 84\",DATUM[\"World Geodetic System 1984\",SPHEROID[\"WGS 84\",6378137.0,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0.0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.017453292519943295],AXIS[\"Geodetic latitude\",NORTH],AXIS[\"Geodetic longitude\",EAST],AUTHORITY[\"EPSG\",\"4326\"]],PROJECTION[\"Mercator_1SP\"],PARAMETER[\"semi_minor\",6378137.0],PARAMETER[\"latitude_of_origin\",0.0],PARAMETER[\"central_meridian\",0.0],PARAMETER[\"scale_factor\",1.0],PARAMETER[\"false_easting\",0.0],PARAMETER[\"false_northing\",0.0],UNIT[\"m\",1.0],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"900913\"]],EXTENSION[\"PROJ4\",\"+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs\"]]");
+                } catch (FactoryException ex) {
+                    Logger.getLogger(Reprojector.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
 
-            CoordinateReferenceSystem crsDest = ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null).createCoordinateReferenceSystem(refEpsg);
-            
-            MathTransform trans;
             String param;
             String epsg;
-            
+
             for (Enumeration e = hExtents.keys(); e.hasMoreElements();) {
                 Projection p = (Projection) e.nextElement();
                 param = (String) p.getAttributes().get(0);
@@ -190,7 +193,7 @@ public class Reprojector {
                     //calculates reprojected extent before adding to map extent
                     crsSrc = ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null).createCoordinateReferenceSystem(epsg);
                     op = coFactory.createOperation(crsSrc, crsDest);
-                    trans = op.getMathTransform();
+                    MathTransform trans = op.getMathTransform();
 
                     // transform given coordinatespoints
                     DirectPosition ll = new GeneralDirectPosition(curEx.ll.x, curEx.ll.y);

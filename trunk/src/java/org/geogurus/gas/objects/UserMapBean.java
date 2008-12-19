@@ -87,9 +87,6 @@ public class UserMapBean implements Serializable {
     private String mapExtent;
     /** the URL of the working gif for kaboum applet, read from the geonline.properties file*/
     private String workingGif;
-    /** the kaboum width and height, derived from the mapfile dimensions */
-    private int imgX;
-    private int imgY;
     /** the current layer display name, if user changed it on the left frame
      * This display name is composed of:
      * <layerid>|layerDisplayName>
@@ -182,14 +179,6 @@ public class UserMapBean implements Serializable {
         return updatedGeometry;
     }
 
-    public int getImgY() {
-        return imgY;
-    }
-
-    public int getImgX() {
-        return imgX;
-    }
-
     public String getRootPath() {
         return this.rootPath;
     }
@@ -219,14 +208,6 @@ public class UserMapBean implements Serializable {
 
     public void setUserLayerOrder(Vector<String> vec) {
         userLayerOrder = vec;
-    }
-
-    public void setImgX(int x) {
-        imgX = x;
-    }
-
-    public void setImgY(int y) {
-        imgY = y;
     }
 
     public void setMapfile(org.geogurus.mapserver.objects.Map map) {

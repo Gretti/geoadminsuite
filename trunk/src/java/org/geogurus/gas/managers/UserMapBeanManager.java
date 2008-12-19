@@ -67,7 +67,9 @@ import org.geogurus.mapserver.objects.SymbolSet;
 import org.geogurus.mapserver.objects.Web;
 import org.geogurus.tools.DataManager;
 import org.geogurus.gas.utils.ColorGenerator;
+import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
@@ -96,9 +98,10 @@ public class UserMapBeanManager {
      * be merged by taking attributes of the first one, then by increasing
      * extent for each new map, and finally by adding all layers of other maps
      * in this map
+     * @param colgen_ the ColorGenerator attached to the user session
+     * @param services_ the | separated String list of chosen services (ie : google, yahoo or live)
      */
-    public void buildFirstUserMapfile(int screenWidth_, int screenHeight_,
-            ColorGenerator colgen_) throws Exception {
+    public void buildFirstUserMapfile(ColorGenerator colgen_, String services_) throws Exception {
 
         if (m_userMapBean.getUserLayerList() == null) {
             Exception e = new Exception("User Map Bean is null");
@@ -108,9 +111,6 @@ public class UserMapBeanManager {
         DataAccess gc = null;
         Layer l = null;
 
-        // sets the imgX and imgY values according to given screen dimension
-        m_userMapBean.setImgX((int) (screenWidth_ / 2.10));
-        m_userMapBean.setImgY((int) (screenHeight_ / 1.58));
         Extent mExt = new Extent();
 
         if (m_userMapBean.getMapfileDatasources().size() > 0) {
@@ -250,20 +250,27 @@ public class UserMapBeanManager {
              * as world data can't be reprojected to local projection.
              */
             Projection mostUsedProj = new Projection();
-            int nbDs = -1;
-            for (Enumeration e = hproj.keys(); e.hasMoreElements();) {
-                Projection curkey = (Projection) e.nextElement();
-                String curparam = (String) curkey.getAttributes().get(0);
-                String curepsg = curparam.substring(
-                        curparam.lastIndexOf(":") + 1, curparam.lastIndexOf("\""));
-                Integer curval = (Integer) hproj.get(curkey);
-                //If 4326 is met then will be the used projection
-                if (curepsg.equalsIgnoreCase("4326")) {
-                    mostUsedProj = curkey;
-                    break;
-                } else if (curval.intValue() > nbDs) {
-                    nbDs = curval.intValue();
-                    mostUsedProj = curkey;
+            if (services_.length() > 0) {
+                attr = "\"init=epsg:900913\"";
+                ArrayList projAttr = new ArrayList(1);
+                projAttr.add(attr);
+                mostUsedProj.setAttributes(projAttr);
+            } else {
+                int nbDs = -1;
+                for (Enumeration e = hproj.keys(); e.hasMoreElements();) {
+                    Projection curkey = (Projection) e.nextElement();
+                    String curparam = (String) curkey.getAttributes().get(0);
+                    String curepsg = curparam.substring(
+                            curparam.lastIndexOf(":") + 1, curparam.lastIndexOf("\""));
+                    Integer curval = (Integer) hproj.get(curkey);
+                    //If 4326 is met then will be the used projection
+                    if (curepsg.equalsIgnoreCase("4326")) {
+                        mostUsedProj = curkey;
+                        break;
+                    } else if (curval.intValue() > nbDs) {
+                        nbDs = curval.intValue();
+                        mostUsedProj = curkey;
+                    }
                 }
             }
 
@@ -271,16 +278,28 @@ public class UserMapBeanManager {
 
             String refParam = (String) mostUsedProj.getAttributes().get(0);
             String refEpsg = refParam.substring(refParam.lastIndexOf(":") + 1, refParam.lastIndexOf("\""));
-            CoordinateReferenceSystem crsDest = ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null).createCoordinateReferenceSystem(refEpsg);
-
+            CoordinateReferenceSystem crsDest = null;
+            //Finds reference system. As 900913 code doesn't exist in hsql DB
+            // for now. if 900913 is used, builds from proj4 wkt
+            if (!refEpsg.equals("900913")) {
+                crsDest = ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null).createCoordinateReferenceSystem(refEpsg);
+            } else {
+                try {
+                    crsDest = CRS.parseWKT("PROJCS[\"Google Mercator\",GEOGCS[\"WGS 84\",DATUM[\"World Geodetic System 1984\",SPHEROID[\"WGS 84\",6378137.0,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0.0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.017453292519943295],AXIS[\"Geodetic latitude\",NORTH],AXIS[\"Geodetic longitude\",EAST],AUTHORITY[\"EPSG\",\"4326\"]],PROJECTION[\"Mercator_1SP\"],PARAMETER[\"semi_minor\",6378137.0],PARAMETER[\"latitude_of_origin\",0.0],PARAMETER[\"central_meridian\",0.0],PARAMETER[\"scale_factor\",1.0],PARAMETER[\"false_easting\",0.0],PARAMETER[\"false_northing\",0.0],UNIT[\"m\",1.0],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"900913\"]],EXTENSION[\"PROJ4\",\"+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs\"]]");
+                } catch (FactoryException ex2) {
+                    Exception e = new Exception(ex2.getMessage());
+                    throw e;
+                }
+            }
             //Sets units according to detected most used projection
             Unit unit = crsDest.getCoordinateSystem().getAxis(0).getUnit();
             if (unit.toString().equalsIgnoreCase("°")) {
                 m_userMapBean.getMapfile().setUnits(Map.DD);
             } else {
-                m_userMapBean.getMapfile().setUnits(Map.METERS);            // If WMS layer found, must set image_path to have it work
+                m_userMapBean.getMapfile().setUnits(Map.METERS);
             }
             Web web = new Web();
+            // If WMS layer found, must set image_path to have it work
             web.setImagePath(new File(m_userMapBean.getRootPath() + File.separator + "msFiles" + File.separator + "tmpMaps" + File.separator));
             web.setImageURL("msFiles/tmpMaps/");
             m_userMapBean.getMapfile().setWeb(web);
@@ -289,7 +308,7 @@ public class UserMapBeanManager {
             // projection
             Extent calcExtent = null;
             // String dbInfos = "";
-            if (hproj.size() > 1) {
+            if (hproj.size() > 1 || refEpsg.equals("900913")) {
                 calcExtent = Reprojector.returnBBox(mostUsedProj, hExtent);
             }
 
@@ -305,10 +324,8 @@ public class UserMapBeanManager {
 
             // construct the mapextent each time
             m_userMapBean.setMapExtent(mExt.toString());
-            m_userMapBean.getMapfile().setExtent(
-                    new MSExtent(mExt.ll.x, mExt.ll.y, mExt.ur.x, mExt.ur.y));
-            m_userMapBean.getMapfile().setSize(
-                    new Dimension(m_userMapBean.getImgX(), m_userMapBean.getImgY()));
+            m_userMapBean.getMapfile().setExtent(new MSExtent(mExt.ll.x, mExt.ll.y, mExt.ur.x, mExt.ur.y));
+            m_userMapBean.getMapfile().setSize(new Dimension(400, 400));
             //Maxsize, so that we may draw large maps (set to 30000, should be a user param)
             m_userMapBean.getMapfile().setMaxSize(30000);
             // sets fontset according to GAS default font list
@@ -380,6 +397,7 @@ public class UserMapBeanManager {
             }
             out.flush();
             out.close();
+            System.gc();
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
