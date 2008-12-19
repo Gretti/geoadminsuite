@@ -48,13 +48,11 @@ public class ObjectKeys {
      * mapserver.objects.Legend
      */
     public final static String  CURRENT_OBJECT = "CURRENT_OBJECT";
-    
-    // constants for GOClassificationProperties
+    /** The key under which the list of localization services is stored.*/
+    public final static String  LOCALIZATION_SERVICES = "LOCALIZATION_SERVICES";
     /** The key under which the current GeometryClass identifier is stored.*/
     public final static String  CURRENT_GC = "CURRENT_GC";
-    /** The key under which the current UserMapBean object is stored.
-     *  (central object in GAS application).
-     */
+    /** The key under which the current UserMapBean object is stored.*/
     public final static String  USER_MAP_BEAN = "usermapbean";
     /** The key under which the current KaboumBean object is stored.*/
     public final static String  KABOUM_BEAN = "kaboumbean";
@@ -106,4 +104,6 @@ public class ObjectKeys {
     public final static String CW_LAYER_TREE_JSON = "cwLayerTreeJson";
     /** the key under which the user IniConfigurationForm object is stored into Session */
     public final static String CW_INI_CONF_BEAN = "org.geogurus.gas.forms.cartoweb.IniConfigurationForm";
+    public final static String GOOGLE_KEY = "GOOGLE_KEY";
+
 }
