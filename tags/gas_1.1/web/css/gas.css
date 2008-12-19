@@ -1,0 +1,593 @@
+/*
+body {
+   background-color: #FFFFFF;
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 10pt;
+   margin-bottom: 0px;
+   margin-left: 0px;
+   margin-right: 0px;
+   margin-top: 0px;
+   padding: 0px
+}
+*/
+.body1 {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 10pt;
+   background-color: #FFAFAF;
+}
+
+.body2 {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 10pt;
+   background-color: #FFFFFF;
+}
+
+.discrete, discrete:disabled {
+   border-style: none;
+   font-family: "Verdana", "helvetica";
+   font-size: 10px
+}
+
+.discrete {
+   background-color: #FFFFFF;
+   color: #000000;
+}
+
+.nextbutton{
+   background: url(../images/formbg.gif) repeat-x left top;
+   border: outset 1px #ccc;
+   color: #666;
+   cursor: pointer;
+   font-weight: bold;
+   padding: 1px 2px
+}
+.nextbutton:hover{
+   cursor:pointer;
+   border:inset 1px #ccc;
+   background:#999;
+   color:#bbb;
+   font-weight:bold;
+   padding : 1px 2px;
+   background:url(../images/formbg.gif) repeat-x left top;
+}
+
+.discrete:disabled {
+   background-color: #EEEEEE;
+   color: #EEEEEE;
+}
+
+img {
+   border: 0;
+}
+
+.tablea	 {
+   border: #999999;
+   border-style: solid;
+   border-left-width: 2px;
+   border-top-width: 2px;
+   border-right-width: 2px;
+   border-bottom-width: 2px 
+}
+.tableb	 {
+   background-color: #F7F7F7;
+   border: #999999;
+   border-style: solid;
+   border-left-width: 1px;
+   border-top-width: 1px;
+   border-right-width: 1px;
+   border-bottom-width: 1px 
+}
+.tablec	 {
+   background-color: #EEEEEE;
+   border: #999999;
+   border-style: solid;
+   border-left-width: 1px;
+   border-top-width: 1px;
+   border-right-width: 1px;
+   border-bottom-width: 1px 
+}
+.tabled	 {
+   background-color: #FFFFDF;
+   border: #999999;
+   border-style: solid;
+   border-left-width: 1px;
+   border-top-width: 1px;
+   border-right-width: 1px;
+   border-bottom-width: 1px 
+}
+
+h1   {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 16pt;
+   font-weight: bold
+}
+h2   {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 14pt;
+   font-weight: bold
+}
+h3   {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 12pt;
+   font-weight: bold
+}
+h4   {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 10pt;
+   font-weight: bold
+}
+h5   {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 8pt;
+   font-weight: bold
+}
+h6   {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 6pt;
+   font-weight: bold}
+
+th   {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 10pt;
+   font-weight: bold;
+   background-color: #000099;
+   color: #FFFFFF;
+}
+td   {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 10pt;
+}
+.th0     {
+   background-color: #999999;
+   color: #FFFFFF;
+}
+.th1     {
+   font-size: 8pt;
+   background-color: #999999;
+   color: #FFFFFF;}
+.td0     {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 10pt;
+   background-color: #B0CAFF;
+}
+.td0tiny {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 8pt;
+   background-color: #B0CAFF;
+}
+.td1     {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 10pt;
+   background-color: #FFFFFF;
+}
+.td2     {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 10pt;
+   background-color: #D7E4FF;
+}
+.td2tiny {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 8pt;
+   background-color: #D7E4FF;
+}
+.td3     {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 10pt;
+   background-color: #C14242;
+}
+.td4     {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 10pt;
+   background-color: #EEEEEE;
+}
+.td4tiny {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 8pt;
+   background-color: #EEEEEE;
+}
+.td5     {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 10pt;
+   background-color: #D7D7D7;}
+.td5tiny {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 8pt;
+   background-color: #D7D7D7;}
+
+A.item:link    {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 8pt;
+   text-decoration: none;
+   color: blue;
+   padding-left :20px ;
+}
+A.item:visited {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 8pt;
+   text-decoration: none;
+   color: blue;
+   padding-left :20px ;
+}
+A.item:hover   {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 8pt;
+   text-decoration: none;
+   color: red;
+   padding-left :20px ;
+}
+
+item  {
+   padding-left :20px ;
+}
+
+A.heada:link    {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 8pt;
+   font-weight: bold;
+   text-decoration: none;
+   color: black;
+}
+A.heada:visited {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 8pt;
+   font-weight: bold;
+   text-decoration: none;
+   color: black;
+}
+A.heada:hover   {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 8pt;
+   font-weight: bold;
+   text-decoration: none;
+   color: black;
+}
+
+A.nav:link {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   text-decoration: none;
+   color: #000000
+}
+A.nav:visited {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   text-decoration: none;
+   color: #000000
+}
+A.nav:hover {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   text-decoration: none;
+   color: red;
+}
+
+A.title {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 8pt;
+   color: #FFFFFF;
+}
+A.title:link {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 8pt;
+   color: #FFFFFF;
+}
+A.title:hover {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 8pt;
+   font-weight: bold;
+   color: #FFFFFF;
+}
+A.title:visited {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 8pt;
+   color: #FFFFFF;
+}
+
+A.small {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 8pt;
+   color: #999999;
+}
+A.small:link {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 8pt;
+   color: #999999;
+}
+A.small:hover {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 8pt;
+   font-weight: bold;
+   color: #999999;
+}
+A.small:visited {
+   color: #999999;
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 8pt
+}
+
+A.med {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 10pt;
+   color: #999999;
+}
+A.med:link {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 10pt;
+   color: #999999;
+}
+A.med:hover {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 10pt;
+   font-weight: bold;
+   color: #999999;
+}
+A.med:visited {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 10pt;
+   color: #999999;
+}
+
+A.big {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 12pt;
+   color: #999999;
+}
+A.big:hover {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 12pt;
+   font-weight: bold;
+   color: #999999;
+}
+A.big:link {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 12pt;
+   color: #999999;
+}
+A.big:visited {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 12pt;
+   color: #999999;
+}
+
+.nav {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   color: #000000
+}
+.red {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   color: #FF0000
+}
+.blue {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   color: #0000FF;
+}
+.green {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   color: #00FF00;
+}
+.tinynocolor {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 8pt;
+}
+.tiny {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   color: #000000;
+   font-size: 8pt;
+}
+.tinyblue {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   color: #0000FF;
+   font-size: 8pt;
+}
+.tinygreen {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   color: #009900;
+   font-size: 8pt;
+}
+.tinyred {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   color: #FF0000;
+   font-size: 8pt;
+}
+.tinycyan {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   color: #0066FF;
+   font-size: 8pt;
+}
+.tinyorange {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   color: #FF6600;
+   font-size: 8pt;
+}
+.tinygrey {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   color: #666666;
+   font-size: 8pt;
+}
+.tinywhite {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   color: #FFFFFF;
+   font-size: 8pt;
+}
+.tinytinywhite {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   color: #FFFFFF;
+   font-size: 6pt;
+}
+
+code {
+   font-family: "Courier New", Courier, mono
+}
+.cccode {
+   font-family: "Courier New", Courier, mono;
+   font-size: 11pt;
+   color: #993333
+}
+.cccodeapi {
+   font-family: "Courier New", Courier, mono;
+   font-size: 11pt;
+   color: #000000
+}
+.scalebox {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   background-color: #666666;
+   border: #000000;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   color: #FFFFFF;
+   width: 70px
+}
+
+.help	 {
+   background-color: #FFFFDF;
+   font-family : Verdana, Arial, Helvetica, sans-serif;
+   font-size : 8pt;
+   color : #666666;
+   border: #999999;
+   width : 350px;
+   border-style: solid;
+   border-left-width: 1px;
+   border-top-width: 1px;
+   border-right-width: 1px;
+   border-bottom-width: 1px 
+}	
+.treehost {
+   position: relative;
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 8pt;
+   font-weight : bold;
+   text-align: left;
+   left : 0;
+   right : 0;
+   width : 400px;
+}
+.treeds {
+   position: relative;
+   left : 20px;
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 8pt;
+   text-align: left;
+   right : 0;
+   width : 390px ;
+}
+
+.treegc11,.treegc12,.treegc13,.treegc14,.treegc15,.treegc16,.treegc17 {
+   background-position: left;
+   background-repeat: no-repeat;
+   cursor: pointer;
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 8pt;
+   left: 40px;
+   padding-left: 20px;
+   position: relative;
+   right: 0;
+   text-align: left;
+   width: 380px
+}
+.treegc11 {
+   background-image: url(../images/columns.gif);
+   color: #0000FF;
+}
+.treegc12 {
+   background-image: url(../images/layer.gif);
+   color: #009900;
+}
+.treegc13 {
+   background-image: url(../images/layer_raster.gif);
+   color: #FF6600;
+}
+.treegc14 {
+   background-image: url(../images/layer_raster_ecw.gif);
+   color: #666666;
+}
+.treegc15 {
+   background-image: url(../images/mapserver.gif);
+   color: #000000;
+}
+.treegc16 {
+   background-image: url(../images/columns.gif);
+   color: #0000FF;
+}
+.treegc17 {
+   background-image: url(../images/layer.gif);
+   color: #9999FF;
+}
+
+#catalog {
+   position: absolute; 
+   top: 40px; 
+   left: 0; 
+   bottom : 40px;
+   width: 450px; /*Width of left frame div*/
+   height: 90%;
+   overflow: auto;
+}
+
+#sitepublisher {
+   position: absolute; 
+   top: 40px; 
+   left: 0; 
+   bottom : 40px;
+   width: 600px; /*Width of left frame div*/
+   height: 90%;
+   overflow: auto;
+}
+
+#overview {
+   position: fixed; 
+   left: 450px;
+   top : 40px;
+   bottom : 40px;
+   right: 0;
+   bottom: 0;
+   height: 90%;
+   overflow: auto; 
+}
+
+#download {
+   position: fixed; 
+   left: 600px;
+   top : 40px;
+   bottom : 40px;
+   right: 0;
+   bottom: 0;
+   height: 90%;
+   overflow: auto; 
+}
+
+#configuration {
+   position: absolute; 
+   top: 40px; 
+   left: 0; 
+   bottom : 40px;
+   width: 300px; /*Width of left frame div*/
+   height: 90%;
+   overflow: auto;
+}
+
+#map {
+   position: fixed; 
+   left: 300px;
+   top : 40px;
+   bottom : 40px;
+   right: 0;
+   bottom: 0;
+   height: 90%;
+   overflow: auto; 
+}
+
+#validatearea{
+   bottom: 0;
+   height: 40px;
+   left: 0;
+   overflow: hidden;
+   position: absolute;
+   right: 0;
+   width: auto
+}
+
+.sampleColor {
+   border-color: black;
+   height: 22px;
+   width: 40px
+}
+

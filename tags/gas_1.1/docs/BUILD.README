@@ -1,0 +1,49 @@
+Instructions on how to make a release or update the version number of a dependency or of GAS
+
+# Updating release version number:
+##########################################################
+
+- Open pom.xml in a text editor
+- change the main <version> tag 
+
+
+# Releasing:
+##########################################################
+
+- type 'mvn clean package' in root geoadminsuite directory (no quotes)
+- wait... :-)
+
+In geoadminsuite/target should be a .war file that is the web application.  
+Drop it into a Web container.  That is all.  
+
+Note that the war does not have a version number, the version number is in a 
+text file within the war file called VERSION
+ 
+# Updating Dependencies
+##########################################################
+
+If you need to update version of one of the dependencies or add a dependency you need to:
+
+# Update Version
+- Open pom.xml in a text editor
+- Find the <dependencies> section of the file
+- In the subtree find the dependency and update its version number 
+- Save and close pom.xml
+- run: 'mvn -Dlib-update' from terminal in the same directory as the pom (no quotes)
+
+This will delete the old jars and replace them in web/WEB-INF/lib directory with the new dependencies.  
+ 
+# Add dependency
+- Go to http://www.mvnrepository.com/ and do a search for the library
+- If you find it copy and paste the <dependency>...</dependency> declaration into the pom.xml
+- If you do not find it run: 
+	mvn install:install-file -DgroupId=yourGroupId -DartifactId=yourArtifactId -Dversion=yourVersionNumber -Dpackaging=jar -Dfile=/path/to/file
+- That will install it into your local repository.  You will now need to copy the newly created 
+  MavenProject from your local repository (normally at ~/.m2/repository) to the camptocamp repo
+- Add the dependency to the pom.xml:
+	<dependency>
+		<groupId>yourGroupId</groupId>
+		<artifactId>yourArtifactId</artifactId>
+		<version>yourVersionNumber</version>
+	</dependency>
+- run: 'mvn -Dlib-update' from terminal in the same directory as the pom (no quotes)

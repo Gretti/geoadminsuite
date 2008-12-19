@@ -1,0 +1,220 @@
+#===========================================================================
+# allowed DPIs
+#===========================================================================
+dpis:
+  - 254
+  - 190
+  - 127
+  - 56
+
+#===========================================================================
+# the allowed scales
+#===========================================================================
+scales:
+  - 500
+  - 1000
+  - 2500
+  - 5000
+  - 10000
+  - 25000
+  - 50000
+  - 100000
+  - 250000
+  - 500000
+  - 1000000
+  - 2500000
+  - 5000000
+  - 10000000
+  - 15000000
+  - 20000000
+  - 25000000
+  - 50000000
+  - 100000000
+  - 250000000
+  
+#===========================================================================
+# the list of allowed hosts
+#===========================================================================
+hosts:
+  - !localMatch
+    dummy: true
+  - !ipMatch
+    ip: www.camptocamp.org
+  - !dnsMatch
+    host: labs.metacarta.com
+    port: 80
+
+layouts:
+  #===========================================================================
+  A4 portrait:
+  #===========================================================================
+    mainPage:
+      pageSize: A4
+      rotation: true
+      header:
+        height: 50
+        items:
+          - !text
+            font: Helvetica
+            fontSize: 30
+            align: right
+            text: '${mapTitle}'
+      items:
+        - !map
+          spacingAfter: 30
+          width: 515
+          height: 670
+        - !text
+          text: '${comment}'
+      footer:
+        height: 30
+        items:
+          - !columns
+            items:
+              - !text
+                backgroundColor: #666666
+                align: left
+                text: Copyright GeoAdminSuite
+              - !text
+                align: right
+                text: 'Page ${pageNum}'
+  #===========================================================================
+  A4 paysage:
+  #===========================================================================
+   mainPage:
+      pageSize: A4
+      rotation: true
+      landscape:true
+      header:
+        height: 50
+        items:
+          - !text
+            font: Helvetica
+            fontSize: 30
+            align: right
+            text: '${mapTitle}'
+      items:
+        - !map
+          spacingAfter: 30
+          width: 720
+          height: 475
+        - !text
+          text: '${comment}'
+      footer:
+        height: 30
+        items:
+          - !columns
+            items:
+              - !text
+                backgroundColor: #666666
+                align: left
+                text: Copyright GeoAdminSuite
+              - !text
+                align: right
+                text: 'Page ${pageNum}'
+  #===========================================================================
+  A3 portrait:
+  #===========================================================================
+   mainPage:
+      pageSize: A3
+      rotation: true
+      header:
+        height: 50
+        items:
+          - !text
+            font: Helvetica
+            fontSize: 30
+            align: right
+            text: '${mapTitle}'
+      items:
+        - !map
+          spacingAfter: 30
+          width: 800
+          height: 1050
+        - !text
+          text: '${comment}'
+      footer:
+        height: 30
+        items:
+          - !columns
+            items:
+              - !text
+                backgroundColor: #666666
+                align: left
+                text: Copyright GeoAdminSuite
+              - !text
+                align: right
+                text: 'Page ${pageNum}'
+  #===========================================================================
+  A3 paysage:
+  #===========================================================================
+   mainPage:
+      pageSize: A3
+      rotation: true
+      landscape:true
+      header:
+        height: 50
+        items:
+          - !text
+            font: Helvetica
+            fontSize: 30
+            align: center
+            text: '${mapTitle}'
+      items:
+        - !map
+          spacingAfter: 10
+          width: 1100
+          height: 680
+        - !columns
+          absoluteX: 40
+          absoluteY: 200
+          width: 800
+          items:
+            - !image
+              align: right
+              maxWidth: 60
+              maxHeight: 60
+              url: 'file:///${configDir}/images/north.gif'
+              rotation: '${rotation}'
+        - !columns
+          config: 
+            cells: 
+              - col: 2
+                borderWidth: 1
+                backgroundColor: white
+          absoluteX: 40
+          absoluteY: 165
+          width: 1100
+          widths: [770,180,150]
+          items:
+            - !text
+              text: |
+                ${comment}
+                
+                Angle: ${rotation}°   Scale: 1:${format %,d scale}
+              vertAlign: bottom
+            - !scalebar
+              align: left
+              maxSize: 180
+              type: 'bar'
+              units: m
+              intervals: 5
+            - !map
+              width: 150
+              height: 100
+              overviewMap: 2
+              align: right
+      footer:
+        height: 30
+        items:
+          - !columns
+            items:
+              - !text
+                align: left
+                text: Copyright GeoAdminSuite
+                fontSize:8
+              - !text
+                align: right
+                fontSize:8
+                text: 'Page ${pageNum}'
+

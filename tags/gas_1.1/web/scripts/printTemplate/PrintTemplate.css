@@ -1,0 +1,79 @@
+/* 
+Document   : PrintTemplate
+Created on : 20 oct. 2008, 13:42:41
+Author     : Gretti
+Description:
+Purpose of the stylesheet follows.
+*/
+
+.printTplbasic {
+    border:1px solid #C3DAF9;
+    color:#1E4E8F;
+    font:bold 10px tahoma,verdana,helvetica;
+    text-align:center;
+    cursor:move;
+}
+
+#printTplContainer {
+    width:771px;
+    height:536px;
+    position:relative;
+    background-color:#EEE;
+    margin-left:13px;
+    margin-top:13px;
+}
+
+/*Buttons*/
+.bapply {
+    background-image:url(images/accept.png) !important;
+}
+.breset {
+    background-image:url(images/cancel.png) !important;
+}
+.bmap {
+    background-image:url(images/map.png) !important;
+}
+.bnorth {
+    background-image:url(images/north.png) !important;
+}
+.bimage {
+    background-image:url(images/image.png) !important;
+}
+.bcomment {
+    background-image:url(images/comment.png) !important;
+}
+.bscale {
+    background-image:url(images/scale.png) !important;
+}
+.blegend {
+    background-image:url(images/legend.png) !important;
+}
+.boverview {
+    background-image:url(images/overview.png) !important;
+}
+.btitle {
+    background-image:url(images/title.png) !important;
+}
+.bcompdel {
+    background-image:url(images/component_delete.png) !important;
+    background-repeat:no-repeat;
+    width:10px;
+    height:10px;
+    cursor:pointer;
+}
+.bcompconf {
+    background-image:url(images/component_conf.png) !important;
+    background-repeat:no-repeat;
+    width:10px;
+    height:10px;
+    cursor:pointer;
+}
+.bimginfo {
+    background-image:url(images/information.png) !important;
+    background-repeat:no-repeat;
+    width:10px;
+    height:10px;
+    cursor:pointer;
+}
+
+
