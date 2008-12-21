@@ -48,7 +48,6 @@ public class InitAction extends org.apache.struts.action.Action {
         if (DataManager.getProperty(DataManager.MAPSERVERURL) == null) {
             DataManager.setProperty(DataManager.MAPSERVERURL, reconstructedURL.toString());
         }
-        System.out.println(reconstructedURL.toString());
 
         // try to get MS version from MS error page
         Hashtable<String, String> msInfo = DataManager.getMSVersion();
