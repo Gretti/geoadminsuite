@@ -291,12 +291,12 @@ public class SitePublisherAction extends org.apache.struts.action.Action {
                 String jsIndex = "<html><script>document.location.href= 'published/" + session.getId() + "/index.html'</script></html>";
                 out.write(jsIndex.getBytes());
             }
-            out.close();
             if (request.getParameter("publishLocally") != null) {
                 // extract zip.
                 ZipEngine.extract(gasArchive);
                 gasArchive.delete();
             }
+            out.close();
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
