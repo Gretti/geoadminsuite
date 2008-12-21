@@ -133,7 +133,6 @@ public class ZipEngine {
      * @throws java.io.IOException
      */
     public static void extract(File archive) throws IOException {
-        System.out.println("extracting file: " + archive.getAbsolutePath());
         ZipFile zipFile = new ZipFile(archive);
 
         Enumeration entries = zipFile.entries();
