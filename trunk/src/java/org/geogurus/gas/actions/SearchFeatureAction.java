@@ -23,6 +23,7 @@
  */
 package org.geogurus.gas.actions;
 
+import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -30,7 +31,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.geogurus.gas.utils.DatasourceBuilder;
 import org.geogurus.gas.utils.ObjectKeys;
 import org.opengis.feature.simple.SimpleFeature;
 
@@ -38,16 +38,22 @@ import java.io.Writer;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geogurus.data.DataAccess;
 import org.geogurus.data.DataAccessType;
+import org.geogurus.data.operations.SpatialQueryOperation;
 import org.geogurus.gas.objects.UserMapBean;
 import org.geogurus.mapserver.objects.Map;
 import org.geogurus.mapserver.objects.Projection;
+import org.geotools.data.DefaultQuery;
+import org.geotools.data.Query;
+import org.geotools.filter.text.cql2.CQL;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
+import org.opengis.filter.Filter;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -143,14 +149,23 @@ public class SearchFeatureAction extends org.apache.struts.action.Action {
             }
 
             //Builds featuresource using geotools
-            SimpleFeature feature = DatasourceBuilder.getFeature(gc, lon, lat, tolerance, toleranceUnit);
-
-            //Finds feature of current layer
-            NumberFormat f = NumberFormat.getInstance(Locale.US);
-            if (f instanceof DecimalFormat) {
-                ((DecimalFormat) f).applyPattern("0.000");
+            SpatialQueryOperation op = new SpatialQueryOperation();
+            Filter filter = CQL.toFilter("DWITHIN (the_geom, POINT(" + lon + " " + lat + ")," + tolerance + "," + toleranceUnit + ")");
+            Query query = new DefaultQuery(gc.featureType().get().getTypeName(), filter);
+            Vector<SimpleFeature> features = new Vector<SimpleFeature>();
+            try {
+                gc.run(op, features, query);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+            //Gets only the first element from query
+            SimpleFeature feature = features.get(0);
+            //Finds feature of current layer
             if (feature != null) {
+                NumberFormat f = NumberFormat.getInstance(Locale.US);
+                if (f instanceof DecimalFormat) {
+                    ((DecimalFormat) f).applyPattern("0.000");
+                }
                 json.append("{type:\"FeatureCollection\",");
                 StringBuilder fields = new StringBuilder("fields:[");
                 StringBuilder attributes = new StringBuilder("attributes:[");
@@ -159,12 +174,15 @@ public class SearchFeatureAction extends org.apache.struts.action.Action {
                             !feature.getFeatureType().getType(o).getName().getLocalPart().equals(
                             feature.getDefaultGeometryProperty().getType().getName().getLocalPart())) {
                         String name = feature.getFeatureType().getType(o).getName().getLocalPart();
-                        String value = String.valueOf(feature.getAttribute(name));
-                        try {
-                            double v = Double.parseDouble(value);
-                            value = String.valueOf(f.format(v));
-                        } catch (NumberFormatException nfe) {
-                            //Do nothing -> not a number
+                        Object value = feature.getAttribute(name);
+                        if (value instanceof Number && !(value instanceof Integer)) {
+                            try {
+                                double v = Double.parseDouble(String.valueOf(value));
+                                value = String.valueOf(f.format(v));
+                            } catch (NumberFormatException nfe) {
+                                //Do nothing -> not a number
+                            }
+
                         }
                         fields.append("\"" + name + "\"");
                         attributes.append("\"" + value + "\"");
