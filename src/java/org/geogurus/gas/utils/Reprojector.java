@@ -153,6 +153,18 @@ public class Reprojector {
      * @param hExtents : Hashtable<Projection,Extent>
      * @return Extent calculated from given data
      */
+    public static Extent returnBBox(Projection projRef, Projection projOri, Extent extent) {
+        Hashtable<Projection, Extent> hExtents = new Hashtable<Projection, Extent>(1);
+        hExtents.put(projOri, extent);
+        return returnBBox(projRef, hExtents);
+    }
+
+    /**
+     * Reproject given extents from original projection to destination projection using geotools
+     * @param projRef
+     * @param hExtents : Hashtable<Projection,Extent>
+     * @return Extent calculated from given data
+     */
     public static Extent returnBBox(Projection projRef, Hashtable hExtents) {
         Extent extent = null;
         String refParam = (String) projRef.getAttributes().get(0);
@@ -164,6 +176,7 @@ public class Reprojector {
         Extent curEx;
         try {
             if (!refEpsg.equals("900913")) {
+                //System.setProperty("org.geotools.referencing.forceXY", "true");
                 crsDest = ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null).createCoordinateReferenceSystem(refEpsg);
             } else {
                 try {
@@ -196,8 +209,16 @@ public class Reprojector {
                     MathTransform trans = op.getMathTransform();
 
                     // transform given coordinatespoints
-                    DirectPosition ll = new GeneralDirectPosition(curEx.ll.x, curEx.ll.y);
-                    DirectPosition ur = new GeneralDirectPosition(curEx.ur.x, curEx.ur.y);
+                    DirectPosition ll;
+                    DirectPosition ur;
+                    //TODO: Must be fixed when geotools reprojection wont inverse axis
+                    if (refEpsg.equals("900913") && epsg.equals("4326")) {
+                        ll = new GeneralDirectPosition(curEx.ll.y, curEx.ll.x);
+                        ur = new GeneralDirectPosition(curEx.ur.y, curEx.ur.x);
+                    } else {
+                        ll = new GeneralDirectPosition(curEx.ll.x, curEx.ll.y);
+                        ur = new GeneralDirectPosition(curEx.ur.x, curEx.ur.y);
+                    }
 
                     ll = trans.transform(ll, null);
                     ur = trans.transform(ur, null);
