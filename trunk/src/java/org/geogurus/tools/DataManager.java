@@ -54,6 +54,8 @@ public class DataManager {
     public static final String MAPSERVERINPUTS = "MAPSERVERINPUTS";
     public static final String MAPSERVEROUTPUTS = "MAPSERVEROUTPUTS";
     public static final String MAPSERVERSUPPORTS = "MAPSERVERSUPPORTS";
+    public static final String MAPSERVERURL = "MAPSERVERURL";
+    public static final String PUBLISH_MAPSERVERURL = "PUBLISH_MAPSERVERURL";
     //private static final String MS_VERSION_PATTERN = " 5.0.2 ";
     /** sets the given properties to this class
      * @param ps the properties to add to this current class
@@ -61,6 +63,10 @@ public class DataManager {
      */
     public static void setProperties(Properties ps) {
         p = ps;
+    }
+
+    public static Properties getProperties() {
+        return p;
     }
 
     /** sets the given property
@@ -79,11 +85,14 @@ public class DataManager {
      * @return the value for the given property's name, or null if the name is not found.
      */
     public static String getProperty(String name) {
+        //properties are now loaded once, with GOFileCleaner servlet initialization
+        /*
         if (p == null) {
             // tries to load the property file
             p = new Properties();
             try {
-                p.load(DataManager.class.getClassLoader().getResourceAsStream("org/geogurus/gas/resources/geonline.properties"));
+                p.load(DataManager.class.getClassLoader().getResourceAsStream("org/geogurus/gas/resources/gas.properties"));
+                // deals with mapserver URL
                 // try to get MS version from MS error page
                 if (!DataManager.msVersionGot) {
                     Hashtable<String, String> msInfo = DataManager.getMSVersion();
@@ -98,7 +107,7 @@ public class DataManager {
                 e.printStackTrace();
             }
         }
-
+        */
         return p.getProperty(name);
     }
     
@@ -125,7 +134,7 @@ public class DataManager {
     /**
      * Returns the MapServer version by querying mapserver URL as specified in this dataManager
      * property value: MAPSERVERURL.
-     * Thus, this method must be called AFTER the geonline.properties file is loaded, which
+     * Thus, this method must be called AFTER the gas.properties file is loaded, which
      * occurs when requesting one property with getProperty() and internal properties object is null.<br/>
      * This method is called only once in the GAS lifecycle.
      * @return
@@ -196,5 +205,17 @@ public class DataManager {
                 "\noutputs : " + msInfo.get("OUTPUTS") +
                 "\nsupports : " + msInfo.get("SUPPORTS"));
         return msInfo;
+    }
+
+    /**
+     * Gets the mapserver URL for publication
+     * If PUBLISH_MAPSERVERURL is defined in the gas.properties, this value will be used,
+     * else, the current MAPSERVERURL is used
+     * @return the mapserver URL for publication
+     */
+    public static String getPublishMapserverUrl() {
+        return p.getProperty("PUBLISH_MAPSERVERURL") == null ?
+            p.getProperty("MAPSERVERURL") :
+            p.getProperty("PUBLISH_MAPSERVERURL");
     }
 }

@@ -87,7 +87,7 @@ public class MapFileDatasource extends Datasource {
                     gc.setMSLayer(layer);
                     getDataList().put(gc.getID(), gc);
                 } else {
-                    logger.warning("Unable to load MapServer layer: " + layer
+                    logger.warning("Unable to load MapServer layer: " + layer.getName()
                             + "\nlayer not added into dataList");
                 }
             }

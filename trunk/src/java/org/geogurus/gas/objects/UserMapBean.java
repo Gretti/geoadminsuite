@@ -79,13 +79,13 @@ public class UserMapBean implements Serializable {
     private String[] userLayerChoice;
     /** the path where the mapfile is put */
     private String mapfilePath;
-    /** the mapserver URL, read from the geonline.properties file */
+    /** the mapserver URL, read from the gas.properties file */
     private String mapserverURL;
-    /** the mapfish print service URL, read from the geonline.properties file */
+    /** the mapfish print service URL, read from the gas.properties file */
     private String mapfishPrintURL;
     /** the general extent for all layers. */
     private String mapExtent;
-    /** the URL of the working gif for kaboum applet, read from the geonline.properties file*/
+    /** the URL of the working gif for kaboum applet, read from the gas.properties file*/
     private String workingGif;
     /** the current layer display name, if user changed it on the left frame
      * This display name is composed of:

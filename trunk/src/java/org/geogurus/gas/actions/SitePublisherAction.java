@@ -23,10 +23,12 @@
  */
 package org.geogurus.gas.actions;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
@@ -127,11 +129,20 @@ public class SitePublisherAction extends org.apache.struts.action.Action {
             // adds trailing slash.
             dataPath += "/";
         }
+        boolean keepAbsoluteDataPath = request.getParameter("keepAbsoluteDataPath") != null;
+        // in case of local publish, force the mapfilePath to where the site will be published
+        String mapfilePath = request.getParameter("mapfile_path");
+        if (request.getParameter("publishLocally") != null) {
+            mapfilePath = appPath + File.separator + "published" + File.separator +
+                    session.getId() + File.separator + "data" + File.separator + "gas.map";
+            // force value in case of local publish
+            keepAbsoluteDataPath = true;
+        }
 
         // writes the HTML page for the site to publish, and the mapfile, with
         // user-choosen parameters:
         writeFiles(htmlFileName, mapFileName, appPath, dataPath, request,
-                session);
+                session, mapfilePath, keepAbsoluteDataPath);
 
         // number of files to publish:
         // 9 images * 3 states + html page + html template pages (2
@@ -180,7 +191,7 @@ public class SitePublisherAction extends org.apache.struts.action.Action {
         // the mapfile: for the moment, put into the data folder, inside the web
         // folder
         files.add(mapFileName);
-        entries.add("data/geonline.map");
+        entries.add("data/gas.map");
 
         // Mapfish-OL-Ext
         File folder = new File(appPath + "/scripts/refexportfiles");
@@ -244,29 +255,56 @@ public class SitePublisherAction extends org.apache.struts.action.Action {
                 entries.add("template_" + gc.getID() + ".html");
             }
         }
-        // returns zip file
+        //
+        // either returns zip file or write files locally, according to user choice
         // creating zip filename and outpustream
-        response.setHeader("Content-Disposition", "filename=\"geonline.zip\"");
-        response.setContentType("application/x-zip-compressed");
 
+        ActionForward respForward = null;
+        File gasArchive = null;
         try {
             OutputStream out = response.getOutputStream();
-            ByteArrayOutputStream zipout = new ByteArrayOutputStream();
-            ZipEngine.zipToStream(zipout, files, entries);
-            response.setContentLength(zipout.size());
-            zipout.flush();
-            zipout.writeTo(out);
+            if (request.getParameter("publishLocally") == null) {
+                response.setHeader("Content-Disposition", "filename=\"mapfish-generated.zip\"");
+                response.setContentType("application/x-zip-compressed");
+                ByteArrayOutputStream zipout = new ByteArrayOutputStream();
+                ZipEngine.zipToStream(zipout, files, entries);
+                response.setContentLength(zipout.size());
+                zipout.flush();
+                zipout.writeTo(out);
+            } else {
+                File f = new File(appPath + File.separator + "published" + File.separator + session.getId());
+
+                if (!f.mkdirs()) {
+                    //logger.warning("unable to create directory for published site: " + f.getAbsolutePath());
+                }
+                logger.fine("archive published at: " + f.getAbsolutePath());
+                gasArchive = new File(f, "gas.zip");
+                FileOutputStream fout = new FileOutputStream(gasArchive);
+                ByteArrayOutputStream zipout = new ByteArrayOutputStream();
+                ZipEngine.zipToStream(zipout, files, entries);
+                response.setContentLength(zipout.size());
+                zipout.flush();
+                zipout.writeTo(fout);
+                fout.close();
+
+                // writes html to force site page display
+                String jsIndex = "<html><script>document.location.href= 'published/" + session.getId() + "/index.html'</script></html>";
+                out.write(jsIndex.getBytes());
+            }
             out.close();
+            if (request.getParameter("publishLocally") != null) {
+                // extract zip.
+                ZipEngine.extract(gasArchive);
+                gasArchive.delete();
+            }
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
-        // removes temporary files
-        return null;
-
+        return respForward;
     }
 
     private void writeFiles(String fn, String mfn, String appPath,
-            String dataPath, HttpServletRequest request, HttpSession session) {
+            String dataPath, HttpServletRequest request, HttpSession session, String mapfilePath, boolean keepAbsoluteDataPath) {
         PrintWriter mainOut = null;
         BufferedReader mainIn = null;
         UserMapBean usermapbean = (UserMapBean) session
@@ -304,7 +342,7 @@ public class SitePublisherAction extends org.apache.struts.action.Action {
             e.printStackTrace();
         }
         
-        if (request.getParameter("keepAbsoluteDataPath") == null) {
+        if (!keepAbsoluteDataPath) {
 
             m.setShapePath(new File(dataPath));
 
@@ -396,14 +434,7 @@ public class SitePublisherAction extends org.apache.struts.action.Action {
                         mainOut.println("var bounds = new OpenLayers.Bounds("
                                 + usermapbean.getMapExtent() + ");\n");
                     } else if (s.trim().equalsIgnoreCase("[AV2GMAPFILEPATH]")) {
-                        if (request.getParameter("mapfile_path") != null) {
-                            mainOut.println("var mapfile_path='"
-                                    + request.getParameter("mapfile_path")
-                                    + "';\n");
-                        } else {
-                            mainOut
-                                    .println("var mapfile_path='/path/to/my/mapfile/geonline.map';\n");
-                        }
+                        mainOut.println("var mapfile_path='" + mapfilePath + "';\n");
                     } else if (s.trim().equalsIgnoreCase(
                             "[AV2GPATHTOMAPSERVER]")) {
                         if (request.getParameter("mapserver_url") != null) {
