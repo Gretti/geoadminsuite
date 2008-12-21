@@ -33,8 +33,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
- * Title:        geOnline Server classes
- * Description:  Set of Java classes to make the link between kaboum client and shape files / postgis DB containing geodata.
+ * Class to represent how to access and manipulate geographic
  * @author Nicolas Ribot
  * @version 1.0
  */

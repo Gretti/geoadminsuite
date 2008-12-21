@@ -20,6 +20,7 @@
 package org.geogurus.web;
 
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.Properties;
 import java.util.Timer;
 import java.util.logging.Logger;
@@ -29,6 +30,7 @@ import javax.servlet.http.HttpServlet;
 
 import org.geogurus.gas.objects.SymbologyListBean;
 import org.geogurus.gas.utils.ObjectKeys;
+import org.geogurus.tools.DataManager;
 import org.geogurus.tools.util.FileDeletionTimerTask;
 
 /**
@@ -73,13 +75,16 @@ public final class GOFileCleaner extends HttpServlet {
      */
     @Override
     public void init() throws ServletException {
-        
-        Properties p = new Properties();
-        
+        Properties p = null;
         try {
-            p.load(getClass().getClassLoader().getResourceAsStream("org/geogurus/gas/resources/geonline.properties"));
+            p = DataManager.getProperties();
+            if (p == null) {
+                p = new Properties();
+                DataManager.setProperties(p);
+            }
+            p.load(getClass().getClassLoader().getResourceAsStream("org/geogurus/gas/resources/gas.properties"));
         } catch (Exception e) {
-            logger.severe("cannot load geonline.properties file");
+            logger.severe("cannot load gas.properties file");
             e.printStackTrace();
         }
 

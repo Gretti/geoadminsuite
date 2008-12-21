@@ -96,6 +96,9 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
                 GeneralLayout.init();
                 //GeneralLayout.printurl='http://localhost:8084/geoadminsuite/pdf/info.json';
                 GeneralLayout.printurl='<%=DataManager.getProperty("MAPFISHPRINTURL")%>';
+                // extra parameters for publishing windows: mapfile path and publication mapserver URL
+                GeneralLayout.publishmapserverurl='<%=DataManager.getPublishMapserverUrl()%>';
+                GeneralLayout.publishmapfilepath='<%=DataManager.getProperty("PUBLISH_MAPFILEPATH")%>';
             });
             
             // event handler for language select. Refreshes this

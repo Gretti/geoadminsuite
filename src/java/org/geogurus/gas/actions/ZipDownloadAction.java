@@ -293,7 +293,7 @@ public class ZipDownloadAction extends org.apache.struts.action.Action {
         File userMapfile = new File(getServlet().getServletContext().getRealPath("") + "/msFiles/tmpMaps/user_" + session.getId() + ".map");
         // set a binary MIME to force download window in user browser
         response.setContentType("text/plain");
-        response.setHeader("Content-Disposition", "filename=\"geonline.map\"");
+        response.setHeader("Content-Disposition", "filename=\"gas.map\"");
         try {
             BufferedReader in = new BufferedReader(new FileReader(userMapfile));
             PrintWriter pwOut = new PrintWriter(response.getOutputStream());

@@ -46,7 +46,7 @@ import com.sun.media.jai.codec.TIFFDirectory;
 import com.sun.media.jai.codec.TIFFField;
 
 /**
- * This class registers .tif files into a geonline database.
+ * This class registers .tif files into a prepared database.
  * The raster table must be present in the given database.
  * Usage: can be used either as a standalone program or as a class called in
  * another program.

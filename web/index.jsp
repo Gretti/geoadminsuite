@@ -24,7 +24,7 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
 <%@  page import="org.apache.struts.Globals"%>
 
 <!--no more index page displayed. Comment or delete forward to display this page as starting page for app-->
-<jsp:forward page="listDatasources.do"/>
+<jsp:forward page="initAction.do"/>
 
 <html:html locale="true">
     <head>
@@ -42,6 +42,7 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
             function changeLanguage(lang) {
                 document.location = "switchLang.do?lang=" + lang + "&cty=" + lang.toUpperCase();
             }
+
             //-->
         </SCRIPT>
     </head>

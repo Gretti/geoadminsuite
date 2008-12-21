@@ -8,6 +8,7 @@ GeneralLayout =
         var composermap,composernav,searcher,zoombox,zoomoutbox,dragpan,zoomtomax,layertree, composerlayers,printurl,winProperties,formParamXport;
         var cpPublisherMapfish,cpPublisherDownload,publishermap,publishertree,publishertoolbar,publisherlayers,correspControls,paramXportWin;
         var catalogInst, composerInst, publisherInst;
+        var publishmapserverurl, publishmapfilepath;
         
         return {
             
@@ -409,11 +410,13 @@ GeneralLayout =
                         //Displays export parameters form
                         if(!paramXportWin){
                             formParamXport = new Ext.FormPanel({
-                                labelWidth: 100,
+                                labelWidth: 130,
                                 frame:true,
                                 width: '100%',
+                                height: '100%',
                                 defaults: {
-                                    width: 180
+                                    width: 180,
+                                    heigh: 400
                                 },
                                 border: false,
                                 defaultType: 'textfield',
@@ -421,12 +424,13 @@ GeneralLayout =
                                 {
                                     fieldLabel: i18n.mapserver_url,
                                     name: 'mapserver_url',
-                                    value: 'http://localhost/cgi-bin/mapserv',
+                                    value: GeneralLayout.publishmapserverurl,
                                     allowBlank:true
-                                },{
+                                },
+                                {
                                     fieldLabel: i18n.mapfile_target_path,
                                     name: 'mapfile_path',
-                                    value: '/path/to/my/mapfile/geonline.map',
+                                    value: GeneralLayout.publishmapfilepath,
                                     allowBlank:true
                                 },
                                 {
@@ -434,6 +438,13 @@ GeneralLayout =
                                     xtype: 'checkbox',
                                     id: 'keepAbsoluteDataPath',
                                     name: 'keepAbsoluteDataPath',
+                                    checked: false
+                                },
+                                {
+                                    fieldLabel: i18n.publish_locally,
+                                    xtype: 'checkbox',
+                                    id: 'publishLocally',
+                                    name: 'publishLocally',
                                     checked: false
                                 }],
                                 buttons: [{
@@ -450,11 +461,17 @@ GeneralLayout =
                                         });
                                         //Finds selected components parsing treeSelectedComponents
                                         var selected_components = '&selected_components=';
+                                        var windowOptions = "";
                                         var arraySelComp = Ext.getCmp('treeSelectedComponents').root.childNodes;
                                         for(var sc = 0; sc < arraySelComp.length; sc++) {
                                             selected_components += (sc==0 ?'':'|') + arraySelComp[sc].id;
                                         }
-                                        window.open('sitePublisher.do?' + formParamXport.getForm().getValues(true) + selected_components, "wait", "width=300,height=200");
+                                        if (Ext.getCmp('publishLocally').checked) {
+                                            windowOptions = "'width=800,height=800,scrollbars=1'";
+                                        } else {
+                                            windowOptions = "'width=200,height=150'";
+                                        }
+                                        window.open('sitePublisher.do?' + formParamXport.getForm().getValues(true) + selected_components + "&" + new Date().getTime(), "wait", windowOptions);
                                         paramXportWin.hide();
                                         Ext.MessageBox.hide();
                                     }
