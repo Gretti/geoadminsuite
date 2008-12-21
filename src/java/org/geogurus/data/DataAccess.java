@@ -336,6 +336,11 @@ public abstract class DataAccess implements Serializable,
         this.msLayer = l;
     }
 
+    /** MISSING JAVADOC ! */
+    public void setExtent(Extent extent) {
+        this.extent = extent;
+    }
+
     // /**
     // * Sets a new projection string for this GC, also updates the MSLayer
     // object
