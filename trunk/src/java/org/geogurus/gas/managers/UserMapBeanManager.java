@@ -285,7 +285,7 @@ public class UserMapBeanManager {
                 crsDest = ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null).createCoordinateReferenceSystem(refEpsg);
             } else {
                 try {
-                    crsDest = CRS.parseWKT("PROJCS[\"Google Mercator\",GEOGCS[\"WGS 84\",DATUM[\"World Geodetic System 1984\",SPHEROID[\"WGS 84\",6378137.0,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0.0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.017453292519943295],AXIS[\"Geodetic latitude\",NORTH],AXIS[\"Geodetic longitude\",EAST],AUTHORITY[\"EPSG\",\"4326\"]],PROJECTION[\"Mercator_1SP\"],PARAMETER[\"semi_minor\",6378137.0],PARAMETER[\"latitude_of_origin\",0.0],PARAMETER[\"central_meridian\",0.0],PARAMETER[\"scale_factor\",1.0],PARAMETER[\"false_easting\",0.0],PARAMETER[\"false_northing\",0.0],UNIT[\"m\",1.0],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"900913\"]],EXTENSION[\"PROJ4\",\"+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs\"]]");
+                    crsDest = CRS.parseWKT("PROJCS[\"Google Mercator\",GEOGCS[\"WGS 84\",DATUM[\"World Geodetic System 1984\",SPHEROID[\"WGS 84\",6378137.0,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0.0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.017453292519943295],AXIS[\"Geodetic latitude\",NORTH],AXIS[\"Geodetic longitude\",EAST],AUTHORITY[\"EPSG\",\"4326\"]],PROJECTION[\"Mercator_1SP\"],PARAMETER[\"semi_minor\",6378137.0],PARAMETER[\"latitude_of_origin\",0.0],PARAMETER[\"central_meridian\",0.0],PARAMETER[\"scale_factor\",1.0],PARAMETER[\"false_easting\",0.0],PARAMETER[\"false_northing\",0.0],UNIT[\"m\",1.0],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"900913\"]]]");
                 } catch (FactoryException ex2) {
                     Exception e = new Exception(ex2.getMessage());
                     throw e;
@@ -315,12 +315,28 @@ public class UserMapBeanManager {
             // Sets extent to calculated extent if not null
             if (calcExtent != null) {
                 mExt = calcExtent;
-            } // verify the extent: if no layers with geographic object,
-            // construct an extent
-            // that is supported by mapserver
+            }
+            // verify the extent: if no layers with geographic object,
+            // construct an extent that is supported by mapserver
             if (mExt.ll.x == Double.POSITIVE_INFINITY || mExt.ur.x == Double.NEGATIVE_INFINITY) {
                 mExt = new Extent(0, 0, 1, 1);
             }
+
+            //All choosen layers extent must be recalculated regarding to the projection used
+            for (Enumeration en = m_userMapBean.getUserLayerList().elements(); en.hasMoreElements();) {
+                gc = (DataAccess) en.nextElement();
+                if (gc instanceof WmsDataAccess && !hasWMS) {
+                    continue;
+                }
+                attr = "\"init=epsg:" + (gc.getSrid() <= 0 ? 4326 : gc.getSrid()) + "\"";
+                ArrayList projAttr = new ArrayList(1);
+                Projection proj = new Projection();
+                projAttr.add(attr);
+                proj.setAttributes(projAttr);
+                Extent gcExtent = Reprojector.returnBBox(mostUsedProj, proj, gc.getExtent());
+                gc.setExtent(gcExtent);
+            }
+
 
             // construct the mapextent each time
             m_userMapBean.setMapExtent(mExt.toString());
