@@ -407,17 +407,18 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
                     //Add onClick event on each node of the tree
                     var rootNode = GeneralLayout.layertree.getRootNode();
                     //if there is a location layer, then childnodes are one level downer
-                    var childNodes;
+                    var baseNode;
                     if(locSces.length > 0) {
-                        childNodes = rootNode.childNodes[0].childNodes[0].childNodes;
+                        baseNode = rootNode.firstChild.firstChild;
                     } else {
-                        childNodes = rootNode.childNodes[0].childNodes;
+                        baseNode = rootNode.firstChild;
                     }
+                    var childNodes = baseNode.childNodes;
                     for(var i=0; i<childNodes.length; i++) {
                         childNodes[i].on('click', function() {
                             if(Ext.getCmp('infoTool').disabled) Ext.getCmp('infoTool').enable();
                             if(activeLayer != null) {
-                                var exActiveLayer = GeneralLayout.layertree.root.firstChild.findChild('id',activeLayer);
+                                var exActiveLayer = baseNode.findChild('id',activeLayer);
                                 if(exActiveLayer != null) {
                                     exActiveLayer.ui.textNode.style.fontWeight = 'normal';
                                 }
