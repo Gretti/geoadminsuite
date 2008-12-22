@@ -216,18 +216,18 @@ public class Reprojector {
                     double ymin = curEx.ll.y;
                     double xmax = curEx.ur.x;
                     double ymax = curEx.ur.y;
-                    if (refEpsg.equals("900913") && epsg.equals("4326") &&
-                            curEx.ll.x > -90 && curEx.ur.x < 90) {
-                        ymin = curEx.ll.x;
-                        xmin = curEx.ll.y;
-                        ymax = curEx.ur.x;
-                        xmax = curEx.ur.y;
-                    } else if (refEpsg.equals("900913") && epsg.equals("4326") &&
-                            (curEx.ll.x < -90 || curEx.ur.x > 90)) {
-                        xmin = curEx.ll.x == -180 ? -179.99999 : curEx.ll.x;
-                        ymin = curEx.ll.y == -90 ? -89.99999 : curEx.ll.y;
-                        xmax = curEx.ur.x == 180 ? 179.99999 : curEx.ur.x;
-                        ymax = curEx.ur.y == 90 ? 89.99999 : curEx.ur.y;
+                    if (refEpsg.equals("900913") && epsg.equals("4326")) {
+                        if (curEx.ll.x > -90 && curEx.ur.x < 90) {
+                            xmin = curEx.ll.y;
+                            ymin = curEx.ll.x;
+                            xmax = curEx.ur.y;
+                            ymax = curEx.ur.x;
+                        } else {
+                            xmin = curEx.ll.x == -180 ? -179.99999 : curEx.ll.x;
+                            ymin = curEx.ll.y == -90 ? -89.99999 : curEx.ll.y;
+                            xmax = curEx.ur.x == 180 ? 179.99999 : curEx.ur.x;
+                            ymax = curEx.ur.y == 90 ? 89.99999 : curEx.ur.y;
+                        }
                     }
                     ll = new GeneralDirectPosition(xmin, ymin);
                     ur = new GeneralDirectPosition(xmax, ymax);
