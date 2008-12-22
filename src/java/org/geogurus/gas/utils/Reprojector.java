@@ -212,14 +212,25 @@ public class Reprojector {
                     DirectPosition ll;
                     DirectPosition ur;
                     //TODO: Must be fixed when geotools reprojection wont inverse axis
+                    double xmin = curEx.ll.x;
+                    double ymin = curEx.ll.y;
+                    double xmax = curEx.ur.x;
+                    double ymax = curEx.ur.y;
                     if (refEpsg.equals("900913") && epsg.equals("4326") &&
                             curEx.ll.x > -90 && curEx.ur.x < 90) {
-                        ll = new GeneralDirectPosition(curEx.ll.y, curEx.ll.x);
-                        ur = new GeneralDirectPosition(curEx.ur.y, curEx.ur.x);
-                    } else {
-                        ll = new GeneralDirectPosition(curEx.ll.x, curEx.ll.y);
-                        ur = new GeneralDirectPosition(curEx.ur.x, curEx.ur.y);
+                        ymin = curEx.ll.x;
+                        xmin = curEx.ll.y;
+                        ymax = curEx.ur.x;
+                        xmax = curEx.ur.y;
+                    } else if (refEpsg.equals("900913") && epsg.equals("4326") &&
+                            (curEx.ll.x < -90 || curEx.ur.x > 90)) {
+                        xmin = curEx.ll.x == -180 ? -179.99999 : curEx.ll.x;
+                        ymin = curEx.ll.y == -90 ? -89.99999 : curEx.ll.y;
+                        xmax = curEx.ur.x == 180 ? 179.99999 : curEx.ur.x;
+                        ymax = curEx.ur.y == 90 ? 89.99999 : curEx.ur.y;
                     }
+                    ll = new GeneralDirectPosition(xmin, ymin);
+                    ur = new GeneralDirectPosition(xmax, ymax);
 
                     ll = trans.transform(ll, null);
                     ur = trans.transform(ur, null);
