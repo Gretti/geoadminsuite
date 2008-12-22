@@ -212,7 +212,8 @@ public class Reprojector {
                     DirectPosition ll;
                     DirectPosition ur;
                     //TODO: Must be fixed when geotools reprojection wont inverse axis
-                    if (refEpsg.equals("900913") && epsg.equals("4326")) {
+                    if (refEpsg.equals("900913") && epsg.equals("4326") &&
+                            curEx.ll.x > -90 && curEx.ur.x < 90) {
                         ll = new GeneralDirectPosition(curEx.ll.y, curEx.ll.x);
                         ur = new GeneralDirectPosition(curEx.ur.y, curEx.ur.x);
                     } else {
