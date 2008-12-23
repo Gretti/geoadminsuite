@@ -217,19 +217,19 @@ public class Reprojector {
                     //TODO: Must be fixed when geotools reprojection wont inverse axis
                     if (refEpsg.equals("900913") && epsg.equals("4326")) {
                         //Self calculation :(
-                        //20037508.342789244
+                        //Max bound is 20037508.342789244
                         double originShift = 2 * Math.PI * 6378137 / 2;
                         xmin = xmin * originShift / 180;
-                        ymin = Math.signum(ymin) * Math.log(Math.tan((90 + Math.abs(ymin)) * Math.PI / 360)) / (Math.PI / 180);
+                        ymin = /*Math.signum(ymin) **/ Math.log(Math.tan((90 + /*Math.abs*/(ymin)) * Math.PI / 360)) / (Math.PI / 180);
                         ymin = ymin * originShift / 180;
                         xmax = xmax * originShift / 180;
-                        ymax = Math.signum(ymax) * Math.log(Math.tan((90 + Math.abs(ymax)) * Math.PI / 360)) / (Math.PI / 180);
+                        ymax = /*Math.signum(ymax) * */Math.log(Math.tan((90 + /*Math.abs*/(ymax)) * Math.PI / 360)) / (Math.PI / 180);
                         ymax = ymax * originShift / 180;
 
                         xmin = Math.max(xmin, -20037508.342789244);
                         xmax = Math.min(xmax, 20037508.342789244);
-                        ymin = Math.max(ymin, (-20037508.342789244 / 2));
-                        ymax = Math.min(ymax, (20037508.342789244 / 2));
+                        ymin = Math.max(ymin, (-20037508.342789244));
+                        ymax = Math.min(ymax, (20037508.342789244));
                         
                         ll = new GeneralDirectPosition(xmin, ymin);
                         ur = new GeneralDirectPosition(xmax, ymax);

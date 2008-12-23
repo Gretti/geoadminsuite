@@ -1,19 +1,19 @@
 <%/*Copyright (C) Gretti N'Guessan, Nicolas Ribot
 
-This file is part of GeoAdminSuite
+        This file is part of GeoAdminSuite
 
-GeoAdminSuite is free software: you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+        GeoAdminSuite is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Lesser General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
 
-GeoAdminSuite is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Lesser General Public License for more details.
+        GeoAdminSuite is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public License
-along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
+        You should have received a copy of the GNU Lesser General Public License
+        along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -31,15 +31,15 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
         <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
         <title><bean:message key="main_title" /></title>
         <link rel="shortcut icon" href="favicon.ico">
-        
-        <!-- Application css --> 
+
+        <!-- Application css -->
         <link rel="stylesheet" type="text/css" href="scripts/colorpicker/assets/skins/sam/colorpicker-skin.css">
         <link rel="stylesheet" type="text/css" href="styles/layouts.css">
         <link rel="stylesheet" type="text/css" href="scripts/printTemplate/PrintTemplate.css">
         <link rel="stylesheet" type="text/css" href="scripts/printTemplate/ext.ux.ColorField.css" />
-        
+
         <logic:notEqual parameter="debug" value="true">
-            <!-- Ext css --> 
+            <!-- Ext css -->
             <link rel="stylesheet" type="text/css" href="scripts/mapfish/mfbase/ext/resources/css/ext-all.css">
             <link rel="stylesheet" type="text/css" href="scripts/mapfish/mfbase/ext/resources/css/xtheme-gray.css">
             <!-- debug mode
@@ -61,7 +61,7 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
             <script type="text/javascript" src="scripts/mapfish/mfbase/mapfish/lang/fr.js"></script>
         </logic:notEqual>
         <logic:equal parameter="debug" value="true">
-            <!-- Ext css --> 
+            <!-- Ext css -->
             <link rel="stylesheet" type="text/css" href="scripts/refexportfiles/resources/css/ext-all.css">
             <link rel="stylesheet" type="text/css" href="scripts/refexportfiles/resources/css/xtheme-gray.css">
             <script type="text/javascript" src="scripts/refexportfiles/adapter/ext/ext-base.js"></script>
@@ -70,24 +70,26 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
             <script type="text/javascript" src="scripts/refexportfiles/mapfish/MapFish.js"></script>
         </logic:equal>
         <script type="text/javascript" src="scripts/refexportfiles/mapfish_patches.js"></script>
-        
-        <!-- Application scripts --> 
+
+        <!-- Application scripts -->
         <script type="text/javascript" src="scripts/Utils.js"></script>
         <script type="text/javascript" src="scripts/GeneralLayout.js"></script>
         <script type="text/javascript" src="scripts/Host.js"></script>
         <script type="text/javascript" src="scripts/printTemplate/ext.ux.ColorField.js"></script>
         <script type="text/javascript" src="scripts/printTemplate/PrintTemplateMgr.js"></script>
         <script type="text/javascript" src="scripts/printTemplate/PrintTemplate.js"></script>
-        
-        <!-- YUI Dependencies --> 
+
+        <!-- YUI Dependencies -->
         <script type="text/javascript" src="scripts/colorpicker/utilities/utilities.js" ></script>
         <script type="text/javascript" src="scripts/colorpicker/slider/slider-min.js" ></script>
-        
+
         <!-- YUI Color Picker source files for CSS and JavaScript -->
         <script type="text/javascript" src="scripts/colorpicker/colorpicker-min.js" ></script>
         <!-- Webmapping services (Google, Yahoo, etc.)-->
         <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<%=DataManager.getProperty("GOOGLE_KEY")%>" type="text/javascript"></script>
-
+        <script src="http://api.maps.yahoo.com/ajaxymap?v=3.8&appid=<%=DataManager.getProperty("YAHOO_KEY")%>"></script>
+        <script src='http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.1'></script>
+        
         <script type="text/javascript">
             Ext.BLANK_IMAGE_URL = 'scripts/refexportfiles/resources/images/default/s.gif';
             var i18n = <bean:write name="I18N" scope="request" filter="false"/>;
@@ -100,7 +102,7 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
                 GeneralLayout.publishmapserverurl='<%=DataManager.getPublishMapserverUrl()%>';
                 GeneralLayout.publishmapfilepath='<%=DataManager.getProperty("PUBLISH_MAPFILEPATH")%>';
             });
-            
+
             // event handler for language select. Refreshes this
             // page with language parameter.
             function changeLanguage(lang) {
@@ -112,16 +114,18 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
                 Ext.Ajax.request({
                     url:'resetSession.do',
                     success: function(response){
-                            Ext.Msg.alert('Message', Ext.util.JSON.decode(response.responseText).message);
-                        },
+                        Ext.Msg.alert('Message', Ext.util.JSON.decode(response.responseText).message);
+                    },
                     failure: function(response){
-                            Ext.Msg.alert('Error', Ext.util.JSON.decode(response.responseText).message);
-                        }
+                        Ext.Msg.alert('Error', Ext.util.JSON.decode(response.responseText).message);
+                    }
                 });
 
             }
         </script>
-        
+
+        <!-- this script contains generic gas functions -->
+        <script type="text/javascript" src="scripts/Utils.js"></script>
         <!-- this script contains user defined functions to override the default behavior
         of the openlayers maps used in the composer and publisher windows -->
         <script type="text/javascript" src="scripts/General_user.js"></script>
@@ -130,7 +134,7 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
         <!--<div id="north" style="align:center;">
             <img src="images/geogurus.png"><img src="images/adminsuite.png">
         </div>-->
-        
+
         <div id="serverconfig">
             <div id="confApp" style="width:600px;"></div>
             <div id="frmServer" style="width:600px;"></div>
@@ -151,13 +155,13 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
                         hostList[hostList.length] = curhost;
                         initialHostList[initialHostList.length] = curhost;
                     </logic:iterate>
-            </script>                
+            </script>
         </div>
         <div id="catalog">
             <div id="data_list"></div>
             <div id="data_detail"></div>
         </div>
-        
+
         <div id="composer">
             <div id="composer_props">
                 <div id="layer_props"></div>
@@ -177,6 +181,6 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
             </div>
         </div>
         <div id="param-export-win"></div>
-        
+
     </body>
 </html:html>
