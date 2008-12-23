@@ -281,8 +281,12 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
                                 name: 'yahoo'
                             },{
                                 cls : 'font-size:8',
-                                fieldLabel: 'Live Local',
-                                name: 'live'
+                                fieldLabel: 'Virtual Earth',
+                                name: 'virtualearth'
+                            },{
+                                cls : 'font-size:8',
+                                fieldLabel: 'OpenStreetMap',
+                                name: 'osm'
                             }]
                         }]
                    });

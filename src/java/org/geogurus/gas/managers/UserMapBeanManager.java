@@ -334,7 +334,7 @@ public class UserMapBeanManager {
                 projAttr.add(attr);
                 proj.setAttributes(projAttr);
                 Extent gcExtent = Reprojector.returnBBox(mostUsedProj, proj, gc.getExtent());
-                gc.setExtent(gcExtent);
+                gc.setRecalculatedExtent(gcExtent);
             }
 
 

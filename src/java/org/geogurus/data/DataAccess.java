@@ -92,6 +92,8 @@ public abstract class DataAccess implements Serializable,
     protected Vector<Geometry> selectedGeometries;
     /** the extent for all geometries */
     protected Extent extent;
+    /** the projected extent for all geometries */
+    protected Extent recalculatedExtent;
     /** the geometric type of this GeometryClass */
     protected int geomTypeCode;
     /**
@@ -135,6 +137,7 @@ public abstract class DataAccess implements Serializable,
         // default type set to polygon
         this.geomTypeCode = Geometry.POLYGON;
         this.extent = new Extent();
+        this.recalculatedExtent = null;
         // default new object to Postgis class, as we want to support this type
         // mainly.
         this.datasourceType = type;
@@ -337,8 +340,8 @@ public abstract class DataAccess implements Serializable,
     }
 
     /** MISSING JAVADOC ! */
-    public void setExtent(Extent extent) {
-        this.extent = extent;
+    public void setRecalculatedExtent(Extent extent) {
+        this.recalculatedExtent = extent;
     }
 
     // /**
@@ -429,6 +432,11 @@ public abstract class DataAccess implements Serializable,
     /** MISSING JAVADOC ! */
     public Extent getExtent() {
         return this.extent;
+    }
+
+    /** Returns reprojected extent */
+    public Extent getRecalculatedExtent() {
+        return this.recalculatedExtent != null ? this.recalculatedExtent : this.extent;
     }
 
     /** MISSING JAVADOC ! */

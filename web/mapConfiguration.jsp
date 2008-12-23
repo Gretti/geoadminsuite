@@ -33,7 +33,6 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
         rootPath = rootPath.replace('\\', '/');
 %>
 
-<script type="text/javascript" src="scripts/Utils.js"></script>
 <script type="text/javascript" charset="utf-8">
     var generalPropsTree;
     var myLayers = [];
@@ -47,13 +46,16 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
     var contentProps = null;
 
     function loadMap() {
+        var locSces = '<bean:write name="<%=ObjectKeys.LOCALIZATION_SERVICES%>"/>';
         //MAPFISH MAP COMPONENT
         var bounds = new OpenLayers.Bounds(<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapExtent"/>);
-        //var bounds = new OpenLayers.Bounds(-20037508, -20037508,20037508, 20037508.34);
-
+        var maxRes = 'auto';
+        if(locSces.length > 0) {
+            maxRes = 156543.0339;
+        }
 
         GeneralLayout.composerActiveExtent = bounds;
-        var options = {maxResolution: 'auto',maxExtent: bounds};
+        var options = {maxResolution: maxRes,maxExtent: bounds,numZoomLevels: 18};
             <logic:notEmpty name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapfile.projection">
                     var proj = '<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapfile.projection.attributes" />';
                     if (proj.length > 2) {
@@ -64,8 +66,6 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
             <logic:equal name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapfile.units" value="<%=String.valueOf(Map.METERS)%>">
                     options.units = 'm';
             </logic:equal>
-//                    options.projection = new OpenLayers.Projection("EPSG:900913");
-//                    options.displayProjection = new OpenLayers.Projection("EPSG:4326");
 
                     GeneralLayout.zoombox = new OpenLayers.Control.ZoomBox();
                     GeneralLayout.zoomoutbox = new OpenLayers.Control.ZoomBox({out:true});
@@ -150,7 +150,7 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
                             text: "<bean:write name="geomcoll" property="name"/>",
                             leaf: true,
                             layerName: 'mapserverLayer:<bean:write name="geomcoll" property="name"/>',
-                            extent:new OpenLayers.Bounds(<bean:write name="geomcoll" property="extent"/>),
+                            extent:new OpenLayers.Bounds(<bean:write name="geomcoll" property="recalculatedExtent"/>),
                             checked: true,
                             icon: 'images/layers.png'
                         }
@@ -168,50 +168,164 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
                     {transitionEffect:'resize',singleTile:true,isBaseLayer:false});
 
                     GeneralLayout.composerMsUrl = '<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapserverURL"/>?mode=map&map=<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapfilePath"/>';
-                    var locSces = '<bean:write name="<%=ObjectKeys.LOCALIZATION_SERVICES%>"/>';
                     var layerSelection;
                     var layersLoc = [];
+                    var alreadyCheckedOnce = true;
                     if(locSces.length > 0) {
                         var aryLocSces = locSces.split('|');
                         for (var ls = 0; ls < aryLocSces.length; ls++) {
                             var curLs = aryLocSces[ls];
                             if(curLs == 'google') {
                                 locChildren.push({
-                                    id: "locScesGoogle",
-                                    text: "Google Maps",
+                                    id: "locScesGoogleStreets",
+                                    text: "Google Streets",
+                                    checked: alreadyCheckedOnce,
                                     leaf: true,
-                                    layerName: 'google',
-                                    checked: true,
+                                    layerName: 'googleStreets',
+                                    icon: 'images/layers.png'
+                                },{
+                                    id: "locScesGooglePhysical",
+                                    text: "Google Physical",
+                                    checked:false,
+                                    leaf: true,
+                                    layerName: 'googlePhysical',
+                                    icon: 'images/layers.png'
+                                },{
+                                    id: "locScesGoogleSatellite",
+                                    text: "Google Satellite",
+                                    checked:false,
+                                    leaf: true,
+                                    layerName: 'googleSatellite',
+                                    icon: 'images/layers.png'
+                                },{
+                                    id: "locScesGoogleHybrid",
+                                    text: "Google Hybrid",
+                                    checked:false,
+                                    leaf: true,
+                                    layerName: 'googleHybrid',
                                     icon: 'images/layers.png'
                                 });
+                                alreadyCheckedOnce = false;
                                 layersLoc.push(new OpenLayers.Layer.Google(
-                                    "google",
-                                    {'sphericalMercator':true}
+                                    "googleStreets",
+                                    {'sphericalMercator': true}
+                                ));
+                                layersLoc.push(new OpenLayers.Layer.Google(
+                                    "googlePhysical",
+                                    {'sphericalMercator': true,'type': G_PHYSICAL_MAP}
+                                ));
+                                layersLoc.push(new OpenLayers.Layer.Google(
+                                    "googleSatellite",
+                                    {'sphericalMercator': true,'type': G_SATELLITE_MAP}
+                                ));
+                                layersLoc.push(new OpenLayers.Layer.Google(
+                                    "googleHybrid",
+                                    {'sphericalMercator': true,'type': G_HYBRID_MAP}
                                 ));
                             }
                             if(curLs == 'yahoo') {
                                 locChildren.push({
-                                    id: "locScesYahoo",
-                                    text: "Yahoo Maps",
+                                    id: "locScesYahooStreets",
+                                    text: "Yahoo Streets",
                                     leaf: true,
-                                    layerName: 'yahoo',
-                                    checked: true,
+                                    checked: alreadyCheckedOnce,
+                                    layerName: 'yahooStreets',
+                                    icon: 'images/layers.png'
+                                },{
+                                    id: "locScesYahooSatellite",
+                                    text: "Yahoo Satellite",
+                                    leaf: true,
+                                    layerName: 'yahooSatellite',
+                                    checked: false,
+                                    icon: 'images/layers.png'
+                                },{
+                                    id: "locScesYahooHybrid",
+                                    text: "Yahoo Hybrid",
+                                    leaf: true,
+                                    layerName: 'yahooHybrid',
+                                    checked: false,
                                     icon: 'images/layers.png'
                                 });
+                                alreadyCheckedOnce = false;
                                 layersLoc.push(new OpenLayers.Layer.Yahoo(
-                                    "yahoo",
+                                    "yahooStreets",
                                     {'sphericalMercator':true}
                                 ));
+                                layersLoc.push(new OpenLayers.Layer.Yahoo(
+                                    "yahooSatellite",
+                                    {'type': YAHOO_MAP_SAT, 'sphericalMercator': true}
+                                ));
+                                layersLoc.push(new OpenLayers.Layer.Yahoo(
+                                    "yahooHybrid",
+                                    {'type': YAHOO_MAP_HYB, 'sphericalMercator': true}
+                                ));
                             }
+                            if(curLs == 'osm') {
+                                locChildren.push({
+                                    id: "locScesOsm",
+                                    text: "OpenStreetMap",
+                                    leaf: true,
+                                    checked: alreadyCheckedOnce,
+                                    layerName: 'tileOsm',
+                                    icon: 'images/layers.png'
+                                });
+                                alreadyCheckedOnce = false;
+                                layersLoc.push(new OpenLayers.Layer.TMS(
+                                    "tileOsm",
+                                    "http://tah.openstreetmap.org/Tiles/tile/",
+                                    {
+                                        type: 'png', getURL: osm_getTileURL,
+                                        displayOutsideMaxExtent: true
+                                    }
+                                ));
+                            }
+                            if(curLs == 'virtualearth') {
+                                locChildren.push({
+                                    id: "locScesVERoads",
+                                    text: "Virtual Earth Roads",
+                                    leaf: true,
+                                    checked: alreadyCheckedOnce,
+                                    layerName: 'veRoads',
+                                    icon: 'images/layers.png'
+                                },{
+                                    id: "locScesVEAerial",
+                                    text: "Virtual Earth Aerial",
+                                    leaf: true,
+                                    checked: false,
+                                    layerName: 'veAerial',
+                                    icon: 'images/layers.png'
+                                },{
+                                    id: "locScesVEHybrid",
+                                    text: "Virtual Earth Hybrid",
+                                    leaf: true,
+                                    checked: true,
+                                    layerName: 'veHybrid',
+                                    icon: 'images/layers.png'
+                                });
+                                alreadyCheckedOnce = false;
+                                layersLoc.push(new OpenLayers.Layer.VirtualEarth(
+                                    "veRoads",
+                                    {'type': VEMapStyle.Road, 'sphericalMercator': true}
+                                ));
+                                layersLoc.push(new OpenLayers.Layer.VirtualEarth(
+                                    "veAerial",
+                                    {'type': VEMapStyle.Aerial, 'sphericalMercator': true}
+                                ));
+                                layersLoc.push(new OpenLayers.Layer.VirtualEarth(
+                                    "veHybrid",
+                                    {'type': VEMapStyle.Hybrid, 'sphericalMercator': true}
+                                ));
+                            }
+
                         }
                         layerSelection = [{
                             id:'gasuserLayerSelection',
-                            text:'Layers',
+                            text:'User Layers',
                             expanded:true,
                             children:children
                         },{
                             id:'gasuserLocSelection',
-                            text:'Localization',
+                            text:'Location Services',
                             expanded:true,
                             children:locChildren
                         }];
@@ -345,7 +459,8 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
 
                     //LAYOUT AND MAP RENDERING
                     customizeConfigurationMap(GeneralLayout.composermap);
-                    GeneralLayout.composermap.zoomToExtent(GeneralLayout.composermap.baseLayer.maxExtent);
+                    GeneralLayout.composermap.zoomToMaxExtent();
+                    //GeneralLayout.composermap.zoomToExtent(GeneralLayout.composermap.baseLayer.maxExtent);
 
                     Ext.getCmp('pnlComposerCtrl').add(GeneralLayout.layertree);
                     if(Ext.getCmp('pnlComposerPrint')) Ext.getCmp('pnlComposerPrint').destroy();

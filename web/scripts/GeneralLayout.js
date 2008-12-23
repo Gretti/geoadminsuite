@@ -997,8 +997,10 @@ GeneralLayout =
                         strSelServices += 'google|';
                     if(Ext.getCmp('chooseServicePanel').form.getValues().yahoo == 'on')
                         strSelServices += 'yahoo|';
-                    if(Ext.getCmp('chooseServicePanel').form.getValues().live == 'on')
-                        strSelServices += 'live|';
+                    if(Ext.getCmp('chooseServicePanel').form.getValues().osm == 'on')
+                        strSelServices += 'osm|';
+                    if(Ext.getCmp('chooseServicePanel').form.getValues().virtualearth == 'on')
+                        strSelServices += 'virtualearth|';
                 }
                 //passes the ids to the ComposeMapAction
                 if(checkedNodes.length == 0) {
