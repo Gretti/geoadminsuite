@@ -177,6 +177,7 @@ public class Reprojector {
         try {
             if (!refEpsg.equals("900913")) {
                 //System.setProperty("org.geotools.referencing.forceXY", "true");
+                //Hints hint = new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
                 crsDest = ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null).createCoordinateReferenceSystem(refEpsg);
             } else {
                 try {
@@ -205,35 +206,41 @@ public class Reprojector {
                 } else {
                     //calculates reprojected extent before adding to map extent
                     crsSrc = ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null).createCoordinateReferenceSystem(epsg);
-                    op = coFactory.createOperation(crsSrc, crsDest);
-                    MathTransform trans = op.getMathTransform();
 
                     // transform given coordinatespoints
                     DirectPosition ll;
                     DirectPosition ur;
-                    //TODO: Must be fixed when geotools reprojection wont inverse axis
                     double xmin = curEx.ll.x;
                     double ymin = curEx.ll.y;
                     double xmax = curEx.ur.x;
                     double ymax = curEx.ur.y;
+                    //TODO: Must be fixed when geotools reprojection wont inverse axis
                     if (refEpsg.equals("900913") && epsg.equals("4326")) {
-                        if (curEx.ll.x > -90 && curEx.ur.x < 90) {
-                            xmin = curEx.ll.y;
-                            ymin = curEx.ll.x;
-                            xmax = curEx.ur.y;
-                            ymax = curEx.ur.x;
-                        } else {
-                            xmin = curEx.ll.x == -180 ? -179.99999 : curEx.ll.x;
-                            ymin = curEx.ll.y == -90 ? -89.99999 : curEx.ll.y;
-                            xmax = curEx.ur.x == 180 ? 179.99999 : curEx.ur.x;
-                            ymax = curEx.ur.y == 90 ? 89.99999 : curEx.ur.y;
-                        }
-                    }
-                    ll = new GeneralDirectPosition(xmin, ymin);
-                    ur = new GeneralDirectPosition(xmax, ymax);
+                        //Self calculation :(
+                        //20037508.342789244
+                        double originShift = 2 * Math.PI * 6378137 / 2;
+                        xmin = xmin * originShift / 180;
+                        ymin = Math.signum(ymin) * Math.log(Math.tan((90 + Math.abs(ymin)) * Math.PI / 360)) / (Math.PI / 180);
+                        ymin = ymin * originShift / 180;
+                        xmax = xmax * originShift / 180;
+                        ymax = Math.signum(ymax) * Math.log(Math.tan((90 + Math.abs(ymax)) * Math.PI / 360)) / (Math.PI / 180);
+                        ymax = ymax * originShift / 180;
 
-                    ll = trans.transform(ll, null);
-                    ur = trans.transform(ur, null);
+                        xmin = Math.max(xmin, -20037508.342789244);
+                        xmax = Math.min(xmax, 20037508.342789244);
+                        ymin = Math.max(ymin, (-20037508.342789244 / 2));
+                        ymax = Math.min(ymax, (20037508.342789244 / 2));
+                        
+                        ll = new GeneralDirectPosition(xmin, ymin);
+                        ur = new GeneralDirectPosition(xmax, ymax);
+                    } else {
+                        op = coFactory.createOperation(crsSrc, crsDest);
+                        MathTransform trans = op.getMathTransform();
+                        ll = new GeneralDirectPosition(xmin, ymin);
+                        ur = new GeneralDirectPosition(xmax, ymax);
+                        ll = trans.transform(ll, null);
+                        ur = trans.transform(ur, null);
+                    }
 
                     if (extent == null) {
                         extent = new Extent(ll.getOrdinate(0), ll.getOrdinate(1), ur.getOrdinate(0), ur.getOrdinate(1));
