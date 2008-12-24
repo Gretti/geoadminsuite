@@ -228,8 +228,8 @@ public class Reprojector {
 
                         xmin = Math.max(xmin, -20037508.342789244);
                         xmax = Math.min(xmax, 20037508.342789244);
-                        ymin = Math.max(ymin, (-20037508.342789244));
-                        ymax = Math.min(ymax, (20037508.342789244));
+                        ymin = Math.max(ymin, -20037508.342789244);
+                        ymax = Math.min(ymax, 20037508.342789244);
                         
                         ll = new GeneralDirectPosition(xmin, ymin);
                         ur = new GeneralDirectPosition(xmax, ymax);
