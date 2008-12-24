@@ -179,30 +179,34 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
                                 locChildren.push({
                                     id: "locScesGoogleStreets",
                                     text: "Google Streets",
+                                    layerName: 'googleStreets',
                                     checked: alreadyCheckedOnce,
                                     leaf: true,
-                                    layerName: 'googleStreets',
+                                    allowDrag:false,
                                     icon: 'images/layers.png'
                                 },{
                                     id: "locScesGooglePhysical",
                                     text: "Google Physical",
+                                    layerName: 'googlePhysical',
                                     checked:false,
                                     leaf: true,
-                                    layerName: 'googlePhysical',
+                                    allowDrag:false,
                                     icon: 'images/layers.png'
                                 },{
                                     id: "locScesGoogleSatellite",
                                     text: "Google Satellite",
+                                    layerName: 'googleSatellite',
                                     checked:false,
                                     leaf: true,
-                                    layerName: 'googleSatellite',
+                                    allowDrag:false,
                                     icon: 'images/layers.png'
                                 },{
                                     id: "locScesGoogleHybrid",
                                     text: "Google Hybrid",
+                                    layerName: 'googleHybrid',
                                     checked:false,
                                     leaf: true,
-                                    layerName: 'googleHybrid',
+                                    allowDrag:false,
                                     icon: 'images/layers.png'
                                 });
                                 alreadyCheckedOnce = false;
@@ -227,23 +231,26 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
                                 locChildren.push({
                                     id: "locScesYahooStreets",
                                     text: "Yahoo Streets",
-                                    leaf: true,
-                                    checked: alreadyCheckedOnce,
                                     layerName: 'yahooStreets',
+                                    checked: alreadyCheckedOnce,
+                                    leaf: true,
+                                    allowDrag:false,
                                     icon: 'images/layers.png'
                                 },{
                                     id: "locScesYahooSatellite",
                                     text: "Yahoo Satellite",
-                                    leaf: true,
                                     layerName: 'yahooSatellite',
                                     checked: false,
+                                    leaf: true,
+                                    allowDrag:false,
                                     icon: 'images/layers.png'
                                 },{
                                     id: "locScesYahooHybrid",
                                     text: "Yahoo Hybrid",
-                                    leaf: true,
                                     layerName: 'yahooHybrid',
                                     checked: false,
+                                    leaf: true,
+                                    allowDrag:false,
                                     icon: 'images/layers.png'
                                 });
                                 alreadyCheckedOnce = false;
@@ -264,15 +271,16 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
                                 locChildren.push({
                                     id: "locScesOsm",
                                     text: "OpenStreetMap",
-                                    leaf: true,
                                     checked: alreadyCheckedOnce,
                                     layerName: 'tileOsm',
+                                    leaf: true,
+                                    allowDrag:false,
                                     icon: 'images/layers.png'
                                 });
                                 alreadyCheckedOnce = false;
                                 layersLoc.push(new OpenLayers.Layer.TMS(
                                     "tileOsm",
-                                    "http://tah.openstreetmap.org/Tiles/tile/",
+                                    "http://tile.openstreetmap.org/",
                                     {
                                         type: 'png', getURL: osm_getTileURL,
                                         displayOutsideMaxExtent: true
@@ -283,23 +291,26 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
                                 locChildren.push({
                                     id: "locScesVERoads",
                                     text: "Virtual Earth Roads",
-                                    leaf: true,
-                                    checked: alreadyCheckedOnce,
                                     layerName: 'veRoads',
+                                    checked: alreadyCheckedOnce,
+                                    leaf: true,
+                                    allowDrag:false,
                                     icon: 'images/layers.png'
                                 },{
                                     id: "locScesVEAerial",
                                     text: "Virtual Earth Aerial",
-                                    leaf: true,
-                                    checked: false,
                                     layerName: 'veAerial',
+                                    checked: false,
+                                    leaf: true,
+                                    allowDrag:false,
                                     icon: 'images/layers.png'
                                 },{
                                     id: "locScesVEHybrid",
                                     text: "Virtual Earth Hybrid",
-                                    leaf: true,
-                                    checked: true,
                                     layerName: 'veHybrid',
+                                    checked: false,
+                                    leaf: true,
+                                    allowDrag:false,
                                     icon: 'images/layers.png'
                                 });
                                 alreadyCheckedOnce = false;
@@ -327,6 +338,8 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
                             id:'gasuserLocSelection',
                             text:'Location Services',
                             expanded:true,
+                            allowDrop:false,
+                            isTarget:false,
                             children:locChildren
                         }];
                     } else {
@@ -460,7 +473,7 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
                     //LAYOUT AND MAP RENDERING
                     customizeConfigurationMap(GeneralLayout.composermap);
                     GeneralLayout.composermap.zoomToMaxExtent();
-                    //GeneralLayout.composermap.zoomToExtent(GeneralLayout.composermap.baseLayer.maxExtent);
+                    //GeneralLayout.composermap.setCenter(GeneralLayout.composermap.getCenter(), 3);
 
                     Ext.getCmp('pnlComposerCtrl').add(GeneralLayout.layertree);
                     if(Ext.getCmp('pnlComposerPrint')) Ext.getCmp('pnlComposerPrint').destroy();
