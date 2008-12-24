@@ -55,7 +55,7 @@ function GASremoveElement(el) {
 //finds osm tile related to given bound
 //@param bounds: current bound of map
 function osm_getTileURL(bounds) {
-    var res = 156543.0339;
+    var res = this.map.getResolution();
     var x = Math.round((bounds.left - (-20037508.34)) / (res * this.tileSize.w));
     var y = Math.round((20037508.34 - bounds.top) / (res * this.tileSize.h));
     var z = this.map.getZoom();
