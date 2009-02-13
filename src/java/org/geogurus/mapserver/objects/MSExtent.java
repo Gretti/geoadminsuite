@@ -90,9 +90,16 @@ public class MSExtent implements java.io.Serializable {
      * with MapFile style.
      */
     public synchronized boolean saveAsMapFile(java.io.BufferedWriter bw) {
+        return saveAsMapFile(bw, "");
+    }
+    /**  Saves EXTENT object to the given BufferedWriter
+     * with MapFile style, adding the given string indentation before writing
+     * (tab or CR for instance)
+     */
+    public synchronized boolean saveAsMapFile(java.io.BufferedWriter bw, String ident) {
         boolean result = true;
         try {
-            bw.write("\t extent "+minx+" "+miny+" "+maxx+" "+maxy+"\n");
+            bw.write(ident + "\t extent "+minx+" "+miny+" "+maxx+" "+maxy+"\n");
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
