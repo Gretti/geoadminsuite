@@ -521,6 +521,23 @@ public class Map extends MapServerObject implements java.io.Serializable {
         return layers;
     }
 
+    /**
+     * Returns the first layer whose name match
+     * @param name the layer name
+     * @return the layer or null if not found or name is null
+     */
+    public Layer getLayerByName(String name) {
+        if (layers == null || name == null) {
+            return null;
+        }
+        for (Layer l : layers) {
+            if (name.equals(l.getName())) {
+                return l;
+            }
+        }
+        return null;
+    }
+
     public Legend getLegend() {
         return legend;
     }
@@ -674,21 +691,26 @@ public class Map extends MapServerObject implements java.io.Serializable {
                     }
 
                     String symbolPathString = ConversionUtilities.getValueFromMapfileLine(line);
-                    
-                    /*GNG : 
-                     *Error while loading before buiding Mapfile. Can happen when loading directly
-                     *from a stream before writing to disk
-                     */
-                    
-                    //Must build a full file from symbolPath even if relative to Mapfile path
-                    if (this.getMapFile() != null) {
-                        symbolSet.setSymbolSetFile(MapTools.buildFileFromMapPath(this.getMapFile().getParent(), null, symbolPathString));
-                        symbolSet.load();
+
+                    //NRI: added an option to discard loading symbols and writing full path into mapfile.
+                    if (this.getIgnoreLinkedFiles()) {
+                        symbolSet.setSymbolSetFile(new File(symbolPathString));
                     } else {
-                        //if mapfile is null tries to build symbolset anyway parsing its path
-                        if (!MapTools.isRelativePath(symbolPathString, File.separator.equalsIgnoreCase("/"))) {
-                            symbolSet.setSymbolSetFile(MapTools.buildFileFromMapPath("", null, symbolPathString));
+                        /*GNG :
+                         *Error while loading before buiding Mapfile. Can happen when loading directly
+                         *from a stream before writing to disk
+                         */
+
+                        //Must build a full file from symbolPath even if relative to Mapfile path
+                        if (this.getMapFile() != null) {
+                            symbolSet.setSymbolSetFile(MapTools.buildFileFromMapPath(this.getMapFile().getParent(), null, symbolPathString));
                             symbolSet.load();
+                        } else {
+                            //if mapfile is null tries to build symbolset anyway parsing its path
+                            if (!MapTools.isRelativePath(symbolPathString, File.separator.equalsIgnoreCase("/"))) {
+                                symbolSet.setSymbolSetFile(MapTools.buildFileFromMapPath("", null, symbolPathString));
+                                symbolSet.load();
+                            }
                         }
                     }
                 //symbols = symbolSet.getArrayListSymbol();
@@ -934,7 +956,7 @@ public class Map extends MapServerObject implements java.io.Serializable {
         try {
             bw.write("map\n");
             if (name != null) {
-                bw.write("\t name " + name + "\n");
+                bw.write("\t name " + ConversionUtilities.quotes(name) + "\n");
             }
             if (angle != null) {
                 bw.write("\t angle " + angle.toString() + "\n");
@@ -1018,11 +1040,15 @@ public class Map extends MapServerObject implements java.io.Serializable {
                     break;
             }
             if (symbolSet != null && symbolSet.getSymbolSetFile() != null) {
-                bw.write("\t symbolset " + ConversionUtilities.quotes(symbolSet.getSymbolSetFile().getPath()) + "\n");
-                // then writes the symbol file to the disk
-                boolean res = symbolSet.saveAsSymFile();
-                if (!res) {
-                    result = res;
+                if (this.getIgnoreLinkedFiles()) {
+                    bw.write("\t symbolset " + symbolSet.getSymbolSetFile().toString() + "\n");
+                } else {
+                    bw.write("\t symbolset " + ConversionUtilities.quotes(symbolSet.getSymbolSetFile().getPath()) + "\n");
+                    // then writes the symbol file to the disk
+                    boolean res = symbolSet.saveAsSymFile();
+                    if (!res) {
+                        result = res;
+                    }
                 }
             }
             switch (transparent) {
