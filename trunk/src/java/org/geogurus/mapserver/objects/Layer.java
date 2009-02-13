@@ -113,6 +113,11 @@ public class Layer extends MapServerObject implements java.io.Serializable {
      */
     private Boolean dump;
 
+    /**
+     * Not documented... apparently used to return OWS layer extent
+     */
+    private MSExtent extent = null;
+
     /** Signals the start of a FEATURE object. */
     private Feature feature;
     /**
@@ -334,6 +339,12 @@ public class Layer extends MapServerObject implements java.io.Serializable {
      */
     private byte type;
 
+    /**
+     * Not documented... apparently used to return OWS layer units
+     */
+    private Byte units = null;
+
+
     /** Empty constructor */
     public Layer() {
         this(null, LOCAL, null, null, null, null, null, 0, 0, 0, 0, 0, null,
@@ -539,6 +550,10 @@ public class Layer extends MapServerObject implements java.io.Serializable {
         return toleranceUnits;
     }
 
+    public byte getUnits() {
+        return units;
+    }
+
     public boolean isTransform() {
         return transform;
     }
@@ -565,6 +580,14 @@ public class Layer extends MapServerObject implements java.io.Serializable {
 
     public void setData(String data_) {
         data = data_;
+    }
+
+    public void setExtent(MSExtent extent_) {
+        extent = extent_;
+    }
+
+    public MSExtent getExtent() {
+        return extent;
     }
 
     public void setFeature(Feature feature_) {
@@ -707,6 +730,10 @@ public class Layer extends MapServerObject implements java.io.Serializable {
         transparency = transparency_;
     }
 
+    public void setUnits(Byte units_) {
+        units = units_;
+    }
+
     public void addClass(Class mapClass) {
         if (classes == null) {
             classes = new ListClassesBean();
@@ -843,6 +870,12 @@ public class Layer extends MapServerObject implements java.io.Serializable {
                                 .setErrorMessage("Layer.load: Invalid value for DUMP: "
                                         + line);
                         return false;
+                    }
+                } else if (tokens[0].equalsIgnoreCase("EXTENT")) {
+                    extent = new MSExtent();
+                    result = extent.load(tokens);
+                    if (! result) {
+                        MapServerObject.setErrorMessage("Layer.load: cannot load extent: " + line);
                     }
                 } else if (tokens[0].equalsIgnoreCase("FEATURE")) {
                     feature = new Feature();
@@ -1258,6 +1291,28 @@ public class Layer extends MapServerObject implements java.io.Serializable {
                                         + line);
                         return false;
                     }
+                } else if (tokens[0].equalsIgnoreCase("UNITS")) {
+                    if (tokens.length < 2) {
+                        MapServerObject.setErrorMessage("Layer.load: Invalid syntax for UNITS: " + line);
+                        return false;
+                    }
+                    tokens[1] = ConversionUtilities.removeDoubleQuotes(tokens[1]);
+                    if (tokens[1].equalsIgnoreCase("FEET")) {
+                        units = new Byte(Map.FEET);
+                    } else if (tokens[1].equalsIgnoreCase("INCHES")) {
+                        units = new Byte(Map.INCHES);
+                    } else if (tokens[1].equalsIgnoreCase("KILOMETERS")) {
+                        units = new Byte(Map.KILOMETERS);
+                    } else if (tokens[1].equalsIgnoreCase("METERS")) {
+                        units = new Byte(Map.METERS);
+                    } else if (tokens[1].equalsIgnoreCase("MILES")) {
+                        units = new Byte(Map.MILES);
+                    } else if (tokens[1].equalsIgnoreCase("DD")) {
+                        units = new Byte(Map.DD);
+                    } else {
+                        MapServerObject.setErrorMessage("Map.load: Invalid UNITS value: " + line);
+                        return false;
+                    }
                 } else if (tokens[0].equalsIgnoreCase("END")) {
                     return true;
                 } else {
@@ -1329,6 +1384,9 @@ public class Layer extends MapServerObject implements java.io.Serializable {
                 String d = (debug.booleanValue() ? "on" : "off");
                 bw.write("\t\t debug " + d + "\n");
             }
+            if (extent != null) {
+                extent.saveAsMapFile(bw, "\t");
+            }
             if (feature != null) {
                 feature.saveAsMapFile(bw);
             }
@@ -1396,7 +1454,7 @@ public class Layer extends MapServerObject implements java.io.Serializable {
                 bw.write("\t\t minscale " + minScale + "\n");
             }
             if (metaData != null) {
-                metaData.saveAsMapFile(bw);
+                metaData.saveAsMapFile(bw, "\t");
             }
             if (offSite != null) {
                 bw.write("\t\t offsite " + offSite + "\n");
@@ -1540,6 +1598,28 @@ public class Layer extends MapServerObject implements java.io.Serializable {
                 bw.write("\t\t type CHART\n");
                 break;
             }
+            if (units != null) {
+                switch (units) {
+                    case Map.FEET:
+                        bw.write("\t\t units FEET\n");
+                        break;
+                    case Map.INCHES:
+                        bw.write("\t\t units INCHES\n");
+                        break;
+                    case Map.KILOMETERS:
+                        bw.write("\t\t units KILOMETERS\n");
+                        break;
+                    case Map.METERS:
+                        bw.write("\t\t units METERS\n");
+                        break;
+                    case Map.MILES:
+                        bw.write("\t\t units MILES\n");
+                        break;
+                    case Map.DD:
+                        bw.write("\t\t units DD\n");
+                        break;
+                }
+            }
 
             if (classes != null) {
                 for (int i = 0; i < classes.getNbClasses(); i++) {
@@ -1601,8 +1681,14 @@ public class Layer extends MapServerObject implements java.io.Serializable {
                 buffer.append("\n* LAYER connection         = ").append(
                         connection);
             }
+            if (extent != null) {
+                buffer.append("\n* LAYER extent     = ").append(extent.toString());
+            }
             if (filter != null) {
                 buffer.append("\n* LAYER filter             = ").append(filter);
+            }
+            if (units != null) {
+                buffer.append("\n* MAP units      = ").append(units);
             }
         } catch (Exception ex) {
             ex.printStackTrace();

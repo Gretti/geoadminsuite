@@ -159,7 +159,7 @@ public class SymbolSet extends MapServerObject  implements java.io.Serializable 
         java.io.BufferedWriter bwsym = null;
         try{
             if (symbolSetFile != null && !symbolSetFile.exists()) {
-                // creates it to avoid mapserver crashes
+                // creates it, if possible, to avoid mapserver crashes
                 bwsym = new java.io.BufferedWriter(new java.io.FileWriter(symbolSetFile));
             }
             

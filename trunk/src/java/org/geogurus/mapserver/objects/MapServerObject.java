@@ -47,6 +47,11 @@ public abstract class MapServerObject implements java.io.Serializable {
      * set static to share the same variable across objects hierarchy
      */
     protected static String errorMessage;
+
+    /** should the maploading ignore mapfile external files like fontset and symbolset ?
+     * if true, only the values of these objects will be kept, not the linked files
+     */
+    protected boolean ignoreLinkedFiles = false;
     
     
     /** Loads data from file
@@ -84,6 +89,14 @@ public abstract class MapServerObject implements java.io.Serializable {
         errorMessage = error + System.getProperty("line.separator") + errorMessage;
         return errorMessage;
     }
+
+    public void setIgnoreLinkedFiles(boolean ignore) {
+        this.ignoreLinkedFiles = ignore;
+    }
     
+    public boolean getIgnoreLinkedFiles() {
+        return this.ignoreLinkedFiles;
+    }
+
 }
 

@@ -97,7 +97,7 @@ public class MetaData extends MapServerObject implements java.io.Serializable {
                 }
                 tokens = ConversionUtilities.tokenize(line.trim());
                 if (!tokens[0].equalsIgnoreCase("END")) {
-                    result = this.addAttribute(line);
+                    result = this.addAttribute(line.trim());
                 } else {
                     return true;
                 }
@@ -125,18 +125,33 @@ public class MetaData extends MapServerObject implements java.io.Serializable {
      * @return true is mapping done correctly
      */
     public boolean saveAsMapFile(java.io.BufferedWriter bw) {
+        return saveAsMapFile(bw, "");
+    }
+
+    /**
+     * Saves data to file using Object parameters with mapFile format, adding
+     * the given string at the beginning of the line: useful to control
+     * the output indentation, according to the Metadata position inside Mapserver
+     * object hierarchy
+     *
+     * @param bw
+     *            BufferWriter containing file data to write in linked file.
+     * @param indent the string to add at the beginning ("\t" for instance)
+     * @return true is mapping done correctly
+     */
+    public boolean saveAsMapFile(java.io.BufferedWriter bw, String indent) {
         boolean result = true;
         try {
-            bw.write("\t metadata\n");
+            bw.write(indent + "\t metadata\n");
             if (attributes != null) {
                 for (int i = 0; i < attributes.size(); i++) {
                     String str = (String) attributes.get(i);
                     if (str != null) {
-                        bw.write("\t\t " + str + "\n");
+                        bw.write(indent + "\t\t " + str + "\n");
                     }
                 }
             }
-            bw.write("\t end\n");
+            bw.write(indent + "\t end\n");
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
@@ -160,7 +175,7 @@ public class MetaData extends MapServerObject implements java.io.Serializable {
 
     /**
      * Searches for the attribute
-     * 
+     * todo: should rename it to getAttribute
      * @param key
      *            the attribute to find
      * 
@@ -168,13 +183,29 @@ public class MetaData extends MapServerObject implements java.io.Serializable {
      */
     public Option<String> getAttributes(String key) {
         for (String att : attributes) {
-            String[] parts = att.replaceAll("[\"\\s]+", " ").trim().split(
-                    "\\s", 2);
+            String[] parts = att.replaceAll("[\"\\s]+", " ").trim().split("\\s", 2);
             if (parts.length == 2 && parts[0].trim().equalsIgnoreCase(key)) {
                 String value = parts[1].trim();
                 return Option.some(value);
             }
         }
         return Option.none();
+    }
+
+    /**
+     * Replaces the attribute whose key matches the given key with the given value
+     * Does nothing if key is not found in attributes list
+     * @param key the key to match
+     * @param value the value to replace
+     */
+    public void replaceAttribute(String key, String value) {
+        for (String att : attributes) {
+            String[] parts = att.replaceAll("[\"\\s]+", " ").trim().split("\\s", 2);
+            if (parts.length == 2 && parts[0].trim().equalsIgnoreCase(key)) {
+                attributes.remove(att);
+                break;
+            }
+        }
+        addAttribute(key, value);
     }
 }
