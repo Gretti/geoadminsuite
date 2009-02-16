@@ -81,7 +81,7 @@ public class MapPropertiesAction extends Action {
         }
 
         umb.getMapfile().setImageType(mapForm.getImageType().byteValue());
-        umb.getMapfile().setImageQuality(mapForm.getImageQuality().byteValue());
+        umb.getMapfile().setImageQuality(mapForm.getImageQuality());
         umb.getMapfile().setImageColor(new RGB(mapForm.getImageColor()));
         umb.getMapfile().setInterlace(mapForm.getInterlace().byteValue());
         if (mapForm.getName().length() > 0) {

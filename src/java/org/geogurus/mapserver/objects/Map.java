@@ -48,7 +48,7 @@ public class Map extends MapServerObject implements java.io.Serializable {
     public static final byte WBMP = 3;
     public static final byte GTIFF = 4;
     public static final byte SWF = 5;
-    
+
     // Constants for interlace transparence and status
     public static final byte ON = 0;
     public static final byte OFF = 1;
@@ -62,7 +62,7 @@ public class Map extends MapServerObject implements java.io.Serializable {
     // Constants defining layer order
     public static final byte TOP = 0;
     public static final byte BOTTOM = 1;
-    
+
     /**
      * * Angle, given in degrees, to rotate the map. Default is 0. The rendered map will rotate in a clockwise direction. The following are important notes:
     * <ul>
@@ -74,10 +74,10 @@ public class Map extends MapServerObject implements java.io.Serializable {
      */
     private Double angle;
     /**
-    * This can be used to define the location of your EPSG files for the PROJ.4 library. 
-    * Setting the [key] to PROJ_LIB and the [value] to the location of your EPSG files 
-    * will force PROJ.4 to use this value. 
-    * Using CONFIG allows you to avoid setting environment variables to point to your PROJ_LIB directory. 
+    * This can be used to define the location of your EPSG files for the PROJ.4 library.
+    * Setting the [key] to PROJ_LIB and the [value] to the location of your EPSG files
+    * will force PROJ.4 to use this value.
+    * Using CONFIG allows you to avoid setting environment variables to point to your PROJ_LIB directory.
     * Here are some examples:
     * <ol>
     *       <li>Unix:</li>
@@ -85,23 +85,23 @@ public class Map extends MapServerObject implements java.io.Serializable {
     *       <li>Windows:</li>
     *       <li>CONFIG "PROJ_LIB" "C:/somedir/proj/nad/"</li>
     * </ol>
-    * Any other value will be passed on to CPLSetConfigOption(). 
-    * This provides customized control of some GDAL and OGR driver behaviours. 
+    * Any other value will be passed on to CPLSetConfigOption().
+    * This provides customized control of some GDAL and OGR driver behaviours.
     * Details on such options would be found in specific GDAL driver documentation.
      */
     private String config;
     /**
-     * This defines a regular expression to be applied to requests to change DATA parameters via URL requests 
-     * (i.e. map_layername_data=...). 
-     * If a pattern doesn't exist then web users can't monkey with support files via URLs. 
-     * This allows you to isolate one application from another if you desire, 
+     * This defines a regular expression to be applied to requests to change DATA parameters via URL requests
+     * (i.e. map_layername_data=...).
+     * If a pattern doesn't exist then web users can't monkey with support files via URLs.
+     * This allows you to isolate one application from another if you desire,
      * with the default operation being very conservative. See also TEMPLATEPATTERN.
      */
     private String dataPattern;
     /**
-     * Enables debugging of the map object. 
-     * Verbose output is generated and sent to the standard error output (STDERR) 
-     * or the MapServer logfile if one is set using the LOG parameter in the WEB object. 
+     * Enables debugging of the map object.
+     * Verbose output is generated and sent to the standard error output (STDERR)
+     * or the MapServer logfile if one is set using the LOG parameter in the WEB object.
      * Apache users will see timing details for drawing in Apache's error_log file.
      * Requires MapServer to be built with the DEBUG=MSDEBUG option (--with-debug configure option).
      */
@@ -115,20 +115,20 @@ public class Map extends MapServerObject implements java.io.Serializable {
     /** Color to initialize the map with (i.e. background color). */
     private RGB imageColor;
     /** Compression quality for JPEG output. */
-    private int imageQuality;
+    private Integer imageQuality;
     /** Output image type.
      * This is dependent on how the MapServer executable was compiled and the GD used. */
-    private byte imageType;
+    private Byte imageType;
     /** Defines a file to be included in the mapfile parsing. */
     private Include include;
     /** Should output images be interlaced? */
-    private byte interlace;
+    private Byte interlace;
     /** Signals the start of a LAYER object. */
     private Vector<Layer> layers;
     /** Signals the start of a LEGEND object. */
     private Legend legend;
     /**
-     * Sets the maximum size of the map image. This will override the default value. 
+     * Sets the maximum size of the map image. This will override the default value.
      * For example, setting this to 2048 means that you can have up to 2048 pixels in both dimensions
      * (i.e. max of 2048x2048).
      */
@@ -146,9 +146,9 @@ public class Map extends MapServerObject implements java.io.Serializable {
     private ReferenceMap referenceMap;
     /** Sets the pixels per inch for output,
      * only affects scale computations and nothing else, default is 72 */
-    private int resolution;
+    private Integer resolution;
     /** Computed scale of the map. Set most often by the application */
-    private double scale;
+    private Double scale;
     /** Signals the start of a SCALEBAR object. */
     private ScaleBar scaleBar;
     /** Path to the directory holding the shapefiles or tiles.
@@ -159,25 +159,25 @@ public class Map extends MapServerObject implements java.io.Serializable {
     /** Is the map active?
      * Sometimes you may wish to turn this off to use only the reference map
      * or scale bar. */
-    private byte status;
+    private Byte status;
     /** Full filename of the symbolset to use. */
     private SymbolSet symbolSet;
     /** Signals the start of a SYMBOL object.*/
     private ArrayList<Symbol> symbols;
     /**
-     * This defines a regular expression to be applied to requests to change TEMPLATE 
-     * parameters via URL requests (i.e. map_layername_template=...). 
-     * If a pattern doesn't exist then web users can't monkey with support files via URLs. 
-     * This allows you to isolate one application from another if you desire, 
+     * This defines a regular expression to be applied to requests to change TEMPLATE
+     * parameters via URL requests (i.e. map_layername_template=...).
+     * If a pattern doesn't exist then web users can't monkey with support files via URLs.
+     * This allows you to isolate one application from another if you desire,
      * with the default operation being very conservative. See also DATAPATTERN.
      */
     private String templatePattern;
     /** Should the background color for the maps be transparent.
      * Default is off. */
-    private byte transparent;
+    private Byte transparent;
     /** Units of the map coordinates.
      * Used for scalebar and scale computations. */
-    private byte units;
+    private Byte units;
     /** Signals the start of a WEB object. */
     private Web web;
     /** the file in which this object was written
@@ -191,24 +191,29 @@ public class Map extends MapServerObject implements java.io.Serializable {
 
     /** Empty constructor */
     public Map() {
-        this(null, null, null, null, new MSExtent(0.0, 0.0, 0.0, 0.0),
-                null,
-                new RGB(255, 255, 255),
-                0,
-                Map.GIF,
+        this(
                 null,
                 null,
                 null,
                 null,
                 null,
                 null,
-                0,
                 null,
                 null,
-                new Dimension(450, 450),
                 null,
                 null,
-                Map.METERS,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
                 null,
                 null,
                 null);
@@ -217,24 +222,29 @@ public class Map extends MapServerObject implements java.io.Serializable {
 
     /** Empty constructor */
     public Map(org.geogurus.mapserver.MapFile f) {
-        this(null, null, null, null, new MSExtent(0.0, 0.0, 0.0, 0.0),
-                null,
-                new RGB(255, 255, 255),
-                0,
-                Map.GIF,
+        this(
                 null,
                 null,
                 null,
                 null,
                 null,
                 null,
-                0,
                 null,
                 null,
-                new Dimension(450, 450),
                 null,
                 null,
-                Map.METERS,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
                 null,
                 null,
                 null);
@@ -242,12 +252,33 @@ public class Map extends MapServerObject implements java.io.Serializable {
     }
 
     /** Creates a new instance of Map */
-    public Map(Double angle_, String config_, String dataPattern_, Boolean debug_,
-            MSExtent extent_, File fontSet_, RGB imageColor_, int imageQuality_, byte imageType_,
-            Legend legend_, Integer maxSize_, String name_, Projection projection_, QueryMap queryMap_,
-            ReferenceMap referenceMap_, double scale_, ScaleBar scaleBar_, File shapePath_, Dimension size_,
-            SymbolSet symbolSet_, String templatePattern_,
-            byte units_, Web web_, Include include_, ArrayList<OutputFormat> out_) {
+    public Map(
+            Double angle_,
+            String config_,
+            String dataPattern_,
+            Boolean debug_,
+            MSExtent extent_,
+            File fontSet_,
+            RGB imageColor_,
+            Integer imageQuality_,
+            Byte imageType_,
+            Legend legend_,
+            Integer maxSize_,
+            String name_,
+            Projection projection_,
+            QueryMap queryMap_,
+            ReferenceMap referenceMap_,
+            Double scale_,
+            ScaleBar scaleBar_,
+            File shapePath_,
+            Dimension size_,
+            SymbolSet symbolSet_,
+            String templatePattern_,
+            Byte units_,
+            Web web_,
+            Include include_,
+            ArrayList<OutputFormat> out_) {
+
         this.logger = Logger.getLogger(this.getClass().getName());
         id = "" + System.identityHashCode(this);
         extent = extent_;
@@ -255,22 +286,22 @@ public class Map extends MapServerObject implements java.io.Serializable {
         imageColor = imageColor_;
         imageQuality = imageQuality_;
         imageType = imageType_;
-        interlace = Map.ON;
+        interlace = null;
         layers = null;
         legend = legend_;
         name = name_;
         projection = projection_;
         queryMap = queryMap_;
         referenceMap = referenceMap_;
-        resolution = 72;
+        resolution = null;
         scale = scale_;
         scaleBar = scaleBar_;
         shapePath = shapePath_;
         size = size_;
-        status = Map.ON;
+        status = null;
         symbolSet = symbolSet_;
         symbols = new ArrayList<Symbol>();
-        transparent = Map.OFF;
+        transparent = null;
         units = units_;
         web = web_;
         include = include_;
@@ -290,15 +321,15 @@ public class Map extends MapServerObject implements java.io.Serializable {
         imageColor = imageColor_;
     }
 
-    public void setImageQuality(int imageQuality_) {
+    public void setImageQuality(Integer imageQuality_) {
         imageQuality = imageQuality_;
     }
 
-    public void setImageType(byte imageType_) {
+    public void setImageType(Byte imageType_) {
         imageType = imageType_;
     }
 
-    public void setInterlace(byte interlace_) {
+    public void setInterlace(Byte interlace_) {
         interlace = interlace_;
     }
 
@@ -326,11 +357,11 @@ public class Map extends MapServerObject implements java.io.Serializable {
         referenceMap = referenceMap_;
     }
 
-    public void setResolution(int resolution_) {
+    public void setResolution(Integer resolution_) {
         resolution = resolution_;
     }
 
-    public void setScale(double scale_) {
+    public void setScale(Double scale_) {
         scale = scale_;
     }
 
@@ -346,7 +377,7 @@ public class Map extends MapServerObject implements java.io.Serializable {
         size = size_;
     }
 
-    public void setStatus(byte status_) {
+    public void setStatus(Byte status_) {
         status = status_;
     }
 
@@ -358,11 +389,11 @@ public class Map extends MapServerObject implements java.io.Serializable {
         symbols = symbols_;
     }
 
-    public void setTransparent(byte transparent_) {
+    public void setTransparent(Byte transparent_) {
         transparent = transparent_;
     }
 
-    public void setUnits(byte units_) {
+    public void setUnits(Byte units_) {
         units = units_;
     }
 
@@ -377,7 +408,7 @@ public class Map extends MapServerObject implements java.io.Serializable {
         outputFormat = out_;
     }
     /** add the given object to the arrayList of OutputFormat objects
-     * 
+     *
      * @param out_
      */
     public void setOutputFormat(OutputFormat out_) {
@@ -477,17 +508,17 @@ public class Map extends MapServerObject implements java.io.Serializable {
         return imageColor;
     }
 
-    public int getImageQuality() {
+    public Integer getImageQuality() {
         return imageQuality;
     }
 
-    public byte getImageType() {
+    public Byte getImageType() {
         return imageType;
     }
-    
+
     public String getImageTypeAsString() {
         String imageTypeAsString = null;
-        switch (imageType) {
+        switch (imageType.intValue()) {
             case Map.GIF:
                 imageTypeAsString = "gif";
                 break;
@@ -513,7 +544,7 @@ public class Map extends MapServerObject implements java.io.Serializable {
         return imageTypeAsString;
     }
 
-    public byte getInterlace() {
+    public Byte getInterlace() {
         return interlace;
     }
 
@@ -558,11 +589,11 @@ public class Map extends MapServerObject implements java.io.Serializable {
         return referenceMap;
     }
 
-    public int getResolution() {
+    public Integer getResolution() {
         return resolution;
     }
 
-    public double getScale() {
+    public Double getScale() {
         return scale;
     }
 
@@ -578,7 +609,7 @@ public class Map extends MapServerObject implements java.io.Serializable {
         return size;
     }
 
-    public byte getStatus() {
+    public Byte getStatus() {
         return status;
     }
 
@@ -590,11 +621,11 @@ public class Map extends MapServerObject implements java.io.Serializable {
         return symbols;
     }
 
-    public byte getTransparent() {
+    public Byte getTransparent() {
         return transparent;
     }
 
-    public byte getUnits() {
+    public Byte getUnits() {
         return units;
     }
 
@@ -725,7 +756,7 @@ public class Map extends MapServerObject implements java.io.Serializable {
                         MapServerObject.setErrorMessage("Map.load: Invalid syntax for IMAGEQUALITY: " + line);
                         return false;
                     }
-                    imageQuality = Integer.parseInt(ConversionUtilities.getValueFromMapfileLine(line));
+                    imageQuality = new Integer(Integer.parseInt(ConversionUtilities.getValueFromMapfileLine(line)));
                 } else if (tokens[0].equalsIgnoreCase("IMAGETYPE")) {
                     if (tokens.length < 2) {
                         MapServerObject.setErrorMessage("Map.load: Invalid syntax for IMAGETYPE: " + line);
@@ -733,17 +764,17 @@ public class Map extends MapServerObject implements java.io.Serializable {
                     }
                     tokens[1] = ConversionUtilities.removeDoubleQuotes(tokens[1]);
                     if (tokens[1].equalsIgnoreCase("GIF")) {
-                        imageType = Map.GIF;
+                        imageType = new Byte(Map.GIF);
                     } else if (tokens[1].equalsIgnoreCase("PNG")) {
-                        imageType = Map.PNG;
+                        imageType = new Byte(Map.PNG);
                     } else if (tokens[1].equalsIgnoreCase("JPEG")) {
-                        imageType = Map.JPEG;
+                        imageType = new Byte(Map.JPEG);
                     } else if (tokens[1].equalsIgnoreCase("WBMP")) {
-                        imageType = Map.WBMP;
+                        imageType = new Byte(Map.WBMP);
                     } else if (tokens[1].equalsIgnoreCase("GTIFF")) {
-                        imageType = Map.GTIFF;
+                        imageType = new Byte(Map.GTIFF);
                     } else if (tokens[1].equalsIgnoreCase("SWF")) {
-                        imageType = Map.SWF;
+                        imageType = new Byte(Map.SWF);
                     } else {
                         // a user defined type
                         userDefinedType = ConversionUtilities.getValueFromMapfileLine(line);
@@ -755,9 +786,9 @@ public class Map extends MapServerObject implements java.io.Serializable {
                     }
                     tokens[1] = ConversionUtilities.removeDoubleQuotes(tokens[1]);
                     if (tokens[1].equalsIgnoreCase("ON")) {
-                        interlace = Map.ON;
+                        interlace = new Byte(Map.ON);
                     } else if (tokens[1].equalsIgnoreCase("OFF")) {
-                        interlace = Map.OFF;
+                        interlace = new Byte(Map.OFF);
                     } else {
                         MapServerObject.setErrorMessage("Map.load: Invalid INTERLACE value: " + tokens[1]);
                         return false;
@@ -767,8 +798,8 @@ public class Map extends MapServerObject implements java.io.Serializable {
                         MapServerObject.setErrorMessage("Map.load: Invalid syntax for MAXSIZE: " + line);
                         return false;
                     }
-                    maxSize = Integer.parseInt(
-                            ConversionUtilities.getValueFromMapfileLine(line));
+                    maxSize = new Integer(Integer.parseInt(
+                            ConversionUtilities.getValueFromMapfileLine(line)));
                 } else if (tokens[0].equalsIgnoreCase("NAME")) {
                     if (tokens.length < 2) {
                         MapServerObject.setErrorMessage("Map.load: Invalid syntax for NAME: " + line);
@@ -780,13 +811,13 @@ public class Map extends MapServerObject implements java.io.Serializable {
                         MapServerObject.setErrorMessage("Map.load: Invalid syntax for RESOLUTION: " + line);
                         return false;
                     }
-                    resolution = Integer.parseInt(ConversionUtilities.getValueFromMapfileLine(line));
+                    resolution = new Integer(ConversionUtilities.getValueFromMapfileLine(line));
                 } else if (tokens[0].equalsIgnoreCase("SCALE")) {
                     if (tokens.length < 2) {
                         MapServerObject.setErrorMessage("Map.load: Invalid syntax for SCALE: " + line);
                         return false;
                     }
-                    scale = Double.parseDouble(ConversionUtilities.getValueFromMapfileLine(line));
+                    scale = new Double(ConversionUtilities.getValueFromMapfileLine(line));
                 } else if (tokens[0].equalsIgnoreCase("SHAPEPATH")) {
                     if (tokens.length < 2) {
                         MapServerObject.setErrorMessage("Map.load: Invalid syntax for SHAPEPATH: " + line);
@@ -810,9 +841,9 @@ public class Map extends MapServerObject implements java.io.Serializable {
                     }
                     tokens[1] = ConversionUtilities.removeDoubleQuotes(tokens[1]);
                     if (tokens[1].equalsIgnoreCase("ON")) {
-                        status = Map.ON;
+                        status = new Byte(Map.ON);
                     } else if (tokens[1].equalsIgnoreCase("OFF")) {
-                        status = Map.OFF;
+                        status = new Byte(Map.OFF);
                     } else {
                         MapServerObject.setErrorMessage("Map.load: Invalid STATUS value: " + tokens[1]);
                         return false;
@@ -830,9 +861,9 @@ public class Map extends MapServerObject implements java.io.Serializable {
                     }
                     tokens[1] = ConversionUtilities.removeDoubleQuotes(tokens[1]);
                     if (tokens[1].equalsIgnoreCase("ON")) {
-                        transparent = Map.ON;
+                        transparent = new Byte(Map.ON);
                     } else if (tokens[1].equalsIgnoreCase("OFF")) {
-                        transparent = Map.OFF;
+                        transparent = new Byte(Map.OFF);
                     } else {
                         MapServerObject.setErrorMessage("Map.load: Invalid TRANSPARENT value: " + line);
                         return false;
@@ -844,17 +875,17 @@ public class Map extends MapServerObject implements java.io.Serializable {
                     }
                     tokens[1] = ConversionUtilities.removeDoubleQuotes(tokens[1]);
                     if (tokens[1].equalsIgnoreCase("FEET")) {
-                        units = Map.FEET;
+                        units = new Byte(Map.FEET);
                     } else if (tokens[1].equalsIgnoreCase("INCHES")) {
-                        units = Map.INCHES;
+                        units = new Byte(Map.INCHES);
                     } else if (tokens[1].equalsIgnoreCase("KILOMETERS")) {
-                        units = Map.KILOMETERS;
+                        units = new Byte(Map.KILOMETERS);
                     } else if (tokens[1].equalsIgnoreCase("METERS")) {
-                        units = Map.METERS;
+                        units = new Byte(Map.METERS);
                     } else if (tokens[1].equalsIgnoreCase("MILES")) {
-                        units = Map.MILES;
+                        units = new Byte(Map.MILES);
                     } else if (tokens[1].equalsIgnoreCase("DD")) {
-                        units = Map.DD;
+                        units = new Byte(Map.DD);
                     } else {
                         MapServerObject.setErrorMessage("Map.load: Invalid UNITS value: " + line);
                         return false;
@@ -981,13 +1012,13 @@ public class Map extends MapServerObject implements java.io.Serializable {
                 bw.write("\t imagecolor ");
                 imageColor.saveAsMapFile(bw);
             }
-            if (imageQuality > 0) {
-                bw.write("\t imagequality " + imageQuality + "\n");
+            if (imageQuality != null) {
+                bw.write("\t imagequality " + imageQuality.toString() + "\n");
             }
             if (userDefinedType != null) {
                 bw.write("\t imagetype " + userDefinedType + "\n");
-            } else {
-                switch (imageType) {
+            } else if (imageType != null) {
+                switch (imageType.intValue()) {
                     case GIF:
                         bw.write("\t imagetype GIF\n");
                         break;
@@ -1008,22 +1039,24 @@ public class Map extends MapServerObject implements java.io.Serializable {
                         break;
                 }
             }
-            switch (interlace) {
-                case ON:
-                    bw.write("\t interlace ON\n");
-                    break;
-                case OFF:
-                    bw.write("\t interlace OFF\n");
-                    break;
+            if (interlace != null) {
+                switch (interlace.byteValue()) {
+                    case ON:
+                        bw.write("\t interlace ON\n");
+                        break;
+                    case OFF:
+                        bw.write("\t interlace OFF\n");
+                        break;
+                }
             }
             if (maxSize != null) {
                 bw.write("\t maxsize " + maxSize.toString() + "\n");
             }
-            if (resolution != 72) {
-                bw.write("\t resolution " + resolution + "\n");
+            if (resolution != null) {
+                bw.write("\t resolution " + resolution.toString() + "\n");
             }
-            if (scale > 0) {
-                bw.write("\t scale " + scale + "\n");
+            if (scale != null) {
+                bw.write("\t scale " + scale.toString() + "\n");
             }
             if (shapePath != null) {
                 bw.write("\t shapepath " + ConversionUtilities.quotes(shapePath.getPath()) + "\n");
@@ -1031,13 +1064,15 @@ public class Map extends MapServerObject implements java.io.Serializable {
             if (size != null) {
                 bw.write("\t size " + size.width + " " + size.height + "\n");
             }
-            switch (status) {
-                case ON:
-                    bw.write("\t status ON\n");
-                    break;
-                case OFF:
-                    bw.write("\t status OFF\n");
-                    break;
+            if (status != null) {
+                switch (status.byteValue()) {
+                    case ON:
+                        bw.write("\t status ON\n");
+                        break;
+                    case OFF:
+                        bw.write("\t status OFF\n");
+                        break;
+                }
             }
             if (symbolSet != null && symbolSet.getSymbolSetFile() != null) {
                 if (this.getIgnoreLinkedFiles()) {
@@ -1051,33 +1086,37 @@ public class Map extends MapServerObject implements java.io.Serializable {
                     }
                 }
             }
-            switch (transparent) {
-                case ON:
-                    bw.write("\t transparent ON\n");
-                    break;
-                case OFF:
-                    bw.write("\t transparent OFF\n");
-                    break;
+            if (transparent != null) {
+                switch (transparent.byteValue()) {
+                    case ON:
+                        bw.write("\t transparent ON\n");
+                        break;
+                    case OFF:
+                        bw.write("\t transparent OFF\n");
+                        break;
+                }
             }
-            switch (units) {
-                case FEET:
-                    bw.write("\t units FEET\n");
-                    break;
-                case INCHES:
-                    bw.write("\t units INCHES\n");
-                    break;
-                case KILOMETERS:
-                    bw.write("\t units KILOMETERS\n");
-                    break;
-                case METERS:
-                    bw.write("\t units METERS\n");
-                    break;
-                case MILES:
-                    bw.write("\t units MILES\n");
-                    break;
-                case DD:
-                    bw.write("\t units DD\n");
-                    break;
+            if (units != null) {
+                switch (units.byteValue()) {
+                    case FEET:
+                        bw.write("\t units FEET\n");
+                        break;
+                    case INCHES:
+                        bw.write("\t units INCHES\n");
+                        break;
+                    case KILOMETERS:
+                        bw.write("\t units KILOMETERS\n");
+                        break;
+                    case METERS:
+                        bw.write("\t units METERS\n");
+                        break;
+                    case MILES:
+                        bw.write("\t units MILES\n");
+                        break;
+                    case DD:
+                        bw.write("\t units DD\n");
+                        break;
+                }
             }
             if (legend != null) {
                 legend.saveAsMapFile(bw);
@@ -1141,7 +1180,7 @@ public class Map extends MapServerObject implements java.io.Serializable {
                 buffer.append("\n* MAP imagecolor = ").append(imageColor.toString());
             }
             buffer.append("\n* MAP imageType  = ").append(imageType);
-            buffer.append("\n* MAP imageQuality = ").append(imageQuality);
+            buffer.append("\n* MAP imageQuality = ").append(imageQuality.toString());
             if (name != null) {
                 buffer.append("\n* MAP name       = ").append(name);
             }
