@@ -320,7 +320,7 @@ public class ReferenceMap extends MapServerObject implements java.io.Serializabl
                 extent.saveAsMapFile(bw);
             }
             if (image != null) {
-                bw.write("\t\t\t image " + ConversionUtilities.quotes(image.getPath().replace('\\', '/')) + "\n");
+                bw.write("\t\t\t image " + ConversionUtilities.quotesIfNeeded(image.getPath().replace('\\', '/')) + "\n");
             }
             if (outlineColor != null) {
                 bw.write("\t\t\t outlinecolor ");

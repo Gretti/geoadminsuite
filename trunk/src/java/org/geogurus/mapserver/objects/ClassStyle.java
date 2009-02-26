@@ -229,13 +229,13 @@ public class ClassStyle extends MapServerObject implements java.io.Serializable 
                         MapServerObject.setErrorMessage("ClassStyle.load: Invalid syntax for SYMBOL: " + line);
                         return false;
                     }
-                    sizeItem = ConversionUtilities.getValueFromMapfileLine(line);
+                    symbol = ConversionUtilities.getValueFromMapfileLine(line);
                 } else if (tokens[0].equalsIgnoreCase("WIDTH")) {
                     if (tokens.length < 2) {
                         MapServerObject.setErrorMessage("ClassStyle.load: Invalid syntax for WIDTH: " + line);
                         return false;
                     }
-                    size = new Integer(ConversionUtilities.getValueFromMapfileLine(line));
+                    width = new Integer(ConversionUtilities.getValueFromMapfileLine(line));
                 } else if (tokens[0].equalsIgnoreCase("END")) {
                     return true;
                 } else {
@@ -300,10 +300,10 @@ public class ClassStyle extends MapServerObject implements java.io.Serializable 
                 bw.write("\t\t\t size " + size.toString()+ "\n");
             }
             if (sizeItem != null) {
-                bw.write("\t\t\t sizeitem " + sizeItem + "\n");
+                bw.write("\t\t\t sizeitem " + ConversionUtilities.quotesIfNeeded(sizeItem) + "\n");
             }
             if (symbol != null) {
-                bw.write("\t\t\t symbol " + symbol + "\n");
+                bw.write("\t\t\t symbol " + ConversionUtilities.quotesIfNeeded(symbol) + "\n");
             }
             if (width != null) {
                 bw.write("\t\t\t width " + width.toString() + "\n");

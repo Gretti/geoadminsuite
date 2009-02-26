@@ -163,15 +163,15 @@ public class Layer extends MapServerObject implements java.io.Serializable {
      * have been drawn. Default is on. Label overlap removal, auto placement
      * etc... are only available when the label cache is active.
      */
-    private byte labelCache;
+    private Byte labelCache;
     /**
      * Item name in attribute table to use for class annotation (i.e. labeling).
      */
     private String labelItem;
     /** Maximum scale at which the layer is labeled. */
-    private double labelMaxScale;
+    private Double labelMaxScale;
     /** Minimum scale at which the layer is labeled. */
-    private double labelMinScale;
+    private Double labelMinScale;
     /**
      * Sets context for labeling this layer, for example: LABELREQUIRES
      * ([orthoquads] != 1) means that this layer would NOT be labeled if a layer
@@ -191,9 +191,9 @@ public class Layer extends MapServerObject implements java.io.Serializable {
      * the CURRENT window. Has some interesting uses with annotation and with
      * sorted data (i.e. lakes by area).
      */
-    private int maxFeatures;
+    private Integer maxFeatures;
     /** Maximum scale at which this layer is drawn. */
-    private double maxScale;
+    private Double maxScale;
     /**
      * This keyword allows for arbitrary data to be stored as name value pairs.
      * This is used with OGC WMS to define things such as layer title. It can
@@ -203,7 +203,7 @@ public class Layer extends MapServerObject implements java.io.Serializable {
      */
     private MetaData metaData;
     /** Minimum scale at which this layer is drawn */
-    private double minScale;
+    private Double minScale;
     /**
      * Short name for this layer. Limit is 20 characters. This name is the link
      * between the mapfile and web interfaces that refer to this name. They must
@@ -221,7 +221,7 @@ public class Layer extends MapServerObject implements java.io.Serializable {
      * Tells MapServer to render this layer after all labels in the cache have
      * been drawn. Useful for adding neatlines and similar elements.
      */
-    private boolean postLabelCache;
+    private Boolean postLabelCache;
     /**
      * 
      *Passes a processing directive to be used with this layer. The supported
@@ -247,12 +247,12 @@ public class Layer extends MapServerObject implements java.io.Serializable {
      * Sets the unit of CLASS object SIZE values (default is pixels). Usefull
      * for simulating buffering.
      */
-    private byte sizeUnits;
+    private Byte sizeUnits;
     /**
      * Sets the current status of the layer. Often modified by MapServer itself.
      * Default turns the layer on permanently.
      */
-    private byte status;
+    private Byte status;
     /**
      * Item to use for feature specific styling. This is *very* experimental and
      * OGR only at the moment.
@@ -264,7 +264,7 @@ public class Layer extends MapServerObject implements java.io.Serializable {
      * this layer will always appear at the same size. Scaling only takes place
      * within the limits of MINSIZE and MAXSIZE as described above.
      */
-    private double symbolScale;
+    private Double symbolScale;
     /** Used as a global alternative to CLASS TEMPLATE */
     private String template;
     /**
@@ -287,9 +287,9 @@ public class Layer extends MapServerObject implements java.io.Serializable {
      * restrict polygon searches so that the point must occur in the polygon set
      * the tolerance to zero.
      */
-    private double tolerance;
+    private Double tolerance;
     /** Units of the TOLERANCE value. Default is pixels. */
-    private byte toleranceUnits;
+    private Byte toleranceUnits;
     /**
      * Tells MapServer whether or not a particular layer needs to be transformed
      * from some coordinate system to image coordinates. Default is true. This
@@ -299,7 +299,7 @@ public class Layer extends MapServerObject implements java.io.Serializable {
      * that the graphics coordinate system has an origin in the upper left hand
      * corner of the image, contrary to most map coordinate systems.
      */
-    private boolean transform;
+    private Boolean transform;
     /**
      * Sets the transparency level of all classed pixels for a given layer. The
      * value can either be an integer in the range (0-100) or the named symbol
@@ -311,9 +311,9 @@ public class Layer extends MapServerObject implements java.io.Serializable {
      * output formats, and should be used only when necessary as it is expensive
      * to render transparent pixmap symbols onto an RGB map image.
      */
-    private int transparency;
+    private Integer transparency;
     /** true if transparency is set to "alpha" keyword. */
-    private boolean isAlphaTransparency;
+    private Boolean isAlphaTransparency;
     /**
      * Specifies how the data should be drawn. Need not be the same as the
      * shapefile type. For example, a polygon shapefile may be drawn as a point
@@ -337,7 +337,7 @@ public class Layer extends MapServerObject implements java.io.Serializable {
      * points that define the smallest square that can contain it. These 2
      * points are the two opposite corners of said box.
      */
-    private byte type;
+    private Byte type;
 
     /**
      * Not documented... apparently used to return OWS layer units
@@ -347,17 +347,17 @@ public class Layer extends MapServerObject implements java.io.Serializable {
 
     /** Empty constructor */
     public Layer() {
-        this(null, LOCAL, null, null, null, null, null, 0, 0, 0, 0, 0, null,
-                null, null, 0, null, null, 100);
+        this(null, LOCAL, null, null, null, null, null, null, null, null, null, null, null,
+                null, null, null, null, null, null);
     }
 
     /** Creates a new instance of Layer */
     public Layer(String connection_, MsLayer connectionType_, Boolean dump_,
             Boolean debug_, String data_, Feature feature_, Grid grid_,
-            double labelMaxScale_, double labelMinScale_, int maxFeatures_,
-            double maxScale_, double minScale_, String name_,
-            Projection projection_, String processing_, double symbolScale_,
-            File tileIndex_, String tileItem_, int transparency_) {
+            Double labelMaxScale_, Double labelMinScale_, Integer maxFeatures_,
+            Double maxScale_, Double minScale_, String name_,
+            Projection projection_, String processing_, Double symbolScale_,
+            File tileIndex_, String tileItem_, Integer transparency_) {
         this.logger = Logger.getLogger(this.getClass().getName());
         classes = null;
         feature = null;
@@ -375,7 +375,7 @@ public class Layer extends MapServerObject implements java.io.Serializable {
         group = null;
         header = null;
         labelAngleItem = null;
-        labelCache = Layer.ON;
+        labelCache = null;
         labelItem = null;
         labelMaxScale = labelMaxScale_;
         labelMinScale = labelMinScale_;
@@ -391,15 +391,15 @@ public class Layer extends MapServerObject implements java.io.Serializable {
         projection = projection_;
         processing = processing_;
         requires = null;
-        sizeUnits = Layer.PIXELS;
-        status = Layer.DEFAULT;
+        sizeUnits = null;
+        status = null;
         styleItem = null;
         symbolScale = symbolScale_;
         template = null;
         tileIndex = tileIndex_;
         tileItem = tileItem_;
-        tolerance = 3;
-        toleranceUnits = Layer.PIXELS;
+        tolerance = null;
+        toleranceUnits = null;
         transform = true;
         type = NONE;
         transparency = transparency_;
@@ -618,7 +618,7 @@ public class Layer extends MapServerObject implements java.io.Serializable {
         labelAngleItem = labelAngleItem_;
     }
 
-    public void setLabelCache(byte labelCache_) {
+    public void setLabelCache(Byte labelCache_) {
         labelCache = labelCache_;
     }
 
@@ -626,11 +626,11 @@ public class Layer extends MapServerObject implements java.io.Serializable {
         labelItem = labelItem_;
     }
 
-    public void setLabelMaxScale(double labelMaxScale_) {
+    public void setLabelMaxScale(Double labelMaxScale_) {
         labelMaxScale = labelMaxScale_;
     }
 
-    public void setLabelMinScale(double labelMinScale_) {
+    public void setLabelMinScale(Double labelMinScale_) {
         labelMinScale = labelMinScale_;
     }
 
@@ -646,11 +646,11 @@ public class Layer extends MapServerObject implements java.io.Serializable {
         classes = classes_;
     }
 
-    public void setMaxFeatures(int maxFeatures_) {
+    public void setMaxFeatures(Integer maxFeatures_) {
         maxFeatures = maxFeatures_;
     }
 
-    public void setMaxScale(double maxScale_) {
+    public void setMaxScale(Double maxScale_) {
         maxScale = maxScale_;
     }
 
@@ -658,7 +658,7 @@ public class Layer extends MapServerObject implements java.io.Serializable {
         metaData = metaData_;
     }
 
-    public void setMinScale(double minScale_) {
+    public void setMinScale(Double minScale_) {
         minScale = minScale_;
     }
 
@@ -670,7 +670,7 @@ public class Layer extends MapServerObject implements java.io.Serializable {
         offSite = offSite_;
     }
 
-    public void setPostLabelCache(boolean postLabelCache_) {
+    public void setPostLabelCache(Boolean postLabelCache_) {
         postLabelCache = postLabelCache_;
     }
 
@@ -682,11 +682,11 @@ public class Layer extends MapServerObject implements java.io.Serializable {
         requires = requires_;
     }
 
-    public void setSizeUnits(byte sizeUnits_) {
+    public void setSizeUnits(Byte sizeUnits_) {
         sizeUnits = sizeUnits_;
     }
 
-    public void setStatus(byte status_) {
+    public void setStatus(Byte status_) {
         status = status_;
     }
 
@@ -694,7 +694,7 @@ public class Layer extends MapServerObject implements java.io.Serializable {
         styleItem = styleItem_;
     }
 
-    public void setSymbolScale(double symbolScale_) {
+    public void setSymbolScale(Double symbolScale_) {
         symbolScale = symbolScale_;
     }
 
@@ -710,23 +710,23 @@ public class Layer extends MapServerObject implements java.io.Serializable {
         tileItem = tileItem_;
     }
 
-    public void setTolerance(double tolerance_) {
+    public void setTolerance(Double tolerance_) {
         tolerance = tolerance_;
     }
 
-    public void setToleranceUnit(byte toleranceUnits_) {
+    public void setToleranceUnit(Byte toleranceUnits_) {
         toleranceUnits = toleranceUnits_;
     }
 
-    public void setTransform(boolean transform_) {
+    public void setTransform(Boolean transform_) {
         transform = transform_;
     }
 
-    public void setType(byte type_) {
+    public void setType(Byte type_) {
         type = type_;
     }
 
-    public void setTransparency(int transparency_) {
+    public void setTransparency(Integer transparency_) {
         transparency = transparency_;
     }
 
@@ -802,8 +802,8 @@ public class Layer extends MapServerObject implements java.io.Serializable {
                     }
                     tokens[1] = ConversionUtilities
                             .removeDoubleQuotes(tokens[1]);
-                    MsLayer parsedConnectionType = MsLayer.valueOf(tokens[1]
-                            .toUpperCase());
+                    
+                    MsLayer parsedConnectionType = MsLayer.valueOf(tokens[1].toUpperCase());
                     // if (tokens[1].equalsIgnoreCase("LOCAL")) {
                     // connectionType = LOCAL;
                     // } else if (tokens[1].equalsIgnoreCase("SDE")) {
@@ -1358,23 +1358,23 @@ public class Layer extends MapServerObject implements java.io.Serializable {
             bw.write("\t layer\n");
             if (name != null) {
                 bw
-                        .write("\t\t name " + ConversionUtilities.quotes(name)
+                        .write("\t\t name " + ConversionUtilities.quotesIfNeeded(name)
                                 + "\n");
             }
             if (classItem != null) {
                 bw.write("\t\t classitem "
-                        + ConversionUtilities.quotes(classItem) + "\n");
+                        + ConversionUtilities.quotesIfNeeded(classItem) + "\n");
             }
             if (connection != null) {
                 bw.write("\t\t connection "
-                        + ConversionUtilities.quotes(connection) + "\n");
+                        + ConversionUtilities.quotesIfNeeded(connection) + "\n");
             }
             if (connectionType != LOCAL) {
                 bw.write("\t\t connectionType " + connectionType + "\n");
             }
             if (data != null) {
                 bw
-                        .write("\t\t data " + ConversionUtilities.quotes(data)
+                        .write("\t\t data " + ConversionUtilities.quotesIfNeeded(data)
                                 + "\n");
             }
             if (dump != null) {
@@ -1391,20 +1391,20 @@ public class Layer extends MapServerObject implements java.io.Serializable {
                 feature.saveAsMapFile(bw);
             }
             if (filter != null) {
-                bw.write("\t\t filter " + ConversionUtilities.quotes(filter)
+                bw.write("\t\t filter " + ConversionUtilities.quotesIfNeeded(filter)
                         + "\n");
             }
             if (filterItem != null) {
                 bw.write("\t\t filteritem "
-                        + ConversionUtilities.quotes(filterItem) + "\n");
+                        + ConversionUtilities.quotesIfNeeded(filterItem) + "\n");
             }
             if (footer != null) {
                 bw.write("\t\t footer "
-                        + ConversionUtilities.quotes(footer.getPath().replace(
+                        + ConversionUtilities.quotesIfNeeded(footer.getPath().replace(
                                 '\\', '/')) + "\n");
             }
             if (group != null) {
-                bw.write("\t\t group " + ConversionUtilities.quotes(group)
+                bw.write("\t\t group " + ConversionUtilities.quotesIfNeeded(group)
                         + "\n");
             }
             if (grid != null) {
@@ -1412,29 +1412,31 @@ public class Layer extends MapServerObject implements java.io.Serializable {
             }
             if (header != null) {
                 bw.write("\t\t header "
-                        + ConversionUtilities.quotes(header.getPath().replace(
+                        + ConversionUtilities.quotesIfNeeded(header.getPath().replace(
                                 '\\', '/')) + "\n");
             }
             if (labelAngleItem != null) {
                 bw.write("\t\t labelangleitem "
-                        + ConversionUtilities.quotes(labelAngleItem) + "\n");
+                        + ConversionUtilities.quotesIfNeeded(labelAngleItem) + "\n");
             }
-            switch (labelCache) {
-            case ON:
-                bw.write("\t\t labelcache ON\n");
-                break;
-            case OFF:
-                bw.write("\t\t labelcache OFF\n");
-                break;
+            if (labelCache != null) {
+                switch (labelCache) {
+                case ON:
+                    bw.write("\t\t labelcache ON\n");
+                    break;
+                case OFF:
+                    bw.write("\t\t labelcache OFF\n");
+                    break;
+                }
             }
             if (labelItem != null) {
                 bw.write("\t\t labelitem "
-                        + ConversionUtilities.quotes(labelItem) + "\n");
+                        + ConversionUtilities.quotesIfNeeded(labelItem) + "\n");
             }
-            if (labelMaxScale != 0) {
+            if (labelMaxScale != null) {
                 bw.write("\t\t labelmaxscale " + labelMaxScale + "\n");
             }
-            if (labelMinScale != 0) {
+            if (labelMinScale != null) {
                 bw.write("\t\t labelminscale " + labelMinScale + "\n");
             }
             if (labelRequires != null) {
@@ -1442,15 +1444,15 @@ public class Layer extends MapServerObject implements java.io.Serializable {
             }
             if (labelSizeItem != null) {
                 bw.write("\t\t labelsizeitem "
-                        + ConversionUtilities.quotes(labelSizeItem) + "\n");
+                        + ConversionUtilities.quotesIfNeeded(labelSizeItem) + "\n");
             }
-            if (maxFeatures != -1) {
+            if (maxFeatures != null) {
                 bw.write("\t\t maxfeatures " + maxFeatures + "\n");
             }
-            if (maxScale != 0) {
+            if (maxScale != null) {
                 bw.write("\t\t maxscale " + maxScale + "\n");
             }
-            if (minScale != 0) {
+            if (minScale != null) {
                 bw.write("\t\t minscale " + minScale + "\n");
             }
             if (metaData != null) {
@@ -1459,10 +1461,12 @@ public class Layer extends MapServerObject implements java.io.Serializable {
             if (offSite != null) {
                 bw.write("\t\t offsite " + offSite + "\n");
             }
-            if (postLabelCache == true) {
-                bw.write("\t\t postlabelcache TRUE\n");
-            } else {
-                bw.write("\t\t postlabelcache FALSE\n");
+            if (postLabelCache != null) {
+                if (postLabelCache.booleanValue()) {
+                    bw.write("\t\t postlabelcache TRUE\n");
+                } else {
+                    bw.write("\t\t postlabelcache FALSE\n");
+                }
             }
             if (projection != null) {
                 projection.saveAsMapFile(bw);
@@ -1472,134 +1476,146 @@ public class Layer extends MapServerObject implements java.io.Serializable {
             }
             if (requires != null) {
                 bw.write("\t\t requires "
-                        + ConversionUtilities.quotes(requires) + "\n");
+                        + ConversionUtilities.quotesIfNeeded(requires) + "\n");
             }
-            switch (sizeUnits) {
-            case PIXELS:
-                bw.write("\t\t sizeunits PIXELS\n");
-                break;
-            case FEET:
-                bw.write("\t\t sizeunits FEET\n");
-                break;
-            case INCHES:
-                bw.write("\t\t sizeunits INCHES\n");
-                break;
-            case KILOMETERS:
-                bw.write("\t\t sizeunits KILOMETERS\n");
-                break;
-            case METERS:
-                bw.write("\t\t sizeunits METERS\n");
-                break;
-            case MILES:
-                bw.write("\t\t sizeunits MILES\n");
-                break;
+            if (sizeUnits != null) {
+                switch (sizeUnits.byteValue()) {
+                    case PIXELS:
+                        bw.write("\t\t sizeunits PIXELS\n");
+                        break;
+                    case FEET:
+                        bw.write("\t\t sizeunits FEET\n");
+                        break;
+                    case INCHES:
+                        bw.write("\t\t sizeunits INCHES\n");
+                        break;
+                    case KILOMETERS:
+                        bw.write("\t\t sizeunits KILOMETERS\n");
+                        break;
+                    case METERS:
+                        bw.write("\t\t sizeunits METERS\n");
+                        break;
+                    case MILES:
+                        bw.write("\t\t sizeunits MILES\n");
+                        break;
+                }
             }
-            switch (status) {
-            case ON:
-                bw.write("\t\t status ON\n");
-                break;
-            case OFF:
-                bw.write("\t\t status OFF\n");
-                break;
-            case DEFAULT:
-                bw.write("\t\t status DEFAULT\n");
-                break;
-            default:
-                bw.write("\t\t status DEFAULT\n");
-                break;
+            if (status != null) {
+                switch (status.byteValue()) {
+                    case ON:
+                        bw.write("\t\t status ON\n");
+                        break;
+                    case OFF:
+                        bw.write("\t\t status OFF\n");
+                        break;
+                    case DEFAULT:
+                        bw.write("\t\t status DEFAULT\n");
+                        break;
+                    default:
+                        bw.write("\t\t status DEFAULT\n");
+                        break;
+                }
             }
             if (styleItem != null) {
                 bw.write("\t\t styleitem " + styleItem + "\n");
             }
-            if (symbolScale != 0) {
+            if (symbolScale != null) {
                 bw.write("\t\t symbolscale " + symbolScale + "\n");
             }
             if (template != null) {
                 bw.write("\t\t template "
-                        + ConversionUtilities.quotes(template) + "\n");
+                        + ConversionUtilities.quotesIfNeeded(template) + "\n");
             }
             if (tileIndex != null) {
                 bw.write("\t\t tileindex "
-                        + ConversionUtilities.quotes(tileIndex.getPath()
+                        + ConversionUtilities.quotesIfNeeded(tileIndex.getPath()
                                 .replace('\\', '/')) + "\n");
             }
             if (tileItem != null) {
                 bw.write("\t\t tileitem " + tileItem + "\n");
             }
-            if (tolerance != -1) {
+            if (tolerance != null) {
                 bw.write("\t\t tolerance " + tolerance + "\n");
             }
-            switch (toleranceUnits) {
-            case PIXELS:
-                bw.write("\t\t toleranceunits PIXELS\n");
-                break;
-            case FEET:
-                bw.write("\t\t toleranceunits FEET\n");
-                break;
-            case INCHES:
-                bw.write("\t\t toleranceunits INCHES\n");
-                break;
-            case KILOMETERS:
-                bw.write("\t\t toleranceunits KILOMETERS\n");
-                break;
-            case METERS:
-                bw.write("\t\t toleranceunits METERS\n");
-                break;
-            case MILES:
-                bw.write("\t\t toleranceunits MILES\n");
-                break;
-            case DD:
-                bw.write("\t\t toleranceunits DD\n");
-                break;
+            if (toleranceUnits != null) {
+                switch (toleranceUnits.byteValue()) {
+                    case PIXELS:
+                        bw.write("\t\t toleranceunits PIXELS\n");
+                        break;
+                    case FEET:
+                        bw.write("\t\t toleranceunits FEET\n");
+                        break;
+                    case INCHES:
+                        bw.write("\t\t toleranceunits INCHES\n");
+                        break;
+                    case KILOMETERS:
+                        bw.write("\t\t toleranceunits KILOMETERS\n");
+                        break;
+                    case METERS:
+                        bw.write("\t\t toleranceunits METERS\n");
+                        break;
+                    case MILES:
+                        bw.write("\t\t toleranceunits MILES\n");
+                        break;
+                    case DD:
+                        bw.write("\t\t toleranceunits DD\n");
+                        break;
+                }
             }
-            if (transform == true) {
-                bw.write("\t\t transform TRUE\n");
-            } else {
-                bw.write("\t\t transform FALSE\n");
+            if (transform != null) {
+                if (transform.booleanValue()) {
+                    bw.write("\t\t transform TRUE\n");
+                } else {
+                    bw.write("\t\t transform FALSE\n");
+                }
             }
-            if (isAlphaTransparency) {
-                bw.write("\t\t transparency alpha\n");
-            } else if (transparency != 100) {
-                bw.write("\t\t transparency " + transparency + "\n");
+            if (isAlphaTransparency != null) {
+                if (isAlphaTransparency) {
+                    bw.write("\t\t transparency alpha\n");
+                } else if (transparency != 100) {
+                    bw.write("\t\t transparency " + transparency + "\n");
+                }
             }
-            switch (type) {
-            case POINT:
-                bw.write("\t\t type POINT\n");
-                break;
-            case LINE:
-                bw.write("\t\t type LINE\n");
-                break;
-            // modified NRI to avoid crash in MS 3.6.3
-            case POLYLINE:
-                bw.write("\t\t type LINE\n");
-                break;
-            case POLYGON:
-                bw.write("\t\t type POLYGON\n");
-                break;
-            case ANNOTATION:
-                bw.write("\t\t type ANNOTATION\n");
-                break;
-            case RASTER:
-                bw.write("\t\t type RASTER\n");
-                break;
-            case QUERYONLY:
-                bw.write("\t\t type QUERYONLY\n");
-                break;
-            case POLYLINE_POLYGON:
-                bw.write("\t\t type POLYLINE_POLYGON\n");
-                break;
-            case QUERY:
-                bw.write("\t\t type QUERY\n");
-                break;
-            case CIRCLE:
-                bw.write("\t\t type CIRCLE\n");
-                break;
-            case Layer.CHART:
-                bw.write("\t\t type CHART\n");
-                break;
+            if (type != null) {
+                switch (type.byteValue()) {
+                    case POINT:
+                        bw.write("\t\t type POINT\n");
+                        break;
+                    case LINE:
+                        bw.write("\t\t type LINE\n");
+                        break;
+                    // modified NRI to avoid crash in MS 3.6.3
+                    case POLYLINE:
+                        bw.write("\t\t type LINE\n");
+                        break;
+                    case POLYGON:
+                        bw.write("\t\t type POLYGON\n");
+                        break;
+                    case ANNOTATION:
+                        bw.write("\t\t type ANNOTATION\n");
+                        break;
+                    case RASTER:
+                        bw.write("\t\t type RASTER\n");
+                        break;
+                    case QUERYONLY:
+                        bw.write("\t\t type QUERYONLY\n");
+                        break;
+                    case POLYLINE_POLYGON:
+                        bw.write("\t\t type POLYLINE_POLYGON\n");
+                        break;
+                    case QUERY:
+                        bw.write("\t\t type QUERY\n");
+                        break;
+                    case CIRCLE:
+                        bw.write("\t\t type CIRCLE\n");
+                        break;
+                    case Layer.CHART:
+                        bw.write("\t\t type CHART\n");
+                        break;
+                }
             }
             if (units != null) {
-                switch (units) {
+                switch (units.byteValue()) {
                     case Map.FEET:
                         bw.write("\t\t units FEET\n");
                         break;

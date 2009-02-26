@@ -49,6 +49,19 @@ public class Class extends MapServerObject implements java.io.Serializable {
      */
     private Boolean debug;
     private RGB color;
+    /**
+     *    Four types of expressions are now supported to define class membership. String comparisons, regular expressions, simple logical expressions, and string functions. If no expression is given, then all features are said to belong to this class.
+     *  * String comparisons are case sensitive and are the fastest to evaluate.
+     * No special delimiters are necessary although string must be quoted if they contain special characters. (As a matter of good habit, it is recommended you quote all strings).
+     *  * Regular expressions function just like previous versions of MapServer. However, you must now delimit a regular expression using /regex/. No quotes should be used.
+     *  * Logical expressions allow you to build fairly complex tests based on one or more attributes and therefore are only available with shapefiles. Logical expressions are delimited by parentheses “(expression)”. Attribute names are delimited by square brackets “[ATTRIBUTE]”. These names are case sensitive and must match the items in the shapefile. For example: EXPRESSION ([POPULATION] &gt; 50000 AND ‘[LANGUAGE]’ eq ‘FRENCH’) ... The following logical operators are supported: =,&gt;,&lt;,&lt;=,&gt;=,=,or,and,lt,gt,ge,le,eq,ne. As you might expect this level of complexity is slower to process.
+     *  * One string function exists: length(). This obviously computes the length of a string. An example follows:
+     *        <br/>
+     *
+     *<pre>EXPRESSION (length('[NAME_E]') &lt; 8)</pre><br/>
+     *String comparisons and regular expressions work from the classitem defined at the layer level. You may mix expression types within the different classes of a layer.
+     *
+     */
     private String expression;
     /** Signals the start of a Join Object */
     private Join join;
@@ -413,13 +426,13 @@ public class Class extends MapServerObject implements java.io.Serializable {
                         MapServerObject.setErrorMessage("Class.load: Invalid syntax for MAXSIZE: " + line);
                         return false;
                     }
-                    maxSize = Integer.parseInt(ConversionUtilities.quotes(tokens[1]));
+                    maxSize = Integer.parseInt(ConversionUtilities.quotesIfNeeded(tokens[1]));
                 } else if (tokens[0].equalsIgnoreCase("MINSIZE")) {
                     if (tokens.length < 2) {
                         MapServerObject.setErrorMessage("Class.load: Invalid syntax for MINSIZE: " + line);
                         return false;
                     }
-                    minSize = Integer.parseInt(ConversionUtilities.quotes(tokens[1]));
+                    minSize = Integer.parseInt(ConversionUtilities.quotesIfNeeded(tokens[1]));
                 } else if (tokens[0].equalsIgnoreCase("NAME")) {
                     if (tokens.length < 2) {
                         MapServerObject.setErrorMessage("Class.load: Invalid syntax for NAME: " + line);
@@ -518,7 +531,7 @@ public class Class extends MapServerObject implements java.io.Serializable {
         try {
             bw.write("\t\t class\n");
             if (name != null) {
-                bw.write("\t\t\t name " + ConversionUtilities.quotes(name) + "\n");
+                bw.write("\t\t\t name " + ConversionUtilities.quotesIfNeeded(name) + "\n");
             }
             if (expression != null) {
                 // quotes expression only if it si not a regular expression or logical expression: begins and ends with /
@@ -527,7 +540,7 @@ public class Class extends MapServerObject implements java.io.Serializable {
                         (expression.charAt(0) == '(' && expression.charAt(expression.length() - 1) == ')'))) {
                     bw.write("\t\t\t expression " + expression + "\n");
                 } else {
-                    bw.write("\t\t\t expression " + ConversionUtilities.quotes(expression) + "\n");
+                    bw.write("\t\t\t expression " + ConversionUtilities.quotesIfNeeded(expression) + "\n");
                 }
             }
             if (backgroundColor != null) {
@@ -539,7 +552,7 @@ public class Class extends MapServerObject implements java.io.Serializable {
                 bw.write("\t\t\t debug " + deb + "\n");
             }
             if (getKeyImage() != null) {
-                bw.write("\t keyimage " + ConversionUtilities.quotes(getKeyImage().getPath()) + "\n");
+                bw.write("\t keyimage " + ConversionUtilities.quotesIfNeeded(getKeyImage().getPath()) + "\n");
             }
             if (color != null) {
                 bw.write("\t\t\t color ");
@@ -550,7 +563,7 @@ public class Class extends MapServerObject implements java.io.Serializable {
                 outlineColor.saveAsMapFile(bw);
             }
             if (symbol != null) {
-                bw.write("\t\t\t symbol " + ConversionUtilities.quotes(symbol) + "\n");
+                bw.write("\t\t\t symbol " + ConversionUtilities.quotesIfNeeded(symbol) + "\n");
             }
             if (size > 0) {
                 bw.write("\t\t\t size " + size + "\n");
@@ -579,7 +592,7 @@ public class Class extends MapServerObject implements java.io.Serializable {
                 overlayOutlineColor.saveAsMapFile(bw);
             }
             if (overlaySymbol != null) {
-                bw.write("\t\t\t overlaysymbol " + ConversionUtilities.quotes(overlaySymbol) + "\n");
+                bw.write("\t\t\t overlaysymbol " + ConversionUtilities.quotesIfNeeded(overlaySymbol) + "\n");
             }
             if (overlaySize > 0) {
                 bw.write("\t\t\t overlaysize " + overlaySize + "\n");
@@ -591,10 +604,10 @@ public class Class extends MapServerObject implements java.io.Serializable {
                 bw.write("\t\t\t overlaymaxsize " + overlayMaxSize + "\n");
             }
             if (template != null) {
-                bw.write("\t\t template " + ConversionUtilities.quotes(template.getPath().replace('\\', '/')) + "\n");
+                bw.write("\t\t template " + ConversionUtilities.quotesIfNeeded(template.getPath().replace('\\', '/')) + "\n");
             }
             if (text != null) {
-                bw.write("\t\t text " + ConversionUtilities.quotes(text) + "\n");
+                bw.write("\t\t text " + ConversionUtilities.quotesIfNeeded(text) + "\n");
             }
             if (label != null) {
                 label.saveAsMapFile(bw);

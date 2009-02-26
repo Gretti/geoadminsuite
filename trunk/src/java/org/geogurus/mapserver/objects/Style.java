@@ -45,7 +45,7 @@ public class Style extends java.util.ArrayList  implements java.io.Serializable 
     /** Loads data from file
      * and fill Object parameters with.
      * @param br BufferReader containing file data to read
-     * @return true is mapping done correctly
+     * @return true if mapping done correctly
      */
     public boolean load(String[] tokens, BufferedReader br) {
         try {
