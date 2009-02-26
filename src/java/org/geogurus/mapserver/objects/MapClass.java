@@ -224,11 +224,11 @@ public class MapClass extends MapServerObject implements java.io.Serializable {
                 }
                 else if (tokens[0].equalsIgnoreCase("MAXSIZE")) {
                     if (tokens.length<2) return false;
-                    maxSize = Integer.parseInt(ConversionUtilities.quotes(tokens[1]));
+                    maxSize = Integer.parseInt(ConversionUtilities.quotesIfNeeded(tokens[1]));
                 }
                 else if (tokens[0].equalsIgnoreCase("MINSIZE")) {
                     if (tokens.length<2) return false;
-                    minSize = Integer.parseInt(ConversionUtilities.quotes(tokens[1]));
+                    minSize = Integer.parseInt(ConversionUtilities.quotesIfNeeded(tokens[1]));
                 }
                 else if (tokens[0].equalsIgnoreCase("NAME")) {
                     if (tokens.length<2) return false;
@@ -307,7 +307,7 @@ public class MapClass extends MapServerObject implements java.io.Serializable {
         boolean result = true;
         try {
             bw.write("\t\t class\n");
-            if (name!=null)             bw.write("\t\t\t name "+ConversionUtilities.quotes(name)+"\n");
+            if (name!=null)             bw.write("\t\t\t name "+ConversionUtilities.quotesIfNeeded(name)+"\n");
             if (expression!=null) {
                 // quotes expression only if it si not a regular expression or logical expression: begins and ends with /
                 // or begin and ends with ()
@@ -315,7 +315,7 @@ public class MapClass extends MapServerObject implements java.io.Serializable {
                                                  (expression.charAt(0) == '(' && expression.charAt(expression.length()-1) == ')'))) {
                     bw.write("\t\t\t expression "+ expression+"\n");
                 } else {
-                    bw.write("\t\t\t expression "+ConversionUtilities.quotes(expression)+"\n");
+                    bw.write("\t\t\t expression "+ConversionUtilities.quotesIfNeeded(expression)+"\n");
                 }
             }
             if (backgroundColor!=null) {
@@ -331,7 +331,7 @@ public class MapClass extends MapServerObject implements java.io.Serializable {
                 outlineColor.saveAsMapFile(bw);
             }
             if (symbol != null) {
-                bw.write("\t\t\t symbol "+ConversionUtilities.quotes(symbol)+"\n");
+                bw.write("\t\t\t symbol "+ConversionUtilities.quotesIfNeeded(symbol)+"\n");
             }   
             if (size > 0) {
                 bw.write("\t\t\t size "+size+"\n");
@@ -355,7 +355,7 @@ public class MapClass extends MapServerObject implements java.io.Serializable {
                 overlayOutlineColor.saveAsMapFile(bw);
             }
             if (overlaySymbol != null) {
-                bw.write("\t\t\t overlaysymbol "+ConversionUtilities.quotes(overlaySymbol)+"\n");
+                bw.write("\t\t\t overlaysymbol "+ConversionUtilities.quotesIfNeeded(overlaySymbol)+"\n");
             }   
             if (overlaySize > 0) {
                 bw.write("\t\t\t overlaysize "+overlaySize+"\n");
@@ -366,8 +366,8 @@ public class MapClass extends MapServerObject implements java.io.Serializable {
             if (overlayMaxSize > 0) {
                 bw.write("\t\t\t overlaymaxsize "+overlayMaxSize+"\n");
             }
-            if (template != null)   bw.write("\t\t template "+ConversionUtilities.quotes(template.getPath().replace('\\','/'))+"\n");
-            if (text != null)   bw.write("\t\t text "+ConversionUtilities.quotes(text)+"\n");            
+            if (template != null)   bw.write("\t\t template "+ConversionUtilities.quotesIfNeeded(template.getPath().replace('\\','/'))+"\n");
+            if (text != null)   bw.write("\t\t text "+ConversionUtilities.quotesIfNeeded(text)+"\n");
             if (label!=null)            label.saveAsMapFile(bw);
             if (join!=null)             join.saveAsMapFile(bw);
             bw.write("\t\t end\n");

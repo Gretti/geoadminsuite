@@ -27,6 +27,7 @@ package org.geogurus.mapserver.objects;
 import java.awt.Dimension;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -569,6 +570,27 @@ public class Map extends MapServerObject implements java.io.Serializable {
         return null;
     }
 
+    /**
+     *
+     * replaces the layer whose name equals the given layer's name with the given
+     * layer
+     * @param layer the layer to replace
+     * @return the replaced layer, or null if given layer
+     */
+    public Layer replaceLayerByName(Layer layer) {
+        Vector<Layer> layers = this.getLayers();
+        if (layers == null || layer == null) {
+            return null;
+        }
+        for (int i = 0; i < layers.size(); i++) {
+            if (layers.get(i).getName().equals(layer.getName())) {
+                layers.set(i, layer);
+                return layer;
+            }
+        }
+        return null;
+    }
+
     public Legend getLegend() {
         return legend;
     }
@@ -987,7 +1009,7 @@ public class Map extends MapServerObject implements java.io.Serializable {
         try {
             bw.write("map\n");
             if (name != null) {
-                bw.write("\t name " + ConversionUtilities.quotes(name) + "\n");
+                bw.write("\t name " + ConversionUtilities.quotesIfNeeded(name) + "\n");
             }
             if (angle != null) {
                 bw.write("\t angle " + angle.toString() + "\n");
@@ -1006,7 +1028,7 @@ public class Map extends MapServerObject implements java.io.Serializable {
                 extent.saveAsMapFile(bw);
             }
             if (fontSet != null) {
-                bw.write("\t fontset " + ConversionUtilities.quotes(fontSet.getPath()) + "\n");
+                bw.write("\t fontset " + ConversionUtilities.quotesIfNeeded(fontSet.getPath()) + "\n");
             }
             if (imageColor != null) {
                 bw.write("\t imagecolor ");
@@ -1059,7 +1081,7 @@ public class Map extends MapServerObject implements java.io.Serializable {
                 bw.write("\t scale " + scale.toString() + "\n");
             }
             if (shapePath != null) {
-                bw.write("\t shapepath " + ConversionUtilities.quotes(shapePath.getPath()) + "\n");
+                bw.write("\t shapepath " + ConversionUtilities.quotesIfNeeded(shapePath.getPath()) + "\n");
             }
             if (size != null) {
                 bw.write("\t size " + size.width + " " + size.height + "\n");
@@ -1078,7 +1100,7 @@ public class Map extends MapServerObject implements java.io.Serializable {
                 if (this.getIgnoreLinkedFiles()) {
                     bw.write("\t symbolset " + symbolSet.getSymbolSetFile().toString() + "\n");
                 } else {
-                    bw.write("\t symbolset " + ConversionUtilities.quotes(symbolSet.getSymbolSetFile().getPath()) + "\n");
+                    bw.write("\t symbolset " + ConversionUtilities.quotesIfNeeded(symbolSet.getSymbolSetFile().getPath()) + "\n");
                     // then writes the symbol file to the disk
                     boolean res = symbolSet.saveAsSymFile();
                     if (!res) {
@@ -1180,7 +1202,7 @@ public class Map extends MapServerObject implements java.io.Serializable {
                 buffer.append("\n* MAP imagecolor = ").append(imageColor.toString());
             }
             buffer.append("\n* MAP imageType  = ").append(imageType);
-            buffer.append("\n* MAP imageQuality = ").append(imageQuality.toString());
+            buffer.append("\n* MAP imageQuality = ").append(imageQuality);
             if (name != null) {
                 buffer.append("\n* MAP name       = ").append(name);
             }

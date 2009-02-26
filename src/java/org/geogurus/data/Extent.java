@@ -298,7 +298,7 @@ public class Extent implements java.io.Serializable  {
     /**
      *
      * Return an extent from a Cartoweb location.conf ini file:
-     * "xmin, ymin, xmax, ymax" (with or without double quotes)
+     * "xmin, ymin, xmax, ymax" (with or without double quotesIfNeeded)
      *
      * @param cw3dStr Cartoweb3 extent string as expected in a location.ini
      *

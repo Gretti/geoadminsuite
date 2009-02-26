@@ -95,9 +95,9 @@ public final class DatabaseDataAccessHelper {
                     ConversionUtilities.quotes(op.getAttributeName()) +
                     " from " + 
                     ConversionUtilities.quotes(schemaName) + "." +
-                    ConversionUtilities.quotes(tableName) + 
+                    ConversionUtilities.quotes(tableName) +
                     " where " + 
-                    ConversionUtilities.quotes(columnName) + 
+                    ConversionUtilities.quotes(columnName) +
                     " is not null";
             ResultSet rs = stmt.executeQuery(query);
             Class cl = null;
@@ -171,13 +171,13 @@ public final class DatabaseDataAccessHelper {
             query = "select min(" + 
                     ConversionUtilities.quotes(classitem) +
                     "), max(" + 
-                    ConversionUtilities.quotes(classitem) + 
+                    ConversionUtilities.quotes(classitem) +
                     ") from " +
-                    ConversionUtilities.quotes(schemaName) + 
+                    ConversionUtilities.quotes(schemaName) +
                     "." + 
-                    ConversionUtilities.quotes(tableName) + 
+                    ConversionUtilities.quotes(tableName) +
                     " where " + 
-                    ConversionUtilities.quotes(columnName) + 
+                    ConversionUtilities.quotes(columnName) +
                     " is not null";
             ResultSet rs = stmt.executeQuery(query);
             if (rs.next()) {

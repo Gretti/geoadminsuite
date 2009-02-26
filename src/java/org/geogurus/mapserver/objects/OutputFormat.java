@@ -240,23 +240,23 @@ public class OutputFormat extends MapServerObject implements java.io.Serializabl
         try {
             bw.write("\t outputformat\n");
             if (getName() != null) {
-                bw.write("\t\t name " + ConversionUtilities.quotes(name) + "\n");
+                bw.write("\t\t name " + ConversionUtilities.quotesIfNeeded(name) + "\n");
             }
             if (getDriver() != null) {
-                bw.write("\t\t driver " + ConversionUtilities.quotes(getDriver()) + "\n");
+                bw.write("\t\t driver " + ConversionUtilities.quotesIfNeeded(getDriver()) + "\n");
             }
             if (getImageMode() != null) {
                 bw.write("\t\t imagemode " + OutputFormat.getImageModeAsString(getImageMode().byteValue()) + "\n");
 
             }
             if (getMimeType() != null) {
-                bw.write("\t\t mimetype " + ConversionUtilities.quotes(getMimeType()) + "\n");
+                bw.write("\t\t mimetype " + ConversionUtilities.quotesIfNeeded(getMimeType()) + "\n");
             }
             if (getExtension() != null) {
-                bw.write("\t\t extension " + ConversionUtilities.quotes(getExtension()) + "\n");
+                bw.write("\t\t extension " + ConversionUtilities.quotesIfNeeded(getExtension()) + "\n");
             }
             if (getFormatOption() != null) {
-                bw.write("\t\t formatoption " + ConversionUtilities.quotes(getFormatOption()) + "\n");
+                bw.write("\t\t formatoption " + ConversionUtilities.quotesIfNeeded(getFormatOption()) + "\n");
             }
             if (isTransparent() != null) {
                 String t = (isTransparent().booleanValue()) ? "ON" : "OFF";

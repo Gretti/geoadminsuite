@@ -94,7 +94,7 @@ public class RasterRegistrarFrame extends javax.swing.JFrame {
     public RasterRegistrarFrame() {
 
 
-        res = ResourceBundle.getBundle("resources/RasterRegistrarFrame") ;
+        res = ResourceBundle.getBundle("../../../../resources/org/geogurus/raster/gui/RasterRegistrarFrame") ;
 
 
         initComponents();
@@ -112,7 +112,7 @@ public class RasterRegistrarFrame extends javax.swing.JFrame {
         } catch (Exception ex) {
 
 
-            System.out.println("Can't display scot icon");
+            System.out.println("Can't display icon");
 
 
         }

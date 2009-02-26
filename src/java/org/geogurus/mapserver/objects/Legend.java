@@ -403,7 +403,7 @@ public class Legend extends MapServerObject implements java.io.Serializable {
                     break;
             }
             if (template != null) {
-                bw.write("\t template " + ConversionUtilities.quotes(template.getPath().replace('\\', '/')) + "\n");
+                bw.write("\t template " + ConversionUtilities.quotesIfNeeded(template.getPath().replace('\\', '/')) + "\n");
             }
             switch (transparent) {
                 case ON:

@@ -214,8 +214,14 @@ public class ConversionUtilities {
                 for (int i = 2; i < tokens.length; i++) {
                     sb.append(" ").append(tokens[i]);
                 }
-            } 
-            return getStringBetweenDoubleQuotes(sb.toString());
+            }
+            //NRI: bug with '("toto" eq "3")' MS expression: should return expression as is,
+            // without extracting between double quotes
+            String s = sb.toString();
+            if (s.charAt(0) == '(' && s.charAt(s.length()-1) == ')') {
+                return s;
+            }
+            return getStringBetweenDoubleQuotes(s);
         }
         
         for (int i = 1; i < tokens.length; i++) {
@@ -237,13 +243,28 @@ public class ConversionUtilities {
    
    /**
     *
+    * Add double quotes to the input String only if needed; ie:
+    * the string is not already simple- or double-quoted.
+    * 
+    *
+    */
+   public static String quotesIfNeeded(String s) {
+       if (s == null) return s;
+       if ((s.startsWith("'") && s.endsWith("'")) || (s.startsWith("'") && s.endsWith("'"))) {
+           return s;
+       }
+       return '"' + s + '"';
+   }
+ 
+   /**
+    *
     * Add double quotes to the input String
     *
     */
    public static String quotes(String s) {
         return '"' + s + '"';
    }
- 
+
     /**
      * Returns an array containing a string entry for each token found in the given string
      * seen as a properties file key where tokens are separated by '.' character.

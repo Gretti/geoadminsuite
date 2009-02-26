@@ -341,7 +341,7 @@ public class Symbol extends MapServerObject implements java.io.Serializable {
         try {
             bw.write("\t symbol\n");
             if (name != null) {
-                bw.write("\t\t name " + name + "\n");
+                bw.write("\t\t name " +  ConversionUtilities.quotesIfNeeded(name) + "\n");
             }
             if (antialias == true) {
                 bw.write("\t\t antialias TRUE\n");
@@ -349,7 +349,7 @@ public class Symbol extends MapServerObject implements java.io.Serializable {
                 bw.write("\t\t antialias FALSE\n");
             }
             if (character != '\n') {
-                bw.write("\t\t character " + ConversionUtilities.quotes(character + "") + "\n");
+                bw.write("\t\t character " + ConversionUtilities.quotesIfNeeded(character + "") + "\n");
             }
             if (filled == true) {
                 bw.write("\t\t filled TRUE\n");
@@ -357,13 +357,13 @@ public class Symbol extends MapServerObject implements java.io.Serializable {
                 bw.write("\t\t filled FALSE\n");
             }
             if (font != null) {
-                bw.write("\t\t font " + ConversionUtilities.quotes(font) + "\n");
+                bw.write("\t\t font " + ConversionUtilities.quotesIfNeeded(font) + "\n");
             }
             if (gap > -1) {
                 bw.write("\t\t gap " + gap + "\n");
             }
             if (image != null) {
-                bw.write("\t\t image " + ConversionUtilities.quotes(image) + "\n");
+                bw.write("\t\t image " + ConversionUtilities.quotesIfNeeded(image) + "\n");
             }
             if (transparent > -1) {
                 bw.write("\t\t transparent " + transparent + "\n");
@@ -404,7 +404,7 @@ public class Symbol extends MapServerObject implements java.io.Serializable {
         try {
             buffer.append("SYMBOL OBJECT ");
             if (name != null) {
-                buffer.append("\n* SYMBOL name           = ").append(name);
+                buffer.append("\n* SYMBOL name           = ").append(ConversionUtilities.quotesIfNeeded(name));
             }
             buffer.append("\n* SYMBOL type           = ").append(type);
             if (points != null) {
