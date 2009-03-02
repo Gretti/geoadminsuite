@@ -19,6 +19,7 @@
 
 package org.geogurus.mapserver;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.geogurus.mapserver.objects.Map;
@@ -103,6 +104,12 @@ public class MapFile extends java.io.File implements java.io.Serializable {
         try {
             java.io.BufferedReader br = new java.io.BufferedReader(new java.io.FileReader(this));
             String line = br.readLine();
+
+            if (line == null){
+                // empty file
+                setMapErrorMessage("empty input file. cannot load: " + this.getAbsolutePath());
+                throw new IOException(this.mapErrorMessage);
+            }
             // Looking for the first util line
             while ((line.trim().equals(""))||(line.trim().startsWith("#"))) line = br.readLine();
             // Gets array of words of the line
