@@ -190,6 +190,9 @@ public class Map extends MapServerObject implements java.io.Serializable {
     /** the user defined image type */
     private String userDefinedType;
 
+    /** used by GUI/JSP page */
+    private String imageTypeAsString;
+
     /** Empty constructor */
     public Map() {
         this(
@@ -518,7 +521,6 @@ public class Map extends MapServerObject implements java.io.Serializable {
     }
 
     public String getImageTypeAsString() {
-        String imageTypeAsString = null;
         switch (imageType.intValue()) {
             case Map.GIF:
                 imageTypeAsString = "gif";

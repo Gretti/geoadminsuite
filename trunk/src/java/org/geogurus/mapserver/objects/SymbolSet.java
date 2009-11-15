@@ -47,7 +47,7 @@ public class SymbolSet extends MapServerObject  implements java.io.Serializable 
     }
     
     /** Creates a new instance of Symbol given a file to write and a list of symbols*/
-    public SymbolSet(File symbolSetFile_, ArrayList alSymbols_) {
+    public SymbolSet(File symbolSetFile_, ArrayList<Symbol> alSymbols_) {
         this.logger = Logger.getLogger(this.getClass().getName());
         symbolSetFile = symbolSetFile_;
         alSymbols = alSymbols_;
@@ -61,10 +61,10 @@ public class SymbolSet extends MapServerObject  implements java.io.Serializable 
     }
     
     public void setSymbolSetFile(File symbolSetFile_)    {symbolSetFile = symbolSetFile_;}
-    public void setArrayListSymbol(ArrayList alSymbols_)       {alSymbols = alSymbols_;}
+    public void setArrayListSymbol(ArrayList<Symbol> alSymbols_)       {alSymbols = alSymbols_;}
     
     public File getSymbolSetFile()          {return symbolSetFile;}
-    public ArrayList getArrayListSymbol()   {return alSymbols;}
+    public ArrayList<Symbol> getArrayListSymbol()   {return alSymbols;}
     
     /** Loads data from object'sfile
      * and fill Object parameters with.
@@ -167,11 +167,15 @@ public class SymbolSet extends MapServerObject  implements java.io.Serializable 
                 if (bwsym == null) {
                     bwsym = new java.io.BufferedWriter(new java.io.FileWriter(symbolSetFile));
                 }
-                Symbol s = null;
-                for (int i = 0 ; i < alSymbols.size(); i++){
-                    s = (Symbol)alSymbols.get(i);
-                    result = s.saveAsMapFile(bwsym);
+                // required for MS >= 5: a symbolset object enclosing all symbols
+                bwsym.write("SYMBOLSET");
+                bwsym.newLine();
+                for (Symbol s : alSymbols){
+                    if (s != null) {
+                        result = s.saveAsMapFile(bwsym);
+                    }
                 }
+                bwsym.write("END");
             }
             if (bwsym != null) {
                 bwsym.flush();

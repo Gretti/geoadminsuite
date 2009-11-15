@@ -20,7 +20,7 @@
 /*
  * UserMapBean.java
  *
- * Created on 6 ao�t 2002, 14:16
+ * Created on 6 aout 2002, 14:16
  */
 package org.geogurus.gas.objects;
 

@@ -458,11 +458,11 @@ public class Layer extends MapServerObject implements java.io.Serializable {
         return labelItem;
     }
 
-    public double getLabelMaxScale() {
+    public Double getLabelMaxScale() {
         return labelMaxScale;
     }
 
-    public double getLabelMinScale() {
+    public Double getLabelMinScale() {
         return labelMinScale;
     }
 
@@ -478,11 +478,11 @@ public class Layer extends MapServerObject implements java.io.Serializable {
         return classes;
     }
 
-    public int getMaxFeatures() {
+    public Integer getMaxFeatures() {
         return maxFeatures;
     }
 
-    public double getMaxScale() {
+    public Double getMaxScale() {
         return maxScale;
     }
 
@@ -490,7 +490,7 @@ public class Layer extends MapServerObject implements java.io.Serializable {
         return metaData;
     }
 
-    public double getMinScale() {
+    public Double getMinScale() {
         return minScale;
     }
 
@@ -526,7 +526,7 @@ public class Layer extends MapServerObject implements java.io.Serializable {
         return styleItem;
     }
 
-    public double getSymbolScale() {
+    public Double getSymbolScale() {
         return symbolScale;
     }
 
@@ -542,7 +542,7 @@ public class Layer extends MapServerObject implements java.io.Serializable {
         return tileItem;
     }
 
-    public double getTolerance() {
+    public Double getTolerance() {
         return tolerance;
     }
 
@@ -562,7 +562,7 @@ public class Layer extends MapServerObject implements java.io.Serializable {
         return type;
     }
 
-    public int getTransparency() {
+    public Integer getTransparency() {
         return transparency;
     }
 
@@ -1575,6 +1575,8 @@ public class Layer extends MapServerObject implements java.io.Serializable {
                 } else if (transparency != 100) {
                     bw.write("\t\t transparency " + transparency + "\n");
                 }
+            } else if (transparency != null && transparency != 100) {
+                bw.write("\t\t transparency " + transparency + "\n");
             }
             if (type != null) {
                 switch (type.byteValue()) {

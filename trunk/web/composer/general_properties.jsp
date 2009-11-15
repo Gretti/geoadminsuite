@@ -103,7 +103,7 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
                                         new Ext.form.NumberField({
                                             fieldLabel: "<bean:message key="min_scale"/>",
                                             name: 'defaultMsLayer.minScale',
-                                            value: "<bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.minScale"/>",
+                                            value: "<bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.minScale" ignore="true"/>",
                                             decimalPrecision: 0,
                                             allowDecimals : false,
                                             allowNegative : false
@@ -111,7 +111,7 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
                                         new Ext.form.NumberField({
                                             fieldLabel: "<bean:message key="max_scale"/>",
                                             name: 'defaultMsLayer.maxScale',
-                                            value: "<bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.maxScale"/>",
+                                            value: "<bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.maxScale" ignore="true"/>",
                                             decimalPrecision: 0,
                                             allowDecimals : false,
                                             allowNegative : false
@@ -119,7 +119,7 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
                                         {
                                             fieldLabel: "<bean:message key="filter"/>",
                                             name: 'defaultMsLayer.filter',
-                                            value: "<bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.filter"/>"
+                                            value: "<bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.filter" ignore="true"/>"
                                         },
                                         new Ext.form.ComboBox({
                                             fieldLabel: "<bean:message key="filter_item"/>",
@@ -130,7 +130,7 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
                                             }),
                                             displayField:'name',
                                             valueField:'name',
-                                            value: "<bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.filterItem"/>",
+                                            value: "<bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.filterItem" ignore="true"/>",
                                             typeAhead: true,
                                             autoWidth: true,
                                             mode: 'local',
@@ -142,7 +142,7 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
                                         new Ext.form.NumberField({
                                             fieldLabel: "<bean:message key="transparency"/>",
                                             name: 'defaultMsLayer.transparency',
-                                            value: "<bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.transparency"/>",
+                                            value: "<bean:write name="<%=ObjectKeys.CURRENT_GC%>" property="defaultMsLayer.transparency" ignore="true"/>",
                                             allowDecimals: false,
                                             allowNegative: false,
                                             allowBlank: false,
