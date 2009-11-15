@@ -7,6 +7,7 @@ package org.geogurus.gas.actions;
 
 import java.net.URL;
 import java.util.Hashtable;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -56,6 +57,8 @@ public class InitAction extends org.apache.struts.action.Action {
             DataManager.setProperty(DataManager.MAPSERVERINPUTS, msInfo.get("INPUTS"));
             DataManager.setProperty(DataManager.MAPSERVEROUTPUTS, msInfo.get("OUTPUTS"));
             DataManager.setProperty(DataManager.MAPSERVERSUPPORTS, msInfo.get("SUPPORTS"));
+        } else {
+            Logger.getLogger(InitAction.class.getName()).warning("Null msInfo object, cannot guess MapServer version");
         }
 
         //launch datasources list page

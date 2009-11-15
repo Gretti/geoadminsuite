@@ -161,13 +161,13 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
 
                     // layer to digitalize
                     var drawingLayer = new OpenLayers.Layer.Vector("Draw",{isBaseLayer:true});
-                    var format = 'image/<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapfile.imageTypeAsString"/>';
+                    var format = 'image/<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapfile.imageTypeAsString"  ignore="true"/>';
                     layer = new OpenLayers.Layer.MapServer('mapserverLayer',
-                    '<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapserverURL"/>?mode=map&map=<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapfilePath"/>',
+                    '<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapserverURL" ignore="true"/>?mode=map&map=<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapfilePath"  ignore="true"/>',
                     {layers: myLayers,format: format},
                     {transitionEffect:'resize',singleTile:true,isBaseLayer:false});
 
-                    GeneralLayout.composerMsUrl = '<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapserverURL"/>?mode=map&map=<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapfilePath"/>';
+                    GeneralLayout.composerMsUrl = '<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapserverURL" ignore="true"/>?mode=map&map=<bean:write name="<%=ObjectKeys.USER_MAP_BEAN%>" property="mapfilePath" ignore="true"/>';
                     var layerSelection;
                     var layersLoc = [];
                     var alreadyCheckedOnce = true;
@@ -422,20 +422,28 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
                         {"text":"<bean:message key="map"/>","id":"mapProps","icon":"images/mapserver.gif","leaf":true},
                         {"text":"<bean:message key="legend"/>","id":"legendProps","icon":"images/palette.gif","leaf":true},
                         {"text":"<bean:message key="scalebar"/>","id":"scalebarProps","icon":"styles/static.gif","leaf":true},
-                        {"text":"<bean:message key="map_file"/>","id":"mapfileProps","icon":"styles/prop.gif","leaf":true},
-                        {"text":"Cartoweb","id":"CWProps","icon":"styles/application.png","leaf":false,"nodes":[
-                                {"text":"<bean:message key="cartoweb.locationIni"/>","id":"CWLocationProps","icon":"styles/application_home.png","leaf":true},
-                                {"text":"<bean:message key="cartoweb.imagesIni"/>","id":"CWImagesProps","icon":"styles/application_view_gallery.png","leaf":true},
-                                {"text":"<bean:message key="cartoweb.queryIni"/>","id":"CWQueryProps","icon":"styles/application_lightning.png","leaf":true},
-                                {"text":"<bean:message key="cartoweb.layerIni"/>","id":"CWLayerProps","icon":"styles/application_side_tree.png","leaf":true},
-                                {"text":"<bean:message key="cartoweb.loadIniFile"/>","id":"CWLoadIniFiles","icon":"styles/application_get.png","leaf":true}
-                            ]}
+                        {"text":"<bean:message key="map_file"/>","id":"mapfileProps","icon":"styles/prop.gif","leaf":true}
+                        
                         /*
                 {"text":"reference","id":"referenceProps","icon":"styles/map.png"},
                 {"text":"web","id":"webProps","icon":"styles/world.png"},
                 {"text":"querymap","id":"querymapProps","icon":"styles/information.png"},
                          */
                     ];
+                    // checks if CW stuff should be added to the page:
+                    var supportCW = '<%=DataManager.getProperty("SUPPORT_CW")%>';
+                    console.log("supporting CW ? " + supportCW);
+                    if (supportCW == "true") {
+                        generalProperties.push(
+                                {"text":"Cartoweb","id":"CWProps","icon":"styles/application.png","leaf":false,"nodes":[
+                                {"text":"<bean:message key="cartoweb.locationIni"/>","id":"CWLocationProps","icon":"styles/application_home.png","leaf":true},
+                                {"text":"<bean:message key="cartoweb.imagesIni"/>","id":"CWImagesProps","icon":"styles/application_view_gallery.png","leaf":true},
+                                {"text":"<bean:message key="cartoweb.queryIni"/>","id":"CWQueryProps","icon":"styles/application_lightning.png","leaf":true},
+                                {"text":"<bean:message key="cartoweb.layerIni"/>","id":"CWLayerProps","icon":"styles/application_side_tree.png","leaf":true},
+                                {"text":"<bean:message key="cartoweb.loadIniFile"/>","id":"CWLoadIniFiles","icon":"styles/application_get.png","leaf":true}
+                            ]}
+                        );
+                    }
 
                     // adds nodes
                     var genPropsNode, genPropsSubNode;

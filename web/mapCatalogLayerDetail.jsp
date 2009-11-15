@@ -265,6 +265,7 @@ along with GeoAdminSuite.  If not, see <http://www.gnu.org/licenses/>.*/%>
                              {layers: '<bean:write name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="name"/>'}, 
                              {singleTile: false,'buffer':0, transitionEffect:'resize'});
                     map.addLayer(layer);
+                   // console.log("building a new layer: " + layer);
                     map.zoomToExtent(bounds);
                     catalogMsUrl = '<%=DataManager.getProperty("MAPSERVERURL")%>?mode=map&map=<bean:write name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="escapedRootPath"/>&layers=<bean:write name="<%=ObjectKeys.LAYER_GENERAL_PROPERTIES%>" property="name"/>&map_size=400+400';
                 } else {

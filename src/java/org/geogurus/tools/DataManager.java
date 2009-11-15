@@ -108,6 +108,9 @@ public class DataManager {
             }
         }
         */
+        if (p == null) {
+            Logger.getLogger(DataManager.class.getName()).warning("Null properties object. Configuration not loaded");
+        }
         return p.getProperty(name);
     }
     
@@ -144,7 +147,14 @@ public class DataManager {
             return null;
         }
         Hashtable<String, String> msInfo = new Hashtable<String, String>();
+            //insert default values into the hash, to avoid null values
+            msInfo.put("MSVERSION", "");
+            msInfo.put("OUTPUTS", "");
+            msInfo.put("INPUTS", "");
+            msInfo.put("SUPPORTS", "");
+
         StringBuilder msurl = new StringBuilder(p.getProperty("MAPSERVERURL"));
+        
         try {
             msurl.append("?mode=amodethatdoesntexist");
 
@@ -164,6 +174,7 @@ public class DataManager {
              * <!-- MapServer version 5.1-dev OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG OUTPUT=WBMP OUTPUT=SWF OUTPUT=SVG SUPPORTS=PROJ SUPPORTS=AGG SUPPORTS=FREETYPE SUPPORTS=ICONV SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=FASTCGI SUPPORTS=THREADS SUPPORTS=GEOS SUPPORTS=RGBA_PNG INPUT=EPPL7 INPUT=POSTGIS INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
              */
             while ((inputLine = in.readLine()) != null) {
+                Logger.getLogger(DataManager.class.getName()).fine("reading line from MS error page: " + inputLine);
                 int index = inputLine.indexOf(MS_VERSION_TAG);
                 if (index >= 0) {
                     StringTokenizer tok = new StringTokenizer(inputLine, " ");

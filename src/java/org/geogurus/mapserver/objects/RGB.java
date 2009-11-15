@@ -65,7 +65,7 @@ public class RGB  implements java.io.Serializable {
             red = new Integer(tok.nextToken()).intValue();
             green = new Integer(tok.nextToken()).intValue();
             blue = new Integer(tok.nextToken()).intValue();
-        } catch (NumberFormatException nfe) {
+        } catch (Exception e) {
             // default color
             red =0;green=0;blue=0;
         }

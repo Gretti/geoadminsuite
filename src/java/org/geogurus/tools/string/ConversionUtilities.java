@@ -250,7 +250,7 @@ public class ConversionUtilities {
     */
    public static String quotesIfNeeded(String s) {
        if (s == null) return s;
-       if ((s.startsWith("'") && s.endsWith("'")) || (s.startsWith("'") && s.endsWith("'"))) {
+       if (s.length() > 1 &&  ((s.startsWith("'") && s.endsWith("'")) || (s.startsWith("\"") && s.endsWith("\"")))) {
            return s;
        }
        return '"' + s + '"';

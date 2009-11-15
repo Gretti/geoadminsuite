@@ -555,8 +555,10 @@ public class UserMapBeanManager {
             uee.printStackTrace();
         }
 
+//        m_userMapBean.setUserSymbolSet(new SymbolSet(builtSymFile,
+   //             new ArrayList()));
         m_userMapBean.setUserSymbolSet(new SymbolSet(builtSymFile,
-                new ArrayList()));
+                gasSymbolList_.getSymbols()));
 
         // get host and id from userLayerChoice:
         for (int i = 0; i < m_userMapBean.getUserLayerChoice().length; i++) {

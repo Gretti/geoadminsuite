@@ -250,7 +250,8 @@ public abstract class GTDataStoreDataAccess extends DataAccess {
                     if (cnt >= from) {
                         currentRecord = new Vector<Object>();
                         for (GeometryClassFieldBean object : metadata) {
-                            currentRecord.add(f.getAttribute(object.getName()));
+                            Object o= f.getAttribute(object.getName());
+                            currentRecord.add(o);
                         }
                         columnValues.add(currentRecord);
                     }

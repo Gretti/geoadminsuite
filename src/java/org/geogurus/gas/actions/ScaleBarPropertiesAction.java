@@ -23,6 +23,7 @@
  */
 package org.geogurus.gas.actions;
 
+import java.awt.Dimension;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -65,7 +66,11 @@ public class ScaleBarPropertiesAction extends org.apache.struts.action.Action {
         scale.setColor(new RGB(scaleForm.getFgcolor()));
         scale.setBackgroundColor(new RGB(scaleForm.getBgcolor()));
         scale.setOutlineColor(new RGB(scaleForm.getOlcolor()));
-
+        /*
+        scale.setSize(new Dimension(scaleForm.getWidth(), scaleForm.getHeight()));
+        scale.setInterlace(scaleForm.getInterlace());
+        scale.setIntervals(scaleForm.getInterval())
+*/
         umb.getMapfile().setScaleBar(scale);
 
         UserMapBeanManager manager = new UserMapBeanManager();
