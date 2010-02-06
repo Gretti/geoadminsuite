@@ -39,11 +39,14 @@ public class InitAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        String file = "/cgi-bin/" + (System.getProperty("os.name").toLowerCase().contains("windows") ? "mapserv.exe" : "mapserv");
+        String file = "/cgi-bin/"
+                + (System.getProperty("os.name").toLowerCase().contains("windows") 
+                        ? "mapserv.exe"
+                        : "mapserv");
         URL reconstructedURL = new URL(request.getScheme(),
             request.getServerName(),
             // use default port
-            file);
+            file); 
 
         // deals with mapserver URL
         if (DataManager.getProperty(DataManager.MAPSERVERURL) == null) {
@@ -58,7 +61,8 @@ public class InitAction extends org.apache.struts.action.Action {
             DataManager.setProperty(DataManager.MAPSERVEROUTPUTS, msInfo.get("OUTPUTS"));
             DataManager.setProperty(DataManager.MAPSERVERSUPPORTS, msInfo.get("SUPPORTS"));
         } else {
-            Logger.getLogger(InitAction.class.getName()).warning("Null msInfo object, cannot guess MapServer version");
+            Logger.getLogger(InitAction.class.getName()).warning(
+                    "Null msInfo object, cannot guess MapServer version");
         }
 
         //launch datasources list page
