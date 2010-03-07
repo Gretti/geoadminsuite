@@ -212,12 +212,6 @@
     <tr>
       <td><u>Change map background</u><br>
     <nobr>
-        <script>
-            <!-- defines layer controls in a SELECT object. to swap map background, this is a good choice man ! -->
-            kNewTheme("img1","Orthophoto",true,false,"SELECT",'');
-            kNewTheme("","no image",false,false,"SELECT",'');
-            kLastSelectTheme();
-        </script>
         <p><u>Layers control</u><br>
             <!-- defines layer controls in as checkbox object. to control vector layers visibility, this is handy! -->
         <script>kNewTheme("parc_agri","parcelles agricoles",true,true,"CHECKBOX",'tiny');</script><br>
@@ -226,7 +220,7 @@
     </nobr>
 </td>
       <td align="center" valign="middle" style="border: 1px solid black">
-          <div id="kdiv">Kaboum Applet here</div>
+          
     <applet code="org.kaboum.Kaboum.class" codebase="./kaboum" archive="kaboum.jar" alt="kaboum applet" align="CENTER" height=500 width=500 MAYSCRIPT name="kaboum">
         <param name="MAPFILE_PATH" value="/Users/nicolas/code/java/SIG/kaboumServer/web/data/mapserver/test.map">
         <param name="MAPFILE_EXTENT" value="5638,1620431,1197822,2677441">
