@@ -1,0 +1,129 @@
+<!-- ======================================================================= -->
+<!-- 			  KABOUM APPLET GENERATION		  	     -->
+<!-- ======================================================================= -->
+<project default="all" name="KABOUM">
+
+  <target name="init">
+    <property name="javadocdir" value="javadoc"/>	
+    <property name="javascriptdir" value="javascript"/>	
+    <property name="src" value="src"/>	
+    <property name="srcdir" value="src/org/kaboum"/>	
+    <property name="tmp" value="tmp"/>
+    <property name="zipFile" value="kaboum.zip"/>
+    <property name="kaboumJS" value="kaboum.js"/>
+    <property name="dist" value="dist"/>
+    <property name="dest" value="."/>
+    <property name="archivename" value="kaboum.jar"/> 
+    <property name="classpath" value=".;lib/java40.jar"/>
+    <property name="kaboumServerDir" value="../kaboumServer"/>
+    
+    <!-- some properties testing if other Kaboum folders are available -->
+    <available file="${kaboumServerDir}" type="dir" property="kaboumServerFolderExists"/> 
+    <available file="../KaboumData" type="dir" property="kaboumDataFolderExists"/> 
+    <!-- no more kaboum in GAS 
+    <available file="../GAS" type="dir" property="GasFolderExists"/> 
+    -->
+  </target>
+
+  <target depends="init" name="prepare">
+	<mkdir dir="${tmp}"/>
+  </target>
+
+  <target depends="prepare" name="compile">
+    <!-- Compilation -->
+    <javac classpath="${classpath}" 
+           debug="true" 
+           destdir="${tmp}" 
+           excludes="**/*.class,**/*nbattrs,**/*.java~,**/*.mf,**/CVS/*" 
+           optimize="true" 
+           srcdir="${srcdir}"
+           target="1.1"
+           source="1.2"
+           />
+  </target>
+           <!-- 
+           target="1.5"
+           -->
+
+  <target depends="compile" name="copyprops">
+    <!-- Copy -->
+    <copy todir="${tmp}/org/kaboum/properties">
+        <fileset dir="${srcdir}/properties" includes="*.properties"/>
+    </copy>
+  </target>
+
+ <target depends="copyprops" name="jar">
+  <!-- Creation du jar -->
+  <jar basedir="${tmp}" compress="true" jarfile="${archivename}"/>
+ </target>
+
+ <target depends="jar" name="clean">
+   <!-- temp folder cleaning -->
+   <delete dir="${tmp}"/>
+ </target>
+ 
+ <!-- conditionnal task copying jar and js files to other Kaboum projects (KaboumServer and KaboumData) if they
+      exist 
+ -->
+ <target name="copyToKaboumServer" if="kaboumServerFolderExists" description="Copy kaboum jar file to KaboumServer folder">
+   <!-- copy latest jar file to KaboumServer webapp, as it depends on it for the moment -->
+     <copy file="${archivename}" todir="${kaboumServerDir}/web/WEB-INF/lib" />
+     <!-- also copy to kaboumServer build folder to avoid cleaning and building KS project -->
+     <copy file="${archivename}" todir="${kaboumServerDir}/build/web/WEB-INF/lib" />
+     <copy file="${archivename}" todir="${kaboumServerDir}/build/web/data/kaboum" />
+     <copy file="${archivename}" todir="${kaboumServerDir}/web/WEB-INF/lib" />
+     <copy file="${archivename}" todir="${kaboumServerDir}/web/data/kaboum" />
+     <copy file="${javascriptdir}/${kaboumJS}" todir="${kaboumServerDir}/web/data/kaboum" />
+ </target>
+
+  <target name="warnKaboumServerFolder" unless="kaboumServerFolderExists" description="Warn user for missing folder">
+     <echo message="The KaboumServer module cannot be found in the same folder as Kaboum folder." />
+     <echo message="${archivename} will not be copied." />
+     <echo message="If you download the KaboumServer module, be sure to check it out in the folder containing the Kaboum module" />
+ </target>
+
+  <target name="copyToKaboumData" if="kaboumDataFolderExists" description="Copy kaboum jar and JS files to KaboumData folder">
+    <!-- copy latest jar file to the KaboumTest environment -->
+   <copy file="${archivename}" todir="../KaboumData/kaboum/" overwrite="yes"/>
+   <!-- copy latest JS API file to the KaboumTest environment -->
+   <copy file="${javascriptdir}/${kaboumJS}" todir="../KaboumData/kaboum/"  overwrite="yes"/>
+ </target>
+  
+  <target name="warnKaboumDataFolder" unless="kaboumDataFolderExists" description="Warn user for missing folder">
+     <echo message="The KaboumData module cannot be found in the same folder as Kaboum folder." />
+     <echo message="${archivename} and ${kaboumJS} will not be copied." />
+     <echo message="If you download the KaboumData module, be sure to check it out in the folder containing the Kaboum module" />
+ </target>
+
+  <target depends="clean, copyToKaboumServer, copyToKaboumData, warnKaboumDataFolder, warnKaboumServerFolder" name="all">
+ </target>
+ 
+ <!-- Creates zip files containing all necessary files for distribution -->
+ <target depends="prepare" name="dist">
+     <zip destfile="${zipFile}"
+           compress="yes"
+           basedir="."
+           excludes="**/*.class,**/*nbattrs,**/*.java~,**/*.mf,**/CVS/*,nbproject/**,tmp,.nbintdb,kaboum*.zip"/>
+  </target>
+  
+  <target name="Javadoc">
+    <javadoc packagenames="org.kaboum.*"
+           sourcepath="src"
+           defaultexcludes="yes"
+           destdir="docs/javadoc"
+           author="true"
+           version="true"
+           use="true"
+           windowtitle="Kaboum API">
+    <doctitle><![CDATA[<h1>Kaboum API</h1>]]></doctitle>
+    <bottom><![CDATA[<i>Copyright &#169; 2005-2008 Kaboum team (Jerome Gasperi, Gretti N'guessan, Nicolas Ribot). All Rights Reserved.</i>]]></bottom>
+    <tag name="todo" scope="all" description="To do:" />
+    <group title="Algorithm" packages="org.kaboum.algorithm.*"/>
+    <group title="Geom" packages="org.kaboum.geom.*"/>
+    <group title="Util" packages="org.kaboum.util.*"/>
+    <link offline="true" href="http://java.sun.com/products/jdk/1.2/docs/api/" packagelistLoc="C:\tmp"/>
+    <link href="http://developer.java.sun.com/developer/products/xml/docs/api/"/>
+  </javadoc>  
+  </target>
+
+</project>

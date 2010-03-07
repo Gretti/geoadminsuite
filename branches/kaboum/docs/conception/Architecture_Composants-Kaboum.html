@@ -1,0 +1,563 @@
+<html>
+    <head>
+        <title>Architecture Composants - Kaboum</title>
+        
+        <link rel="stylesheet" href="images/main-action.css" type="text/css">
+        
+        <style type="text/css">
+            div.auto_complete {
+                width: 350px;
+                background: #fff;
+            }
+            
+            div.auto_complete ul {
+                border: 1px solid #888;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                list-style-type: none;
+            }
+            
+            div.auto_complete ul li {
+                margin: 0;
+                padding: 3px;
+            }
+            
+            div.auto_complete ul li.selected {
+                background-color: #ffb;
+            }
+            
+            div.auto_complete ul strong.highlight {
+                color: #800;
+                margin: 0;
+                padding: 0;
+            }
+        </style>
+    </head>
+    <body>
+        
+        <div id="PageContent">
+            
+            <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td class="pagebody" valign="top">
+                            <div class="pageheader">
+                                <span class="pagetitle">Architecture Composants - Kaboum</span>
+                            </div>
+                            
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                
+                                <tbody><tr>
+                                        <td class="pagebody" valign="top">
+                                            
+                                            <table style="clear: both;" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="pagecontent" valign="top" width="100%">
+                                                            
+                                                            
+                                                            
+                                                            <div class="wiki-content">
+                                                                <!-- wiki content -->
+                                                                <h3><a name="conception-v2-ArchitectureComposants-Kaboum-Kaboum"></a>Kaboum</h3>
+                                                                
+                                                                <p>Le module <em>Kaboum</em> est un ensemble de deux applications packag&eacute;es dans deux JAR. Le module se d&eacute;compose en deux parties :</p>
+                                                                <ul>
+                                                                    <li>La partie cliente Kaboum : compos&eacute;e d'une applet en charge de
+                                                                        la repr&eacute;sentation cartographique et de la communication avec le moteur
+                                                                    cartographique,</li>
+                                                                    <li>La partie serveur KaboumServer :en charge des
+                                                                        traitements g&eacute;om&eacute;triques et de l'acc&egrave;s aux donn&eacute;es aux donn&eacute;es
+                                                                        g&eacute;ographiques (acc&egrave;s direct ou API d'acc&egrave;s m&eacute;tier/sp&eacute;cifique a
+                                                                    impl&eacute;menter).</li>
+                                                                </ul>
+                                                                
+                                                                
+                                                                <p><em>Kaboum</em> s'appuie sur les biblioth&egrave;ques Java suivantes :</p>
+                                                                <ul>
+                                                                    <li>JTS/Geotools.</li>
+                                                                </ul>
+                                                                
+                                                                
+                                                                <h3><a name="conception-v2-ArchitectureComposants-Kaboum-Appletclient"></a>Applet client</h3>
+                                                                
+                                                                <p><b>Java package</b>: <em>org.kaboum</em><br clear="all"></p>
+                                                                
+                                                                <p>Kaboum est une applet de navigation et num&eacute;risation cartographique.
+                                                                    Elle offre une API Javascript surchargeable lui permettant d'&agrave;tre
+                                                                    pilot&eacute;e &agrave; partir d'une page Web en utilisant la technologie
+                                                                LiveConnect.&nbsp;</p>
+                                                                
+                                                                <p>L'applet se compose deux grands ensembles : l'interface d'affichage et utilitaires associ&eacute;s et les op&eacute;rateurs topologiques.
+                                                                    <br clear="all">  <img src="images/class_diagram-kaboum.png" align="absmiddle" border="0"><br>
+                                                                    <b>Noyau</b> <b><em>Kaboum</em></b>
+                                                                <br clear="all">  <img src="images/class_diagram-Base_OpModes.png" align="left" border="0"><br clear="all"></p>
+                                                                
+                                                                <p>&nbsp;
+                                                                    <br clear="all">
+                                                                    &nbsp;
+                                                                <br clear="all"></p>
+                                                                
+                                                                <p><b><em>Classes parentes des op&eacute;rateurs topologiques</em></b>
+                                                                    <br clear="all">  <img src="images/class_diagram-RO_OpModes.png" align="left" border="0"><br clear="all">
+                                                                <br clear="all"></p>
+                                                                
+                                                                <p><b>Classe</b>s <b><em>des op&eacute;rateurs de navigation</em></b> <img src="images/class_diagram-Topologic_OpModes.png" align="left" border="0"><br>
+                                                                    &nbsp;
+                                                                    <br clear="all">
+                                                                    <br clear="all">
+                                                                    <br clear="all">
+                                                                    <br clear="all">
+                                                                <br clear="all"></p>
+                                                                
+                                                                <p><b>Classe</b>s <b><em>des op&eacute;rateurs topologiques</em></b><br>
+                                                                    <img src="images/class_diagram-utils.png" align="left" border="0"><br>
+                                                                    &nbsp;
+                                                                    <br clear="all">
+                                                                    <br clear="all">
+                                                                <b>Classe</b>s <b><em>des utilitaires Kaboum</em></b></p>
+                                                                
+                                                                <h3><a name="conception-v2-ArchitectureComposants-Kaboum-Moduleserveur"></a>Module serveur</h3>
+                                                                
+                                                                <p><b>Java package</b>: <em>org.kaboum.server</em><br clear="all"></p>
+                                                                
+                                                                <p>Le module serveur est compos&eacute; de :</p>
+                                                                <ul>
+                                                                    <li>KaboumFeatureServlet : une servlet d'entr&eacute;e recevant les
+                                                                        param&egrave;tres des actions ex&eacute;cut&eacute;es sur le client et concernant des
+                                                                    &eacute;l&eacute;ments graphiques vectoriels,</li>
+                                                                    <li>KaboumFeatureServer : un
+                                                                        module serveur proc&eacute;dant soit aux traitements topologiques, soit &agrave;
+                                                                    l'acc&egrave;s aux donn&eacute;es pour lecture ou &eacute;criture,</li>
+                                                                    <li>GeometryAccess : interface &agrave; impl&eacute;menter pour l'acc&egrave;s aux donn&eacute;es via un module m&eacute;tier. <img src="images/class_diagram-kaboumServer.png" align="left" border="0" height="971" width="1235"><br clear="all"></li>
+                                                                </ul>
+                                                                
+                                                                
+                                                                <p><b>Principales classes du module</b> <b><em>KaboumServer</em></b>
+                                                                <br clear="all"></p>
+                                                                
+                                                                <p><img src="images/class_diagram-GeometryAccess.png" align="left" border="0"><br>
+                                                                    &nbsp;
+                                                                <br clear="all"></p>
+                                                                
+                                                                <p><b>Classe</b> <b><em>MapaeAccessGeometry</em></b></p>
+                                                                
+                                                                <p>Cette classe pr&eacute;sente les fonctions d'acc&egrave;s aux g&eacute;om&eacute;tries.</p>
+                                                                
+                                                                <p><ins>fonctions:</ins></p>
+                                                                <ul>
+                                                                    <li><em>MapaeGeometryAccess()</em><br>
+                                                                        Constructeur. Positionne le contexte de travail en regard du <em>userData</em> et de la configuration pr&eacute;sente dans le fichier de propri&eacute;t&eacute;s <em>kaboumProperties</em> re&agrave;us.
+                                                                        <table class="confluenceTable"><tbody>
+                                                                                <tr>
+                                                                                    <th class="confluenceTh"> Param&egrave;tre </th>
+                                                                                    <th class="confluenceTh"> Type </th>
+                                                                                    <th class="confluenceTh"> Description </th>
+                                                                                    <th class="confluenceTh"> Nullable </th>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="confluenceTd"> kaboumProperties </td>
+                                                                                    <td class="confluenceTd"> java.util.Properties </td>
+                                                                                    <td class="confluenceTd"> propri&eacute;t&eacute;s des classes affich&eacute;es dans Kaboum <br clear="all"> </td>
+                                                                                    <td class="confluenceTd"> non <br clear="all"> </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="confluenceTd"> userData </td>
+                                                                                    <td class="confluenceTd"> org.kaboum.server.UserData <br clear="all"> </td>
+                                                                                    <td class="confluenceTd"> contenu libre positionnant le contexte de travail issu du javascript </td>
+                                                                                    <td class="confluenceTd"> non </td>
+                                                                                </tr>
+                                                                    </tbody></table></li>
+                                                                    <li><em>getGeometries()</em><br>
+                                                                        R&eacute;cup&egrave;re les g&eacute;om&eacute;tries contenues dans le <em>mapExtent</em>
+                                                                        et les stocke dans les classes sp&eacute;cifi&eacute;es dans le fichier de propri&eacute;t&eacute;.
+                                                                        Cette fonction est mapp&eacute;e sur les fonctions d'acc&egrave;s aux g&eacute;om&eacute;tries des
+                                                                        EJB relatifs.
+                                                                        <table class="confluenceTable"><tbody>
+                                                                                <tr>
+                                                                                    <th class="confluenceTh"> Param&egrave;tre </th>
+                                                                                    <th class="confluenceTh"> Type </th>
+                                                                                    <th class="confluenceTh"> Description </th>
+                                                                                    <th class="confluenceTh"> Nullable </th>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="confluenceTd"> mapExtent </td>
+                                                                                    <td class="confluenceTd"> com.vividsolutions.jts.Enveloppe </td>
+                                                                                    <td class="confluenceTd"> extension spatiale de la carte <br clear="all"> </td>
+                                                                                    <td class="confluenceTd"> non </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="confluenceTd"> <b>return</b> </td>
+                                                                                    <td class="confluenceTd"> java.util.Hashtable&lt;String,Vector&lt;Geometry&gt;&gt; </td>
+                                                                                    <td class="confluenceTd"> collection de g&eacute;om&eacute;tries trouv&eacute;es <br clear="all"> </td>
+                                                                                    <td class="confluenceTd"> non </td>
+                                                                                </tr>
+                                                                    </tbody></table></li>
+                                                                    <li><em>updateGeometries()</em><br>
+                                                                        Mets &agrave; jour les g&eacute;om&eacute;tries contenues dans la collection <em>geometries</em> dans la datasource correspondante. Cette fonction est mapp&eacute;e sur les fonctions de mise &agrave; jour des g&eacute;om&eacute;tries des EJB relatifs.
+                                                                        <table class="confluenceTable"><tbody>
+                                                                                <tr>
+                                                                                    <th class="confluenceTh"> Param&egrave;tre </th>
+                                                                                    <th class="confluenceTh"> Type </th>
+                                                                                    <th class="confluenceTh"> Description </th>
+                                                                                    <th class="confluenceTh"> Nullable </th>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="confluenceTd"> geometries </td>
+                                                                                    <td class="confluenceTd"> java.util.Hashtable&lt;String,Vector&lt;Geometry&gt;&gt; </td>
+                                                                                    <td class="confluenceTd"> g&eacute;ometries &agrave; mettre &agrave; jour <br clear="all"> </td>
+                                                                                    <td class="confluenceTd"> non </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="confluenceTd"> <b>return</b> </td>
+                                                                                    <td class="confluenceTd"> java.util.Hashtable&lt;String,Vector&lt;Geometry&gt;&gt; </td>
+                                                                                    <td class="confluenceTd"> g&eacute;om&eacute;tries r&eacute;sultant de la mise &agrave; jour <br clear="all"> </td>
+                                                                                    <td class="confluenceTd"> non </td>
+                                                                                </tr>
+                                                                    </tbody></table></li>
+                                                                </ul>
+                                                                
+                                                                
+                                                                <ul>
+                                                                    <li><em>addGeometries()</em><br>
+                                                                        Ajoute les g&eacute;om&eacute;tries contenues dans la collection <em>geometries</em> dans la datasource correspondante. Cette fonction est mapp&eacute;e sur les fonctions d'ajout de g&eacute;om&eacute;tries des EJB relatifs.
+                                                                        <table class="confluenceTable"><tbody>
+                                                                                <tr>
+                                                                                    <th class="confluenceTh"> Param&egrave;tre </th>
+                                                                                    <th class="confluenceTh"> Type </th>
+                                                                                    <th class="confluenceTh"> Description </th>
+                                                                                    <th class="confluenceTh"> Nullable </th>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="confluenceTd"> geometries </td>
+                                                                                    <td class="confluenceTd"> java.util.Hashtable&lt;String,Vector&lt;Geometry&gt;&gt; </td>
+                                                                                    <td class="confluenceTd"> g&eacute;ometries &agrave; ajouter <br clear="all"> </td>
+                                                                                    <td class="confluenceTd"> non </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="confluenceTd"> <b>return</b> <br clear="all"> </td>
+                                                                                    <td class="confluenceTd"> java.util.Hashtable&lt;String,Vector&lt;Geometry&gt;&gt; </td>
+                                                                                    <td class="confluenceTd"> g&eacute;om&eacute;tries r&eacute;sultant de l'ajout <br clear="all"> </td>
+                                                                                    <td class="confluenceTd"> non </td>
+                                                                                </tr>
+                                                                    </tbody></table></li>
+                                                                    <li><em>processGeometries()</em><br>Effectue des
+                                                                        taches m&eacute;tier sp&eacute;cifiques en regard du UserData re&agrave;u par le
+                                                                        constructeur de la classe sur les g&eacute;om&eacute;tries contenues dans la
+                                                                        collection <em>geometries</em>. Cette fonction fait appel aux fonctions m&eacute;tier des EJB relatifs.
+                                                                        <table class="confluenceTable"><tbody>
+                                                                                <tr>
+                                                                                    <th class="confluenceTh"> Param&egrave;tre </th>
+                                                                                    <th class="confluenceTh"> Type </th>
+                                                                                    <th class="confluenceTh"> Description </th>
+                                                                                    <th class="confluenceTh"> Nullable </th>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="confluenceTd"> geometries </td>
+                                                                                    <td class="confluenceTd"> java.util.Hashtable&lt;String,Vector&lt;Geometry&gt;&gt; </td>
+                                                                                    <td class="confluenceTd"> g&eacute;ometries &agrave; proc&eacute;der <br clear="all"> </td>
+                                                                                    <td class="confluenceTd"> non </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="confluenceTd"> <b>return</b> <br clear="all"> </td>
+                                                                                    <td class="confluenceTd"> java.util.Hashtable&lt;String,Vector&lt;Geometry&gt;&gt; </td>
+                                                                                    <td class="confluenceTd"> g&eacute;om&eacute;tries r&eacute;sultant de l'action effectu&eacute;e <br clear="all"> </td>
+                                                                                    <td class="confluenceTd"> non <br clear="all"> </td>
+                                                                                </tr>
+                                                                    </tbody></table></li>
+                                                                    <li><em>removeGeometries()</em><br>
+                                                                        Supprime les g&eacute;om&eacute;tries contenues dans la collection <em>geometries</em> de la datasource correspondante. Cette fonction fait appel aux fonctions de suppression de g&eacute;om&eacute;tries des EJB relatifs.
+                                                                        <table class="confluenceTable"><tbody>
+                                                                                <tr>
+                                                                                    <th class="confluenceTh"> Param&egrave;tre </th>
+                                                                                    <th class="confluenceTh"> Type </th>
+                                                                                    <th class="confluenceTh"> Description </th>
+                                                                                    <th class="confluenceTh"> Nullable </th>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="confluenceTd"> geometries </td>
+                                                                                    <td class="confluenceTd"> java.util.Hashtable&lt;String,Vector&lt;Geometry&gt;&gt; </td>
+                                                                                    <td class="confluenceTd"> g&eacute;ometries &agrave; traiter <br clear="all"> </td>
+                                                                                    <td class="confluenceTd"> non </td>
+                                                                                    <td class="confluenceTd"> <br clear="all"> </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="confluenceTd"> <b>return</b> </td>
+                                                                                    <td class="confluenceTd"> short <br clear="all"> </td>
+                                                                                    <td class="confluenceTd"> code succ&egrave;s ou code &eacute;chec de la suppression <br clear="all"> </td>
+                                                                                    <td class="confluenceTd"> non <br clear="all"> </td>
+                                                                                    <td class="confluenceTd">&nbsp;</td>
+                                                                                </tr>
+                                                                    </tbody></table></li>
+                                                                </ul>
+                                                                
+                                                                
+                                                                <h3><a name="conception-v2-ArchitectureComposants-Kaboum-APIJavascript"></a>API Javascript</h3>
+                                                                
+                                                                <p>&nbsp;L'API Javascript de Kaboum offre un ensemble de fonctions
+                                                                    permettant d'une part d'envoyer des ordres &agrave; l'applet et d'autre part
+                                                                    d'en recevoir le r&eacute;sultat. Les principales fonctions utilis&eacute;es dans le
+                                                                cadre de MAPAE sont les suivantes :</p>
+                                                                <ul>
+                                                                    <li>kGeometry() : permet d'obtenir les informations sur une
+                                                                        g&eacute;om&eacute;trie d&eacute;finie. Les informations mises &agrave; disposition sont l'ID, le
+                                                                    p&eacute;rim&egrave;tre, la surface et le tooltip de la g&eacute;om&eacute;trie.</li>
+                                                                    <li>kProcessSelection()
+                                                                        : cette fonction est appel&eacute;e sur chaque retour de validation d'une
+                                                                        g&eacute;om&eacute;trie suite &agrave; sa s&eacute;lection, &agrave; sa cr&eacute;ation ou &agrave; sa modification.
+                                                                        Elle permet notamment d'obtenir l'ID de la g&eacute;om&eacute;trie concern&eacute;e pour
+                                                                        faire le lien &eacute;ventuels avec d'autres &eacute;l&eacute;ments de la page ou obtenir de
+                                                                        plus amples informations sur l'objet concern&eacute; (via kGeometry ou via un
+                                                                    appel AJAX au serveur).</li>
+                                                                    <li>kProcessDistSurf() : permet d'afficher le r&eacute;sultat d'un mesurage dans un composant de la page ou un message d'alerte.</li>
+                                                                    <li>kaboumCommand()
+                                                                        : permet d'envoyer un ordre &agrave; l'applet sans passer par les boutons de
+                                                                    commande. Les diff&eacute;rents ordres sont d&eacute;taill&eacute;s dans le <a href="http://apydos.dyndns.org:9999/download/attachments/7536750/kaboum_JS_api_en.html?version=1">document d'API Javascript Kaboum</a>.</li>
+                                                                </ul>
+                                                                
+                                                                
+                                                                <h3><a name="conception-v2-ArchitectureComposants-Kaboum-OutilsClient"></a>Outils Client</h3>
+                                                                
+                                                                <p>L'interface client propose une liste d'outils permettant d'effectuer des actions de navigation ou de num&eacute;risation.</p>
+                                                                
+                                                                <p><ins>Outils de navigation</ins> :</p>
+                                                                <table class="confluenceTable"><tbody>
+                                                                        <tr>
+                                                                            <th class="confluenceTh"> Intitul&eacute; </th>
+                                                                            <th class="confluenceTh"> Description </th>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="confluenceTd"> Zoom avant <br clear="all"> </td>
+                                                                            <td class="confluenceTd"> Zoom sur le rectangle trac&eacute; ou d'un facteur 2 centr&eacute; sur le point cliqu&eacute; <br clear="all"> </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="confluenceTd"> Zoom arri&egrave;re <br clear="all"> </td>
+                                                                            <td class="confluenceTd"> Zoom inverse d'un facteur 1/2 centr&eacute; sur le point cliqu&eacute; &agrave; concurrence de l'extension maximale autoris&eacute;e sur la carte <br clear="all"> </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="confluenceTd"> D&eacute;placement </td>
+                                                                            <td class="confluenceTd"> Effectue une translation de la carte &eacute;quivalente au d&eacute;placement de la souris <br clear="all"> </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="confluenceTd"> Vue pr&eacute;c&eacute;dente <br clear="all"> </td>
+                                                                            <td class="confluenceTd"> Retour &agrave; l'extension spatiale pr&eacute;c&eacute;dente <br clear="all"> </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="confluenceTd"> Vue suivante <br clear="all"> </td>
+                                                                            <td class="confluenceTd"> Passage &agrave; l'extension spatiale suivante <br clear="all"> </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="confluenceTd"> Vue initiale <br clear="all"> </td>
+                                                                            <td class="confluenceTd"> Retour &agrave; l'extension spatiale maximale autoris&eacute;e sur la carte <br clear="all"> </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="confluenceTd"> S&eacute;lection </td>
+                                                                            <td class="confluenceTd"> S&eacute;lectionne les objets vectoriels cliqu&eacute;s <br clear="all"> </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="confluenceTd"> Informations </td>
+                                                                            <td class="confluenceTd"> Requ&agrave;te spatiale ponctuelle <br clear="all"> </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="confluenceTd"> Mesurage de distance <br clear="all"> </td>
+                                                                            <td class="confluenceTd"> Mesurage de la distance dans les unit&eacute;s param&eacute;tr&eacute;es dans l'applet <br clear="all"> </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="confluenceTd"> Mesurage de surface <br clear="all"> </td>
+                                                                            <td class="confluenceTd"> Mesurage de la surface dans les unit&eacute;s param&eacute;tr&eacute;es dans l'applet </td>
+                                                                        </tr>
+                                                                </tbody></table>
+                                                                <p><ins>Outils de num&eacute;risation</ins> :</p>
+                                                                <table class="confluenceTable"><tbody>
+                                                                        <tr>
+                                                                            <th class="confluenceTh"> Intitul&eacute; </th>
+                                                                            <th class="confluenceTh"> Description </th>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="confluenceTd"> Num&eacute;risation de point <br clear="all"> </td>
+                                                                            <td class="confluenceTd"> Cr&eacute;ation/Modification d'un nouveau point ou d'un multipoint <br clear="all"> </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="confluenceTd"> Num&eacute;risation de ligne <br clear="all"> </td>
+                                                                            <td class="confluenceTd"> Cr&eacute;ation/Modification d'une nouvelle ligne ou multiligne </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="confluenceTd"> Num&eacute;risation de polygone <br clear="all"> </td>
+                                                                            <td class="confluenceTd"> Cr&eacute;ation/Modification d'un nouveau polygone ou multipolygone </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="confluenceTd"> Union de polygones <br clear="all"> </td>
+                                                                            <td class="confluenceTd"> Union de polygones (int&egrave;gre un polygone s&eacute;lectionn&eacute; dans le polygone cibl&eacute;) <br clear="all"> </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="confluenceTd"> Compl&egrave;tement de polygone <br clear="all"> </td>
+                                                                            <td class="confluenceTd"> Ajout d'une extension polygonale &agrave; un polygone existant align&eacute; sur les polygones existants participant &agrave; la topologie <br clear="all"> </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="confluenceTd"> Remplissage de trous <br clear="all"> </td>
+                                                                            <td class="confluenceTd"> Compl&egrave;tement de polygones uniquement dans les trous du polygone d&eacute;sign&eacute; <br clear="all"> </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="confluenceTd"> Gommage de polygone <br clear="all"> </td>
+                                                                            <td class="confluenceTd"> Retire le r&eacute;sultat de l'intersection du polygone dessin&eacute; et du polygone d&eacute;sign&eacute; du polygone d&eacute;sign&eacute; <br clear="all"> </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="confluenceTd"> D&eacute;coupage de polygones <br clear="all"> </td>
+                                                                            <td class="confluenceTd"> Scinde un polygone sur la base de l'intersection du polygone dessin&eacute; et du polygone d&eacute;sign&eacute; <br clear="all"> </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="confluenceTd"> Copie d'objets de couche &agrave; couche <br clear="all"> </td>
+                                                                            <td class="confluenceTd"> Copie l'objet trouv&eacute; dans la couche de r&eacute;f&eacute;rence indiqu&eacute;e dans la liste des th&egrave;mes vers la couche de num&eacute;risation active. <br clear="all"> </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="confluenceTd"> Suppression de polygones <br clear="all"> </td>
+                                                                            <td class="confluenceTd"> Supprime l'OBJET s&eacute;lectionn&eacute;. </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="confluenceTd"> Suppression de la g&eacute;om&eacute;trie <br clear="all"> </td>
+                                                                            <td class="confluenceTd"> Supprime la G&eacute;ME&eacute;TRIE de l'objet s&eacute;lectionn&eacute;. <br clear="all"> </td>
+                                                                        </tr>
+                                                                </tbody></table>
+                                                                <p><ins>Conditions de num&eacute;risation</ins> :</p>
+                                                                
+                                                                <p>Les outils de num&eacute;risation sont soumis aux r&egrave;gles de "snapping" d&eacute;finies dans les sp&eacute;cifications.</p>
+                                                                
+                                                                <p><ins>Gestion de l'affichage des couches</ins> :</p>
+                                                                
+                                                                <p>Un arbre liste les th&egrave;mes offre les fonctionnalit&eacute;s suivantes :</p>
+                                                                <ul>
+                                                                    <li>une coche pour afficher/d&eacute;safficher les th&egrave;mes (tous les th&egrave;mes).</li>
+                                                                    <li>le nom du th&egrave;me sans action particuli&egrave;re.</li>
+                                                                    <li>un bouton radio pour d&eacute;signer la couche de r&eacute;f&eacute;rence pour la copie d'objets (certains th&egrave;mes seulement).&nbsp;</li>
+                                                                </ul>
+                                                                
+                                                                
+                                                                <p>&nbsp;<ins>Outils annexes</ins> :</p>
+                                                                <ul>
+                                                                    <li>Outil de d&eacute;finition de l'&eacute;chelle : zone de saisie permettant de fixer l'&eacute;chelle au pixel de la carte pr&egrave;s.</li>
+                                                                    <li>Outil de suivi des coordonn&eacute;es carte : affiche les coordonn&eacute;es de la souris dans les unit&eacute;s de la carte.</li>
+                                                                    <li>Outils de positionnement :
+                                                                        <ul>
+                                                                            <li>Positionnement
+                                                                                sur une commune : offre la liste des commune. Sur s&eacute;lection d'une
+                                                                            commune, la carte se positionne sur l'extension spatiale de celle-ci.</li>
+                                                                            <li>Positionnement
+                                                                                sur un FLIK : zone de saisie d'un num&eacute;ro FLIK. Suite &agrave; la saisie d'un
+                                                                            num&eacute;ro, la carte se positionne sur l'extension spatiale de celui-ci.</li>
+                                                                            <li>Positionnement
+                                                                                sur un exploitant : zone de saisie d'un num&eacute;ro d'exploitant. Suite &agrave; la
+                                                                                saisie d'un num&eacute;ro, la carte se positionne sur l'extension spatiale de
+                                                                            l'exploitation de l'exploitant d&eacute;sign&eacute;.</li>
+                                                                            <li>Positionnement sur
+                                                                                un num&eacute;ro agricole : zone de saisie d'un num&eacute;ro de parcelle agricole de
+                                                                                l'exploitant saisi dans le composant pr&eacute;c&eacute;dent. Suite &agrave; la saisie d'un
+                                                                                num&eacute;ro, la carte se positionne sur l'extension spatiale de la parcelle
+                                                                            correspondante.</li>
+                                                                        </ul>
+                                                                    </li>
+                                                                </ul>
+                                                                
+                                                                
+                                                                <h3><a name="conception-v2-ArchitectureComposants-Kaboum-Dynamiquedemiseenoeuvre"></a>Dynamique de mise en oeuvre</h3>
+                                                                
+                                                                <p>La dynamique de travail pour l'acc&egrave;s aux donn&eacute;es et l'affichage des cartes suit la logique suivante : <img src="images/kaboum-general_process.png" align="left" border="0"><br>
+                                                                    &nbsp;
+                                                                    <br clear="all">
+                                                                    <br clear="all">
+                                                                    <br clear="all">
+                                                                <br clear="all"></p>
+                                                                
+                                                                <p><ins>Description du processus :</ins></p>
+                                                                <ol>
+                                                                    <li>Une action de l'utilisateur est effectu&eacute;e sur la carte.</li>
+                                                                    <li>Cette action est pilot&eacute;e par le javascript qui le traduit en ordre applet et envoie.</li>
+                                                                    <li>Si
+                                                                        n&eacute;cessaire l'applet envoie une commande au module serveur via la
+                                                                        servlet KaboumFeatureServlet concernant les g&eacute;om&eacute;tries vectorielles
+                                                                        stock&eacute;es dans une "shuttle". Cet ordre peut &agrave;tre de diff&eacute;rentes natures
+                                                                        : soit il s'agit d'une demande d'action topologique auquel cas l'ordre
+                                                                        est trait&eacute; sur le module serveur et retourne imm&eacute;diatement le r&eacute;sultat
+                                                                        de l'op&eacute;ration &agrave; l'applet, soit il s'agit d'un ordre de r&eacute;cup&eacute;ration,
+                                                                        modification, suppression ou ajout d'une g&eacute;om&eacute;trie et dans ce cas le
+                                                                    processus ce d&eacute;roule sur les points 4 &agrave; 11</li>
+                                                                    <li>La servlet appelle la m&eacute;thode de la GeometryAccess concernant l'action d&eacute;sir&eacute;e.</li>
+                                                                    <li>La GeometryAccess r&eacute;cup&egrave;re les param&egrave;tres de configuration des datasources.</li>
+                                                                    <li>La
+                                                                        GeometryAccess construit les objets m&eacute;tier &agrave; partir des informations
+                                                                    re&agrave;ues fait appel aux Ejb m&eacute;tier pour effectuer les actions demand&eacute;es.</li>
+                                                                    <li>L'Ejb m&eacute;tier fait appel au manager des objets m&eacute;tier.</li>
+                                                                    <li>Les
+                                                                        managers effectuent les taches m&eacute;tier sp&eacute;cifiques dans la source de
+                                                                        donn&eacute;es et r&eacute;cup&egrave;rent le r&eacute;sultat qu'elles stockent en retour dans des
+                                                                    objets &agrave; renvoyer vers le client.</li>
+                                                                    <li>Retour des objets via les Ejb m&eacute;tier.</li>
+                                                                    <li>Retour
+                                                                        dans la GeometryAccess qui traduit les objets m&eacute;tier en objets
+                                                                        graphiques pour Kaboum sur la base d'un attribut g&eacute;om&eacute;trique (WKT, WKB,
+                                                                    Geometrie JTS, ...).</li>
+                                                                    <li>Injection des objets dans la shuttle de r&eacute;ponse pour Kaboum et renvoi de la shuttle au client.</li>
+                                                                    <li>Parall&egrave;lement
+                                                                        au flux pr&eacute;c&eacute;dent et &agrave; partir du point 3, Kaboum envoie si n&eacute;cessaire
+                                                                        un ordre de r&eacute;cup&eacute;ration de l'image de la carte &agrave; une servlet de proxy
+                                                                    sur &agrave; l'extension spatiale courante.</li>
+                                                                    <li>La servlet traduit la requ&agrave;te en requ&agrave;te Mapserver et proc&egrave;de &agrave; l'appel.</li>
+                                                                    <li>Le serveur renvoie l'image correspondante.</li>
+                                                                    <li>L'image est retourn&eacute;e &agrave; Kaboum qui la dessine.</li>
+                                                                    <li>En
+                                                                        retour de ces traitements, Kaboum retourne le r&eacute;sultat &agrave; la fonction
+                                                                        javascript kaboumResult qui l'interpr&egrave;te et appelle si n&eacute;cessaire l'une
+                                                                    des fonctions publique correspondant au type d'action effectu&eacute;e.</li>
+                                                                </ol>
+                                                            </div>
+                                                            <div class="wiki-content" style="margin-right: 10px;">
+                                                                <p>
+                                                                </p><div class="greybox">
+                                                                    <img src="images/comment_16.gif" align="absmiddle" border="0" height="16" width="16">
+                                                                    0 Comments
+                                                                    |
+                                                                    <a href="http://apydos.dyndns.org:9999/display/MAE/conception+-+v2+-+Architecture+Composants+-+Kaboum?showComments=true&amp;showCommentArea=true#addcomment"><img src="images/add_comment_16.gif" align="absmiddle" border="0" height="16" width="16"></a>
+                                                                    <a href="http://apydos.dyndns.org:9999/display/MAE/conception+-+v2+-+Architecture+Composants+-+Kaboum?showComments=true&amp;showCommentArea=true#addcomment">Ajouter un commentaire</a>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            
+                                                            
+                                                        </td>
+                                                        
+                                                        
+                                                    </tr>
+                                            </tbody></table>
+                                            
+                                            
+                                        </td>
+                                    </tr>
+                            </tbody></table>
+                        </td>
+                    </tr>
+            </tbody></table>
+        </div>
+        
+        <div class="license license-demonstration">
+            <b>LICENCE DE DEMONSTRATION</b> - Ce site Confluence est destin&eacute; &agrave; des fins de d&eacute;monstration uniquement. <a href="http://www.atlassian.comhttp//www.atlassian.com">Evaluez Confluence d&egrave;s aujourd'hui</a>.<br>
+        </div>
+        <div class="bottomshadow"></div>
+        <div id="poweredby" class="smalltext">
+            D&eacute;velopp&eacute; par <a href="http://www.atlassian.com/wiki/?clicked=footer" class="smalltext">Atlassian Confluence</a>, le <a href="http://www.atlassian.com/wiki/?clicked=footer" class="smalltext">Wiki d'entreprise</a>. (Version&nbsp;: http://www.atlassian.com/software/confluence Build&nbsp;:#2.7 1109)
+            <a href="http://jira.atlassian.com/secure/BrowseProject.jspa?id=10470" class="smalltext">Requ&agrave;te concernant un bogue/une fonctionnalit&eacute;</a>
+            -
+            <a href="http://www.atlassian.com/about/connected.jsp?s_kwcid=Confluence-stayintouch" class="smalltext">Atlassian news</a>
+            -
+            <a href="http://apydos.dyndns.org:9999/administrators.action">Contacter les administrateurs</a>
+            <br>
+        </div>
+        
+        <!-- delay the loading of large javascript files to the end so that they don't interfere with the loading of page content -->
+        <span style="display: none;">
+            <script type="text/javascript" language="JavaScript">var domainName = 'http://apydos.dyndns.org:9999/'; var entityId = '7536750'; var spaceKey = 'MAE'</script>
+            <script type="text/javascript" language="JavaScript" src="images/labels-javascript"></script>
+            <script>new Ajax.Autocompleter('labelName', 'labelsAutocompleteList', '7536750', { tokens: new Array(',', ' '), dwrFunction: GenerateAutocompleteLabelsListForEntity.autocompleteLabels});</script>
+        </span>
+        
+        
+</body></html>
