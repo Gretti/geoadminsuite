@@ -21,9 +21,9 @@ END
 layer
     name departements
     type polygon
-    status on
+    status default
     #data ../files/departements.shp
-    data "/Users/nicolas/geodata/GEOFLA-dep-L2-SF/dep_france_dom.shp"
+    data "../files/departements.shp"
     transparency 50
      class
             name "toto"
