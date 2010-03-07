@@ -1,0 +1,1 @@
+To build the Kaboum project, use ANT or an IDE integrating ANT, like NetBeans ort Eclipse

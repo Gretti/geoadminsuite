@@ -1,0 +1,3367 @@
+<html>
+
+<head>
+
+<title>Kaboum v5 : Application Programming Interface</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<style type="text/css">
+
+<!--
+
+body {
+
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+    font-size: 9pt;
+
+    text-align: justify;
+
+    background-color: #FFFFFF;
+
+}
+
+th   {
+
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+    font-size: 9pt;
+
+    font-weight: bold;
+
+    background-color: #000099;
+
+    color: #FFFFFF;
+
+}
+
+td   {  
+
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+    font-size: 9pt;
+
+    background-color: #B0CAFF;
+
+}
+
+form   {  
+
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+    font-size: 9pt;
+
+}
+
+h1   {  
+
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+    font-size: 16pt;
+
+    font-weight: bold;
+
+}
+
+h2   {  
+
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+    font-size: 14pt;
+
+    font-weight: bold;
+
+}
+
+h3   {  
+
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+    font-size: 12pt;
+
+    font-weight: bold;
+
+}
+
+h4   { 
+
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+    font-size: 10pt;
+
+    font-weight: bold;
+
+}
+
+h5   {
+
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+    font-size: 8pt;
+
+    font-weight: bold;
+
+}
+
+h6   {
+
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+    font-size: 6pt;
+
+    font-weight: bold;
+
+}
+
+A:link    {
+
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+    font-size: 9pt;
+
+    text-decoration: none;
+
+    color: blue;
+
+}
+
+A:visited {
+
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+    font-size: 9pt;
+
+    text-decoration: none;
+
+    color: blue;
+
+}
+
+A:hover   {
+
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+    font-size: 9pt;
+
+    text-decoration: underline;
+
+    color: red;
+
+}
+
+A:link.nav {
+
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+    color: #000000;
+
+}
+
+A:visited.nav {
+
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+    color: #000000;
+
+}
+
+A:hover.nav {
+
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+    color: red;
+
+}
+
+.nav {
+
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+    font-weight: bold;
+
+    color: #000099;
+
+    background-color: #6699FF;
+
+}
+
+.red {
+
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+    color: #FF0000
+
+}
+
+.green {
+
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+    color: #00FF00
+
+}
+
+.blue {
+
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+    color: #0000FF
+
+}
+
+.hilite {
+
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+    color: #FF0000
+
+}
+
+.exemple {
+
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+    color: #0055FF;
+
+}
+
+.figure {
+
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+    font-style: italic;
+
+}
+
+.tiny {
+
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+    color: #000099;
+
+    font-size: 8pt;
+
+}
+
+.tinyred {
+
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+    color: #FF0000;
+
+    font-size: 8pt;
+
+}
+
+.tinygrey {
+
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+    color: #666666;
+
+    font-size: 8pt;
+
+}
+
+.border1 {
+
+    border: 1px solid #FFFFFF;
+
+}
+
+.Style1 {
+
+	color: #FF0000;
+
+	font-style: italic;
+
+}
+
+.Style2 {
+
+	color: #FF0000;
+
+	font-weight: bold;
+
+}
+
+.Style3 {color: #FF0000}
+.Style4 {color: #0000FF}
+
+-->
+
+
+
+</style>
+
+</head>
+
+
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+
+
+<h2>
+
+  <a name="top"></a>Kaboum v4<br>
+
+  Javascript Tools Application Programing Interface
+
+</h2>
+
+<table border="0" cellspacing="3" cellpadding="2">
+
+  <tr> 
+
+    <td class="tinygrey">Topic</td>
+
+    <td class="tinygrey">Kaboum Javascript tools API. (tools to deal with Kaboum in HTML pages) </td>
+
+  </tr>
+
+  <tr> 
+
+    <td class="tinygrey">Author</td>
+
+    <td class="tinygrey">Nicolas Ribot </td>
+
+  </tr>
+
+  <tr> 
+
+    <td class="tinygrey">Creation date </td>
+
+    <td class="tinygrey">July, 3rd 2005 </td>
+
+  </tr>
+
+  <tr> 
+
+    <td class="tinygrey">History</td>
+
+    <td class="tinygrey"> 
+
+      <ul>
+
+        <li>v5_5: New Kaboum Applet resize feature: it is now possible to resize the applet lively from Javascript.
+        Useful, for instance, when putting the applet into a resizable component. </br />See kResizeApplet API for further details.</li>
+        <li>v5_0_b2: Kaboum CVS tagged version. Vector object management finalized: corresponding JS functions added to this doc. </li>
+
+        <li>v4_0_8b2: New kGeometry public method to deal with kaboum GEOMETRY mode.</li>
+        <li>v4_0_7 : Integration of Javascript code in the Kaboum (v4) project. History for previous changes in these JS files not kept </li>
+      </ul>
+
+    </td>
+
+  </tr>
+
+</table>
+
+<p><br>
+
+  Table of Content
+
+</p>
+
+<p><a href="#description">1. Description</a><br>
+
+  <a href="#quick_guide">2. Quick Guide for Javascript Integration</a><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="#quick_guide_resize">2.1 Resizing the Kaboum applet</a><br />
+
+  <a href="#js_files">3. Javascript Files</a><br>
+
+  <a href="#map_controls">4. Available Map Controls </a><br>
+
+<a href="#kaboum_ref">5. Kaboum.js Reference </a></p>
+
+<h3><img src="horizontal.gif" width="800" height="1"></h3>
+
+
+
+<h3><a name="description"></a>1. Description <a href="#top"><img src="up.gif" width="28" height="21" border="0"></a></h3>
+
+<p>
+
+Kaboum is an applet written in java 1.1. It's working with web browser that conform to java
+
+and javascript 1.1 specifications (including <i>LiveConnect</i>).
+
+<p>It is important to understand how Kaboum works, by first <a href="kaboum4_api_en.html"></a>reading <a href="kaboum4_api_en.html">its API</a>. 
+
+<p>Kaboum receives and sends commands by a LiveConnect mechanism to Javascript code. To ease the use of the applet and its integration by developers/web admins into Web pages, a set of Javascript methods and objects were developped.
+
+<p>For example, the toolbar shown in the Figure 1. can be easily built with the Javascript API, using corresonping objects and methods.
+
+<center>
+
+          <img src="vue_generale.gif" border="0"><br>
+
+          <font class="figure">
+
+            Figure 1 : global view. The toolbar is an HTML component<br> 
+
+            used to switch operating
+
+            modes. Command are send to the applet using javascript <i>Kaboum API </i>.
+
+          </font>
+
+</center>
+
+<br>
+
+<h4>1.1. Fondamental Kaboum methods 
+
+</h4>
+
+<p>Switching between operating mode is done using the Kaboum public method<strong> <i>kaboumCommand(String command)</i>.</strong> This method can be invoqued by Javascript by calling it on the kaboum applet object, once defined in the HTML page. </p>
+
+<p>
+
+On return, applet sends message to the web browser by calling the javascript method
+
+<i><strong>kaboumResult(String result</strong>)</i>. This method must exist in the document containing the applet in order for Web page to capture and handle Kaboum messages.</p>
+
+<p>The Javascript API handles these methods to send and receive Kaboum commands.<br>
+
+</p>
+
+<p>
+
+<b>N.B.</b> : this communication process works only if <i>LiveConnect</i> is enabled for the target browser.
+
+</p>
+
+
+
+<h3><br>
+
+<img src="horizontal.gif" width="800" height="1"></h3>
+
+<h3><a name="quick_guide"></a>2. Quick guide for Javascript integration</h3>
+
+<p>The best way to integrate Kaboum Javascript API with the Kaboum applet is to read all this document to understand available objects and methods.<br>
+
+  For those in a hurry, here is a quick guide to help you start with Javascript integration:</p>
+
+<p>First, design the web page that will contain the Kaboum applet. See the Kaboum API for applet initialisation parameters and other parameters. Creates the applet tag in your page where you want to see the map. <span class="Style3">The applet MUST BE NAMED &quot;kaboum&quot;. </span></p>
+
+<p>Second, link the Kaboum Javascript file: <code>&lt;SCRIPT language=JavaScript src=&quot;&lt;script folder&gt;/kaboum.js&quot;&gt;&lt;/SCRIPT&gt;</code></p>
+
+<p>Third, defines a &lt;form&gt; element for the page. You can define it globally, just after the &lt;body&gt; element, and close it just before &lt;/body&gt;</p>
+
+<p>Fourth, find the places in your HTML code where you want to integrate the toolbar, the layer control, the scale control, the legend control, etc. </p>
+
+<p>Fifth, includes the Javascript methods in these places, be sure to understant their parameters</p>
+
+<blockquote>
+
+  <p><strong>For the toolbar:</strong><br>
+
+    <code>&lt;script&gt;<br>
+
+    kNewButton('images/zoomin', 'Zoom In', 'modal', 'ZOOMIN', 22, 22);<br>
+
+    kNewButton('images/zoomout', 'Zoom out', 'modal', 'ZOOMOUT', 22, 22);<br>
+
+    kNewButton('images/pan', 'Pan the map', 'modal', 'PAN', 22, 22);<br>
+
+    kNewButton('images/back', 'previous map location', 'action', 'BACK', 22, 22);<br>
+
+    kNewButton('images/forward', 'next map location', 'action', 'FORWARD', 22, 22);<br>
+
+    kNewButton('images/home', 'Return to home page', 'action', 'HOME', 22, 22);<br>
+
+    kNewButton('images/info', 'Layers information', 'modal', 'QUERY', 22, 22);<br>
+
+    kNewButton('images/distance', 'measure distances', 'modal', 'DISTANCE', 22, 22);<br>
+
+&lt;/script&gt; </code></p>
+
+  <p><strong>For the layer controls :</strong><br>
+
+  <code>&lt;script&gt;<br>
+
+  kNewTheme(&quot;departements&quot;,&quot;D&amp;eacute;partements Fran&amp;ccedil;ais&quot;,true,true,&quot;CHECKBOX&quot;,'tiny');<br>
+
+  kNewTheme(&quot;roads&quot;,&quot;Routes&quot;,true,true,&quot;CHECKBOX&quot;,'tiny');<br>
+
+kNewTheme(&quot;rivers&quot;,&quot;Rivieres&quot;,true,true,&quot;IMAGE&quot;,'', 'images/rivers', 'Toggle river layer view');<br>
+
+&lt;/script&gt;</code> </p>
+
+  <p><strong>For the scale:</strong><br>
+
+  <code>&lt;script&gt;kNewScale(&quot;1:&quot;,&quot;&quot;);&lt;/script&gt;</code>  </p>
+
+  <p><strong>For the legend </strong>(a pop windows will be opened, containing the Mapserver legend, provided a LEGEND object was defined in the mapfile):<br>
+
+    <code>&lt;a href=&quot;#&quot; onclick=&quot;kGetLegend();&quot;&gt;Display the map legend&lt;/a&gt; </code></p>
+
+</blockquote>
+
+<p>You're done ! Refer to the <a href="../test/kaboum.html">test page</a> for further examples. </p>
+
+<h4><a name="quick_guide_resize"></a>2.1. Resizing the Kaboum Applet</h4>
+<p>It is now possible to resize Kaboum applet lively without reloading the page or the applet.
+A new Javascript method is added, allowing Javascript code to force the applet size.<br />
+This is particulary useful when embeding Kaboum into a resizable component. The following code shows how to resize the applet
+contained into a Ext/JS Window:</p>
+
+  <p>
+      <strong>JS code creating the Ext window and registering a onresize event:</strong><br>
+        <pre>
+//Include Ext and app-specific scripts
+&lt;script type="text/javascript" src="ext-2.2/adapter/ext/ext-base.js">&lt;/script&gt;
+&lt;script type="text/javascript" src="ext-2.2/ext-all-debug.js">&lt;/script&gt;
+
+// Include Ext stylesheets here:
+&lt;link rel="stylesheet" type="text/css" href="ext-2.2/resources/css/ext-all.css"&gt;
+// Include Ext stylesheets here: -->
+&lt;script type="text/javascript" src="kaboum/kaboum.js">&lt;/script&gt;
+
+
+    &lt;script&gt;<br>
+// the String containing HTML code to create the Kaboum applet, ex:
+var appletString = '&lt;applet code="org.kaboum.Kaboum.class" codebase="./kaboum" archive="kaboum.jar"...';
+
+
+// The ext window
+var kaboumWin;
+
+Ext.onReady(function() {
+
+    kaboumWin = new Ext.Window({
+            title    : 'Kaboum Window',
+            closable : true,
+            width    : 650,
+            height   : 550,
+            //border : false,
+            plain    : true,
+            html     : appletString // the string containing HTML code to create a valid Kaboum applet tag.
+        });
+    kaboumWin.on({
+        'resize' : resizeHandler
+    });
+    kaboumWin.show();
+});
+
+// the handler calling the Kaboum JS method to resize the applet.
+function resizeHandler(win, width, height) {
+    kResizeApplet(win.getInnerWidth(), win.getInnerHeight());
+}
+&lt;/script&gt;
+       </pre>
+   </p>
+
+<p><br>
+
+  <img src="horizontal.gif" width="800" height="1"></p>
+
+<h3><a name="js_files"></a>3. Javascript files</h3>
+
+
+
+<p>Two Javascript files contain all the variables, objects and methods needed to deal with the Kaboum Applet:</p>
+
+<ul>
+
+  <li>kaboum.js: contains all the code to deal with Mapserver Kaboum features (layer control, toolbars, legends, scale, etc.)</li>
+
+  <li>kaboum_edition.js: contains all the code to deal with advanced edition features provided by kaboum (loading vector objects, dealing with servers, etc.). This file should be included into the web page containing kaboum only if vector objects edition features are used in kaboum. Otherwise, it is useless. </li>
+
+</ul>
+
+<p>As a general guideline, these files must not be edited or changed. Instead, developpers are encouraged to add their own Javascript code (as a file or directly into the Web page) and to overload variables/methods if needed in order to achieve particular tasks.</p>
+
+<h4>3.1. Integrating Javascript files in the Kaboum web page </h4>
+
+<p>The easiest way to integrate Javascript files into the page containing kaboum is to link these files into a &lt;script&gt; tag, as shown below:</p>
+
+<p><code>&lt;SCRIPT language=JavaScript src=&quot;&lt;script folder&gt;/kaboum.js&quot;&gt;&lt;/SCRIPT&gt;<br>
+
+&lt;SCRIPT language=JavaScript src=&quot;&lt;script folder&gt;/kaboum_edition.js&quot;&gt;&lt;/SCRIPT&gt;</code></p>
+
+<p>where &lt;script folder&gt; is the folder (relative or absolute URL) containg the 2 files</p>
+
+<p class="Style2">Note: Kaboum Javascript needs a &lt;form&gt; object to be included in the page in order for the methods to work. The form can have any name.</p>
+
+<h3><br>
+
+<img src="horizontal.gif" width="800" height="1"></h3>
+
+<h3><a name="map_controls"></a>4. Available Map Controls</h3>
+
+<p>Kaboum's purpose is (roughly) to display a single Mapserver map in its windows. The applet itself contains nothing but the map. To interact with the map, change kaboum modes, control map layers, display some information, etc. it is necessary to include some Javascript code doing the tricks.</p>
+
+<p>The Kaboum Javascript files provides methods and variables to achieve this. Especially, the following logical components are available through Javascript code:</p>
+
+<ul>
+
+  <li>The kaboum commands control (often called toolbar) </li>
+
+  <li>The layers control</li>
+
+  <li>The legend control</li>
+
+  <li>The scale control</li>
+
+  <li>The coordinates control</li>
+
+</ul>
+
+<h4>4.1 The  kaboum commands control</h4>
+
+<h5>4.1.1 Introduction </h5>
+
+<p>Kaboum's commands (zoom, pan, home, back, forward, print, etc...) can be represented by buttons that can be grouped together into toolbar(s). Kaboum Javascript API ease the creation of such buttons by providing methods to create buttons. </p>
+
+<p>Buttons can be dynamic, ie having a different face according to their state (clicked, hovered, normal). To do that, a set of 3 buttons must be defined for each command. Their name is important. For instance, for a zoomin command if the main image is zoomin.gif, then zoomin_clicked.gif and zoomin_over.gif must be created, representing the state of the button when it is clicked and hovered. The &quot;_clicked&quot; and &quot;_over&quot; keywords are automatically added by the API when dealing with buttons.<br>
+
+  Of course, one can defined 3 identical buttons if static behaviour is needed.</p>
+
+<p>Kaboum commands can be divided into 2 groups: modal and action commands:</p>
+
+<ul>
+
+  <li>Modal command sets kaboum to a certain mode until a new mode is sent to kaboum (example: zoom mode)</li>
+
+  <li>Action command executes an action immediately. Kaboum stays in the mode it was before the action is executed (example: back action) </li>
+
+</ul>
+
+<p>Commands control API allows to create both types of buttons: modal or action. </p>
+
+<h5>4.2.2 How to create a command button: the kNewButton(...) method </h5>
+
+<p>To add a new button in the kaboum page corresponding to a command, use the following Javascript method:</p>
+
+<table width="90%" border="0" align="center">
+
+  <tr>
+
+    <td><b>kNewButton(img_src, alt_txt, mode, action, img_width, img_height):</b>
+
+        <blockquote>
+
+          <table cellspacing="0">
+
+            <tr>
+
+              <td class="border1"><i>Description</i></td>
+
+              <td class="border1">Creates a new button by generating HTML code according to given parameters. The generated button will send command to kaboum each time it is clicked. According to the button's mode, kaboum will change its mode or execute the button's action </td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><i>Parameters</i></td>
+
+              <td class="border1"><strong>img_src:</strong>			  <table width="100%"  border="0">
+
+                <tr valign="top">
+
+                  <td width="13%" align="right"><em>Type</em></td>
+
+                  <td width="87%">String.</td>
+
+                </tr>
+
+                <tr valign="top">
+
+                  <td align="right"><em>Description</em></td>
+
+                  <td>The URL to the image for this button. Do not add file extension. It is automatically generated by the API according to the kButtonType global parameter.</td>
+
+                </tr>
+
+                <tr valign="top">
+
+                  <td align="right"><em>Example</em></td>
+
+                  <td>'images/zoomin'</td>
+
+                </tr>
+
+              </table>
+
+			    <strong>alt_txt:</strong><table width="100%"  border="0">
+
+                  <tr valign="top">
+
+                    <td width="13%" align="right"><em>Type</em></td>
+
+                    <td width="87%">String.</td>
+
+                  </tr>
+
+                  <tr valign="top">
+
+                    <td align="right"><em>Description</em></td>
+
+                    <td>The text to display when mouse is over the button.</td>
+
+                  </tr>
+
+                  <tr valign="top">
+
+                    <td align="right"><em>Example</em></td>
+
+                    <td>'Zoom in mode'</td>
+
+                  </tr>
+
+                </table>                <strong>mode:</strong>                <table width="100%"  border="0">
+
+                <tr valign="top">
+
+                  <td width="13%" align="right"><em>Type</em></td>
+
+                  <td width="87%">String.</td>
+
+                </tr>
+
+                <tr valign="top">
+
+                  <td align="right"><em>Description</em></td>
+
+                  <td>The type of the button, either modal or action </td>
+
+                </tr>
+
+                <tr valign="top">
+
+                  <td align="right"><em>Example</em></td>
+
+                  <td>'modal' or 'action' </td>
+
+                </tr>
+
+              </table>                <strong>action:</strong>                <table width="100%"  border="0">
+
+                <tr valign="top">
+
+                  <td width="13%" align="right"><em>Type</em></td>
+
+                  <td width="87%">String.</td>
+
+                </tr>
+
+                <tr valign="top">
+
+                  <td align="right"><em>Description</em></td>
+
+                  <td>The kaboum command to send when clicking this button. Refer to the <a href="kaboum4_api_en.html">kaboum API</a> for the list of supported commands </td>
+
+                </tr>
+
+                <tr valign="top">
+
+                  <td align="right"><em>Example</em></td>
+
+                  <td>'ZOOMIN' or 'PAN' or... </td>
+
+                </tr>
+
+              </table>                <strong>img_width:</strong>                <table width="100%"  border="0">
+
+                <tr valign="top">
+
+                  <td width="13%" align="right"><em>Type</em></td>
+
+                  <td width="87%">Integer</td>
+
+                </tr>
+
+                <tr valign="top">
+
+                  <td align="right"><em>Description</em></td>
+
+                  <td>The width of the images for this button, in pixels. (provided images are 22 px).</td>
+
+                </tr>
+
+                <tr valign="top">
+
+                  <td align="right"><em>Example</em></td>
+
+                  <td>22</td>
+
+                </tr>
+
+              </table>                <strong>img_height:</strong>                <table width="100%"  border="0">
+
+                <tr valign="top">
+
+                  <td width="13%" align="right"><em>Type</em></td>
+
+                  <td width="87%">Integer</td>
+
+                </tr>
+
+                <tr valign="top">
+
+                  <td align="right"><em>Description</em></td>
+
+                  <td>The height of the images for this button, in pixels. (provided images are 22 px).</td>
+
+                </tr>
+
+                <tr valign="top">
+
+                  <td align="right"><em>Example</em></td>
+
+                  <td>22</td>
+
+                </tr>
+
+              </table></td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><em>example</em></td>
+
+              <td class="border1"><p><code>&lt;script&gt;kNewButton('images/zoomin', 'Zoom In mode', 'modal', 'ZOOMIN', 22, 22);&lt;/script&gt;</code></p></td>
+
+            </tr>
+
+          </table>
+
+          <br>
+
+      </blockquote></td>
+
+  </tr>
+
+</table>
+
+<h4>4.2 The layers control</h4>
+
+<h5>4.2.1 Introduction</h5>
+
+<p>Mapserver organizes the geographic data into layers. Each layer contains a consistent set of geographic objects (points, lines, polygones, rasters). Each layer has a set of properties (the way it is drawn, its behaviour, its projection, etc.).</p>
+
+<p>In a map environment, it can be powerfull to allow user to compose his own map by selecting/deselecting some layer, turning information feature on or off for certain layers, changing the map background from a satellite image to a topographic scan, and so on.</p>
+
+<p>Kaboum Javascript API eases the creation of layer controls inside the web page by providing a method (generating the Javascript code behind the scene) to add a layer control anywhere in the Web page </p>
+
+<h5>4.2.2 How to create a layer control for kaboum: the kNewTheme(...) method</h5>
+
+<p>To add a layer control in the web page containing kaboum, you must first decide the type of Javascript component that will represent the the layer. Currently, you can choose a select component a checkbox component or an image.</p>
+<p class="Style4">Note: if you choose an image type, you can simulate a button behaviour, with hover and clicked faces by creating 3 images corresponding to the 3 image states (normal, clicked, over) and name these images the following way:</p>
+<ul>
+  <li class="Style4">Any name for the &quot;normal&quot; image. Let's call it rivers.gif</li>
+  <li class="Style4">rivers_over.gif for the image displayed when the mouse is over it</li>
+  <li class="Style4">river_clicked.gif for the image displayed when it's clicked</li>
+</ul>
+<p><span class="Style4">The &quot;_over&quot; and &quot;_clicked</span>&quot;<span class="Style4"> strings are automatically added by the application to the name of the image you provide. Image extention is added according to the kButtonType variable (default is gif).</span></p>
+<p class="Style4">if you do not want this behaviour, just name the same image with the 3 different names <br>
+</p>
+<ul>
+
+  <li>Select component is an handy way to provide user with a way to swap map background, when only one background is pertinent at a time. (swapping from satellite image to scan map or orthophotgraphy).<br>
+
+    <span class="Style3">When defining a select element (&lt;option&gt; tag), the developer must use a function when the last select element is defined, in order for the code to close the &lt;select&gt; tag correctly. This method is named: kLastSelectTheme()</span></li>
+
+  <li>Checkbox(es) component(s) is(are) nice to handle several vector layers as they appear in the MapServer Mapfile. With them, you can toggle layer visibility and toggle kaboum layer information command on a per-layer basis. </li>
+
+</ul>
+
+<p>Then use the method below to define the layer control: </p>
+
+<table width="90%" border="0" align="center">
+
+  <tr>
+
+    <td><b>kNewTheme(name, display_name, visible, info, type, css_style, img_src, img_title):</b>
+
+        <blockquote>
+
+          <table cellspacing="0">
+
+            <tr>
+
+              <td class="border1"><i>Description</i></td>
+
+              <td class="border1">Creates a layer control, (either a checkbox or a select entry, depending on the type parameter) by generating HTML code according to given parameters. The generated control will allow user to toggle layer visibility when selecting or checking it. This default behaviour (automatic layer refresh) can be controled by the kThemeAutoReload global variable. True by default).<br> </td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><i>Parameters</i></td>
+
+              <td class="border1"><strong>name:</strong>
+
+                  <table width="100%"  border="0">
+
+                    <tr valign="top">
+
+                      <td width="13%" align="right"><em>Type</em></td>
+
+                      <td width="87%">String</td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align="right"><em>Description</em></td>
+
+                      <td>The name of the Mapserver layer (or group name) as it appears in the mapfile. This name is sent by kaboum to mapserver to set the list of visible layers.</td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align="right"><em>Example</em></td>
+
+                      <td>'departements'</td>
+
+                    </tr>
+
+                  </table>
+
+                  <strong>display_name:</strong>
+
+                  <table width="100%"  border="0">
+
+                    <tr valign="top">
+
+                      <td width="13%" align="right"><em>Type</em></td>
+
+                      <td width="87%">String.</td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align="right"><em>Description</em></td>
+
+                      <td>The name of the layer (or any other text) as it will be displayed in the html page, either next to the checkbox or in the select component, according to the &quot;type&quot; parameter</td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align="right"><em> Example</em></td>
+
+                      <td>'D&amp;eacute;partements Fran&amp;ccedil;ais'</td>
+
+                    </tr>
+
+                  </table>
+
+                  <strong>visible:</strong>
+
+                  <table width="100%"  border="0">
+
+                    <tr valign="top">
+
+                      <td width="13%" align="right"><em>Type</em></td>
+
+                      <td width="87%">boolean</td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align="right"><em>Description</em></td>
+
+                      <td>True to make the layer visible by default when kaboum loads the first map. False to hide the layer </td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align="right"><em>Example</em></td>
+
+                      <td>&nbsp;</td>
+
+                    </tr>
+
+                  </table>
+
+                  <strong>info:</strong>
+
+                  <table width="100%"  border="0">
+
+                    <tr valign="top">
+
+                      <td width="13%" align="right"><em>Type</em></td>
+
+                      <td width="87%">boolean</td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align="right"><em>Description</em></td>
+
+                      <td>Indicates if a layer info control image should be added behind the checkbox for this layer. This info control allows user to toggle information for this layer, when using Kaboum info tool.</td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align"right"><em>Example</em></td>
+
+                      <td>&nbsp;</td>
+
+                    </tr>
+
+                  </table>
+
+                  <strong>type:</strong>
+
+                  <table width="100%"  border="0">
+
+                    <tr valign="top">
+
+                      <td width="13%" align="right"><em>Type</em></td>
+
+                      <td width="87%">String. fixed values. see example. Case sensitive </td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align="right"><em>Description</em></td>
+
+                      <td>The type of control for the layer. Either a checkbox or a select entry </td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align="right"><em>Example</em></td>
+
+                      <td>'<span class="Style3">CHECKBOX' or 'SELECT' or 'IMAGE' </span></td>
+
+                    </tr>
+
+                  </table>
+
+                  <strong>css_style:</strong>
+
+                  <table width="100%"  border="0">
+
+                    <tr valign="top">
+
+                      <td align="right"><em>Type</em></td>
+
+                      <td>String. Use an empty string when no CSS style is required. </td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align="right"><em>Description</em></td>
+
+                      <td>The name of a CSS class style to be used when rendering the component. The CSS class will be put into a &lt;SPAN&gt; tag </td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align="right"><em>Example</em></td>
+
+                      <td>'MyClass'</td>
+
+                    </tr>
+
+                </table>
+                  <strong>img_src:</strong>
+
+                  <table width="100%"  border="0">
+
+                    <tr valign="top">
+
+                      <td align="right"><em>Type</em></td>
+
+                      <td>String. Ignored unless type is set to IMAGE </td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align="right"><em>Description</em></td>
+
+                      <td>the source of image to use as the layer control. Don't put extension and be sure that 2 other images exist in the same folder: img_over and img_clicked</td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align="right"><em>Example</em></td>
+
+                      <td>'image1' (means that image1_clicked and image1_over will be called, with extension according to the kButtonType variable </td>
+
+                    </tr>
+
+                </table>	
+                  <strong>img_title:</strong>
+
+                  <table width="100%"  border="0">
+
+                    <tr valign="top">
+
+                      <td align="right"><em>Type</em></td>
+
+                      <td>String. Ignored unless type is set to IMAGE </td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align="right"><em>Description</em></td>
+
+                      <td>The title (alt) displayed when mouse is over the image</td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align="right"><em>Example</em></td>
+
+                      <td>'Click to toggle layer view'</td>
+
+                    </tr>
+
+                </table>				</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><em>example 1 </em></td>
+
+              <td class="border1"><p><code>&lt;script&gt;kNewTheme(&quot;departements&quot;,&quot;D&amp;eacute;partements Fran&amp;ccedil;ais&quot;,true,true,&quot;CHECKBOX&quot;,'tiny');&lt;/script&gt;</code></p></td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><em>example 2 </em></td>
+
+              <td class="border1"><code>&lt;script&gt;kNewTheme(&quot;ortho&quot;,&quot;Orthophoto&quot;,false,false,&quot;SELECT&quot;,'');kLastSelectTheme();&lt;/script&gt;</code></td>
+
+            </tr>
+            <tr>
+              <td class="border1"><em>example 3 </em></td>
+              <td class="border1"><code>&lt;script&gt;kNewTheme(&quot;rivers&quot;,&quot;Riviere&quot;,false,true,'IMAGE','myCSSStyle', 'images/river', 'Click to display rivers layer');kLastSelectTheme();&lt;/script&gt;</code></td>
+            </tr>
+
+          </table>
+
+          <br>
+
+      </blockquote></td>
+
+  </tr>
+
+</table>
+
+<h4>4.3 The legend control</h4>
+
+<h5>4.3.1 Introduction</h5>
+
+<p>What's a map without a legend ? Kaboum Javascript API provides users with a way to automatically opens a legend window directly plugged to Mapserver. It is so compulsory to define such a LEGEND ojbect into the Mapfile displayed by Kaboum. </p>
+
+<h5>4.3.2 How to create a legend control: the kgetLegend() method</h5>
+
+<p>You just have to decide what kind of component you want to open the legend window (link, button, form element, etc.) and call the kGetLegend() when user interacts with it.</p>
+
+<p>Example 1: &lt;a href=&quot;#&quot; onclick=&quot;kGetLegend();&quot;&gt;Display the map legend&lt;/a&gt;<br>
+
+Example 2: &lt;input type=&quot;button&quot; name=&quot;legendBut&quot; value=&quot;display the legend&quot; onclick=&quot;kGetLegend();&quot;/&gt; </p>
+
+<h4>4.4 The scale control</h4>
+
+<h5>4.4.1 Introduction</h5>
+
+<p>What's a map without a scale ?... well, Mapserver does provide a scale object displaying a nice, customizable scale. But Kaboum Javascript API provides a component to display a dynamic, numeric scale. User can change the scale value and the map is automatically zoomed to this new scale.</p>
+
+<h5>4.4.2 How to integrate a scale control: the kNewScale(...) method</h5>
+
+<p>The scale control is a text field that will contain the current map scale each time a new map is displayed by kaboum. To create this text field, use the method below:</p>
+
+<table width="90%" border="0" align="center">
+
+  <tr>
+
+    <td><b>kNewScale(scaleText, style):</b>
+
+        <blockquote>
+
+          <table cellspacing="0">
+
+            <tr>
+
+              <td class="border1"><i>Description</i></td>
+
+              <td class="border1">Creates a textfield scale control, with the given text in front of it. This textfield is dynamic. If user modifies its value and validates (enter), kaboum refreshes the map to zoom to the new scale.<br>              </td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><i>Parameters</i></td>
+
+              <td class="border1"><strong>scaleText:</strong>
+
+                  <table width="100%"  border="0">
+
+                    <tr valign="top">
+
+                      <td width="13%" align="right"><em>Type</em></td>
+
+                      <td width="87%">String</td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align="right"><em>Description</em></td>
+
+                      <td>The text that will be apended in front of the textfield </td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align="right"><em>Example</em></td>
+
+                      <td>'1:'</td>
+
+                    </tr>
+
+                  </table>
+
+                  <strong>style:</strong>
+
+                  <table width="100%"  border="0">
+
+                    <tr valign="top">
+
+                      <td width="13%" align="right"><em>Type</em></td>
+
+                      <td width="87%">String.</td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align="right"><em>Description</em></td>
+
+                      <td>The name of a CSS class style to be used when rendering the component.</td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align="right"><em> Example</em></td>
+
+                      <td>'invisible_borders'</td>
+
+                    </tr>
+
+                  </table>              </td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><em>example</em></td>
+
+              <td class="border1"><p><code>&lt;script&gt;kNewScale(&quot;1:&quot;,&quot;&quot;);&lt;/script&gt;</code></p></td>
+
+            </tr>
+
+          </table>
+
+          <br>
+
+      </blockquote></td>
+
+  </tr>
+
+</table>
+
+<h4>4.5. The coordinates control</h4>
+
+<h5>4.5.1 Introduction </h5>
+
+<p>Kaboum applet tracks down mouse movements on the map and converts them into map coordinates by applying the exact same algorithm as the mapserver one to transform between screen coordinates (x-y integers) into map, unit-dependent coordinates.</p>
+
+<p>It is possible to integrate these coordinates into the HTML page thanks to the coordinates control. (<span class="Style4">Note: coordinates are also displayed in the browser's status bar</span>). Developer can then use these coordinates for any geographic-related task.</p>
+
+<p>Coordinates are displayed into textfield Javascript components. </p>
+
+<h5>4.5.2 How to integrate coordinates control: the kNewXCoordinate(...) and kNewYCoordinate(...) methods </h5>
+
+<p>These 2 methods are strictly the same. One handles the X-coordinate coming from Kaboum, the other handles the y-coordinate.</p>
+
+<table width="90%" border="0" align="center">
+
+  <tr>
+
+    <td><b> kNewXCoordinate(coordText, style, size):</b>
+
+        <blockquote>
+
+          <table cellspacing="0">
+
+            <tr>
+
+              <td class="border1"><i>Description</i></td>
+
+              <td class="border1">Creates a textfield control that will display the x-coordinate of the mouse moving on a Kaboum map. To enable this mechanism, sets the kaboum init parameter KABOUM_SEND_POSITION_COORDINATES_TO_JS to &quot;true&quot; <br>              </td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><i>Parameters</i></td>
+
+              <td class="border1"><strong>scaleText:</strong>
+
+                  <table width="100%"  border="0">
+
+                    <tr valign="top">
+
+                      <td width="13%" align="right"><em>Type</em></td>
+
+                      <td width="87%">String</td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align="right"><em>Description</em></td>
+
+                      <td>The text that will be apended in front of the textfield </td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align="right"><em>Example</em></td>
+
+                      <td>'x coord:'</td>
+
+                    </tr>
+
+                  </table>
+
+                  <strong>style:</strong>
+
+                  <table width="100%"  border="0">
+
+                    <tr valign="top">
+
+                      <td width="13%" align="right"><em>Type</em></td>
+
+                      <td width="87%">String.</td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align="right"><em>Description</em></td>
+
+                      <td>The name of a CSS class style to be used when rendering the component.</td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align="right"><em> Example</em></td>
+
+                      <td>'invisible_borders'</td>
+
+                    </tr>
+
+                </table>
+
+              <strong>size:</strong>
+
+              <table width="100%"  border="0">
+
+                <tr valign="top">
+
+                  <td width="13%" align="right"><em>Type</em></td>
+
+                  <td width="87%">integer</td>
+
+                </tr>
+
+                <tr valign="top">
+
+                  <td align="right"><em>Description</em></td>
+
+                  <td>The size of the textfield </td>
+
+                </tr>
+
+                <tr valign="top">
+
+                  <td align="right"><em>Example</em></td>
+
+                  <td>8</td>
+
+                </tr>
+
+              </table></td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><em>example</em></td>
+
+              <td class="border1"><p><code>&lt;script&gt;kNewXCoordinate(&quot;x:&quot;,&quot;&quot;, 8 );&lt;/script&gt;</code></p></td>
+
+            </tr>
+
+          </table>
+
+          <br>
+
+      </blockquote></td>
+
+  </tr>
+
+</table>
+
+<table width="90%" border="0" align="center">
+
+  <tr>
+
+    <td><b> kNewYCoordinate(coordText, style, size):</b>
+
+        <blockquote>
+
+          <table cellspacing="0">
+
+            <tr>
+
+              <td class="border1"><i>Description</i></td>
+
+              <td class="border1">Creates a textfield control that will display the y-coordinate of the mouse moving on a Kaboum map. To enable this mechanism, sets the kaboum init parameter KABOUM_SEND_POSITION_COORDINATES_TO_JS to &quot;true&quot; <br>
+
+              </td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><i>Parameters</i></td>
+
+              <td class="border1"><strong>scaleText:</strong>
+
+                  <table width="100%"  border="0">
+
+                    <tr valign="top">
+
+                      <td width="13%" align="right"><em>Type</em></td>
+
+                      <td width="87%">String</td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align="right"><em>Description</em></td>
+
+                      <td>The text that will be apended in front of the textfield </td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align="right"><em>Example</em></td>
+
+                      <td>'y coord:'</td>
+
+                    </tr>
+
+                  </table>
+
+                  <strong>style:</strong>
+
+                  <table width="100%"  border="0">
+
+                    <tr valign="top">
+
+                      <td width="13%" align="right"><em>Type</em></td>
+
+                      <td width="87%">String.</td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align="right"><em>Description</em></td>
+
+                      <td>The name of a CSS class style to be used when rendering the component.</td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align="right"><em> Example</em></td>
+
+                      <td>'invisible_borders'</td>
+
+                    </tr>
+
+                  </table>
+
+                  <strong>size:</strong>
+
+                  <table width="100%"  border="0">
+
+                    <tr valign="top">
+
+                      <td width="13%" align="right"><em>Type</em></td>
+
+                      <td width="87%">integer</td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align="right"><em>Description</em></td>
+
+                      <td>The size of the textfield </td>
+
+                    </tr>
+
+                    <tr valign="top">
+
+                      <td align="right"><em>Example</em></td>
+
+                      <td>8</td>
+
+                    </tr>
+
+                </table></td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><em>example</em></td>
+
+              <td class="border1"><p><code>&lt;script&gt;kNewXCoordinate(&quot;y:&quot;,&quot;&quot;, 8 );&lt;/script&gt;</code></p></td>
+
+            </tr>
+
+          </table>
+
+          <br>
+
+      </blockquote></td>
+
+  </tr>
+
+</table>
+
+<p>  <img src="horizontal.gif" width="800" height="1"></p>
+
+<h3><a name="kaboum_ref"></a>5. kaboum.js Reference</h3>
+
+<h4>5.1. Structure</h4>
+
+<p>This file is organized as follow:</p>
+
+<ul>
+
+  <li>&quot;Public&quot; and &quot;private&quot; global variables declaration and initalisation: public variables can be overloaded by developers. private one should not, though no control is performed to ensure private variables are not overloaded.</li>
+
+  <li>Browser sniffing code</li>
+
+  <li>kaboumCommand() and kaboumResult() methods implementation</li>
+
+  <li>Public methods to create themes, buttons, scale, legend, etc. objects </li>
+
+</ul>
+
+<h4>5.2. Public Global variables </h4>
+
+<p>These variables can be overloaded by developers to customize their kaboum environment. To do so, creates a new script and overload variables in it. Do not change or edit kaboum.js directly !</p>
+
+<table width="90%" border="0" align="center">
+
+  <tr>
+
+    <td><b>kButtonType:</b>
+
+      <blockquote>
+
+        <table cellspacing="0">
+
+          <tr>
+
+            <td class="border1"><i>Description</i></td>
+
+            <td class="border1">the file extension for toolbar images buttons (kNewButton object). All buttons must have the same extension.<br>
+
+            the image type must be supported by browsers. (use gif, png or jpg image types).</td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><i>Type</i></td>
+
+            <td class="border1">String<font class+"green">&nbsp;</font></td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><span class="Style1">Public</span></td>
+
+            <td class="border1">this parameter can be overloaded by developer to change buttons type </td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><em>Default value </em></td>
+
+            <td class="border1">.gif</td>
+
+          </tr>
+
+        </table>
+
+   <br> </blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td><b>kThemeAutoReload:</b>
+
+      <blockquote>
+
+        <table cellspacing="0">
+
+          <tr>
+
+            <td class="border1"><i>Description</i></td>
+
+            <td class="border1">Boolean telling if the map should be reloaded each time a theme is selected/deselected. If false, developer must provide a button allowing user to reload kaboum map. </td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><i>Type</i></td>
+
+            <td class="border1">boolean<font class+"green">&nbsp;</font></td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><span class="Style1">Public</span></td>
+
+            <td class="border1">this parameter can be overloaded by developer to change default behaviour </td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><em>Default value </em></td>
+
+            <td class="border1">true</td>
+
+          </tr>
+
+        </table>
+
+    <br></blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td><b>kinfoImgSrc:</b>
+
+      <blockquote>
+
+        <table cellspacing="0">
+
+          <tr>
+
+            <td class="border1"><i>Description</i></td>
+
+            <td class="border1"><p>the path, relative or absolute, to an image used to control information visibility of a theme. This image should be small enough to integrate easily in front of a text. </p>
+
+            <p>Javascript code generates a second image name based on this parameter's value. The first image is used when information is not available for the layer, the second image is used when information is available. The second image must exist in the same folder as the first one, and its name must follow this format:</p>
+
+            <p>&lt;first_image_name&gt;_clicked.gif (&quot;_clicked&quot; must be present in the image's name before the file extension.) </p></td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><i>Type</i></td>
+
+            <td class="border1">String<font class+"green">&nbsp;</font></td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><p class="Style1">Public</p>            </td>
+
+            <td class="border1">Developer can overload this parameter to customize theme's info images. </td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><em>Default value </em></td>
+
+            <td class="border1">&quot;images/infolayer.gif&quot; (this image: <img src="../images/infolayer.gif">)</td>
+
+          </tr>
+
+        </table>
+
+    <br></blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td><b>kCurrentExtent:</b>
+
+      <blockquote>
+
+        <table cellspacing="0">
+
+          <tr>
+
+            <td class="border1"><i>Description</i></td>
+
+            <td class="border1">the current kaboum map extent. Used for debug and for developper needing it </td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><i>Type</i></td>
+
+            <td class="border1">String<font class+"green">&nbsp;</font></td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><p class="Style1">Public</p></td>
+
+            <td class="border1">Its value should not be changed, but used by developer who wants to control map extent for some reason </td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><em>Default value </em></td>
+
+            <td class="border1">empty string </td>
+
+          </tr>
+
+        </table>
+
+    <br></blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td><b>kActiveThemes:</b>
+
+      <blockquote>
+
+        <table cellspacing="0">
+
+          <tr>
+
+            <td class="border1"><i>Description</i></td>
+
+            <td class="border1">The list of comma-separated active themes names. Used for debug mainly, and to control what are the active themes </td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><i>Type</i></td>
+
+            <td class="border1">String<font class+"green"> of themes' names. </font></td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><p class="Style1">Public</p></td>
+
+            <td class="border1">Its value should not be changed, but used by developer who wants to control map extent for some reason </td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><em>Default value </em></td>
+
+            <td class="border1">empty string </td>
+
+          </tr>
+
+        </table>
+
+    <br></blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td><b>kServletPath:</b>
+
+      <blockquote>
+
+        <table cellspacing="0">
+
+          <tr>
+
+            <td class="border1"><i>Description</i></td>
+
+            <td class="border1">The URL of the application server (servlet or something else) processing server actions, like vector objects management </td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><i>Type</i></td>
+
+            <td class="border1">URL</td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><p class="Style1">Public</p></td>
+
+            <td class="border1">Its value should be defined in user-specific javascript when server processing is needed </td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><em>Default value </em></td>
+
+            <td class="border1">false (Javascript dynamic typing allows this value to be changed into a String by user). </td>
+
+          </tr>
+
+        </table>
+
+    <br></blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td><b>kEditionMode:</b>
+
+      <blockquote>
+
+        <table cellspacing="0">
+
+          <tr>
+
+            <td class="border1"><i>Description</i></td>
+
+            <td class="border1">Tells if kaboum will deal with vector, editable objects. If true, the kaboum_edition.js file must be linked in the page containing kaboum </td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><i>Type</i></td>
+
+            <td class="border1">boolean</td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><p class="Style1">Public</p></td>
+
+            <td class="border1">Its value should be true if vector objects are used. (overload this parameter in user-specific JS). </td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><em>Default value </em></td>
+
+            <td class="border1">false</td>
+
+          </tr>
+
+        </table>
+
+    <br></blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td><b>kPrintURL:</b>
+
+      <blockquote>
+
+        <table cellspacing="0">
+
+          <tr>
+
+            <td class="border1"><i>Description</i></td>
+
+            <td class="border1">The url of the print layout page, allowing user to choose print settings for the kaboum map </td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><i>Type</i></td>
+
+            <td class="border1">URL to a valid HTML page </td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><p class="Style1">Public</p></td>
+
+            <td class="border1">Developer can provide its own printing page (specific layout for instance), provided the print mechanism is conform to the original one. The simplest way to customize the print settings page is to edit the original one and to modify its layout </td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><em>Default value </em></td>
+
+            <td class="border1">print.html</td>
+
+          </tr>
+
+        </table>
+
+    <br></blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td><b>kPrintDirect:</b>
+
+      <blockquote>
+
+        <table cellspacing="0">
+
+          <tr>
+
+            <td class="border1"><i>Description</i></td>
+
+            <td class="border1">Tells if map print should be made directly, without poping print.html page.</td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><i>Type</i></td>
+
+            <td class="border1">boolean</td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><p class="Style1">Public</p></td>
+
+            <td class="border1">If true, developer should provide print properties himself (title, comment, orientation, paper size, etc)</td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><em>Default value </em></td>
+
+            <td class="border1">false</td>
+
+          </tr>
+
+        </table>
+
+    <br></blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td><b>kHelpURL:</b>
+
+      <blockquote>
+
+        <table cellspacing="0">
+
+          <tr>
+
+            <td class="border1"><i>Description</i></td>
+
+            <td class="border1">The url of the help page. this page is opened when the help button is clicked. Any HTML page is ok. </td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><i>Type</i></td>
+
+            <td class="border1">URL to a valid HTML page </td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><p class="Style1">Public</p></td>
+
+            <td class="border1">Developer can provide its own Help page</td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><em>Default value </em></td>
+
+            <td class="border1">help.html</td>
+
+          </tr>
+
+        </table>
+
+    <br></blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td><b>kQueryURL:</b>
+
+      <blockquote>
+
+        <table cellspacing="0">
+
+          <tr>
+
+            <td class="border1"><i>Description</i></td>
+
+            <td class="border1">The url of the attributes query page. this page is opened when the query button is clicked. Any HTML page is ok. </td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><i>Type</i></td>
+
+            <td class="border1">URL to a valid HTML page </td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><p class="Style1">Public</p></td>
+
+            <td class="border1">Developer can provide its own query page</td>
+
+          </tr>
+
+          <tr>
+
+            <td class="border1"><em>Default value </em></td>
+
+            <td class="border1">query.html</td>
+
+          </tr>
+
+        </table>
+
+        <br>
+
+    </blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td><b>kPrintComment:</b>
+
+        <blockquote>
+
+          <table cellspacing="0">
+
+            <tr>
+
+              <td class="border1"><i>Description</i></td>
+
+              <td class="border1">The text used as a comment when printing kaboum map. <br>
+
+              This text can be entered by the user if the print.html page is used to control print settings </td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><i>Type</i></td>
+
+              <td class="border1">String</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><p class="Style1">Public</p></td>
+
+              <td class="border1">If the default print.html page is used, this parameter is entered by the user </td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><em>Default value </em></td>
+
+              <td class="border1">empty string </td>
+
+            </tr>
+
+          </table>
+
+          <br>
+
+      </blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td><b>kPrintTitle:</b>
+
+        <blockquote>
+
+          <table cellspacing="0">
+
+            <tr>
+
+              <td class="border1"><i>Description</i></td>
+
+              <td class="border1"><p>The text used as a title when printing kaboum map. <br>
+
+              This text can be entered by the user if the print.html page is used to control print settings</p>              </td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><i>Type</i></td>
+
+              <td class="border1">String</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><p class="Style1">Public</p></td>
+
+              <td class="border1">If the default print.html page is used, this parameter is entered by the user</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><em>Default value </em></td>
+
+              <td class="border1">empty string </td>
+
+            </tr>
+
+          </table>
+
+          <br>
+
+      </blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td><b>kPrintPortrait:</b>
+
+        <blockquote>
+
+          <table cellspacing="0">
+
+            <tr>
+
+              <td class="border1"><i>Description</i></td>
+
+              <td class="border1">Tells if user has choosen the portrait mode when printing kaboum map (see print function)<br>
+
+              This value can be choosen by the user if the print.html page is used to control print settings</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><i>Type</i></td>
+
+              <td class="border1">boolean</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><p class="Style1">Public</p></td>
+
+              <td class="border1">&nbsp;</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><em>Default value </em></td>
+
+              <td class="border1">false</td>
+
+            </tr>
+
+          </table>
+
+          <br>
+
+      </blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td><b>kPrintLegend:</b>
+
+        <blockquote>
+
+          <table cellspacing="0">
+
+            <tr>
+
+              <td class="border1"><i>Description</i></td>
+
+              <td class="border1">Tells if user has choosen to include legend when printing kaboum map (see print function)<br>
+
+              This value can be choosen by the user if the print.html page is used to control print settings</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><i>Type</i></td>
+
+              <td class="border1">boolean</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><p class="Style1">Public</p></td>
+
+              <td class="border1">&nbsp;</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><em>Default value </em></td>
+
+              <td class="border1">false</td>
+
+            </tr>
+
+          </table>
+
+          <br>
+
+      </blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td>&nbsp;</td>
+
+  </tr>
+
+</table>
+
+<h4>5.3. Private Global variables </h4>
+
+<p>These variables should not be changed by developpers. Their value could be retrieved or used in specific code. </p>
+
+<table width="90%" border="0" align="center">
+
+  <tr>
+
+    <td> <b>kButtonArray:</b>
+
+        <blockquote>
+
+          <table cellspacing="0" cellpadding="3">
+
+            <tr>
+
+              <td class="border1"><i>Description</i></td>
+
+              <td class="border1">Global array containing all buttons (kNewButton objects) composing the toolbar. these buttons can be placed anywhere in the applet's page </td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><i>Type</i></td>
+
+              <td class="border1">Array of <font class+"green">kNewButton objects</font></td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><span class="Style1">Private</span></td>
+
+              <td class="border1">&nbsp;</td>
+
+            </tr>
+
+          </table>
+
+          <br>
+
+      </blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td><b>kThemeArray:</b>
+
+        <blockquote>
+
+          <table cellspacing="0">
+
+            <tr>
+
+              <td class="border1"><i>Description</i></td>
+
+              <td class="border1">Global array containing all themes (kNewTheme objects) created in the page.</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><i>Type</i></td>
+
+              <td class="border1">Array of <font class+"green">kNewTheme objects</font></td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><span class="Style1">Private</span></td>
+
+              <td class="border1">&nbsp;</td>
+
+            </tr>
+
+          </table>
+
+          <br>
+
+      </blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td><b>kInfoArray:</b>
+
+        <blockquote>
+
+          <table cellspacing="0">
+
+            <tr>
+
+              <td class="border1"><i>Description</i></td>
+
+              <td class="border1">Global array containing all information buttons (kInfoTheme objects) created in the page. For each theme, an info button can created </td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><i>Type</i></td>
+
+              <td class="border1">Array of <font class+"green">kInfoTheme objects</font></td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><span class="Style1">Private</span></td>
+
+              <td class="border1">&nbsp;</td>
+
+            </tr>
+
+          </table>
+
+          <br>
+
+      </blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td><b>kButtonImages:</b>
+
+        <blockquote>
+
+          <table cellspacing="0">
+
+            <tr>
+
+              <td class="border1"><i>Description</i></td>
+
+              <td class="border1">Global array containing all images composing buttons. Each toolbar button can be configured with an image </td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><i>Type</i></td>
+
+              <td class="border1">Array of <font class+"green">images objects</font></td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><span class="Style1">Private</span></td>
+
+              <td class="border1">&nbsp;</td>
+
+            </tr>
+
+          </table>
+
+          <br>
+
+      </blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td><b>kThemeSelectWritten:</b>
+
+        <blockquote>
+
+          <table cellspacing="0">
+
+            <tr>
+
+              <td class="border1"><i>Description</i></td>
+
+              <td class="border1">Boolean telling if the Javascript Select object containing types whose type is select is written or not. Reset each time lastSelectTheme() is called, to allow a new select object containing other themes to be created </td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><i>Type</i></td>
+
+              <td class="border1">boolean<font class+"green">&nbsp;</font></td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><span class="Style1">Private</span></td>
+
+              <td class="border1">&nbsp;</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><em>Default value </em></td>
+
+              <td class="border1">false</td>
+
+            </tr>
+
+          </table>
+
+          <br>
+
+      </blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td><b>kFirstMap:</b>
+
+        <blockquote>
+
+          <table cellspacing="0">
+
+            <tr>
+
+              <td class="border1"><i>Description</i></td>
+
+              <td class="border1">Boolean telling that the first kaboum map is to be retrieved. If so, stores the original mapextent for later use. </td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><i>Type</i></td>
+
+              <td class="border1">Boolean<font class+"green">&nbsp;</font></td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><p class="Style1">Private</p></td>
+
+              <td class="border1">&nbsp;</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><em>Default value </em></td>
+
+              <td class="border1">true</td>
+
+            </tr>
+
+          </table>
+
+          <br>
+
+      </blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td><b>kInitialExtent:</b>
+
+        <blockquote>
+
+          <table cellspacing="0">
+
+            <tr>
+
+              <td class="border1"><i>Description</i></td>
+
+              <td class="border1">the initial kaboum map extent. Stored when the first map is retrieved, to use in navigation and &quot;home&quot; command.</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><i>Type</i></td>
+
+              <td class="border1">String<font class+"green">&nbsp;</font></td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><p class="Style1">Private</p></td>
+
+              <td class="border1">&nbsp;</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><em>Default value </em></td>
+
+              <td class="border1">empty string </td>
+
+            </tr>
+
+          </table>
+
+          <br>
+
+      </blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td><b>kGASIncluded:</b>
+
+        <blockquote>
+
+          <table cellspacing="0">
+
+            <tr>
+
+              <td class="border1"><i>Description</i></td>
+
+              <td class="border1">the boolean telling if the page is used by the GAS. If so, a third js page, kaboum_gas.js, must be included in the map view and sets this value to true.<br>
+
+              Used only in the GAS application </td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><i>Type</i></td>
+
+              <td class="border1">boolean</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><p class="Style1">Private</p></td>
+
+              <td class="border1">&nbsp;</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><em>Default value </em></td>
+
+              <td class="border1">false</td>
+
+            </tr>
+
+          </table>
+
+          <br>
+
+      </blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td><b>kScaleField:</b>
+
+        <blockquote>
+
+          <table cellspacing="0">
+
+            <tr>
+
+              <td class="border1"><i>Description</i></td>
+
+              <td class="border1">the textfield object used to display the map scale, if it was defined by a call to kNewScale()</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><i>Type</i></td>
+
+              <td class="border1">String</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><p class="Style1">Private</p></td>
+
+              <td class="border1">&nbsp;</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><em>Default value </em></td>
+
+              <td class="border1">empty string </td>
+
+            </tr>
+
+          </table>
+
+          <br>
+
+      </blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td><b>kxCoordField:</b>
+
+        <blockquote>
+
+          <table cellspacing="0">
+
+            <tr>
+
+              <td class="border1"><i>Description</i></td>
+
+              <td class="border1">the textfield object used to display the x current position of the mouse in the map, if it was defined by a call to kNewXCoordinate()</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><i>Type</i></td>
+
+              <td class="border1">String</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><p class="Style1">Private</p></td>
+
+              <td class="border1">&nbsp;</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><em>Default value </em></td>
+
+              <td class="border1">empty string </td>
+
+            </tr>
+
+          </table>
+
+          <br>
+
+      </blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td><b>kyCoordField:</b>
+
+        <blockquote>
+
+          <table cellspacing="0">
+
+            <tr>
+
+              <td class="border1"><i>Description</i></td>
+
+              <td class="border1">the textfield object used to display the y current position of the mouse in the map, if it was defined by a call to kNewYCoordinate()</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><i>Type</i></td>
+
+              <td class="border1">String</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><p class="Style1">Private</p></td>
+
+              <td class="border1">&nbsp;</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><em>Default value </em></td>
+
+              <td class="border1">empty string </td>
+
+            </tr>
+
+          </table>
+
+          <br>
+
+      </blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td><b>kPrintComment:</b>
+
+        <blockquote>
+
+          <table cellspacing="0">
+
+            <tr>
+
+              <td class="border1"><i>Description</i></td>
+
+              <td class="border1">The text choosen by the user as a comment when printing kaboum map </td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><i>Type</i></td>
+
+              <td class="border1">String</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><p class="Style1">Private</p></td>
+
+              <td class="border1">&nbsp;</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><em>Default value </em></td>
+
+              <td class="border1">empty string </td>
+
+            </tr>
+
+          </table>
+
+          <br>
+
+      </blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td><b>kPrintComment:</b>
+
+        <blockquote>
+
+          <table cellspacing="0">
+
+            <tr>
+
+              <td class="border1"><i>Description</i></td>
+
+              <td class="border1">The text choosen by the user as a comment when printing kaboum map </td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><i>Type</i></td>
+
+              <td class="border1">String</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><p class="Style1">Private</p></td>
+
+              <td class="border1">&nbsp;</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><em>Default value </em></td>
+
+              <td class="border1">empty string </td>
+
+            </tr>
+
+          </table>
+
+          <br>
+
+      </blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td><b>kPrintTitle:</b>
+
+        <blockquote>
+
+          <table cellspacing="0">
+
+            <tr>
+
+              <td class="border1"><i>Description</i></td>
+
+              <td class="border1">The text choosen by the user as a title when printing kaboum map </td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><i>Type</i></td>
+
+              <td class="border1">String</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><p class="Style1">Private</p></td>
+
+              <td class="border1">&nbsp;</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><em>Default value </em></td>
+
+              <td class="border1">empty string </td>
+
+            </tr>
+
+          </table>
+
+          <br>
+
+      </blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td><b>kPrintPortrait:</b>
+
+        <blockquote>
+
+          <table cellspacing="0">
+
+            <tr>
+
+              <td class="border1"><i>Description</i></td>
+
+              <td class="border1">Tells if user has choosen the portrait mode when printing kaboum map (see print function)</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><i>Type</i></td>
+
+              <td class="border1">boolean</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><p class="Style1">Private</p></td>
+
+              <td class="border1">&nbsp;</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><em>Default value </em></td>
+
+              <td class="border1">false</td>
+
+            </tr>
+
+          </table>
+
+          <br>
+
+      </blockquote></td>
+
+  </tr>
+
+  <tr>
+
+    <td><b>kPrintLegend:</b>
+
+        <blockquote>
+
+          <table cellspacing="0">
+
+            <tr>
+
+              <td class="border1"><i>Description</i></td>
+
+              <td class="border1">Tells if user has choosen to include legend when printing kaboum map (see print function)</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><i>Type</i></td>
+
+              <td class="border1">boolean</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><p class="Style1">Private</p></td>
+
+              <td class="border1">&nbsp;</td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><em>Default value </em></td>
+
+              <td class="border1">false</td>
+
+            </tr>
+
+          </table>
+
+          <br>
+
+      </blockquote></td>
+
+  </tr>
+
+</table>
+
+<h4>5.4 Public methods</h4>
+<p>Beside methods described on chapter 4, allowing to create predefined controls to drive Kaboum applet, there are some public methods available to developers to realize custom tasks:</p>
+<h5>5.4.1 kItemQueryNoResult() method</h5>
+
+<table width="90%" border="0" align="center">
+
+  <tr>
+
+    <td><b> kItemQueryNoResult():</b>
+
+        <blockquote>
+
+          <table cellspacing="0">
+
+            <tr>
+
+              <td class="border1"><i>Description</i></td>
+
+              <td class="border1"><p>When Kaboum applet is in the <b>ITEM_NQUERYMAP </b>mode, if no result is returned by the query, the applets returns a command to the client. This command is catched by the kItemQueryNoResult() method. Developers can overload this method to provide custom message to user or to implement a special mechanism.</p>
+
+                <p>The default mechanism of the kItemNoQueryResult() method is to popup a Javascript message box containing the following message:</p>
+
+                <p><code>&quot;Mapserver did not return any result for the query.&quot; </code></p>
+
+                <p>The developer can overload this method, for instance to change the default message language. <br>
+
+                </p></td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><i>Parameters</i></td>
+
+              <td>This method has no parameters </td>
+
+            </tr>
+
+            <tr>
+
+              <td class="border1"><em>example</em></td>
+
+              <td class="border1"><p><code>//in developer's Javascript code:<br>
+
+                kItemQueryNoResult() {<br>
+
+     &nbsp;&nbsp;&nbsp;&nbsp;alert(&quot;la requete n'a renvoy&eacute; aucun resultat&quot;);<br>
+
+     }</code></p>              </td>
+
+            </tr>
+
+          </table>
+
+          <br>
+
+      </blockquote></td>
+
+  </tr>
+
+</table>
+
+<h5>5.4.2 kGeometry(cmd) method</h5>
+<table width="90%" border="0" align="center">
+  <tr>
+    <td><b> kGeometry(cmd):</b>
+        <blockquote>
+          <table cellspacing="0">
+            <tr>
+              <td class="border1"><i>Description</i></td>
+              <td class="border1"><p>When Kaboum applet is configured to deal with geographic objects through the KaboumServer, it is possible to configure its behaviour concerning objects' validation et removal to send objects to validate or to suppress to Javascript instead of sending them to the server for direct treatment.</p>
+                <p>This is done by setting the GEOMETRY_VALIDATE_TO_DATASTORE and GEOMETRY_DELETE_FROM_DATASTORE parameters to false. </p>
+                <p>In this case, Kaboum sends GEOMETRY|... (see Kaboum API for complete reference for GEOMETRY command) command directly to JS. </p>
+                <p>The developer overload this method to provide her own custom mechanism for geometry validation and removal operations. </p>
+                <p>The default mechanism of the kGeoemtry() method is to popup a Javascript message box containing the GEOMETRY command and to release the applet by calling standbyOff() method.</p>
+                <p><span class="Style3">When overloading this method, be sure to call kaboum.standbyOff() at the end of the operation to unfreeze Kaboum.</span> <br>
+                </p></td>
+            </tr>
+            <tr>
+              <td class="border1"><i>Parameters</i></td>
+              <td>cmd - the Kaboum GEOMETRY complete command </td>
+            </tr>
+            <tr>
+              <td class="border1"><em>example</em></td>
+              <td class="border1"><p><code>//in developer's Javascript code:<br>
+                kGeoemtry(cmd) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// do your own stuff to validate or remvoe the geometry the way you want.<br>
+              </code><code> &nbsp;&nbsp;&nbsp;&nbsp;//call standbyOff() to release applet<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;document.kaboum.standbyOff();</code><code><br>
+                }</code></p>
+              </td>
+            </tr>
+          </table>
+          <br>
+      </blockquote></td>
+  </tr>
+</table>
+<h5>5.4.3 Initialisation method: kInit()</h5>
+<p>When the kaboum.js code is executed, the kInit() method is called when the page is loaded (onLoad() event loader). Some commands are then sent to kaboum to initialize the list of active layers and their info status.</p>
+
+<p>If the developer implements its own onLoad event handler, he must call kInit() in this method in order for the applet to work correctly.</p>
+<h5>5.4.4 kProcessDistSurf(cmd) method</h5>
+<table width="90%" border="0" align="center">
+  <tr>
+    <td><b> kProcessDistSurf(cmd):</b>
+        <blockquote>
+          <table cellspacing="0">
+            <tr>
+              <td valign="top" class="border1"><i>Description</i></td>
+              <td class="border1"><p>When Kaboum applet is in the <b>DISTANCE </b>or<b> SURFACE </b> mode, this method is called when distance or surface tool is stopped, by double-clicking on the applet.</p>
+                  <p>The default mechanism of the kProcessDistSurf() method is to popup a Javascript message box containing the following message:</p>
+                  <p><code>&quot;DISTANCE|&lt;value&gt;&quot; </code>in the DISTANCE mode, or <code>&quot;SURFACE|&lt;value&gt;&quot;</code> in the SURFACE mode </p>
+                  <p>The developer can overload this method, for instance to display the result in an HTML component. <br>
+                </p></td>
+            </tr>
+            <tr>
+              <td valign="top" class="border1"><i>Parameters</i></td>
+              <td>cmd. The Kaboum command corresponding to the DISTANCE or SURFACE mode </td>
+            </tr>
+            <tr>
+              <td valign="top" class="border1"><em>example</em></td>
+              <td class="border1"><p><code>//in developer's Javascript code:<br>
+                kProcessDistSurf(cmd) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;alert(&quot;la valeur renvoy&eacute;e est: &quot; + cmd);<br>
+                }</code></p></td>
+            </tr>
+          </table>
+          <br>
+      </blockquote></td>
+  </tr>
+</table>
+<h5>5.4.5 kProcessSelection(str) method </h5>
+<table width="90%" border="0" align="center">
+  <tr>
+    <td><b> kProcessSelection(str):</b>
+        <blockquote>
+          <table cellspacing="0">
+            <tr>
+              <td valign="top" class="border1"><i>Description</i></td>
+              <td class="border1"><p>When Kaboum applet is in the <b>SELECTION </b>or<b> MULTISELECTION </b> mode, this method is called when a geometry is selected.</p>
+                  <p>The default mechanism of the kProcessSelection() does nothing:</p>
+                  <p>The developer can overload this method, for instance to highlight a table row representing the clicked object. <br>
+                </p></td>
+            </tr>
+            <tr>
+              <td valign="top" class="border1"><i>Parameters</i></td>
+              <td>str. The Kaboum command corresponding to the SELECTION or MULTISELECTION mode (see Kaboum API for a complete reference of kaboum commands </td>
+            </tr>
+            <tr>
+              <td valign="top" class="border1"><em>example</em></td>
+              <td class="border1"><p><code>//in developer's Javascript code:<br>
+                kProcessSelection(str) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;alert(&quot;selected object(s): &quot; + str);<br>
+                }</code></p></td>
+            </tr>
+          </table>
+          <br>
+      </blockquote></td>
+  </tr>
+</table>
+<h5>5.4.6 kProcessAlert(str) method </h5>
+<table width="90%" border="0" align="center">
+  <tr>
+    <td><b> kProcessAlert(str):</b>
+        <blockquote>
+          <table cellspacing="0">
+            <tr>
+              <td valign="top" class="border1"><i>Description</i></td>
+              <td class="border1"><p>Kaboum applet can send informational or error messages to Javascript client with the ALERT|&lt;message&gt; command. This method displays the message in a Javascript Alert box (default mechanism) </p>
+                  <p>The developer can overload this method to provide custom messages to the end user. <br>
+                </p></td>
+            </tr>
+            <tr>
+              <td valign="top" class="border1"><i>Parameters</i></td>
+              <td>str. The Kaboum error or information message </td>
+            </tr>
+            <tr>
+              <td valign="top" class="border1"><em>example</em></td>
+              <td class="border1"><p><code>//in developer's Javascript code:<br>
+                kProcessAlert(str) {<br>
+              </code><code>  &nbsp;&nbsp;&nbsp;&nbsp;if (str == 'OVERLAP') {<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alert(&quot;Il n'est pas possible de valider ce polygone&quot;);<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;} 
+              <br>
+              }</code></p>              </td>
+            </tr>
+            <tr>
+              <td valign="top" class="border1">&nbsp;</td>
+              <td class="border1">&nbsp;</td>
+            </tr>
+          </table>
+          <br>
+      </blockquote></td>
+  </tr>
+</table>
+<h5>5.4.7 kProcessCurrentOpMode(str) method </h5>
+<table width="90%" border="0" align="center">
+  <tr>
+    <td><b> kProcessCurrentOpMide(str):</b>
+        <blockquote>
+          <table cellspacing="0">
+            <tr>
+              <td valign="top" class="border1"><i>Description</i></td>
+              <td class="border1"><p>This method is called when Kaboum applet sends a CURRENT_OPMODE|&lt;opMode name&gt; command (in response to a CURRENT_OPMODE Javascript command).</p>
+                <p>Developers can overload this method to control the Kaboum current Operation mode by looking at its name. <br>
+                </p></td>
+            </tr>
+            <tr>
+              <td valign="top" class="border1"><i>Parameters</i></td>
+              <td>str. The name of the current OpMode used in kaboum </td>
+            </tr>
+            <tr>
+              <td valign="top" class="border1"><em>example</em></td>
+              <td class="border1"><p><code>ZOOMIN, or PAN, or GEOMETRY_K_FUSION, or SURFACE </code>(see Kaboum documentation for a complete list of Operation modes </p></td>
+            </tr>
+          </table>
+          <br>
+      </blockquote></td>
+  </tr>
+</table>
+<h5>5.4.5 kProcessEditionOpMode(str) method </h5>
+<table width="90%" border="0" align="center">
+  <tr>
+    <td><b> kProcessSelection(str):</b>
+        <blockquote>
+          <table cellspacing="0">
+            <tr>
+              <td valign="top" class="border1"><i>Description</i></td>
+              <td class="border1"><p>This method is called when Kaboum applet sends a EDITION_OPMODE|&lt;opMode name&gt; command (in response to a EDITION_OPMODE Javascript command).</p>
+                  <p>Developers can overload this method to control the edition status of Kaboum edition Operation modes.
+                    </p>
+                  </td>
+            </tr>
+            <tr>
+              <td valign="top" class="border1"><i>Parameters</i></td>
+              <td>str. The name of the OpMode currently in edition mode, or &quot;null&quot; if there is no edition mode. </td>
+            </tr>
+            <tr>
+              <td valign="top" class="border1"><em>example</em></td>
+              <td class="border1"><p><code>//in developer's Javascript code:<br>
+                kProcessSelection(str) {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;alert(&quot;selected object(s): &quot; + str);<br>
+                }</code></p></td>
+            </tr>
+          </table>
+          <br>
+      </blockquote></td>
+  </tr>
+</table>
+<h5>5.4.6 kResizeApplet(width, height) method </h5>
+<table width="90%" border="0" align="center">
+  <tr>
+    <td><b> kResizeApplet(width, height):</b>
+        <blockquote>
+          <table cellspacing="0">
+            <tr>
+              <td valign="top" class="border1"><i>Description</i></td>
+              <td class="border1"><p>
+                  This method allows to dynamically resize the applet, to adapt it to a resizable container for instance.
+                  Call it into a onResize event handler
+                    </p>
+                  </td>
+            </tr>
+            <tr>
+              <td valign="top" class="border1"><i>Parameters</i></td>
+              <td>width, height. The new width and heigth to set to the applet </td>
+            </tr>
+            <tr>
+              <td valign="top" class="border1"><em>example</em></td>
+              <td class="border1"><p><pre>
+  // the handler calling the Kaboum JS method to resize the applet.
+  // plug it to a Ext window resize handler, for instance (see chapter 2.1)
+function resizeHandler(win, width, height) {
+    kResizeApplet(win.getInnerWidth(), win.getInnerHeight());
+}
+</pre></p></td>
+            </tr>
+          </table>
+          <br>
+      </blockquote></td>
+  </tr>
+</table>
+<p><img src="horizontal.gif" width="800" height="1"></p>
+<!--
+
+<h3>6. kaboum_edition.js Reference</h3>
+
+<h4>6.1. Structure</h4>
+
+<h4>6.2. Public Global variables </h4>
+
+<h4>6.3. Private Global variables </h4>
+
+-->
+
+</body>
+
+</html>
+
