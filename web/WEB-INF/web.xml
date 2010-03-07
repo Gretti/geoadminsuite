@@ -1,115 +1,110 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-    <display-name>geoadminsuite</display-name>
-    <distributable/>
-    <context-param>
-        <description>Application administrator</description>
-        <param-name>first_developper</param-name>
-        <param-value>gretti.nguessan@gmail.com</param-value>
-    </context-param>
-    <context-param>
-        <description>Application administrator</description>
-        <param-name>second_developper</param-name>
-        <param-value>nicky666@gmail.com</param-value>
-    </context-param>
-    <servlet>
-        <servlet-name>action</servlet-name>
-        <servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
-        <init-param>
-            <param-name>config</param-name>
-            <param-value>/WEB-INF/struts-config.xml</param-value>
-        </init-param>
-        <init-param>
-            <param-name>debug</param-name>
-            <param-value>2</param-value>
-        </init-param>
-        <init-param>
-            <param-name>detail</param-name>
-            <param-value>2</param-value>
-        </init-param>
-        <load-on-startup>2</load-on-startup>
-    </servlet>
-    <servlet>
-        <description>Cleans files and loads project properties</description>
-        <servlet-name>GOFileCleaner</servlet-name>
-        <servlet-class>org.geogurus.web.GOFileCleaner</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet>
-        <servlet-name>GOClassRepresentation</servlet-name>
-        <servlet-class>org.geogurus.web.GOClassRepresentation</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>mapfish.print</servlet-name>
-        <servlet-class>org.geogurus.gas.print.MapPrinterServlet</servlet-class>
-        <init-param>
-            <param-name>config</param-name>
-            <param-value>config.yaml</param-value>
-        </init-param>
-    </servlet>
-   <!--
-    <servlet>
-        <servlet-name>cgi</servlet-name>
-        <servlet-class>org.apache.catalina.servlets.CGIServlet</servlet-class>
-        <init-param>
-          <param-name>debug</param-name>
-          <param-value>2</param-value>
-        </init-param>
-        <init-param>
-          <param-name>cgiPathPrefix</param-name>
-          <param-value>WEB-INF/cgi</param-value>
-        </init-param>
-         <load-on-startup>5</load-on-startup>
-    </servlet>
-   -->
-   <!-- The mapping for the CGI Gateway servlet 
-    <servlet-mapping>
-        <servlet-name>cgi</servlet-name>
-        <url-pattern>/cgi-bin/*</url-pattern>
-    </servlet-mapping>
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+  <display-name>Kaboum Server Web Application</display-name>
+  <description>
+    This web application encapsulates the Kaboum feature Server Servlet whose purpose is to serve
+    geographic object to the kaboum applet client.
+    </description>
+  <filter>
+    <filter-name>Compression Filter</filter-name>
+    <filter-class>org.apache.jakarta.tomcat.compressionFilters.CompressionFilter</filter-class>
+    <init-param>
+      <param-name>compressionThreshold</param-name>
+      <param-value>512</param-value>
+    </init-param>
+    <init-param>
+      <!-- debug level, 0 for no debug, 3 for most verbose -->
+      <param-name>debug</param-name>
+      <param-value>0</param-value>
+    </init-param>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>Compression Filter</filter-name>
+    <url-pattern>/KaboumFeatureServlet</url-pattern>
+  </filter-mapping>
+
+  <servlet>
+    <servlet-name>KaboumFeatureServlet</servlet-name>
+    <!--
+    <description>
+        This servlet plays the role of feature objects manager for the kaboum applet client
+      </description>
+      -->
+    <servlet-class>org.kaboum.server.KaboumFeatureServlet</servlet-class>
+    <!--
+    The fully qualified name of the class used by KaboumServer to get/set features.
+    This class MUST implement GeometryAccess interface.
+    KaboumServer provides its own implementation based on Geotools DataStores
     -->
+    <init-param>
+      <param-name>KaboumGeometryAccessClass</param-name>
+      <param-value>org.kaboum.server.KaboumGeometryAccess</param-value>
+      <!--
+      <param-value>org.kaboum.server.TestGeometryAccess</param-value>
+      -->
+    </init-param>
+    <!--
+    The path to the Kaboum Server properties file containing all kaboum parameters
+    relative to geographic objects
+    -->
+    <init-param>
+      <param-name>KaboumPropertiesFile</param-name>
+      <param-value>/kaboumServer.properties</param-value>
+    </init-param>
+    <!-- Load this servlet at server startup time -->
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <!--
+  <servlet>
+    <servlet-name>ShuttleServletTest</servlet-name>
+    <servlet-class>org.kaboum.server.ShuttleServletTest</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>ShuttlePerfTest</servlet-name>
+    <servlet-class>org.kaboum.server.ShuttlePerfTest</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>TestDS</servlet-name>
+    <servlet-class>org.kaboum.server.TestDS</servlet-class>
+  </servlet>
+  -->
     <servlet-mapping>
-        <servlet-name>action</servlet-name>
-        <url-pattern>*.do</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>GOFileCleaner</servlet-name>
-        <url-pattern>/GOFileCleaner</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>GOClassRepresentation</servlet-name>
-        <url-pattern>/GOClassRepresentation.jsv</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>mapfish.print</servlet-name>
-        <url-pattern>/pdf/*</url-pattern>
-    </servlet-mapping>
+    <servlet-name>KaboumFeatureServlet</servlet-name>
+    <url-pattern>/KaboumFeatureServlet</url-pattern>
+  </servlet-mapping>
+  <!--
+  <servlet-mapping>
+    <servlet-name>ShuttleServletTest</servlet-name>
+    <url-pattern>/ShuttleServletTest</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>ShuttlePerfTest</servlet-name>
+    <url-pattern>/ShuttlePerfTest</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>TestDS</servlet-name>
+    <url-pattern>/TestDS</url-pattern>
+  </servlet-mapping>
+  -->
     <session-config>
-        <session-timeout>60</session-timeout>
-    </session-config>
-    <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
-    </welcome-file-list>
-    <jsp-config>
-        <taglib>
-            <taglib-uri>/WEB-INF/struts-bean.tld</taglib-uri>
-            <taglib-location>/WEB-INF/struts-bean.tld</taglib-location>
-        </taglib>
-        <taglib>
-            <taglib-uri>/WEB-INF/struts-html.tld</taglib-uri>
-            <taglib-location>/WEB-INF/struts-html.tld</taglib-location>
-        </taglib>
-        <taglib>
-            <taglib-uri>/WEB-INF/struts-logic.tld</taglib-uri>
-            <taglib-location>/WEB-INF/struts-logic.tld</taglib-location>
-        </taglib>
-        <taglib>
-            <taglib-uri>/WEB-INF/struts-nested.tld</taglib-uri>
-            <taglib-location>/WEB-INF/struts-nested.tld</taglib-location>
-        </taglib>
-        <taglib>
-            <taglib-uri>/WEB-INF/struts-tiles.tld</taglib-uri>
-            <taglib-location>/WEB-INF/struts-tiles.tld</taglib-location>
-        </taglib>
-    </jsp-config>
+    <session-timeout>
+            1
+        </session-timeout>
+  </session-config>
+  <welcome-file-list>
+    <welcome-file>
+            index.jsp
+        </welcome-file>
+    <welcome-file>
+            index.html
+        </welcome-file>
+    <welcome-file>
+            index.htm
+        </welcome-file>
+  </welcome-file-list>
 </web-app>
