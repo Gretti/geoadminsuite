@@ -1,0 +1,300 @@
+<html>
+<head>
+    <META HTTP-EQUIV= "expires"content = 
+    "Wednesday,
+    27-Dec-95 05:29:10 GMT">
+    <META HTTP-EQUIV="Pragma" CONTENT="no_cache">
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    
+    <title>Kaboum Test</title>
+    <!-- Include Ext and app-specific scripts: -->
+    <script type="text/javascript" src="kaboum/kaboum.js"></script>
+
+    <script type="text/javascript">
+        var appletString = '';
+        appletString += '<applet code="org.kaboum.Kaboum.class" codebase="./kaboum" archive="kaboum.jar" ';
+        appletString += ' alt="kaboum applet" align="CENTER"  width="600" height="500" MAYSCRIPT name="kaboum">';
+        appletString += '<param name="MAPFILE_PATH" value="/Users/nicolas/code/java/SIG/kaboumServer/web/data/mapserver/paclux.map">';
+        //appletString += '<param name="MAPFILE_EXTENT" value="5638,1620431,1197822,2677441">                                       ';
+        appletString += '<param name="MAPFILE_EXTENT" value="65450, 65292, 89068, 108766">                                      ';
+        //appletString += '<param name="MAPFILE_EXTENT" value="47679.9453125,1620477.875,1197822.0,2677440.5">                    ';
+        //appletString += '<param name="MAPFILE_EXTENT" value="5,46,10,47">                                                       ';
+        //appletString += '<param name="MAPFILE_EXTENT" value="475000,1800000,577000,1873000">                                    ';
+        appletString += '<param name="KABOUM_MAPSERVER_CGI_URL" value="http://localhost/cgi-bin/mapserv">                         ';
+        appletString += '<param name="KABOUM_FEATURESERVER_URL" value="http://localhost:8080/kaboumServer/KaboumFeatureServlet">  ';
+        appletString += '<param name="KABOUM_USE_LIVECONNECT" value="TRUE">                                                       ';
+        appletString += '<param name="KABOUM_REFERENCE_IS_APPLET" value="FALSE">                                                  ';
+        appletString += '<param name="KABOUM_DEBUG_MODE" value="TRUE">                                                            ';
+        appletString += '<param name="KABOUM_BACKGROUND_COLOR" value="200,200,200">                                               ';
+        appletString += '<param name="KABOUM_LANG" value="UK">                                                                    ';
+        appletString += '<param name="KABOUM_DEFAULT_OPMODE" value="ZOOMIN">                                                      ';
+        appletString += '<param name="KABOUM_OPMODES_LIST" value="ZOOMIN,GEOMETRY,SELECTION,DISTANCE,MODIFY,BOXSELECTION,LINESTRING,PAN,POLYGON">';
+        appletString += '<param name="KABOUM_COORDINATE_PRECISION" value="0.1">                                                                  ';
+        appletString += '<param name="KABOUM_SEND_POSITION_COORDINATES_TO_JS" value="false">                                                     ';
+        appletString += '<param name="MAPFILE_UNITS" value="MS_METERS">                                                                          ';
+        appletString += '<param name="SURFACE_UNITS" value="MS_DECARES">                                                                         ';
+        //appletString += '<param name="LAYERS" value="img1,departements,cities,rails,haies">                                                      ';
+        appletString += '<param name="LAYERS" value="img1,parc_agri,elt_demandes">                                                      ';
+        appletString += '<param name="OPMODE_COLOR" value="153,153,204">                                                                         ';
+        appletString += '<param name="SELECTION_PIXEL_PRECISION" value="10">                                                                     ';
+        appletString += '<param name="SELECTION_RETURN_XY" value="TRUE">                                                                         ';
+        //appletString += '<param name="SELECTION_SEND_SELECTION_TO_SERVER" value="TRUE">                                                                         ';
+        //appletString += '<param name="SELECTION_AUTO_COMMIT" value="TRUE">                                                                       ';
+        appletString += '<param name="DISTANCE_FOREGROUND_COLOR" value="green">                                                                  ';
+        appletString += '<param name="DISTANCE_POINT_TYPE" value="K_TYPE_BOX">                                                                   ';
+        appletString += '</applet>';
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+        // overloads kaboum.js global variables
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+        kInfoImgSrc = "kaboum/images/infolayer.gif";
+        
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+        //specific test page code
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+        function setUserDataFuck() {
+            //alert(str);
+            //var obj = '{"action": "buffer", "width":"' + document.form1.width.value + '"}';
+            //kSetUserMetadata(obj);
+            //document.kaboum.kaboumCommand("GEOMETRY_ACTIVE_PD|parc_ref_def");
+            //document.kaboum.kaboumCommand("GEOMETRY_ACTIVE_DD|parc_ref_def");
+            document.kaboum.kaboumCommand("SELECTION|" + document.form1.width.value);
+        }
+        
+        function insertGeometry(isEmpty) {
+            var str1 = "GEOMETRY|K_NEW_GEOMETRY|POLYGON((76315 96031,87759 91548,88113 88422,79619 84764,72009 89130,76315 96031))";
+            var str2 = "GEOMETRY|elt_demandes.48|POLYGON EMPTY";
+            if (isEmpty) {
+                document.kaboum.kaboumCommand(str2);
+            } else {
+                document.kaboum.kaboumCommand(str1);
+            }
+        }
+        
+        function removeGeometry(removeAll) {
+            var val = document.form1.polyId.value;
+            var removeString = removeAll ? "REMOVE_ALL" : "REMOVE";
+            document.kaboum.kaboumCommand("GEOMETRY|" + val + "|" + removeString);
+        }
+        
+        function setParcRef() {
+            kaboumCommand("GEOMETRY_ACTIVE_PD|parc_ref");
+            kaboumCommand("GEOMETRY_ACTIVE_DD|parc_ref");
+        }
+        /*
+        function kProcessSelection(str) {
+            var keyword = str.split("|");   
+            if (keyword.length != 3) {
+                return;
+            }
+            var xy = keyword[2].split(" ");
+            var pt = "POINT(" + xy[0] + " " + xy[1] + ")";
+            var targetClass = "dummy";
+            var sourceClass = "regions";
+            var srcDSParams = "dbtype=postgis,host=localhost,port=5432,database=test,user=postgres,passwd=postgres";
+            
+            var json = "{";
+            json += "'action' : 'get',";
+            json += "'xy' : '" + pt + "',";
+            json += "'targetClass' : '" + targetClass + "',";
+            json += "'sourceClass' : '" +  sourceClass+ "',";
+            json += "'sourceDatasourceParams' : '" + srcDSParams + "'";
+            json += "}";
+            //alert(json);
+            //kSetUserMetadata(json);
+            kSetUserMetadata("rien");
+            document.kaboum.kaboumCommand("REFRESH");
+        }
+        */
+        function clearVirtualLayer() {
+            var json = "{";
+            json += "'action' : 'delete',";
+            json += "'targetClass' : 'dummy'";
+            json += "}";
+            //alert(json);
+            kSetUserMetadata(json);
+            document.kaboum.kaboumCommand("REFRESH");
+        }
+        
+        function kGeometry(str) {
+            //alert(str);
+            document.form1.width.value = str;
+            document.kaboum.standbyOff();
+        }
+
+        function testMS() {
+            document.kaboum.kaboumCommand("MAPSERVER|PARAMETERS|&param1=toto&param2=titi&");
+        }
+
+        /////////////////////////////////
+        // Kboum in ext win:
+        var kaboumWin;
+
+        function resizeHandler(win, width, height) {
+            window.status = "w: " + width + " h:" + height + " innerWidth: " + win.getInnerWidth() + " innerH: " + win.getInnerHeight();
+            kResizeApplet(win.getInnerWidth(), win.getInnerHeight());
+        }
+
+/*
+        Ext.onReady(function() {
+
+            kaboumWin = new Ext.Window({
+                    title    : 'Kaboum Window',
+                    closable : true,
+                    width    : 650,
+                    height   : 550,
+                    //border : false,
+                    plain    : true,
+                    html     : appletString
+                });
+            kaboumWin.on({
+                'resize' : resizeHandler
+            });
+            kaboumWin.show();
+        });
+*/
+        function sendInit() {
+            document.kaboum.kaboumCommand("INIT_PARAM|SELECTION_SEND_SELECTION_TO_SERVER=true");
+        }
+
+        function kProcessExtent(str) {
+                document.form1.width.value = str;
+        }
+
+    </script>
+</head>
+
+<body bgcolor="#CCCCCC" text="#000000">
+<form name="form1">
+  <table width="40%"  border="0">
+    <tr>
+    <td colspan="2"></td>
+    </tr>
+    <tr>
+    <td>&nbsp;</td>
+    <td>
+        <script>
+            kNewButton('kaboum/images/zoomin', 'Zoom In', 'modal', 'ZOOMIN', 28, 28);
+            kNewButton('kaboum/images/zoomout', 'Zoom out', 'modal', 'ZOOMOUT', 28, 28);
+            kNewButton('kaboum/images/pan', 'Pan the map', 'modal', 'PAN', 28, 28);
+            kNewButton('kaboum/images/back', 'previous map location', 'action', 'BACK', 28, 28);
+            kNewButton('kaboum/images/forward', 'next map location', 'action', 'FORWARD', 28, 28);
+            kNewButton('kaboum/images/home', 'Return to home page', 'action', 'HOME', 28, 28);
+            kNewButton('kaboum/images/info', 'Layers information', 'modal', 'QUERY', 28, 28);
+            kNewButton('kaboum/images/select', 'Selection', 'modal', 'SELECTION', 28, 28);
+            kNewButton('kaboum/images/distance', 'measure distances', 'modal', 'DISTANCE', 28, 28);
+            kNewButton('kaboum/images/surface', 'measure surfaces', 'modal', 'SURFACE', 28, 28);
+            kNewButton('kaboum/images/draw_pt', 'Draw points', 'modal', 'POINT', 28, 28);
+            kNewButton('kaboum/images/draw_ln', 'Draw lines', 'modal', 'LINESTRING', 28, 28);
+            kNewButton('kaboum/images/draw_pg', 'Draw polygones', 'modal', 'POLYGON', 28, 28);
+            kNewButton('kaboum/images/help', 'Debug mapserver', 'action', 'JS_DEBUG', 28, 28);
+        </script>
+    </td>
+    </tr>
+    <tr>
+    <td>&nbsp;</td>
+    <td> <!-- edition tools -->
+        <script>
+            kNewButton('kaboum/images/union', 'Union', 'modal', 'GEOMETRY_K_UNION', 28, 28);
+            kNewButton('kaboum/images/intersection', 'Intersection', 'modal', 'GEOMETRY_K_INTERSECTION', 28, 28);
+            kNewButton('kaboum/images/difference', 'Difference', 'modal', 'GEOMETRY_K_DIFFERENCE', 28, 28);
+            kNewButton('kaboum/images/sym_difference', 'Symmetric difference', 'modal', 'GEOMETRY_K_SYM_DIFFERENCE', 28, 28);
+            kNewButton('kaboum/images/completion', 'PG completion', 'modal', 'GEOMETRY_K_POLYGON_COMPLETION', 28, 28);
+            kNewButton('kaboum/images/erase', 'Eraser', 'modal', 'GEOMETRY_K_POLYGON_ERASING', 28, 28);
+            kNewButton('kaboum/images/fillhole', 'Hole Filling', 'modal', 'GEOMETRY_K_HOLES_COMPLETION', 28, 28);
+            kNewButton('kaboum/images/fusion', 'Polygon Fusion', 'modal', 'GEOMETRY_K_FUSION', 28, 28);
+            kNewButton('kaboum/images/splitting', 'Polygon Splitting', 'modal', 'GEOMETRY_K_POLYGON_SPLITTING', 28, 28);
+            kNewButton('kaboum/images/splitting', 'Polygon Splitting', 'modal', 'GEOMETRY_K_POLYGON_SPLITTING_BY_LINE', 28, 28);
+            kNewButton('kaboum/images/completion', 'PG completion', 'modal', 'GEOMETRY_K_POLYGON_COMPLETION_FITTING', 28, 28);
+        </script>
+    </td>
+    </tr>
+    <tr>
+      <td><u>Change map background</u><br>
+    <nobr>
+        <script>
+            <!-- defines layer controls in a SELECT object. to swap map background, this is a good choice man ! -->
+            kNewTheme("img1","Orthophoto",true,false,"SELECT",'');
+            kNewTheme("","no image",false,false,"SELECT",'');
+            kLastSelectTheme();
+        </script>
+        <p><u>Layers control</u><br>
+            <!-- defines layer controls in as checkbox object. to control vector layers visibility, this is handy! -->
+        <script>kNewTheme("parc_agri","parcelles agricoles",true,true,"CHECKBOX",'tiny');</script><br>
+        <script>kNewTheme("elt_demandes","Elt Demandes",true,true,"CHECKBOX",'tiny');</script><br>
+        </p>
+    </nobr>
+</td>
+      <td align="center" valign="middle" style="border: 1px solid black">
+          <div id="kdiv">Kaboum Applet here</div>
+    <applet code="org.kaboum.Kaboum.class" codebase="./kaboum" archive="kaboum.jar" alt="kaboum applet" align="CENTER" height=500 width=500 MAYSCRIPT name="kaboum">
+        <param name="MAPFILE_PATH" value="/Users/nicolas/code/java/SIG/kaboumServer/web/data/mapserver/test.map">
+        <param name="MAPFILE_EXTENT" value="5638,1620431,1197822,2677441">
+        <param name="KABOUM_MAPSERVER_CGI_URL" value="http://localhost/cgi-bin/mapserv">
+        <param name="KABOUM_FEATURESERVER_URL" value="http://localhost:8080/kaboumServer/KaboumFeatureServlet">
+        <param name="KABOUM_USE_LIVECONNECT" value="TRUE">
+        <param name="KABOUM_REFERENCE_IS_APPLET" value="FALSE">
+        <param name="KABOUM_DEBUG_MODE" value="TRUE">
+        <param name="KABOUM_BACKGROUND_COLOR" value="255,255,255">
+        <param name="KABOUM_LANG" value="UK">
+        <param name="KABOUM_DEFAULT_OPMODE" value="ZOOMIN">
+        <param name="KABOUM_OPMODES_LIST" value="ZOOMIN,GEOMETRY,SELECTION,DISTANCE,MODIFY,BOXSELECTION,LINESTRING,PAN,POLYGON">
+        <param name="KABOUM_COORDINATE_PRECISION" value="0.1">
+        <param name="KABOUM_SEND_POSITION_COORDINATES_TO_JS" value="false">
+        <param name="MAPFILE_UNITS" value="MS_METERS">
+        <param name="SURFACE_UNITS" value="MS_DECARES">
+        <param name="LAYERS" value="img1,departements,cities,rails,haies">
+        <param name="OPMODE_COLOR" value="153,153,204">
+        <param name="SELECTION_PIXEL_PRECISION" value="10">
+        <param name="SELECTION_RETURN_XY" value="TRUE">
+        <param name="SELECTION_AUTO_COMMIT" value="TRUE">
+        <param name="DISTANCE_FOREGROUND_COLOR" value="green">
+        <param name="DISTANCE_POINT_TYPE" value="K_TYPE_BOX">
+    </applet>
+	  </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <input type="text" value="1500" name="width" size="100" />
+            <input type="text" value="elt_demandes." name="polyId" size="20"/>
+            <input type="button" name="okbut" value="okk" onclick="setUserDataFuck()"/>
+            <input type="button" name="okbut2" value="insert poly" onclick="insertGeometry(false)"/>
+            <input type="button" name="okbut3" value="insert empty poly" onclick="insertGeometry(true)"/>
+            <input type="button" name="okbut4" value="remove poly (id taken from text field)" onclick="removeGeometry(false)"/>
+            <input type="button" name="okbut5" value="remove all (className taken from text field)" onclick="removeGeometry(true)"/>
+            <input type="button" name="act" value="parc_ref active" onclick="setParcRef()"/><br/>
+            <input type="button" name="act2" value="clear" onclick="clearVirtualLayer()"/>
+            <input type="button" name="act3" value="testMS" onclick="testMS()"/>
+            <input type="button" name="act4" value="OpenWin" onclick="sendInit()"/>
+            </td>
+    </tr>
+  </table>
+  </form>
+</body>
+</html>
+<!--
+    <applet code="org.kaboum.Kaboum.class" codebase="./kaboum" archive="kaboum.jar" alt="kaboum applet" align="CENTER" height=500 width=500 MAYSCRIPT name="kaboum">
+        <param name="MAPFILE_PATH" value="/Users/nicolas/code/java/SIG/kaboumServer/web/data/mapserver/test.map">
+        <param name="MAPFILE_EXTENT" value="5638,1620431,1197822,2677441">
+        <param name="KABOUM_MAPSERVER_CGI_URL" value="http://localhost/cgi-bin/mapserv">
+        <param name="KABOUM_FEATURESERVER_URL" value="http://localhost:8084/kaboumServer/KaboumFeatureServlet">
+        <param name="KABOUM_USE_LIVECONNECT" value="TRUE">
+        <param name="KABOUM_REFERENCE_IS_APPLET" value="FALSE">
+        <param name="KABOUM_DEBUG_MODE" value="TRUE">
+        <param name="KABOUM_BACKGROUND_COLOR" value="255,255,255">
+        <param name="KABOUM_LANG" value="UK">
+        <param name="KABOUM_DEFAULT_OPMODE" value="ZOOMIN">
+        <param name="KABOUM_OPMODES_LIST" value="ZOOMIN,GEOMETRY,SELECTION,DISTANCE,MODIFY,BOXSELECTION,LINESTRING,PAN,POLYGON">
+        <param name="KABOUM_COORDINATE_PRECISION" value="0.1">
+        <param name="KABOUM_SEND_POSITION_COORDINATES_TO_JS" value="false">
+        <param name="MAPFILE_UNITS" value="MS_METERS">
+        <param name="SURFACE_UNITS" value="MS_DECARES">
+        <param name="LAYERS" value="img1,departements,cities,rails,haies">
+        <param name="OPMODE_COLOR" value="153,153,204">
+        <param name="SELECTION_PIXEL_PRECISION" value="10">
+        <param name="SELECTION_RETURN_XY" value="TRUE">
+        <param name="SELECTION_AUTO_COMMIT" value="TRUE">
+        <param name="DISTANCE_FOREGROUND_COLOR" value="green">
+        <param name="DISTANCE_POINT_TYPE" value="K_TYPE_BOX">
+    </applet>
+-->
