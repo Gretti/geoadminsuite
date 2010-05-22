@@ -26,7 +26,8 @@ package org.geogurus.mapserver.objects;
  */
 public enum MsLayer {
     LOCAL("Label"), SDE("sde"), OGR("ogr"), POSTGIS("Postgis"), ORACLESPATIAL(
-            "Oracle Spatial"), WMS("Web Map Server"), WFS("Web Feature Server");
+            "Oracle Spatial"), WMS("Web Map Server"), WFS("Web Feature Server"),
+            SPATIALITE("Spatialite");
 
     private final String label;
 
