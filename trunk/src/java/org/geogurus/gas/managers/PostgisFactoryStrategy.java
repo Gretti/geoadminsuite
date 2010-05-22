@@ -52,7 +52,7 @@ public final class PostgisFactoryStrategy implements
             String conURI = conPool.getConnectionURI(host.getName(), host
                     .getPort(), host.getInstance(), host.getUname(), host
                     .getUpwd(), ConPool2.DBTYPE_POSTGRES);
-            logger.warning("cnx uri: " + conURI);
+            logger.info("cnx uri: " + conURI);
             con = conPool.getConnection(conURI);
             if (con == null) {
                 // not a valid host: skip it
