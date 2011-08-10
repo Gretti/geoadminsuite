@@ -69,8 +69,8 @@ BEGIN="$(date +%s)"
 echo "__________________________________________________________________________"
 echo "lancement du traitement spatial: fonctions..."
 psql -p $DBPORT -d $DBNAME -f ../SQL/calage_trajet_fonctions.sql
-psql -p $DBPORT -d $DBNAME -f ../SQL/functions/functionRouteTrajet.sql
-psql -p $DBPORT -d $DBNAME -f ../SQL/functions/functionAddTrajet2009Cols.sql
+psql -p $DBPORT -d $DBNAME -f ../SQL/functionRouteTrajet.sql
+psql -p $DBPORT -d $DBNAME -f ../SQL/functionAddTrajet2009Cols.sql
 echo "    traitement spatial termine"
 END="$(date +%s)"
 DELTAT="$(expr $END - $BEGIN)"
