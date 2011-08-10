@@ -19,7 +19,6 @@
 # TODO:
 # 
 # dans la notice, expliquer comment lire le log en temps reel: tail -f.
-# test
 #
 ################################################################################
 
