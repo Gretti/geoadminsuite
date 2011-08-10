@@ -102,7 +102,7 @@ TRAJETS="00351
 2a501"
 
 for UU in $TRAJETS ; do
-    mv uu_$UU.zip ../pret_a_envoi
+    mv /mnt/data/results/ok/uu_$UU.zip /mnt/data/results/pret_a_envoi
 done
 
 echo "UU deplacées..."
