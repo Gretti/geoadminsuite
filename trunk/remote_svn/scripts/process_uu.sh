@@ -202,20 +202,21 @@ for UUCODE in `cat $1`; do
 				#echo "sh process_trajets.sh $TMP_DIR/$UUCODE/Resultats/trajetssimul.shp $2"
 				sh process_trajets.sh $TMP_DIR/$UUCODE/Resultats/trajetssimul.shp $2
 			fi
+			$STATUS_CODE=$?
 			
-			if [[ $? -eq 0 ]] ; then
+			if [[ $STATUS_CODE -eq 0 ]] ; then
 				DESC_ERREUR=
 				DB_STATUS_OK=true
 				
-            elif [[  $? -eq 100 ]]; then
+            elif [[ $STATUS_CODE -eq 100 ]]; then
 			    DESC_ERREUR="Donnees de trajets incorrectes: impossible de reconstruire des trajets complets sous forme de MULTILINESTRING"
 				DB_STATUS_OK=false
 				
-			elif [[ $? -eq 200 ]] ; then
+			elif [[ $STATUS_CODE -eq 200 ]] ; then
 			    DESC_ERREUR="process_trajet en erreur: chargement des trajets impossible:  $TMP_DIR/$UUCODE/resultats/trajetssimul.shp"
 				DB_STATUS_OK=false
 			else 
-			    DESC_ERREUR="process_trajet en erreur: erreur inattendue. (code=${?})"
+			    DESC_ERREUR="process_trajet en erreur: erreur inattendue. (code=$STATUS_CODE)"
 				DB_STATUS_OK=false
 			fi
 			#insertion en base de la fin du traitement
