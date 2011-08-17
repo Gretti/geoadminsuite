@@ -7,6 +7,12 @@
 # ex: ./process_trajets.sh ../data/meaux_extrait/trajet_meaux_extrait.shp ../data/meaux_extrait/voirie_meaux_extrait.shp /Users/nicolas/Projets/BVA/data/tmpout true
 # historique:
 # juillet 2011: enchainement de plusieurs scripts, au lieu d'un seul gros.
+# codes d'erreur :
+# exit 1: mauvais parametres du script
+# exit 100: les trajets ne constituent pas des LINESTRING mais des MULTILINESTRING. leur nombre est trop
+#            important: process impossible pour cette UU
+# exit 200: shp2pgsql ne peut etre lancŽ.
+
 ################################################################################
 
 #Variables a editer pour refleter la conf actuelle
@@ -45,7 +51,7 @@ shp2pgsql -iISDd -W LATIN1 -s 27572 -g geom $1  trajet | psql -p $DBPORT -d $DBN
 
 if [[ $PIPESTATUS -eq 1 ]] ; then
 	echo "chargement des trajets: $1 impossible, fin du processus..."
-	exit 1
+	exit 200
 fi
 echo "    trajets charges"
 
@@ -84,6 +90,23 @@ echo "    traitement spatial termine"
 END="$(date +%s)"
 DELTAT="$(expr $END - $BEGIN)"
 echo "temps d'execution prepa data: $DELTAT s."
+
+# NRT: 17/08/2011: ajout du controle de validitŽ des trajets full: 
+# si plus de 10 trajets full sont des multilinestrings, erreur des donnŽes: pas de lien
+# 1-1 entre trajets et idtraj.
+# si 1 a 9 MULTI => warning en base et traitement continu
+
+echo 
+echo "VERIFICATION des trajets en entree: la table trajet_full ne doit contenir que
+des LINESTRING, pas des MULTILINESTRING"
+NUM_MULTI=`psql -p $DBPORT -d $DBNAME -At -c "select count(*) from trajet_full where geometrytype(geom)='MULTILINESTRING'"`
+
+if [ $NUM_MULTI -ge 10 ] ; then
+    echo "ERROR: DONNEES DE TRAJET INVALIDES: impossible de reconstruire des linestrings a partir des trajets"                  
+    exit 100
+elif [ $NUM_MULTI -gt 0 ] && [ $NUM_MULTI -lt 10 ] ; then
+   echo "WARNING: Une partie des trajets en entree est INVALIDE: MULTILINESTRING reconstruites au lieu de LINESTRING"
+fi
 
 BEGIN="$(date +%s)"
 echo "__________________________________________________________________________"
