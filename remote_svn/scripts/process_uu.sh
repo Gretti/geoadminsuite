@@ -202,7 +202,7 @@ for UUCODE in `cat $1`; do
 				#echo "sh process_trajets.sh $TMP_DIR/$UUCODE/Resultats/trajetssimul.shp $2"
 				sh process_trajets.sh $TMP_DIR/$UUCODE/Resultats/trajetssimul.shp $2
 			fi
-			$STATUS_CODE=$?
+			STATUS_CODE=$?
 			
 			if [[ $STATUS_CODE -eq 0 ]] ; then
 				DESC_ERREUR=
