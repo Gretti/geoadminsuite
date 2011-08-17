@@ -206,8 +206,16 @@ for UUCODE in `cat $1`; do
 			if [[ $? -eq 0 ]] ; then
 				DESC_ERREUR=
 				DB_STATUS_OK=true
-			else 
+				
+            elif [[  $? -eq 100 ]]; then
+			    DESC_ERREUR="Donnees de trajets incorrectes: impossible de reconstruire des trajets complets sous forme de MULTILINESTRING"
+				DB_STATUS_OK=false
+				
+			elif [[ $? -eq 200 ]] ; then
 			    DESC_ERREUR="process_trajet en erreur: chargement des trajets impossible:  $TMP_DIR/$UUCODE/resultats/trajetssimul.shp"
+				DB_STATUS_OK=false
+			else 
+			    DESC_ERREUR="process_trajet en erreur: erreur inattendue. (code=${?})"
 				DB_STATUS_OK=false
 			fi
 			#insertion en base de la fin du traitement
