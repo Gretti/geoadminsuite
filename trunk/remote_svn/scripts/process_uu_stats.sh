@@ -31,7 +31,7 @@ echo
 if [[ $RES_OK -gt 0 ]]; then
 	echo "____________________________________________________________________________"
 	echo  "Liste des UU traitees et ok"
-	psql  $DBCONN -x -c "select * from stats where status_ok"
+	psql  $DBCONN  --pset=pager=off -x -c "select * from stats where status_ok"
 	echo "____________________________________________________________________________"
 	echo
 fi
