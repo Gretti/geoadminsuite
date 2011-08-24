@@ -464,4 +464,4 @@ for UU in $TRAJETS_100 ; do
 done
 
 
-echo "UU deplacées..."
+echo "UU deplac√©es..."
