@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ################################################################################
 # script de traitement des trajets sur les voiries
@@ -20,6 +20,7 @@ DBPORT=5432
 #DBNAME=bvameaux
 DBNAME=bva
 
+# C'est plus d'actualité ca
 if [ $# -lt 2 ] ; then
 	echo usage: "$0 <shape des trajets> <shape des voiries> <repertoire de sortie> <true|false>"
 	echo "    <shape des trajets>: le chemin vers le shapefile des trajets"
@@ -44,16 +45,55 @@ T0="$(date +%s)"
 #psql -p $DBPORT -d $DBNAME -f functionCleanVoirieGraph.sql
 #psql -p $DBPORT -d $DBNAME -f functionProcessTrajet.sql
 
+
 BEGIN="$(date +%s)"
 echo "__________________________________________________________________________"
 echo "chargement des trajets..."
-shp2pgsql -iISDd -W LATIN1 -s 27572 -g geom $1  trajet | psql -p $DBPORT -d $DBNAME
+shp2pgsql -iISDd -W LATIN1 -s 27572 -g geom $1 trajet | psql -p $DBPORT -d $DBNAME
 
-if [[ $PIPESTATUS -eq 1 ]] ; then
-	echo "chargement des trajets: $1 impossible, fin du processus..."
-	exit 200
-fi
+# if [ ${PIPESTATUS[1]} -eq 1 ] ; then
+# 	echo "chargement des trajets: $1 impossible, fin du processus..."
+# 	exit 200
+# fi
 echo "    trajets charges"
+
+END="$(date +%s)"
+DELTAT="$(expr $END - $BEGIN)"
+echo "temps d'execution: $DELTAT s."
+
+
+BEGIN="$(date +%s)"
+echo "__________________________________________________________________________"
+echo "chargement de la ponderation..."
+psql -p $DBPORT -d $DBNAME -f ../SQL/init_ponderations.sql
+# Filtre du fichier de ponderations avec les colonnes qui nous interesse
+gawk '{print $24";"$25}' $3 > $3.csv
+echo "COPY base_individus FROM '$3.csv' WITH CSV HEADER DELIMITER ';'" | psql -p $DBPORT -d $DBNAME;
+
+# if [ ${PIPESTATUS[1]} -eq 1 ] ; then
+# 	echo "chargement de la ponderation: $3 impossible, fin du processus..."
+# 	exit 300
+# fi
+
+# Mise a jour des ponderations dans trajet
+psql -p $DBPORT -d $DBNAME -f ../SQL/update_ponderations.sql
+echo "    ponderations chargees"
+
+END="$(date +%s)"
+DELTAT="$(expr $END - $BEGIN)"
+echo "temps d'execution: $DELTAT s."
+
+
+BEGIN="$(date +%s)"
+echo "__________________________________________________________________________"
+echo "chargement des trajets 2010..."
+shp2pgsql -iISDd -W LATIN1 -s 27572 -g geom $4 trajet_2010 | psql -p $DBPORT -d $DBNAME
+
+# if [ ${PIPESTATUS[1]} -eq 1 ] ; then
+# 	echo "chargement des trajets: $1 impossible, fin du processus..."
+# 	exit 200
+# fi
+echo "    trajets 2010 charges"
 
 END="$(date +%s)"
 DELTAT="$(expr $END - $BEGIN)"
@@ -181,6 +221,15 @@ echo "    traitement spatial termine"
 END="$(date +%s)"
 DELTAT="$(expr $END - $BEGIN)"
 echo "temps d'execution stats finales: $DELTAT s."
+
+BEGIN="$(date +%s)"
+echo "__________________________________________________________________________"
+echo "lancement du traitement spatial: injection des trajets 2010..."
+psql -p $DBPORT -d $DBNAME -f ../SQL/injection_trajet_2010.sql
+echo "    traitement spatial termine"
+END="$(date +%s)"
+DELTAT="$(expr $END - $BEGIN)"
+echo "temps d'execution injection trajets 2010: $DELTAT s."
 
 
 BEGIN="$(date +%s)"
