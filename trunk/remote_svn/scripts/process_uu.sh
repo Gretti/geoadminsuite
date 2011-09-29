@@ -27,11 +27,11 @@
 DBCONN="-d bva -p 5432"
 
 # Chemin dans lequel se trouvent les RAR contenant les trajets
-#UU_PATH=/mnt/data/UU10-100
-UU_PATH=/mnt/data/UU10-100
+#UU_PATH=/mnt/data/UU100-new
+UU_PATH=/mnt/data/UU10-new
 
 # Chemin dans lequel se trouvent les donnees de 2010
-UU_PATH_2010=/mnt/data/2010
+UU_PATH_2010=/mnt/data/UU-2010
 
 # Chemin ou sont copiés les données issues du traitement
 OUT_PATH=/mnt/data/results
