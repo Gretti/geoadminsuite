@@ -160,6 +160,12 @@ if [[ ! -d $OUT_PATH/ko ]] ; then
 fi
                                                        
 for UUCODE_FILE in `cat $1`; do
+	# On ignore l'UU si elle est en commentaire dans le fichier
+	if [[ `echo ${UUCODE_FILE} | cut -c1` == '#' ]] ; then
+		echo "UU en commentaire : "`echo ${UUCODE_FILE} | cut -c2-`
+		continue
+	fi
+
 	case ${UUCODE_FILE} in
 		2[a]*)
 			echo "Traitement supplementaire pour la Corse"
