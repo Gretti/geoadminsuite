@@ -27,7 +27,8 @@
 DBCONN="-d bva -p 5432"
 
 # Chemin dans lequel se trouvent les RAR contenant les trajets
-UU_PATH=/mnt/data/UU10-100
+#UU_PATH=/mnt/data/UU10-100
+UU_PATH=/mnt/data/UU100
 
 # Chemin dans lequel se trouvent les donnees de 2010
 UU_PATH_2010=/mnt/data/2010
@@ -159,6 +160,28 @@ if [[ ! -d $OUT_PATH/ko ]] ; then
 fi
                                                        
 for UUCODE_FILE in `cat $1`; do
+	case ${UUCODE_FILE} in
+		2[a]*)
+			echo "Traitement supplementaire pour la Corse"
+			OLD_UUCODE_FILE=${UUCODE_FILE}
+			UUCODE_FILE="2A"`echo ${UUCODE_FILE} | cut -c3-`
+
+			# Changement du RAR en 2AXXX si ce n'est pas deja fait
+			if [ ! -f $UU_PATH/${UUCODE_FILE} ] ; then
+				mv $UU_PATH/${OLD_UUCODE_FILE} $UU_PATH/${UUCODE_FILE}  
+			fi
+			;;
+		2[b]*)
+			echo "Traitement supplementaire pour la Corse"
+			UUCODE_FILE="2B"`echo ${UUCODE_FILE} | cut -c3-`
+
+			# Changement du RAR en 2BXXX si ce n'est pas deja fait
+			if [ ! -f $UU_PATH/${UUCODE_FILE} ] ; then
+				mv $UU_PATH/${OLD_UUCODE_FILE} $UU_PATH/${UUCODE_FILE}  
+			fi
+			;;
+	esac
+
 	# On ne veut que les 5 premiers caractères de chaque ligne -> code UU uniquement
 	UUCODE=`echo $UUCODE_FILE | cut -c1-5`
 	# On ne veut que le type du fichier compresse 'zip' ou 'rar' et on force le lower case
@@ -183,7 +206,7 @@ for UUCODE_FILE in `cat $1`; do
 	# ${UUCODE}.rar devient ${UUCODE_FILE}
 	# decompression du fichier suivant son type
 	if [[ $UUCODE_TYPE == "rar" ]] ; then
-		CMD_DECOMPRESS="unrar x -inul ${UUCODE_FILE}"
+		CMD_DECOMPRESS="unrar x -o+ ${UUCODE_FILE}"
 	else
 		CMD_DECOMPRESS="unzip ${UUCODE_FILE} -d $UUCODE_BASENAME"
 	fi
@@ -222,19 +245,33 @@ for UUCODE_FILE in `cat $1`; do
 			unrar x -inul ${UUCODE_FILE_2010} $TMP_DIR_2010
 			echo "Decompression des trajets 2010 dans le dossier ${TMP_DIR_2010}"
 
-			# Fichier shapefile 2010
-# 			SHAPE_FILE_2010="$TMP_DIR_2010/Trajetssimul$UUCODE.shp"
-			SHAPE_FILE_2010="$TMP_DIR_2010/Trajetssimul${UUCODE}_Merge.shp"
+			# Fichier shapefile 2010 suivant plusieurs cas possible
+			TRAJET_FILE_2010="$TMP_DIR_2010/Trajetssimul${UUCODE}_Merge"
+			SHAPE_FILE_2010="${TRAJET_FILE_2010}.shp"
+			if [ ! -f $SHAPE_FILE_2010 ] ; then
+				TRAJET_FILE_2010="$TMP_DIR_2010/Trajetssimul${UUCODE}"
+				SHAPE_FILE_2010="${TRAJET_FILE_2010}.shp"
+			fi
+			if [ ! -f $SHAPE_FILE_2010 ] ; then
+				TRAJET_FILE_2010="$TMP_DIR_2010/trajetssimul${UUCODE}"
+				SHAPE_FILE_2010="${TRAJET_FILE_2010}.shp"
+			fi
+			if [ ! -f $SHAPE_FILE_2010 ] ; then
+				TRAJET_FILE_2010="$TMP_DIR_2010/trajetssimul${UUCODE}_Merge"
+				SHAPE_FILE_2010="${TRAJET_FILE_2010}.shp"
+			fi
+
 			echo "Fichier Shapefile 2010 de l'uu : "$SHAPE_FILE_2010
 
 			#if [ ! -f $SHAPE_FILE_2010 ] || [ ! -f $TMP_DIR_2010/Trajetssimul${UUCODE}.dbf ] || [ ! -f $TMP_DIR_2010/Trajetssimul${UUCODE}.shx ] ; then
-			if [ ! -f $SHAPE_FILE_2010 ] || [ ! -f $TMP_DIR_2010/Trajetssimul${UUCODE}_Merge.dbf ] || [ ! -f $TMP_DIR_2010/Trajetssimul${UUCODE}_Merge.shx ] ; then
+			if [ ! -f $SHAPE_FILE_2010 ] || [ ! -f ${TRAJET_FILE_2010}.dbf ] || [ ! -f ${TRAJET_FILE_2010}.shx ] ; then
 				echo "Les fichiers shapefile des trajets 2010 ($SHAPE_FILE_2010, .dbf, .shx) n'existent pas ou n'ont pas le bon nom."
 				echo "UU $UUCODE non traitée"
 				# insertion dans la table de stats 
 				psql $DBCONN -c "update stats set proc_end=now(), status_ok=false, description='Fichiers de trajets 2010 non trouves dans l archive ${UUCODE_FILE}' where code_uu='${UUCODE}'"
 				ls -al $TMP_DIR_2010
-				rm -rf $TMP_DIR_2010 
+				sleep 3
+				rm -rf $TMP_DIR_2010
 			else
 				# suite du traitement normal: les fichiers sont présents. Formats valides pour les attributs ?
 # 				testattr ${SHAPE_FILE_2010}
