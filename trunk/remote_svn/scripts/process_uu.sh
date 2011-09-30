@@ -31,7 +31,7 @@ DBCONN="-d bva -p 5432"
 UU_PATH=/mnt/data/UU10-new
 
 # Chemin dans lequel se trouvent les donnees de 2010
-UU_PATH_2010=/mnt/data/UU-2010
+UU_PATH_2010=/mnt/data/UU-2010/UU_10-100
 
 # Chemin ou sont copiés les données issues du traitement
 OUT_PATH=/mnt/data/results-new
@@ -277,7 +277,7 @@ for UUCODE_FILE in `cat $1`; do
 				psql $DBCONN -c "update stats set proc_end=now(), status_ok=false, description='Fichiers de trajets 2010 non trouves dans l archive ${UUCODE_FILE}' where code_uu='${UUCODE}'"
 				ls -al $TMP_DIR_2010
 				sleep 3
-				rm -rf $TMP_DIR_2010
+				#rm -rf $TMP_DIR_2010
 			else
 				# suite du traitement normal: les fichiers sont présents. Formats valides pour les attributs ?
 # 				testattr ${SHAPE_FILE_2010}
