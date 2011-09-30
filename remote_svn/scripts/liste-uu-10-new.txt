@@ -129,7 +129,6 @@
 30301-LA GRAND-COMBE.zip
 30302-VAUVERT.zip
 30303-PONT-SAINT-ESPRIT.zip
-30304-SAINT-GILLES.rar
 30304-SAINT-GILLES.zip
 30401-BAGNOLS-SUR-CEZE.rar
 30501-ales.rar
@@ -141,7 +140,6 @@
 33304-ARES.zip
 33305-ANDERNOS-LES-BAINS.zip
 33401-LIBOURNE.zip
-33501-ARCACHON.rar
 33501-ARCACHON.zip
 34301-SERIGNAN.zip
 34302-mauguio.rar
@@ -205,7 +203,6 @@
 50401-saint-lo.rar
 50501-cherbourg.rar
 51301-vitry-le-francois.rar
-51401-EPERNAY.rar
 51401-EPERNAY.zip
 51501-chalons-en-champagne.rar
 52301-langres.rar
