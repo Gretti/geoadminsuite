@@ -14,7 +14,9 @@ create index trajet_2010_idinsee on trajet_2010(idinsee);
 
 -- Insere les trajets 2010 a injecter dans la table trajet
 insert into trajet_2009
-    select nextval('trajet_gid_seq'::regclass), t.ordre, t.numdepl, t.sens, t.mode, 'NONE', t.iddepl, t.link_id, t.numtrajet, 'NONE', t.idinsee, null, null, t.geom, t.poids
+    --select nextval('trajet_gid_seq'::regclass), t.ordre, t.numdepl, t.sens, t.mode, 'NONE', t.iddepl, t.link_id, t.numtrajet,
+	--'NONE', t.idinsee, null, null, t.geom, t.poids
+    select t.iddepl, t.ordre, t.link_id, null, t.geom, t.sens, t.numdepl, t.mode, 'NONE', t.numtrajet, 'NONE', t.idinsee, null, null, t.poids
     from trajet_2010 t, ident_new i, current_uu c
     where i.aresimuler=1 and c.code_uu=i.uu99 and t.idinsee::int=i.id_new;
 
