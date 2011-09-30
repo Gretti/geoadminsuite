@@ -131,6 +131,18 @@ END="$(date +%s)"
 DELTAT="$(expr $END - $BEGIN)"
 echo "temps d'execution prepa data: $DELTAT s."
 
+BEGIN="$(date +%s)"
+echo "__________________________________________________________________________"
+echo "lancement du traitement spatial: injection des trajets 2010..."
+psql -p $DBPORT -d $DBNAME -f ../SQL/injection_trajet_2010.sql
+echo "    traitement spatial termine"
+END="$(date +%s)"
+DELTAT="$(expr $END - $BEGIN)"
+echo "temps d'execution injection trajets 2010: $DELTAT s."
+
+exit 0
+
+
 # NRT: 17/08/2011: ajout du controle de validité des trajets full: 
 # si plus de 10 trajets full sont des multilinestrings, erreur des données: pas de lien
 # 1-1 entre trajets et idtraj.

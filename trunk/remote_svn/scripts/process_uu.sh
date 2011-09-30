@@ -34,7 +34,7 @@ UU_PATH=/mnt/data/UU10-new
 UU_PATH_2010=/mnt/data/UU-2010
 
 # Chemin ou sont copiés les données issues du traitement
-OUT_PATH=/mnt/data/results
+OUT_PATH=/mnt/data/results-new
 
 #Repertoire de travail temporaire ou sont copiés et décompressés les RAR contenant les trajets
 TMP_DIR=/tmp
