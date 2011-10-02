@@ -57,7 +57,7 @@ public class JumpOracleDbQuery extends AbstractJumpDbQuery implements JumpDbQuer
         try
         {
             //FIXME - use NUMROWS to set maxFeatures;
-            Statement statement = connection.createStatement();
+            statement = connection.createStatement();
             ResultSet results = statement.executeQuery(query);
 
             FeatureSchema featureSchema = createSchemaFromMetadata(results.getMetaData());

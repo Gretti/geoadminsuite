@@ -23,7 +23,6 @@ public class JumpPostgresDbQuery extends AbstractJumpDbQuery implements JumpDbQu
     //field is probably a safer way to do this.
     public static final int POSTGRES_TYPES_GEOMETRY = 1111;
 
-
     public FeatureCollection getCollection(String query, int maxFeatures) throws Exception
     {
 
@@ -40,7 +39,8 @@ public class JumpPostgresDbQuery extends AbstractJumpDbQuery implements JumpDbQu
 
         try
         {
-            Statement statement = connection.createStatement();
+            //Statement statement = connection.createStatement();
+            statement = connection.createStatement();
             ResultSet results = statement.executeQuery(query);
 
             FeatureSchema featureSchema = createSchemaFromMetadata(results.getMetaData());
@@ -63,6 +63,10 @@ public class JumpPostgresDbQuery extends AbstractJumpDbQuery implements JumpDbQu
         }
 
         return featureCollection;
+    }
+
+    public Statement getStatement() {
+        return statement;
     }
 
     protected AttributeType getAttributeTypeForColumn(ResultSetMetaData metaData, int columnIndex) throws SQLException

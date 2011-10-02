@@ -48,7 +48,16 @@ public class JumpDbQueryPlugin extends AbstractPlugIn implements Runnable {
      * created
      */
     private boolean refresh;
+    
+    /**
+     * JumpDbQuery reference stored here to allow query statement cancel
+     */
+    private JumpDbQuery dbQuery = null;
 
+    /**
+     * @param context
+     * @throws Exception
+     */
     @Override
     public void initialize(PlugInContext context) throws Exception {
         context.getFeatureInstaller().addMainMenuItem(this, new String[]{"Tools"}, "Database Query", false, null, null);
@@ -105,9 +114,9 @@ public class JumpDbQueryPlugin extends AbstractPlugIn implements Runnable {
      * @throws Exception if something goes wrong
      */
     public void runQuery() throws Exception {
-           this.refresh = false;
-           Thread t = new Thread(this);
-           t.start();
+        this.refresh = false;
+        Thread t = new Thread(this);
+        t.start();
     }
 
     /**
@@ -115,15 +124,26 @@ public class JumpDbQueryPlugin extends AbstractPlugIn implements Runnable {
      * @throws Exception if something goes wrong
      */
     public void refreshQuery() throws Exception {
-           this.refresh = true;
-           Thread t = new Thread(this);
-           t.start();
+        this.refresh = true;
+        Thread t = new Thread(this);
+        t.start();
+    }
+
+    /**
+     * cancels the query
+     * @throws Exception if something goes wrong
+     */
+    public void cancelQuery() {
+        if (dbQuery != null) {
+            context.getWorkbenchFrame().warnUser(dbQuery.cancelQuery());
+        }
     }
 
     public void run() {
         queryDialog.initUiBeforeQuery();
 
         String msg = "";
+        boolean isErrorMsg = false;
         try {
             Class queryClazz = null;
             try {
@@ -135,7 +155,8 @@ public class JumpDbQueryPlugin extends AbstractPlugIn implements Runnable {
                 return;
             }
             Constructor constructor = queryClazz.getConstructor();
-            JumpDbQuery dbQuery = (JumpDbQuery) constructor.newInstance();
+            //JumpDbQuery dbQuery = (JumpDbQuery) constructor.newInstance();
+            dbQuery = (JumpDbQuery) constructor.newInstance();
             String dbDriver = queryDialog.getDriver();
             dbQuery.setupDb(dbDriver, queryDialog.getJdbcUrl(), queryDialog.getUsername(), queryDialog.getPassword());
             //FIXME - get this from the GUI
@@ -145,38 +166,45 @@ public class JumpDbQueryPlugin extends AbstractPlugIn implements Runnable {
             long start = System.currentTimeMillis();
 
             FeatureCollection featureCollection = null;
-                featureCollection = dbQuery.getCollection(queryString, maxRows);
-                long end = System.currentTimeMillis();
-                long seconds = (end - start) / 1000;
-                String secondString = seconds == 1 ? "second." : "seconds.";
-                msg = " Query returned " + featureCollection.size() + " features in " + seconds + " " + secondString;
-                if (featureCollection.isEmpty()) {
-                    msg = "Query didn't return any features.";
-                } else if (dbQuery.collectionHasNulls()) {
-                    msg = "Some query features have null geometries.";
-                }
-                // displays messages in OJ and plugin windows
-                queryDialog.refreshUiForResult(msg);
+            featureCollection = dbQuery.getCollection(queryString, maxRows);
+            long end = System.currentTimeMillis();
+            long seconds = (end - start) / 1000;
+            String secondString = seconds == 1 ? "second." : "seconds.";
+            msg = " Query returned " + featureCollection.size() + " features in " + seconds + " " + secondString;
+            if (featureCollection.isEmpty()) {
+                isErrorMsg = true;
+                msg = "Query didn't return any features.";
+            } else if (dbQuery.collectionHasNulls()) {
+                isErrorMsg = true;
+                msg = "Some query features have null geometries.";
+            }
+            // displays message in plugin windows
+            queryDialog.refreshUiForResult(msg);
+            if (isErrorMsg) {
+                // and in OJ status bar if message is an error
                 context.getWorkbenchFrame().warnUser(msg);
+            } else {
+                context.getWorkbenchFrame().setStatusMessage(msg);
+            }
 
-                if (this.refresh) {
-                    // try to find the layer corresponding to the current query (found at cursor)
-                    // and refresh its featureCollection, instead of creating a new layer.
-                    for (Iterator iter = context.getLayerNamePanel().getLayerManager().getLayers().iterator(); iter.hasNext(); ) {
-                        Layer l = (Layer)iter.next();
-                        if (l.getDescription().equals(queryString)) {
-                            l.setFeatureCollection(featureCollection);
-                            break;
-                        }
+            if (this.refresh) {
+                // try to find the layer corresponding to the current query (found at cursor)
+                // and refresh its featureCollection, instead of creating a new layer.
+                for (Iterator iter = context.getLayerNamePanel().getLayerManager().getLayers().iterator(); iter.hasNext();) {
+                    Layer l = (Layer) iter.next();
+                    if (l.getDescription().equals(queryString)) {
+                        l.setFeatureCollection(featureCollection);
+                        break;
                     }
-                } else {
-                    //register this successful query to the history
-                    this.queryDialog.addToHistoryList(queryString);
-                    Layer layer = context.addLayer(StandardCategoryNames.WORKING, queryString, featureCollection);
-                    // the description will be used to link between the layer and its query, to be able to refresh it even if its name
-                    // was changed
-                    layer.setDescription(queryString);
                 }
+            } else {
+                //register this successful query to the history
+                this.queryDialog.addToHistoryList(queryString);
+                Layer layer = context.addLayer(StandardCategoryNames.WORKING, queryString, featureCollection);
+                // the description will be used to link between the layer and its query, to be able to refresh it even if its name
+                // was changed
+                layer.setDescription(queryString);
+            }
         } catch (Exception ex) {
             msg = ex.getMessage();
             queryDialog.refreshUiForError(msg);

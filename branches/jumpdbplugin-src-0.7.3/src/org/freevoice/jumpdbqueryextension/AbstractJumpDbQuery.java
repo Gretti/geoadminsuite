@@ -33,6 +33,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.Statement;
+import org.freevoice.jumpdbqueryextension.util.Logger;
 
 /**
  *
@@ -43,6 +45,8 @@ public abstract class AbstractJumpDbQuery implements JumpDbQuery
 
     private Connection _connection = null;
     private GeometryFactory geometryFactory = new GeometryFactory();
+    /** a reference to the statement created when getting features collecion */
+    protected Statement statement = null;
 
     private boolean hasNullGeometries = false;
 
@@ -172,5 +176,22 @@ public abstract class AbstractJumpDbQuery implements JumpDbQuery
         }
 
         return _connection;
+    }
+
+    /**
+     * Cancels the SQL statement
+     */
+    public String cancelQuery() {
+        Logger.logDebug("entering cancelQuery...");
+        String ret = "";
+        if (this.statement != null) {
+            try {
+                Logger.logDebug("canceling query...");
+                this.statement.cancel();
+            } catch (Exception e) {
+                ret = e.getMessage();
+            }
+        }
+        return ret;
     }
 }
