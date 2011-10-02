@@ -1,0 +1,56 @@
+package org.freevoice.jumpdbqueryextension;
+
+
+import junit.framework.TestCase;
+
+
+/**
+ * @author lreeder
+ *         Date: Oct 5, 2010
+ */
+public class TestAbstractJumpDbQuery extends TestCase
+{
+
+   public void setUp() throws Exception
+   {
+   }
+
+   public void tearDown() throws Exception
+   {
+      cleanup();
+   }
+
+   private void cleanup() throws Exception
+   {
+   }
+
+   public void testSomething() throws Exception
+   {
+      
+   }
+
+
+//   public class JumpDbQueryDriver extends AbstractJumpDbQuery
+//   {
+//
+//      @Override
+//      public FeatureCollection getCollection(String query, int maxFeatures) throws Exception
+//      {
+//         return null;  //To change body of implemented methods use File | Settings | File Templates.
+//      }
+//
+//      @Override
+//      protected AttributeType getAttributeTypeForColumn(ResultSetMetaData metaData, int columnIndex) throws SQLException
+//      {
+//         return null;  //To change body of implemented methods use File | Settings | File Templates.
+//      }
+//
+//      @Override
+//      protected Object getAttributeValueFromResults(ResultSet results, FeatureSchema featureSchema,
+//         int columnIndex) throws SQLException
+//      {
+//         return null;  //To change body of implemented methods use File | Settings | File Templates.
+//      }
+//   }
+
+}
