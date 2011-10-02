@@ -1,0 +1,264 @@
+<project name="jumpdbplugin" default="createjar" basedir=".">
+
+  <!-- load user's build.properties for user-specific properties -->
+  <property file="${user.home}/build.properties"/>
+
+  <!-- set global properties for this build -->
+  <property name="src.dir" location="src"/>
+  <property name="test.src.dir" location="test"/>
+  <property name="build" location="build"/>
+  <property name="test.dir" location="build/classes/test"/>
+  <property name="testreports" location="build/test/reports"/>
+  <property name="dist"  location="/Applications/GIS/openjump-1.4.0.2s/lib/ext"/>
+  <property name="project.dir" location="."/>
+  <property name="db.driver.dir"  location="${project.dir}/dbdrivers"/>
+  <property name="lib.dir" location="${project.dir}/lib"/>
+  <property name="app.name" value="jumpdbplugin"/>
+  <property name="version" value="0.7.3"/>
+
+  <path id="deploy.libs">
+     <fileset dir="${lib.dir}" includes="gt2-oracle-spatial-*.jar"/>
+     <!--<fileset dir="${lib.dir}" includes="commons-io-*.jar"/>-->
+  </path>
+
+  
+  <path id="compile.class.path">
+     <path refid="deploy.libs"/>
+     <fileset dir="${db.driver.dir}" includes="ojdbc*.jar"/>
+     <fileset dir="${db.driver.dir}" includes="postgis*.jar"/>
+     <fileset dir="${db.driver.dir}" includes="postgresql-*.jar"/>
+     <fileset dir="${jump.home}/lib" includes="openjump-*.jar"/>
+     <fileset dir="${jump.home}/lib" includes="jts-*.jar"/>
+  </path>
+
+  <path id="runtime.class.path">
+     <path refid="deploy.libs"/>
+     <fileset dir="${jump.home}/lib" includes="log4j-*.jar"/>
+  </path>
+
+  <path id="unit.test.class.path">
+     <fileset dir="${test.dir}/unit"/>
+  </path>
+
+  <target name="checkdeps" description="check dependencies">
+    <fail unless="jump.home" message="jump.home must be specified, and should point to the location of your OpenJUMP deployment.  Use -Djump.home=/path_to/openjump or create a file in you home directory called build.properties and define it there."/>
+  </target> 
+
+  <target name="init" depends="checkdeps">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}"/>
+    <mkdir dir="${build}/classes"/>
+    <mkdir dir="${test.dir}"/>
+    <mkdir dir="${test.dir}/unit"/>
+    <mkdir dir="${test.dir}/functional"/>
+  </target>
+
+  <target name="compile" depends="init"
+        description="compile the source " >
+       <echo message="src.dir ${src.dir}"/>
+       <echo message="test.src.dir ${test.src.dir}"/>
+    <!-- Compile the java code from ${src} into ${build} -->
+    <!-- For Jump 1.3.1, need to build with JDK 1.5 -->
+    <javac srcdir="${src.dir}" 
+           destdir="${build}/classes" 
+           debug="on" 
+           failonerror="false" 
+           errorProperty="javacfailed" 
+           fork="yes">
+    <classpath>
+        <path refid="runtime.class.path"/>
+        <path refid="compile.class.path"/>
+      </classpath>
+    </javac>
+    <fail 
+      if="javacfailed"
+      message="If the build failed due to missing dependencies like PGgeometry, make sure you've installed the external database libraries as described in BUILDING.txt"
+      />
+  </target>
+
+  <target name="unit.test.compile" depends="init,compile"
+        description="compile the unit tests " >
+    <javac srcdir="${test.src.dir}/unit" destdir="${test.dir}/unit" debug="on" fork="yes">
+    <classpath>
+        <pathelement path="${lib.dir}/junit-4.4.jar"/>
+        <pathelement path="${build}/classes" />
+        <path refid="runtime.class.path"/>
+        <path refid="compile.class.path"/>
+      </classpath>
+    </javac>
+    <copy todir="${test.dir}/unit">
+       <fileset dir="${test.src.dir}/unit">
+         <include name="**/*.properties"/>
+       </fileset>
+    </copy>
+  </target>
+
+  <target name="fn.test.compile" depends="init,compile"
+        description="compile the functionl tests " >
+    <javac srcdir="${test.src.dir}/functional" destdir="${test.dir}/functional" debug="on" fork="yes">
+    <classpath>
+        <pathelement path="${build}/classes" />
+        <pathelement path="${lib.dir}/junit-4.4.jar"/>
+        <path refid="runtime.class.path"/>
+        <path refid="compile.class.path"/>
+      </classpath>
+    </javac>
+  </target>
+
+  <target name="createjar" depends="compile,unit.test"
+        description="generate the plugin jar" >
+    <mkdir dir="${dist}/lib"/>
+    <jar jarfile="${dist}/lib/jumpdbquery.jar" basedir="${build}/classes"/>
+  </target>
+
+  <target name="packagesource" depends="createjar"
+        description="create the source distribution package" >
+    <property name="package.dir" value="${dist}/srcpackage/${app.name}-src-${version}"/>
+    <mkdir dir="${package.dir}"/>
+    <mkdir dir="${package.dir}/lib"/>
+    <mkdir dir="${package.dir}/dbdrivers"/>
+    <mkdir dir="${package.dir}/src"/>
+    <mkdir dir="${package.dir}/test"/>
+
+    <copy todir="${package.dir}">
+     <fileset dir="." includes="README_jumpdbquery.txt"/>
+     <fileset dir="." includes="BUILDING.txt"/>
+     <fileset dir="." includes="COPYING"/>
+     <fileset dir="." includes="COPYING.LESSER"/>
+     <fileset dir="." includes="sample_dbquery.properties"/>
+     <fileset dir="." includes="build.xml"/>
+    </copy>
+
+    <copy todir="${package.dir}/lib">
+     <fileset dir="${lib.dir}" includes="gt2-oracle-spatial-*.jar"/>
+     <!--<fileset dir="${lib.dir}" includes="commons-io-*.jar"/>-->
+     <fileset dir="${lib.dir}" includes="junit-4.4.jar"/>
+    </copy>
+
+
+    <copy todir="${package.dir}/src">
+     <fileset dir="${src.dir}"/>
+    </copy>
+
+    <copy todir="${package.dir}/test">
+     <fileset dir="${test.src.dir}"/>
+    </copy>
+
+    <zip destfile="${dist}/${app.name}-src-${version}.zip" basedir="${dist}/srcpackage"/>
+  </target>
+
+  <target name="package" depends="createjar"
+        description="create the binary distribution package" >
+    <property name="package.dir" value="${dist}/package/${app.name}-${version}"/>
+    <mkdir dir="${package.dir}"/>
+    <copy todir="${package.dir}">
+     <fileset dir="${lib.dir}" includes="gt2-oracle-spatial-*.jar"/>
+     <!--<fileset dir="${lib.dir}" includes="commons-io-*.jar"/>-->
+     <fileset dir="${dist}/lib" includes="jumpdbquery.jar"/>
+     <fileset dir="." includes="README_jumpdbquery.txt"/>
+     <fileset dir="." includes="COPYING"/>
+     <fileset dir="." includes="COPYING.LESSER"/>
+    </copy>
+    <copy file="sample_dbquery.properties" tofile="${package.dir}/dbquery.properties"/>
+    <zip destfile="${dist}/${app.name}-${version}.zip" basedir="${dist}/package"/>
+  </target>
+
+  <target name="deploy" depends="createjar"
+        description="Deploy jar to jump directory" >
+    <copy file="${dist}/lib/jumpdbquery.jar" todir="${jump.home}/lib/ext"/>
+
+    <copy todir="${jump.home}/lib/ext">
+     <path refid="deploy.libs"/>
+    </copy>
+  </target>
+
+  <target name="clean"
+        description="clean up" >
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+  </target>
+
+  <target name="unit.test" depends="unit.test.compile"
+        description="run unit tests" >
+    <echo message="project.dir is ${project.dir}"/>
+    <mkdir dir="${testreports}"/>
+    <junit printsummary="yes" 
+           showoutput="yes"
+           haltonfailure="yes"
+           >
+    <classpath>
+      <pathelement path="${build}/classes" />
+      <pathelement path="${test.dir}/unit" />
+      <pathelement path="${lib.dir}/junit-4.4.jar"/>
+      <path refid="runtime.class.path"/>
+      <path refid="compile.class.path"/>
+    </classpath>
+    <formatter type="brief" usefile="false" />
+    <!-- Pass these properties along to the unit tests -->
+    <sysproperty key="project.dir" value="${project.dir}"/>
+    <batchtest todir="${testreports}">
+      <fileset dir="${test.dir}/unit">
+         <include name="**/*Test*.class" />
+      </fileset>
+    </batchtest>
+    </junit>
+  </target>
+
+  <target name="fn.test" depends="fn.test.compile"
+        description="run functional tests that query the database" >
+    <mkdir dir="${testreports}"/>
+    <junit printsummary="yes" showoutput="yes">
+    <classpath>
+      <pathelement path="${lib.dir}/junit-4.4.jar"/>
+      <pathelement path="${build}/classes" />
+      <pathelement path="${test.dir}/functional" />
+      <fileset dir="${db.driver.dir}">
+        <include name="*.jar"/>
+      </fileset>
+      <path refid="runtime.class.path"/>
+      <path refid="compile.class.path"/>
+      </classpath>
+      <formatter type="brief" usefile="false" />
+      <!-- Pass these properties along to the unit tests -->
+      <sysproperty key="project.dir" value="${project.dir}"/>
+      <batchtest todir="${testreports}">
+        <fileset dir="${test.dir}/functional">
+          <include name="**/*Test*.class" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+
+  <target name="single.fn.test" depends="fn.test.compile"
+        description="run a single functional test specified in the property 'test'" >
+
+    <!-- construct path to specific unit test -->
+    <fileset id="single-test.fileset" dir="${test.dir}/functional" 
+             includes="org/**/${test}.class" />
+    <pathconvert id="single-test.hack" refid="single-test.fileset" 
+                property="single-test.notempty" setonempty="false" />
+    <fail unless="single-test.notempty" message="can't find test ${test.dir}" />
+
+    <junit printsummary="yes" showoutput="yes">
+    <classpath>
+      <pathelement path="${lib.dir}/junit-4.4.jar"/>
+      <pathelement path="${build}/classes" />
+      <pathelement path="${test.dir}/functional" />
+      <fileset dir="${db.driver.dir}">
+        <include name="*.jar"/>
+      </fileset>
+      <path refid="runtime.class.path"/>
+      <path refid="compile.class.path"/>
+      </classpath>
+      <formatter type="brief" usefile="false" />
+      <!-- Pass these properties along to the unit tests -->
+      <sysproperty key="project.dir" value="${project.dir}"/>
+      <batchtest todir="${testreports}">
+        <fileset refid="single-test.fileset"/>
+      </batchtest>
+    </junit>
+  </target>
+
+</project>

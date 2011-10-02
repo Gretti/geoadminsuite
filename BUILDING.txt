@@ -1,0 +1,69 @@
+Instructions for building the OpenJump database query plugin
+------------------------------------------------------------
+
+JDK 5.0 required
+----------------
+You need at least JDK 5.0 to build the plugin.
+
+Get Ant
+-------
+An ant build.xml file is provided for you to build the plugin source.  If
+you are a java developer, you most likely already have ant installed.  If 
+not, get it at http://ant.apache.org.
+
+Define OpenJUMP home
+--------------------
+Install OpenJump 1.2 or 1.3 if you don't already have it.  You might be able 
+to tweak the ant build.xml if you want to build the code with a different
+version of OpenJump.
+
+For the build to work, you need to specify the directory that OpenJUMP
+is installed in.  If you don't already have it, you can create a file called
+build.properties in your home folder, and add a property called jump.home to
+the build.properties file.  Alternatively, you can create a property file in
+some other location and define jump.home in that property file, and use the 
+ant "propertyfile" option to load it.  Finally, you can use the ant "D" 
+option to specify a jump.home property.  However you do it, you need to tell
+the build where OpenJump is installed.
+
+Optionally install databases and JDBC drivers
+---------------------------------------------
+You don't need every database (or any database) installed to build the 
+software. The code should compile and unit tests will run without
+any databases. However, you will need some JDBC drivers to compile.
+At a minimum you need to install the Oracle JDBC drivers (probably 
+odjbc14.jar) and the PostgreSQL and PostGIS drivers in the dbdrivers
+directory.
+
+The Oracle drivers are available at
+http://www.oracle.com/technology/software/tech/java/sqlj_jdbc/index.html.
+You'll need an OTN account to download the drivers, but you can get one for
+free from Oracle.  Read and accept the Oracle license, download ojdbc14.jar,
+and place it in the source "dbdrivers" folder.
+
+The Postgres JDBC driver is at http://jdbc.postgresql.org/download.html.  
+Go there and download the appropriate JDBC driver for your version of
+Postgres.  You'll also need the PostGIS JDBC driver.  Download postgis.jar 
+from here: http://www.postgis.org/download/. Once you've downloaded them, 
+place them in the "dbdrivers" folder.
+
+If you don't have the MySQL JDBC drivers, you can get them from 
+http://dev.mysql.com/downloads/connector/j/5.0.html.  Download the
+package, uncompress it, and copy the mysql-connector-java jar into the 
+source "dbdrivers" folder.
+
+For SpatiaLite, you just need the the SQLite JDBC driver, which  is here
+http://www.zentus.com/sqlitejdbc/.
+
+Useful Build Targets
+--------------------
+clean - cleans temporary build files
+compile - compiles the source code
+createjar - creates the plugin jar in dist/lib
+deploy - deploys the plugin jar to the OpenJUMP plugin directory
+package - creates the binary package in dist
+packagesource - creates the source package in dist
+
+Problems?   Send email to lnreeder AT gmail DOT com
+
+Happy Coding.........       Larry Reeder
