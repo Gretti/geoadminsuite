@@ -36,7 +36,6 @@ import jsyntaxpane.DefaultSyntaxKit;
 import org.freevoice.jumpdbqueryextension.JumpDbQueryPlugin;
 import org.freevoice.jumpdbqueryextension.util.Logger;
 import org.freevoice.jumpdbqueryextension.util.QueryExtractor;
-import org.freevoice.jumpdbqueryextension.util.StringUtils;
 
 /**
  *
@@ -44,6 +43,7 @@ import org.freevoice.jumpdbqueryextension.util.StringUtils;
 public class QueryDialog extends JFrame implements ActionListener, KeyListener, MouseListener {
 
     public static final String CANCEL_ACTION_COMMAND = "CancelDbQUery";
+    public static final String CANCEL_QUERY_ACTION_COMMAND = "CancelQueryDbQUery";
     public static final String CLEAR_ACTION_COMMAND = "ClearHistory";
     public static final String RUN_ACTION_COMMAND = "RunDbQuery";
     public static final String REFRESH_ACTION_COMMAND = "RefreshDbQuery";
@@ -58,8 +58,10 @@ public class QueryDialog extends JFrame implements ActionListener, KeyListener, 
     private JTextField driverField = null;
     private JTextField queryClassField = null;
     private JPanel queryPanel = null;
+    private JPanel progressPanel = null;
     private JButton runButton = null;
     private JButton cancelButton = null;
+    private JButton cancelQueryButton = null;
     private JButton clearButton = null;
     private JButton refreshButton = null;
     private JComboBox dbSelectMenu = null;
@@ -71,7 +73,9 @@ public class QueryDialog extends JFrame implements ActionListener, KeyListener, 
     // the list of queries, for history
     public List<String> historyList;
     private ImageIcon dbErrorIcon;
+    private ImageIcon cancelIcon;
     public JLabel dbErrorIconLabel;
+    public JLabel cancelIconLabel;
 
     public QueryDialog(
             JumpDbQueryPlugin plugin,
@@ -226,10 +230,25 @@ public class QueryDialog extends JFrame implements ActionListener, KeyListener, 
         infoPanel.add(dbErrorIconLabel, BorderLayout.WEST);
         dbErrorIconLabel.setVisible(false);
 
+        progressPanel = new JPanel(new BorderLayout());
+
+        // the cancel query icon
+        cancelIcon = createImageIcon("cancel.png", "");
+        cancelIconLabel = new JLabel(cancelIcon);
+        cancelQueryButton = new JButton(cancelIcon);
+        cancelQueryButton.setActionCommand(CANCEL_QUERY_ACTION_COMMAND);
+        cancelQueryButton.setToolTipText("cancel running query");
+        cancelQueryButton.addActionListener(this);
+        cancelQueryButton.setVisible(false);
+        progressPanel.add(cancelQueryButton, BorderLayout.WEST);
+
         queryProgress = new JProgressBar();
         queryProgress.setSize(20, 20);
         queryProgress.setIndeterminate(true);
-        infoPanel.add(queryProgress, BorderLayout.EAST);
+        queryProgress.setString("Click to cancel query");
+        progressPanel.add(queryProgress, BorderLayout.EAST);
+
+        infoPanel.add(progressPanel, BorderLayout.EAST);
         queryProgress.setVisible(false);
 
 //        queryPanel.add(queryAreaLabel, new GridBagConstraints(0, 1, 2, 1, 0.0, 0.0, GridBagConstraints.WEST,
@@ -392,6 +411,14 @@ public class QueryDialog extends JFrame implements ActionListener, KeyListener, 
                 // TODO: display exception in OJ, not in the out/err stream
                 ex.printStackTrace();
             }
+        } else if (CANCEL_QUERY_ACTION_COMMAND.equals(e.getActionCommand())) {
+            setCancelled(false);
+            try {
+                this.plugin.cancelQuery();
+            } catch (Exception ex) {
+                // TODO: display exception in OJ, not in the out/err stream
+                ex.printStackTrace();
+            }
         } else if (REFRESH_ACTION_COMMAND.equals(e.getActionCommand())) {
             setCancelled(false);
             try {
@@ -548,6 +575,7 @@ public class QueryDialog extends JFrame implements ActionListener, KeyListener, 
      */
     public void initUiBeforeQuery() {
         queryProgress.setVisible(true);
+        cancelQueryButton.setVisible(true);
         dbErrorIconLabel.setVisible(false);
         dbErrorIconLabel.setToolTipText("");
         queryAreaLabel.setToolTipText("");
@@ -565,6 +593,7 @@ public class QueryDialog extends JFrame implements ActionListener, KeyListener, 
         dbErrorIconLabel.setVisible(true);
         dbErrorIconLabel.setToolTipText(msg);
         queryProgress.setVisible(false);
+        cancelQueryButton.setVisible(false);
     }
 
     /**
@@ -578,5 +607,6 @@ public class QueryDialog extends JFrame implements ActionListener, KeyListener, 
         queryAreaLabel.setToolTipText(msg);
         dbErrorIconLabel.setVisible(false);
         dbErrorIconLabel.setToolTipText("");
+        cancelQueryButton.setVisible(false);
     }
 }

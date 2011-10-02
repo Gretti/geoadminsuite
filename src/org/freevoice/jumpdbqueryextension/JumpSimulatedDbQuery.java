@@ -99,4 +99,12 @@ public class JumpSimulatedDbQuery implements JumpDbQuery
                 y + (Math.random() * perturbation));
     }
 
+    /**
+     * Dummy function
+     * @return an empty string
+     */
+    public String cancelQuery() {
+        return "";
+    }
+
 }

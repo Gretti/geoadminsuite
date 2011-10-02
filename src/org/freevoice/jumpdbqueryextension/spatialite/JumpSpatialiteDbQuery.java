@@ -293,7 +293,7 @@ public class JumpSpatialiteDbQuery extends AbstractJumpDbQuery implements JumpDb
          }
 
          //FIXME - use LIMIT to set maxFeatures;
-         Statement statement = connection.createStatement();
+         statement = connection.createStatement();
          resultSet = statement.executeQuery(query);
 
          hasOneRow = resultSet.next();
