@@ -37,7 +37,7 @@ begin
                 old_col_type := 'text';
             end if;
             -- alter table 
-            
+            -- FIXME: preparer une seule requete alter avec plusieurs 'add column'
             EXECUTE 'alter table trajet_2009 add column ' || old_col||' '||old_col_type;
             -- raise notice 'alter table trajet_2009 add column % %', old_col, old_col_type; 
             -- et preparation de l'update

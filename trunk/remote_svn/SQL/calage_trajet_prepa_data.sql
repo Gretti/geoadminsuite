@@ -5,6 +5,9 @@ alter table trajet rename lgtron to lgtron2006;
 -- cette colonne peut etre vide: forcage de la valeur avec un update => super plus long
 update trajet set lgtron2006=st_length(geom);
 
+-- change le type de la colonne ID et le force en int: plus pratique et plus rapide a traiter.
+alter table trajet alter column id type int using id::int;
+
 create index trajet_idtraj on trajet(idtraj);
 create index trajet_ordre on trajet(ordre);
 create index trajet_code_gs on trajet(code_gs);
@@ -17,14 +20,15 @@ create index current_uu_code_uu on current_uu(code_uu);
 
 -- creation d'une table ident_new pour chaque uu a des vocation optimisation
 drop table if exists ident_new_uu;
-create table ident_new_uu as select idnew.uu99, idnew.id_new, idnew.aresimuler from ident_new idnew, current_uu cur_uu where idnew.uu99=cur_uu.code_uu and idnew.aresimuler=0;
+create table ident_new_uu as select idnew.uu99, idnew.id, idnew.id_new, idnew.aresimuler from ident_new idnew, current_uu cur_uu where idnew.uu99=cur_uu.code_uu;
 create index ident_new_uu_id_new on ident_new_uu(id_new);
 -- create index ident_new_uu_uu99 on ident_new_uu(uu99);
 -- create index ident_new_uu_aresimuler on ident_new_uu(aresimuler);
 
 -- mise a jour de la colonne id avec le bon identifiant
-update trajet set id=idnew.id_new
-from ident_new_uu idnew;
+update trajet t set id = n.id_new 
+from ident_new_uu n 
+where t.id = n.id and n.aresimuler=0;
 
 vacuum analyse trajet;
 
