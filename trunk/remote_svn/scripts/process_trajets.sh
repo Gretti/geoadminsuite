@@ -12,6 +12,7 @@
 # exit 100: les trajets ne constituent pas des LINESTRING mais des MULTILINESTRING. leur nombre est trop
 #            important: process impossible pour cette UU
 # exit 200: shp2pgsql ne peut etre lancŽ.
+# exit 201: fichier de ponderations ne peut etre charge dans la table pg.
 
 ################################################################################
 
@@ -19,6 +20,9 @@
 DBPORT=5432
 #DBNAME=bvameaux
 DBNAME=bva
+
+#AWK_CMD=gawk
+AWK_CMD=awk
 
 # C'est plus d'actualité ca
 if [ $# -lt 2 ] ; then
@@ -66,14 +70,21 @@ BEGIN="$(date +%s)"
 echo "__________________________________________________________________________"
 echo "chargement de la ponderation..."
 psql -p $DBPORT -d $DBNAME -f ../SQL/init_ponderations.sql
-# Filtre du fichier de ponderations avec les colonnes qui nous interesse
-gawk '{print $24";"$25}' $3 > $3.csv
-echo "COPY base_individus FROM '$3.csv' WITH CSV HEADER DELIMITER ';'" | psql -p $DBPORT -d $DBNAME;
 
-# if [ ${PIPESTATUS[1]} -eq 1 ] ; then
-# 	echo "chargement de la ponderation: $3 impossible, fin du processus..."
-# 	exit 300
-# fi
+# Filtre du fichier de ponderations avec les colonnes qui nous interesse
+#$AWK_CMD '{print $24";"$25}' $3 > $3.csv
+#echo "COPY base_individus FROM '$3.csv' WITH CSV HEADER DELIMITER ';'" | psql -p $DBPORT -d $DBNAME;
+
+# NRT: 04/10/2011: Changement de programme: on charge le fichier complet en base:
+# la commande awk precedente ne prend pas en compte des valeurs vides dans le fichier => decalage
+# dans le parsing.
+# => on charge tout, on vire les colonnes qui ne nous interessent pas.
+psql -p $DBPORT -d $DBNAME -c "COPY base_individus FROM '$3' WITH CSV HEADER DELIMITER E'\t'"
+
+if [ $? -eq 1 ] ; then
+    echo "chargement de la ponderation: $3 impossible, fin du processus pour l'unite en cours..."
+    exit 201
+fi
 
 # Mise a jour des ponderations dans trajet
 psql -p $DBPORT -d $DBNAME -f ../SQL/update_ponderations.sql

@@ -29,11 +29,14 @@ DBCONN="-d bva -p 5432"
 # Chemin dans lequel se trouvent les RAR contenant les trajets
 #UU_PATH=/mnt/data/UU100-new
 UU_PATH=/mnt/data/UU10-new
+#UU_PATH=//Users/nicolas/Projets/BVA/data/control/UU10-new/
 
 # Chemin dans lequel se trouvent les donnees de 2010
 UU_PATH_2010=/mnt/data/UU-2010/UU_10-100
+#UU_PATH_2010=/Users/nicolas/Projets/BVA/data/control/UU-2010/UU_10-100
 
 # Chemin ou sont copiés les données issues du traitement
+#OUT_PATH=/Users/nicolas/Projets/BVA/data/control/results-new
 OUT_PATH=/mnt/data/results-new
 
 #Repertoire de travail temporaire ou sont copiés et décompressés les RAR contenant les trajets
@@ -120,7 +123,7 @@ if [[ $# -lt 2 ]] ; then
 	echo usage: "$0 <liste des UU> <repertoire de sortie>
 	
 		<liste des UU>        : le chemin vers le fichier contenant la liste des UU a traiter
-		<repertoire de sortie>: le chemin ABSOLU vers le repertoire de sortie o√π ecrire les resultats"
+		<repertoire de sortie>: le chemin ABSOLU vers le repertoire de sortie ou ecrire les resultats"
 	exit 1
 fi
 
@@ -315,6 +318,8 @@ for UUCODE_FILE in `cat $1`; do
 		#			fi
 					STATUS_CODE=$?
 					
+					echo "status code: $STATUS_CODE"
+					
 					if [[ $STATUS_CODE -eq 0 ]] ; then
 						DESC_ERREUR=
 						DB_STATUS_OK=true
@@ -324,7 +329,7 @@ for UUCODE_FILE in `cat $1`; do
 					elif [[ $STATUS_CODE -eq 200 ]] ; then
 					    DESC_ERREUR="process_trajet en erreur: chargement des trajets impossible: $SHAPE_FILE"
 						DB_STATUS_OK=false
-					elif [[ $STATUS_CODE -eq 300 ]] ; then
+					elif [[ $STATUS_CODE -eq 201 ]] ; then
 					    DESC_ERREUR="process_trajet en erreur: chargement de la ponderation impossible: $PONDERATION_FILE"
 						DB_STATUS_OK=false
 					else 
