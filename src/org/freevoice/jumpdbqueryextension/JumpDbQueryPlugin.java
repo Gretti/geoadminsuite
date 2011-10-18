@@ -178,12 +178,13 @@ public class JumpDbQueryPlugin extends AbstractPlugIn implements Runnable {
                 isErrorMsg = true;
                 msg = "Some query features have null geometries.";
             }
+
             // displays message in plugin windows
             queryDialog.refreshUiForResult(msg);
-            if (isErrorMsg) {
+            if (isErrorMsg && msg != null) {
                 // and in OJ status bar if message is an error
                 context.getWorkbenchFrame().warnUser(msg);
-            } else {
+            } else if (msg != null) {
                 context.getWorkbenchFrame().setStatusMessage(msg);
             }
 
@@ -207,6 +208,9 @@ public class JumpDbQueryPlugin extends AbstractPlugIn implements Runnable {
             }
         } catch (Exception ex) {
             msg = ex.getMessage();
+            if (msg == null) {
+                msg = "Query failed. Unable to get error message for Exception type: " + ex.getClass().getName();
+            }
             queryDialog.refreshUiForError(msg);
             context.getWorkbenchFrame().warnUser(msg);
         }
