@@ -79,37 +79,41 @@ psql -p $DBPORT -d $DBNAME -f ../SQL/init_ponderations.sql
 # la commande awk precedente ne prend pas en compte des valeurs vides dans le fichier => decalage
 # dans le parsing.
 # => on charge tout, on vire les colonnes qui ne nous interessent pas.
-psql -p $DBPORT -d $DBNAME -c "COPY base_individus FROM '$3' WITH CSV HEADER DELIMITER E'\t'"
-
-if [ $? -eq 1 ] ; then
-    echo "chargement de la ponderation: $3 impossible, fin du processus pour l'unite en cours..."
-    exit 201
+if [[ -f $3 ]] ; then
+    psql -p $DBPORT -d $DBNAME -c "COPY base_individus FROM '$3' WITH CSV HEADER DELIMITER E'\t'"
 fi
 
-# Mise a jour des ponderations dans trajet
-psql -p $DBPORT -d $DBNAME -f ../SQL/update_ponderations.sql
-echo "    ponderations chargees"
+if [ $? -eq 1 ] ; then
+    echo "chargement de la ponderation: $3 impossible, le traitement continu sans la mise à jour des pondérations!"
+else
+    # Mise a jour des ponderations dans trajet
+    psql -p $DBPORT -d $DBNAME -f ../SQL/update_ponderations.sql
+    echo "    ponderations chargees"
 
-END="$(date +%s)"
-DELTAT="$(expr $END - $BEGIN)"
-echo "temps d'execution: $DELTAT s."
+    END="$(date +%s)"
+    DELTAT="$(expr $END - $BEGIN)"
+    echo "temps d'execution: $DELTAT s."
+fi
 
+if [[ ! -f $4 ]] ; then
+    echo "Le fichier des trajets 2010 n'existe pas : $4"
+    echo "Le traitement continu sans les trajets 2010"
+else
+    BEGIN="$(date +%s)"
+    echo "__________________________________________________________________________"
+    echo "chargement des trajets 2010..."
+    shp2pgsql -iISDd -W LATIN1 -s 27572 -g geom $4 trajet_2010 | psql -p $DBPORT -d $DBNAME
 
-BEGIN="$(date +%s)"
-echo "__________________________________________________________________________"
-echo "chargement des trajets 2010..."
-shp2pgsql -iISDd -W LATIN1 -s 27572 -g geom $4 trajet_2010 | psql -p $DBPORT -d $DBNAME
+    # if [ ${PIPESTATUS[1]} -eq 1 ] ; then
+    # 	echo "chargement des trajets: $1 impossible, fin du processus..."
+    # 	exit 200
+    # fi
+    echo "    trajets 2010 charges"
 
-# if [ ${PIPESTATUS[1]} -eq 1 ] ; then
-# 	echo "chargement des trajets: $1 impossible, fin du processus..."
-# 	exit 200
-# fi
-echo "    trajets 2010 charges"
-
-END="$(date +%s)"
-DELTAT="$(expr $END - $BEGIN)"
-echo "temps d'execution: $DELTAT s."
-
+    END="$(date +%s)"
+    DELTAT="$(expr $END - $BEGIN)"
+    echo "temps d'execution: $DELTAT s."
+fi
 
 #BEGIN="$(date +%s)"
 #echo "__________________________________________________________________________"
@@ -234,15 +238,16 @@ END="$(date +%s)"
 DELTAT="$(expr $END - $BEGIN)"
 echo "temps d'execution stats finales: $DELTAT s."
 
-BEGIN="$(date +%s)"
-echo "__________________________________________________________________________"
-echo "lancement du traitement spatial: injection des trajets 2010..."
-psql -p $DBPORT -d $DBNAME -f ../SQL/injection_trajet_2010.sql
-echo "    traitement spatial termine"
-END="$(date +%s)"
-DELTAT="$(expr $END - $BEGIN)"
-echo "temps d'execution injection trajets 2010: $DELTAT s."
-
+if [[ -f $4 ]] ; then
+    BEGIN="$(date +%s)"
+    echo "__________________________________________________________________________"
+    echo "lancement du traitement spatial: injection des trajets 2010..."
+    psql -p $DBPORT -d $DBNAME -f ../SQL/injection_trajet_2010.sql
+    echo "    traitement spatial termine"
+    END="$(date +%s)"
+    DELTAT="$(expr $END - $BEGIN)"
+    echo "temps d'execution injection trajets 2010: $DELTAT s."
+fi
 
 BEGIN="$(date +%s)"
 echo "__________________________________________________________________________"

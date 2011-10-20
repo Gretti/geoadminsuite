@@ -275,24 +275,25 @@ for UUCODE_FILE in `cat $1`; do
 			#if [ ! -f $SHAPE_FILE_2010 ] || [ ! -f $TMP_DIR_2010/Trajetssimul${UUCODE}.dbf ] || [ ! -f $TMP_DIR_2010/Trajetssimul${UUCODE}.shx ] ; then
 			if [ ! -f $SHAPE_FILE_2010 ] || [ ! -f ${TRAJET_FILE_2010}.dbf ] || [ ! -f ${TRAJET_FILE_2010}.shx ] ; then
 				echo "Les fichiers shapefile des trajets 2010 ($SHAPE_FILE_2010, .dbf, .shx) n'existent pas ou n'ont pas le bon nom."
-				echo "UU $UUCODE non traitée"
+				#echo "UU $UUCODE non traitée"
+				echo "Le traitement se poursuit"
 				# insertion dans la table de stats 
-				psql $DBCONN -c "update stats set proc_end=now(), status_ok=false, description='Fichiers de trajets 2010 non trouves dans l archive ${UUCODE_FILE}' where code_uu='${UUCODE}'"
+		#		psql $DBCONN -c "update stats set proc_end=now(), status_ok=false, description='Fichiers de trajets 2010 non trouves dans l archive ${UUCODE_FILE}' where code_uu='${UUCODE}'"
 				ls -al $TMP_DIR_2010
-				sleep 3
+				sleep 1
 				#rm -rf $TMP_DIR_2010
-			else
+			fi
 				# suite du traitement normal: les fichiers sont présents. Formats valides pour les attributs ?
 # 				testattr ${SHAPE_FILE_2010}
-				echo "Tout va bien"
+				#echo "Tout va bien"
 
-				if [[ $? -eq 1 ]] ; then
-					echo "Attributs incorrects pour les trajets 2010. La table de stat contient les raisons de l'invalidité..."
-					echo "arret du traitement pour l'UU $UUCODE."
-					#nettoyage de l'archive.
-					echo "nettoyage du rar..."
-					rm -rf $TMP_DIR_2010
-				else
+				#if [[ $? -eq 1 ]] ; then
+				#	echo "Attributs incorrects pour les trajets 2010. La table de stat contient les raisons de l'invalidité..."
+				#	echo "arret du traitement pour l'UU $UUCODE."
+				#	#nettoyage de l'archive.
+				#	echo "nettoyage du rar..."
+				#	rm -rf $TMP_DIR_2010
+				#else
 					# tous les attributs sont OK, on balance le traitement:
 
 					# Fichier contenant les ponderations
@@ -389,8 +390,8 @@ for UUCODE_FILE in `cat $1`; do
 					# message de fin de traitement
 					END="$(date +%s)"
 					echo "temps de traitement UU $UUCODE: $(expr $END - $T0) s."
-				fi
-			fi
+				#fi
+			#fi
 		fi
 	fi
 done
