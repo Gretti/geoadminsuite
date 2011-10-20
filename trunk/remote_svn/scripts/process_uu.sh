@@ -27,8 +27,8 @@
 DBCONN="-d bva -p 5432"
 
 # Chemin dans lequel se trouvent les RAR contenant les trajets
-#UU_PATH=/mnt/data/UU100-new
 UU_PATH=/mnt/data/UU10-new
+#UU_PATH=/mnt/data/UU-rural/
 #UU_PATH=//Users/nicolas/Projets/BVA/data/control/UU10-new/
 
 # Chemin dans lequel se trouvent les donnees de 2010
@@ -38,6 +38,7 @@ UU_PATH_2010=/mnt/data/UU-2010/UU_10-100
 # Chemin ou sont copiés les données issues du traitement
 #OUT_PATH=/Users/nicolas/Projets/BVA/data/control/results-new
 OUT_PATH=/mnt/data/results-new
+#OUT_PATH=/mnt/data/results-new/rural
 
 #Repertoire de travail temporaire ou sont copiés et décompressés les RAR contenant les trajets
 TMP_DIR=/tmp
