@@ -9,7 +9,7 @@ UU_CODE=$1
 
 run_shp2pgsql() {
 	if [ -f $3 ] ; then
-		shp2pgsql -iISD$1 -W LATIN1 -s 25572 -geom $3 $2 |psql ${DBCONN}
+		shp2pgsql -iISD$1 -W LATIN1 -s 27572 -geom $3 $2 |psql ${DBCONN}
 	fi
 }
 
