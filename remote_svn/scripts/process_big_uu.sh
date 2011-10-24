@@ -327,7 +327,7 @@ for UUCODE_FILE in `cat $1`; do
 				if [[ $DB_STATUS_OK == "true" ]] ; then
 					echo "zip du resultat..."
 					cd $2
-					zip -q uu_${UUCODE}.zip trajet_*.* *.csv
+					zip -q uu_${UUCODE}${PART}.zip trajet_*.* *.csv
 					if [[ $? == 0 ]] ; then
 						echo "...................OK"
 						echo "effacement des fichiers de sortie..."
@@ -362,7 +362,7 @@ for UUCODE_FILE in `cat $1`; do
 				fi
 				# message de fin de traitement
 				END="$(date +%s)"
-				echo "temps de traitement UU $UUCODE ${PART}: $(expr $END - $T0) s."					
+				echo "temps de traitement UU $UUCODE${PART}: $(expr $END - $T0) s."					
 			done
 		fi
 	fi
