@@ -28,7 +28,7 @@ LIST="
 2B501"
 
 for i in $LIST; do
-    ls /mnt/data/UU10-new/$i*.zip;
+    ls /mnt/data/UU10-new/$i*.rar;
 done;
 
 echo "done"
