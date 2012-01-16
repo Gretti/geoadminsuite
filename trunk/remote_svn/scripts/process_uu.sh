@@ -234,7 +234,7 @@ while read UUCODE_FILE ; do
 	#if [ ! -f $UUCODE/[Rr]esultats/trajetssimul.shp ] || [ ! -f $UUCODE/[Rr]esultats/trajetssimul.dbf ] || [ ! -f $UUCODE/[Rr]esultats/trajetssimul.shx ] ; then
 	# conversion de la variable de minuscule, pour gerer le cas de la Corse.
 	CORSE=`echo $UUCODE | tr '[:upper:]' '[:lower:]'`
-	if [ ! -f $UUCODE*/trajetssimul.shp -o ! -f $UUCODE*/trajetssimul.dbf -o ! -f $UUCODE*/trajetssimul.shx -a \(! -f $CORSE*/trajetssimul.shx -o ! -f $CORSE*/trajetssimul.shp -o ! -f $CORSE*/trajetssimul.dbf\) ]; then
+	if [ ! -f $UUCODE*/trajetssimul.shp -o ! -f $UUCODE*/trajetssimul.dbf -o ! -f $UUCODE*/trajetssimul.shx -a \( ! -f $CORSE*/trajetssimul.shx -o ! -f $CORSE*/trajetssimul.shp -o ! -f $CORSE*/trajetssimul.dbf \) ]; then
 		echo "Les fichiers shapefile des trajets (${UUCODE}.../trajetssimul.shp, .dbf, .shx) n'existent pas ou n'ont pas le bon nom."
 		echo "UU $UUCODE non traitée"
 		# insertion dans la table de stats 
