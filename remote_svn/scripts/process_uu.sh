@@ -234,13 +234,17 @@ while read UUCODE_FILE ; do
 	#if [ ! -f $UUCODE/[Rr]esultats/trajetssimul.shp ] || [ ! -f $UUCODE/[Rr]esultats/trajetssimul.dbf ] || [ ! -f $UUCODE/[Rr]esultats/trajetssimul.shx ] ; then
 	# conversion de la variable de minuscule, pour gerer le cas de la Corse.
 	CORSE=`echo $UUCODE | tr '[:upper:]' '[:lower:]'`
-	if [ ! -f $UUCODE*/trajetssimul.shp -o ! -f $UUCODE*/trajetssimul.dbf -o ! -f $UUCODE*/trajetssimul.shx -a \( ! -f $CORSE*/trajetssimul.shx -o ! -f $CORSE*/trajetssimul.shp -o ! -f $CORSE*/trajetssimul.dbf \) ]; then
-		echo "Les fichiers shapefile des trajets (${UUCODE}.../trajetssimul.shp, .dbf, .shx) n'existent pas ou n'ont pas le bon nom."
-		echo "UU $UUCODE non traitée"
-		# insertion dans la table de stats 
-		psql $DBCONN -c "update stats set proc_end=now(), status_ok=false, description='Fichiers de trajets non trouves dans l archive ${UUCODE_FILE}' where code_uu='${UUCODE}'"
-		ls -al ${UUCODE}*
-		#rm -rf ${UUCODE}*
+	if [ ! -f $UUCODE*/trajetssimul.shp -o ! -f $UUCODE*/trajetssimul.dbf -o ! -f $UUCODE*/trajetssimul.shx ]; then
+	    
+	    # test avec la variable en minuscule
+	    if [ ! -f $CORSE*/trajetssimul.shp -o ! -f $CORSE*/trajetssimul.dbf -o ! -f $CORSE*/trajetssimul.shx ]; then
+            echo "Les fichiers shapefile des trajets (${UUCODE}.../trajetssimul.shp, .dbf, .shx) n'existent pas ou n'ont pas le bon nom."
+            echo "UU $UUCODE non traitée"
+            # insertion dans la table de stats 
+            psql $DBCONN -c "update stats set proc_end=now(), status_ok=false, description='Fichiers de trajets non trouves dans l archive ${UUCODE_FILE}' where code_uu='${UUCODE}'"
+            ls -al ${UUCODE}*
+            #rm -rf ${UUCODE}*
+        fi
 	else
 		# suite du traitement normal: les fichiers sont présents. Formats valides pour les attributs ?
 		testattr ${UUCODE}*/trajetssimul.shp
