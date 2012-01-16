@@ -32,12 +32,12 @@ UU_PATH=/mnt/data/UU10-new
 #UU_PATH=//Users/nicolas/Projets/BVA/data/control/UU10-new/
 
 # Chemin dans lequel se trouvent les donnees de 2010
-UU_PATH_2010=/mnt/data/UU-2010/UU_10-100
-#UU_PATH_2010=/Users/nicolas/Projets/BVA/data/control/UU-2010/UU_10-100
+#UU_PATH_2010=/mnt/data/UU-2010/UU_10-100
+UU_PATH_2010=/Users/nicolas/Projets/BVA/data/control/UU-2010/UU_10-100
 
 # Chemin ou sont copiés les données issues du traitement
-#OUT_PATH=/Users/nicolas/Projets/BVA/data/control/results-new
-OUT_PATH=/mnt/data/results-new
+OUT_PATH=/Users/nicolas/Projets/BVA/data/control/results-new
+#OUT_PATH=/mnt/data/results-new
 #OUT_PATH=/mnt/data/results-new/rural
 
 #Repertoire de travail temporaire ou sont copiés et décompressés les RAR contenant les trajets
@@ -162,14 +162,22 @@ if [[ ! -d $OUT_PATH/ko ]] ; then
     echo "creation du sous repertoire de sortie: $OUT_PATH/ko"
     mkdir $OUT_PATH/ko
 fi
-                                                       
-for UUCODE_FILE in `cat $1`; do
+
+#for UUCODE_FILE in `cat $1`; do
+while read UUCODE_FILE ; do
 	# On ignore l'UU si elle est en commentaire dans le fichier
 	if [[ `echo ${UUCODE_FILE} | cut -c1` == '#' ]] ; then
 		echo "UU en commentaire : "`echo ${UUCODE_FILE} | cut -c2-`
 		continue
 	fi
 
+	# renommage sans espaces
+	OLD_UUCODE_FILE=${UUCODE_FILE}
+	UUCODE_FILE=`echo ${OLD_UUCODE_FILE}|sed -e 's/ /_/g'`
+	echo "nouvelle variable: $UUCODE_FILE"
+	
+	mv $UU_PATH/"${OLD_UUCODE_FILE}" $UU_PATH/${UUCODE_FILE}
+	
 	case ${UUCODE_FILE} in
 		2[a]*)
 			echo "Traitement supplementaire pour la Corse"
@@ -191,7 +199,7 @@ for UUCODE_FILE in `cat $1`; do
 			fi
 			;;
 	esac
-
+	
 	# On ne veut que les 5 premiers caractères de chaque ligne -> code UU uniquement
 	UUCODE=`echo $UUCODE_FILE | cut -c1-5`
 	# On ne veut que le type du fichier compresse 'zip' ou 'rar' et on force le lower case
@@ -201,7 +209,7 @@ for UUCODE_FILE in `cat $1`; do
 
 	echo ""
 	echo "_________________Traitement de l'unite urbaine: $UUCODE _____________"
-	echo "Fichier de l'unite urbaine : $UUCODE_FILE"
+	echo "Fichier de l'unite urbaine : $UUCODE_FILE, code: $UUCODE"
 	echo "Format de compression du fichier : $UUCODE_TYPE"
 
 	# insertion en base de cette UU, pour controle.
@@ -212,7 +220,7 @@ for UUCODE_FILE in `cat $1`; do
 	rm -rf $TMP_DIR/$UUCODE*
 	# copie et traitement du fichier compresse
 	echo "copie du fichier: ${UUCODE_FILE}"
-	cp $UU_PATH/${UUCODE_FILE} $TMP_DIR/
+	cp "$UU_PATH/${UUCODE_FILE}" $TMP_DIR/
 	# ${UUCODE}.rar devient ${UUCODE_FILE}
 	# decompression du fichier suivant son type
 	if [[ $UUCODE_TYPE == "rar" ]] ; then
@@ -221,17 +229,18 @@ for UUCODE_FILE in `cat $1`; do
 		CMD_DECOMPRESS="unzip ${UUCODE_FILE} -d $UUCODE_BASENAME"
 	fi
 	cd $TMP_DIR && $CMD_DECOMPRESS
-	echo "Decompression des trajets 2006 : ${UUCODE_FILE}"
 
 	# no filename expansion in [[ ]] so use old [ ] instead
 	#if [ ! -f $UUCODE/[Rr]esultats/trajetssimul.shp ] || [ ! -f $UUCODE/[Rr]esultats/trajetssimul.dbf ] || [ ! -f $UUCODE/[Rr]esultats/trajetssimul.shx ] ; then
-	if [ ! -f $UUCODE*/trajetssimul.shp ] || [ ! -f $UUCODE*/trajetssimul.dbf ] || [ ! -f $UUCODE*/trajetssimul.shx ] ; then
+	# conversion de la variable de minuscule, pour gerer le cas de la Corse.
+	$CORSE = `echo $UUCODE | tr '[:upper:]' '[:lower:]'`
+	if [ ! -f $UUCODE*/trajetssimul.shp ] || [ ! -f $UUCODE*/trajetssimul.dbf ] || [ ! -f $UUCODE*/trajetssimul.shx ] || [ ! -f $CORSE*/trajetssimul.shx ] || [ ! -f $CORSE*/trajetssimul.shp ] || [ ! -f $CORSE*/trajetssimul.dbf ]; then
 		echo "Les fichiers shapefile des trajets (${UUCODE}.../trajetssimul.shp, .dbf, .shx) n'existent pas ou n'ont pas le bon nom."
 		echo "UU $UUCODE non traitée"
 		# insertion dans la table de stats 
 		psql $DBCONN -c "update stats set proc_end=now(), status_ok=false, description='Fichiers de trajets non trouves dans l archive ${UUCODE_FILE}' where code_uu='${UUCODE}'"
 		ls -al ${UUCODE}*
-		rm -rf ${UUCODE}*
+		#rm -rf ${UUCODE}*
 	else
 		# suite du traitement normal: les fichiers sont présents. Formats valides pour les attributs ?
 		testattr ${UUCODE}*/trajetssimul.shp
@@ -395,7 +404,7 @@ for UUCODE_FILE in `cat $1`; do
 			#fi
 		fi
 	fi
-done
+done < $1 # end loop lecture des codes UU a traiter
 
 END="$(date +%s)"
 
