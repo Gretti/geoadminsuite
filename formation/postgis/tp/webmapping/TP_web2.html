@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" href="OpenLayers-2.12/theme/default/style.css" type="text/css">
+        <link rel="stylesheet" href="OpenLayers-2.12/examples/style.css" type="text/css">
+        <link rel="stylesheet" href="jqplot-1.0.4/jquery.jqplot.css" type="text/css">
+        <!-- style bibliotheque de dessin de graphes -->
+        <script src="jquery.js"></script>
+        <script src="OpenLayers-2.12/lib/OpenLayers.js"></script>   
+        <!-- bibliotheque de dessin de graphes -->
+        <script type="text/javascript" src="jqplot-1.0.4/jquery.jqplot.js"></script>
+        <script type="text/javascript" src="jqplot-1.0.4/plugins/jqplot.canvasTextRenderer.js"></script>
+        <script type="text/javascript" src="jqplot-1.0.4/plugins/jqplot.canvasAxisLabelRenderer.js"></script>
+        <script type="text/javascript" src="jqplot-1.0.4/plugins/jqplot.highlighter.min.js"></script>
+        <script type="text/javascript" src="jqplot-1.0.4/plugins/jqplot.cursor.min.js"></script>        
+
+        <script type="text/javascript">
+            // centre du raster
+             
+            var lon = 2695745;
+            var lat = 6825369;
+            //var lon = 283867;
+            //var lat = 6733401;
+            var zoom = 1;
+            var map, layer, vector_layer;
+            // formatteur jSon
+            var geojson_format = new OpenLayers.Format.GeoJSON();
+
+            function init() {
+                // la carte, dans la projection du MNT
+                map = new OpenLayers.Map( 'map',{
+                    projection: "EPSG:2154"
+                });
+                map.displayProjection = new OpenLayers.Projection("EPSG:2154");
+                map.maxExtent = new OpenLayers.Bounds(70645, 6433104, 489673, 7018161);   
+                map.resolutions = [1800,900,450,225,120,50,25,10,4.5,3,2,1,0.5];
+                    
+                // la couche raster MNT, a afficher en ombrage, par ex.
+                msLayer = new OpenLayers.Layer.MapServer( "MNT issu de Postgis",
+                "http://localhost/cgi-bin/mapserv?mode=map&map=/Users/nicolas/Projets/Formation/kits/postgis/tp/webmapping/TP_web2.map", 
+                {layers: 'basic'},
+                {singleTile: true, ratio: 1}); 
+
+                // la couche dans laquelle sera dessinée la ligne
+                var drawLayer = new OpenLayers.Layer.Vector('Layer de dessin');
+                drawLayer.events.on({
+                    // event appelé quand la ligne est dessinée
+                    "sketchcomplete": function (event) {
+                        
+                        // envoi de la geometrie en format JSON, a la bonne page PHP, 
+                        // grace a une requete ajax: seul le champ 'geometry' de la geom
+                        // dessinée est envoyée au server
+                        var jsonFeat = geojson_format.write(event.feature.geometry);
+                        //console.log(event.feature);
+                        
+                        // gestion des 3 types de dessin possibles:
+                        // Point => on renvoie l'altitude du point clické
+                        // Ligne: on affiche le profil altimetrique de la ligne
+                        // Polygone: on affiche l'image resultant du crop du polygone
+                        //        avec le raster
+                        
+                        // le test pour determiner le type de la geometrie doit etre revu
+                        // pour utiliser une vraie propriete d'OpenLayers...
+                        if (event.feature.geometry.id.indexOf('Point') > 0) {
+                            console.log('un point a ete dessine');
+                            //document.images['cropImg'].src = "";
+                            $.ajax({
+                                url: "getalti.php",
+                                data: "point=" + jsonFeat // le point envoyé a la page PHP dans un parametre GET
+                            }).done(function(data) { 
+                                // le serveur prepare le message qu'on affiche
+                                alert(data);
+                            });
+                        } else if (event.feature.geometry.id.indexOf('LineString') > 0) {
+                            console.log('une ligne a ete dessinee');
+                            // si image, on l'enleve:
+                            $('#rastImgDiv').hide();
+                            $('#altiProfile').show();
+                            
+                            $.ajax({
+                                url: "getprofile.php",
+                                data: "line=" + jsonFeat // la ligne envoyé a la page PHP dans un parametre GET
+                            }).done(function(data) { 
+                                // creation du graphe:
+                                // l'echelle en Y est forcée ici: elle pourrait venir de la base de données...
+                                // differentes option pour rendre le graphe: cf. doc jqplot
+                                $.jqplot('altiProfile', data, { 
+                                    title:'Profil altimétrique',
+                                    axes:{
+                                        xaxis:{min: 0, label: 'distance',
+                                            labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+                                            tickOptions:{
+                                                formatString:'%#d&nbsp;km'
+                                            }},
+                                        yaxis:{min:0, max:422, label: 'Altitude',
+                                            labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+                                            tickOptions:{
+                                                formatString:'%#d&nbsp;m'
+                                            }}
+                                    },
+                                    series:[{color:'#710896', showMarker: false}],
+                                    highlighter: {
+                                        show: false,
+                                        sizeAdjust: 7.5
+                                    },
+                                    cursor: {
+                                        show: true,
+                                        tooltipLocation:'nw'
+                                    }
+                                });                            
+                            });
+                        } else if (event.feature.geometry.id.indexOf('Polygon') > 0) {
+                            console.log('un polygon a ete dessine');
+                            $('#rastImgDiv').show();
+                            $('#altiProfile').hide();
+                            // une image est renvoyée par le code PHP: l'URL est donc directement la source de l'image
+                            document.images['cropImg'].src = "getcrop.php?polygon=" + jsonFeat;
+                        }
+                    } 
+                });
+                
+                // le controle qui permet de dessiner une ligne sur la couche drawLayer:
+                //line = new OpenLayers.Control.DrawFeature(drawLayer, OpenLayers.Handler.Path); 
+                // les controles de la toolbar:
+                var edToolBar = new OpenLayers.Control.EditingToolbar(drawLayer);
+                
+                map.addLayer(msLayer);
+                map.addLayer(drawLayer);
+                //map.addControl(line);
+                //map.addControl(panZoomCtrl);
+                map.addControl(edToolBar);
+                
+                map.setCenter(new OpenLayers.LonLat(lon, lat), zoom);
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <h1 id="title">Exemple d'interaction entre OpenLayers et Postgis - Dessin de graphes</h1>
+
+        <div id="tags">
+            JSON, GeoJSON, PostGIS
+        </div>
+        <!-- la carte et le graphe: il serait plus judicieux d'utiliser des styles pour
+             aligner la carte et le graphe horizontalement -->
+        <table>
+            <tr>
+                <td style="padding: 10px;"><div id="map" class="smallmap"></div></td>
+                <td style="padding: 10px;">
+                    <div id="altiProfile" style="width: 550px; height: 300;">
+                    </div>
+                    <div id="rastImgDiv">
+                        <img height="250" id="rastImg" name="cropImg" src=""/>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

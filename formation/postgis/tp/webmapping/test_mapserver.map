@@ -1,0 +1,140 @@
+MAP
+    NAME "sample"
+    STATUS ON
+    SIZE 600 400
+    EXTENT 3427433 5789186 3443808 5800377
+    #EXTENT 3434489 5793574 3435296 5794177
+    UNITS METERS
+    OUTPUTFORMAT 
+      NAME png 
+      DRIVER "AGG/PNG" 
+      MIMETYPE "image/png" 
+      IMAGEMODE RGBA
+      EXTENSION "png" 
+      FORMATOPTION "INTERLACE=OFF" 
+      TRANSPARENT OFF
+    END
+    IMAGECOLOR 255 255 255
+    # SYMBOLSET "symbols.txt"
+    FONTSET "../../data/webmapping/mapserver/fonts.list"
+    
+
+    #
+    # Start of layer definitions
+    #
+    LAYER
+        NAME "lacs"
+        TYPE POLYGON
+        CONNECTIONTYPE POSTGIS
+        CONNECTION "host=localhost dbname=postgis15 user=nicolas port=5432"
+        DATA "geom from lacs using unique gid"
+        STATUS default
+        CLASS
+            COLOR 255 0 0
+            OUTLINECOLOR 0 0 0
+            #SYMBOL "v-line" 
+        END# CLASS
+    END# LAYER
+    
+    #
+    # rues
+    #
+    LAYER
+        NAME "rivieres"
+        TYPE LINE
+        CONNECTIONTYPE POSTGIS
+        CONNECTION "host=localhost dbname=postgis15 user=nicolas port=5432"
+        DATA "geom from rivieres"
+        STATUS default
+        CLASS
+            COLOR 0 0 255
+            SIZE 2
+            SYMBOL "circlef" 
+        END# CLASS
+    END# LAYER
+    
+    #
+    # points d'interet
+    #
+    LAYER
+        NAME "poi"
+        TYPE POINT
+        CONNECTIONTYPE POSTGIS
+        CONNECTION "host=localhost dbname=postgis15 user=nicolas port=5432"
+        DATA "geom from poi"
+        STATUS DEFAULT
+        #STATUS off
+        CLASSITEM "poitypname"
+        CLASS
+            NAME "ecole"
+            EXPRESSION "Schule"
+            COLOR 200 0 200
+            SYMBOL "sym_ecole"
+            size 22
+        END# CLASS
+        CLASS
+            NAME "parking"
+            EXPRESSION "Parkhaus"
+            COLOR 0 0 200
+            SYMBOL "sym_parking"
+            size 22
+        END# CLASS
+    END# LAYER
+    
+    # SYMBOLS extrait de la doc MS : http://mapserver.org/mapfile/symbology/construction.html#sym-construction
+    SYMBOL
+      NAME "o-flag-trans"
+      TYPE pixmap
+      IMAGE "o-flag-trans.png"
+    END # SYMBOL
+    
+    # Quelques symboles issus de font truetype, pour les POI
+    SYMBOL
+        NAME "sym_ecole"
+        TYPE truetype
+        CHARACTER "Y"
+        FONT esri_29
+    END # SYMBOL
+    
+    SYMBOL
+        NAME "sym_parking"
+        TYPE truetype
+        CHARACTER "A"
+        FONT esri_29
+    END # SYMBOL
+    
+    SYMBOL
+      NAME "circlef"
+      TYPE ellipse
+      FILLED true
+      POINTS
+        10 10
+      END # POINTS
+    END # SYMBOL
+    
+    SYMBOL
+      NAME "v-line"
+      TYPE vector
+      FILLED false
+      POINTS
+        0  0
+        5  10
+        10 0
+      END # POINTS
+    END # SYMBOL
+    
+    SYMBOL
+      NAME "v-poly"
+      TYPE vector
+      FILLED true
+      POINTS
+        0  0
+        3.5 8
+        7 0
+        5.2 0
+        3.5 4
+        1.8 0
+        0 0
+      END # POINTS
+    END # SYMBOL
+END# MAP

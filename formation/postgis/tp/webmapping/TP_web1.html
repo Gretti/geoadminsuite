@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" href="OpenLayers-2.12/theme/default/style.css" type="text/css">
+        <link rel="stylesheet" href="OpenLayers-2.12/examples/style.css" type="text/css">
+        <script src="jquery.js"></script>
+        <script src="OpenLayers-2.12/OpenLayers.js"></script>
+        <script type="text/javascript">
+            var lon = 5;
+            var lat = 40;
+            var zoom = 5;
+            var map, layer;
+            var vector_layer = null;
+            var geojson_format = new OpenLayers.Format.GeoJSON();
+            var popups = [];
+            // la geometrie selectionnée;
+            var curSelFeat;
+
+            function init() {
+                map = new OpenLayers.Map( 'map' );
+                layer = new OpenLayers.Layer.WMS( 
+                "OpenLayers WMS", 
+                "http://vmap0.tiles.osgeo.org/wms/vmap0",
+                {layers: 'basic'});
+                
+                map.addLayer(layer);
+                
+                // definition d'une layer Vectorielle JSON'
+                vectorLayer = new OpenLayers.Layer.Vector("Departement", {
+                    strategies: [new OpenLayers.Strategy.Fixed()],
+                    protocol: new OpenLayers.Protocol.HTTP({
+                        url: "getdept.php",
+                        format: new OpenLayers.Format.GeoJSON(),
+                        callback: function() { alert('Did at least something happen?'); }
+                    })
+                });
+                vectorLayer.events.on({
+                    // event lors de la selection de la feature avec la souris
+                    'featureselected':function(evt){
+                        var feature = evt.feature;
+                        //console.log(feature);
+                        if (feature.id != curSelFeat) {
+                            var popup = new OpenLayers.Popup.FramedCloud("popup",
+                                feature.geometry.bounds.getCenterLonLat(),
+                                null,
+                                "<div style='font-size:.8em'>Feature: " + feature.id /*+"<br>Foo: " + feature.attributes.foo+"</div>"*/,
+                                null,
+                                true
+                            );
+                            feature.popup = popup;
+                            map.addPopup(popup);
+                            curSelFeat = feature.id;
+                            popups.push(popup);
+                        }
+                    },
+                    'featureunselected':function(evt){
+                        var feature = evt.feature;
+                        // s'il existe plusieurs popups
+                        // ferme toutes sauf la derniere
+                        if (popups.length > 1) {
+                            for (var i = 0; i < popups.length-1; i++) {
+                                var p = popups[i];
+                                map.removePopup(p);
+                                p.destroy();
+                                p = null;
+                            }
+                            // array of popup is now the last one:
+                            popups = new Array(popups.pop())
+                        }
+                        console.log('unselect new: ' + feature.id);
+                    }
+                });
+                
+                
+                // create the select feature control
+                var selector = new OpenLayers.Control.SelectFeature(vectorLayer,{
+                    hover:true,
+                    autoActivate:true
+                });                 
+                
+                map.addLayer(vectorLayer);
+                map.addControl(selector);
+                map.setCenter(new OpenLayers.LonLat(lon, lat), zoom);
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <h1 id="title">GeoJSON Example</h1>
+
+        <div id="tags">
+            JSON, GeoJSON, light
+        </div>
+
+        <p id="shortdesc">
+            Exemple d'utilisation du format GeoJSON (from : http://dev.openlayers.org/releases/OpenLayers-2.12/examples/geojson.html)
+        </p>
+        <div id="map" class="smallmap"></div>
+    </body>
+</html>
+

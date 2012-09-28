@@ -1,0 +1,60 @@
+1) Creation d'une BD template contenant postgis
+createdb -U postgres -E UTF8 template_postgis
+createlang -U postgres plpgsql template_postgis
+
+psql -U postgres -c "create extension postgis" -d template_postgis
+
+2) createdb -U postgres -T template_postgis -E UTF8 frida
+   SELECT postgis_full_version();
+
+
+3) Se placer dans le repertoire contenant les données: formation/data/vecteur/frida et lancer les commandes:
+
+   shp2pgsql -s 31467  -I  gewaesserflaechen.shp lake | psql -U postgres -d frida
+   shp2pgsql -s 31467 -S -I -W MacRoman  gewaesserlinien-joined.shp river | psql -U postgres -d frida
+   shp2pgsql -s 31467 -S -I  strassen-joined.shp street | psql -U postgres -d frida
+  
+4)  
+  a) SELECT gpnameid FROM lake ORDER BY st_area(the_geom) DESC LIMIT 2;
+
+  b) SELECT st_buffer(the_geom, 200) FROM lake ORDER BY st_area(the_geom) LIMIT 1;
+
+  c) SELECT round(st_distance(
+(SELECT centroid(the_geom) FROM lake ORDER BY st_area(the_geom) LIMIT 1), 
+(SELECT centroid(the_geom) FROM lake ORDER BY st_area(the_geom) DESC LIMIT 1)
+));
+
+  d-1) SELECT DISTINCT strid
+     FROM street
+     WHERE st_intersects(
+        the_geom, 
+        (SELECT st_buffer(the_geom, 200) FROM lake ORDER BY area(the_geom) LIMIT 1));
+
+
+d) SELECT DISTINCT strid, st_union(the_geom)
+     FROM street
+     WHERE st_intersects(
+        the_geom, 
+        (SELECT st_buffer(the_geom, 200) FROM lake ORDER BY area(the_geom) LIMIT 1)
+    ) GROUP BY strid;
+    
+    
+
+   
+    
+    e) CREATE TABLE rue_parc AS 
+    SELECT DISTINCT strid, st_union(the_geom) AS the_geom
+    FROM street WHERE st_intersects(
+        the_geom,
+        (SELECT st_buffer(the_geom, 200) FROM lake ORDER BY area(the_geom) LIMIT 1)
+    ) GROUP BY strid;
+
+     INSERT INTO geometry_columns
+     VALUES ('', 'public', 'rue_parc', 'the_geom', 2, 31467, 'LINESTRING');
+
+     ALTER TABLE rue_parc ADD PRIMARY KEY(strid);
+
+f) pgsql2shp -f rue_parc -u postgres frida "SELECT strid, st_transform(the_geom, 4326) FROM rue_parc"
+   ogrinfo -al rue_parc.shp
+
+g) SELECT round(sum(st_length(the_geom))) / 1000  AS distance FROM rue_parc;
