@@ -1,0 +1,38 @@
+____________
+TP Raster 3:
+____
+But: 
+charger un MNT dans Postgis, 
+réaliser un profil altimétrique par croisement spatial entre une ligne et le MNT
+
+_______
+Etapes:
+
+0°) (Si la base de données "tp" n'existe pas, la créer et y ajouter Postgis)
+
+1°) Charger le MNT située dans le repertoire formation_postgis/data/raster/srtm/srtm_36_03_2154.tif
+dans une table Postgis (nom de la table: mnt) en choisissant:
+    • Le bon SRID (utilisation de gdalinfo pour lire le SRID)
+    • une taille de tuile de 100x100 pixels
+    • la création des contraintes 
+
+   
+2°) Réaliser le profil altimétrique par croisement de cette table avec la ligne suivante:
+LINESTRING ( 150000 6950000, 330000 6950000, 160000 6890000, 270000 6860000, 270000 6810000, 360000 6810000, 330000 6760000, 380000 6730000 )
+
+Idéalement, on veut une liste de points X-Y-Z
+
+Le but de la requete est:
+    • de realiser l'intersection de la ligne avec le raster
+    • de "deconstruire" les points de la ligne pour en fabriquer des points 3D
+    • de stocker la requete dans une table nommée "profil", pour pouvoir utiliser le profil plus tard
+
+3°) Afficher dans QGis, en trichant: reconstruire une ligne droite comprenant les points
+stockés dans la table profil
+
+_________
+Conseils:
+
+• st_makePoint permet de créer un point avec partir de coordonnées
+• st_line_locate_point et les fonctions de referencement linéaire peuvent etre utiles.
+

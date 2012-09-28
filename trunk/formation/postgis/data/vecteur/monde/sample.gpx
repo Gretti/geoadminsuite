@@ -1,0 +1,1190 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no" ?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="FLYGOTO" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.topografix.com/GPX/gpx_overlay/0/3 http://www.topografix.com/GPX/gpx_overlay/0/3/gpx_overlay.xsd">
+<metadata><name>FLYGOTO</name><desc>basket FLYGOTO</desc>
+<time>2010-10-26T17:23:43Z</time>
+<bounds minlat="48.4783333" minlon="1.6386111" maxlat="49.3283333" maxlon="3.0569444"/>
+<author><name>FLYGOTO</name><email id="taca" domain="flygoto.com"/>
+<link href="http://www.flygoto.com">
+<text>FLYGOTO - Aeronautical data GPS for codes ICAO - FLY GOTO</text>
+</link></author></metadata>
+<wpt lat="48.8447222" lon="3.0144444">
+<ele>148.1328</ele>
+<time>2004-12-06T19:10:24Z</time>
+<name>CLM</name>
+<cmt>112.90 VORDME COULOMMIER</cmt>
+<desc>COULOMMIERS VOISIN-CLM (Airnav FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=2.5144444%2C48.3447222%2C3.5144444%2C49.3447222%2C3.0144444%2C48.8447222%2CCOULOMMIERS%20VOISIN-CLM">
+<text>COULOMMIERS VOISIN-CLM (zoom 30NM)</text></link>
+<sym>x</sym><type>VORDME</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>CLM</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airnavs</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.7786111" lon="2.3811111">
+
+<time>2004-12-06T19:10:24Z</time>
+<name>TH</name>
+<cmt>302.0 NDB VILLACOUBL</cmt>
+<desc>VILLACOUBLAY VELIZY-TH (Airnav FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.8811111%2C48.2786111%2C2.8811111%2C49.2786111%2C2.3811111%2C48.7786111%2CVILLACOUBLAY%20VELIZY-TH">
+<text>VILLACOUBLAY VELIZY-TH (zoom 30NM)</text></link>
+<sym>x</sym><type>NDB</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>TH</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airnavs</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.7719444" lon="2.0902777">
+
+<time>2004-12-06T19:10:24Z</time>
+<name>TA</name>
+<cmt>286.5 NDB VILLACOUBL</cmt>
+<desc>VILLACOUBLAY VELIZY-TA (Airnav FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.5902777%2C48.2719444%2C2.5902777%2C49.2719444%2C2.0902777%2C48.7719444%2CVILLACOUBLAY%20VELIZY-TA">
+<text>VILLACOUBLAY VELIZY-TA (zoom 30NM)</text></link>
+<sym>x</sym><type>NDB</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>TA</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airnavs</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.7536111" lon="2.1030555">
+
+<time>2004-12-06T19:10:24Z</time>
+<name>TSU</name>
+<cmt>108.25 VOR TOUSSUS</cmt>
+<desc>TOUSSUS LE NOBLE-TSU (Airnav FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.6030555%2C48.2536111%2C2.6030555%2C49.2536111%2C2.1030555%2C48.7536111%2CTOUSSUS%20LE%20NOBLE-TSU">
+<text>TOUSSUS LE NOBLE-TSU (zoom 30NM)</text></link>
+<sym>x</sym><type>VOR</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>TSU</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airnavs</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.7530555" lon="2.5397222">
+
+<time>2004-12-06T19:10:24Z</time>
+<name>OYE</name>
+<cmt>349.0 NDB ORLY</cmt>
+<desc>PARIS ORLY-OYE (Airnav FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=2.0397222%2C48.2530555%2C3.0397222%2C49.2530555%2C2.5397222%2C48.7530555%2CPARIS%20ORLY-OYE">
+<text>PARIS ORLY-OYE (zoom 30NM)</text></link>
+<sym>x</sym><type>NDB</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>OYE</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airnavs</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.7313888" lon="1.8222222">
+
+<time>2004-12-06T19:10:24Z</time>
+<name>HOL</name>
+<cmt>315.0 NDB VILLACOUBL</cmt>
+<desc>VILLACOUBLAY VELIZY-HOL (Airnav FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.3222222%2C48.2313888%2C2.3222222%2C49.2313888%2C1.8222222%2C48.7313888%2CVILLACOUBLAY%20VELIZY-HOL">
+<text>VILLACOUBLAY VELIZY-HOL (zoom 30NM)</text></link>
+<sym>x</sym><type>NDB</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>HOL</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airnavs</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.7297222" lon="2.3869444">
+<ele>93.2688</ele>
+<time>2004-12-06T19:10:24Z</time>
+<name>OL</name>
+<cmt>111.20 VORDME ORLY</cmt>
+<desc>PARIS ORLY-OL (Airnav FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.8869444%2C48.2297222%2C2.8869444%2C49.2297222%2C2.3869444%2C48.7297222%2CPARIS%20ORLY-OL">
+<text>PARIS ORLY-OL (zoom 30NM)</text></link>
+<sym>x</sym><type>VORDME</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>OL</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airnavs</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.6725" lon="2.1825">
+
+<time>2004-12-06T19:10:24Z</time>
+<name>ORW</name>
+<cmt>402.0 NDB ORLY</cmt>
+<desc>PARIS ORLY-ORW (Airnav FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.6825000%2C48.1725000%2C2.6825000%2C49.1725000%2C2.1825000%2C48.6725000%2CPARIS%20ORLY-ORW">
+<text>PARIS ORLY-ORW (zoom 30NM)</text></link>
+<sym>x</sym><type>NDB</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>ORW</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airnavs</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.6538888" lon="1.995">
+<ele>184.0992</ele>
+<time>2004-12-06T19:10:24Z</time>
+<name>RBT</name>
+<cmt>114.70 VORDME RAMBOUILLE</cmt>
+<desc>RAMBOUILLET LES BORDES-RBT (Airnav FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.4950000%2C48.1538888%2C2.4950000%2C49.1538888%2C1.9950000%2C48.6538888%2CRAMBOUILLET%20LES%20BORDES-RBT">
+<text>RAMBOUILLET LES BORDES-RBT (zoom 30NM)</text></link>
+<sym>x</sym><type>VORDME</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>RBT</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airnavs</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.6255555" lon="1.6566666">
+
+<time>2004-12-06T19:10:24Z</time>
+<name>EPR</name>
+<cmt>115.65 VORDME EPERNON</cmt>
+<desc>EPERNON-EPR (Airnav FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.1566666%2C48.1255555%2C2.1566666%2C49.1255555%2C1.6566666%2C48.6255555%2CEPERNON-EPR">
+<text>EPERNON-EPR (zoom 30NM)</text></link>
+<sym>x</sym><type>VORDME</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>EPR</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airnavs</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.5944444" lon="2.3202777">
+<ele>96.9264</ele>
+<time>2004-12-06T19:10:24Z</time>
+<name>BTY</name>
+<cmt>110.40 TACAN BRETIGNY S</cmt>
+<desc>BRETIGNY SUR ORGE-BTY (Airnav FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.8202777%2C48.0944444%2C2.8202777%2C49.0944444%2C2.3202777%2C48.5944444%2CBRETIGNY%20SUR%20ORGE-BTY">
+<text>BRETIGNY SUR ORGE-BTY (zoom 30NM)</text></link>
+<sym>x</sym><type>TACAN</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>BTY</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airnavs</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.5538888" lon="2.9786111">
+
+<time>2004-12-06T19:10:24Z</time>
+<name>MV</name>
+<cmt>434.0 NDB MELUN</cmt>
+<desc>MELUN VILLAROCHE-MV (Airnav FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=2.4786111%2C48.0538888%2C3.4786111%2C49.0538888%2C2.9786111%2C48.5538888%2CMELUN%20VILLAROCHE-MV">
+<text>MELUN VILLAROCHE-MV (zoom 30NM)</text></link>
+<sym>x</sym><type>NDB</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>MV</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airnavs</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="49.3061111" lon="1.6386111">
+<ele>93.8784</ele>
+<time>2010-10-21T00:30:01Z</time>
+<name>LFFY</name>
+<cmt>123.500 AUT 525 T ETREPAGNY</cmt>
+<desc>ETREPAGNY-LFFY (Airport FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.1386111%2C48.8061111%2C2.1386111%2C49.8061111%2C1.6386111%2C49.3061111%2CETREPAGNY">
+<text>ETREPAGNY-LFFY (zoom 30NM)</text></link>
+<link href="https://www.sia.aviation-civile.gouv.fr/aip/enligne/PDF_AIPparSSection/VAC/AD/2/1012_AD-2.LFFY.pdf">
+<text>Official AIP VAC web site (www.sia.avation-civile.gouv.fr) AIRAC 1012</text></link>
+<sym>Airplane</sym><type>RESTRICT-PUBLIC</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>LFFY</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airports</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="49.2522222" lon="2.5233333">
+<ele>91.7448</ele>
+<time>2006-07-20T21:08:54Z</time>
+<name>LFPC</name>
+<cmt>123.300 TWR   CREIL</cmt>
+<desc>CREIL-LFPC (Airport FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=2.0233333%2C48.7522222%2C3.0233333%2C49.7522222%2C2.5233333%2C49.2522222%2CCREIL">
+<text>CREIL-LFPC (zoom 30NM)</text></link>
+
+
+<sym>Airplane</sym><type>CLOSE-MILITARY</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>LFPC</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airports</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="49.165" lon="2.3116666">
+<ele>45.4152</ele>
+<time>2010-10-21T00:30:01Z</time>
+<name>LFPA</name>
+<cmt>119.500 A/A 750 H PERSAN</cmt>
+<desc>PERSAN BEAUMONT-LFPA (Airport FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.8116666%2C48.6650000%2C2.8116666%2C49.6650000%2C2.3116666%2C49.1650000%2CPERSAN%20BEAUMONT">
+<text>PERSAN BEAUMONT-LFPA (zoom 30NM)</text></link>
+<link href="https://www.sia.aviation-civile.gouv.fr/aip/enligne/PDF_AIPparSSection/VAC/AD/2/1012_AD-2.LFPA.pdf">
+<text>Official AIP VAC web site (www.sia.avation-civile.gouv.fr) AIRAC 1012</text></link>
+<sym>Airplane</sym><type>OPEN-PUBLIC</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>LFPA</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airports</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="49.11" lon="2.7380555">
+<ele>117.9576</ele>
+<time>2010-10-21T00:30:01Z</time>
+<name>LFPP</name>
+<cmt>120.400 A/A 700 H LE PLESSIS</cmt>
+<desc>LE PLESSIS BELLEVILLE-LFPP (Airport FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=2.2380555%2C48.6100000%2C3.2380555%2C49.6100000%2C2.7380555%2C49.1100000%2CLE%20PLESSIS%20BELLEVILLE">
+<text>LE PLESSIS BELLEVILLE-LFPP (zoom 30NM)</text></link>
+<link href="https://www.sia.aviation-civile.gouv.fr/aip/enligne/PDF_AIPparSSection/VAC/AD/2/1012_AD-2.LFPP.pdf">
+<text>Official AIP VAC web site (www.sia.avation-civile.gouv.fr) AIRAC 1012</text></link>
+<sym>Airplane</sym><type>OPEN-PUBLIC</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>LFPP</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airports</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="49.0966666" lon="2.0408333">
+<ele>99.3648</ele>
+<time>2010-10-21T00:30:01Z</time>
+<name>LFPT</name>
+<cmt>121.200 TWR 1470 H PONTOISE</cmt>
+<desc>PONTOISE CORMEILLES EN VEXIN-LFPT (Airport FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.5408333%2C48.5966666%2C2.5408333%2C49.5966666%2C2.0408333%2C49.0966666%2CPONTOISE%20CORMEILLES%20EN%20VEXIN">
+<text>PONTOISE CORMEILLES EN VEXIN-LFPT (zoom 30NM)</text></link>
+<link href="https://www.sia.aviation-civile.gouv.fr/aip/enligne/PDF_AIPparSSection/VAC/AD/2/1012_AD-2.LFPT.pdf">
+<text>Official AIP VAC web site (www.sia.avation-civile.gouv.fr) AIRAC 1012</text></link>
+<sym>Airplane</sym><type>OPEN-PUBLIC</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>LFPT</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airports</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="49.0788888" lon="1.6897222">
+<ele>156.0576</ele>
+<time>2010-10-21T00:30:01Z</time>
+<name>LFFC</name>
+<cmt>119.650 A/A 550 T MANTES</cmt>
+<desc>MANTES CHERENCE-LFFC (Airport FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.1897222%2C48.5788888%2C2.1897222%2C49.5788888%2C1.6897222%2C49.0788888%2CMANTES%20CHERENCE">
+<text>MANTES CHERENCE-LFFC (zoom 30NM)</text></link>
+<link href="https://www.sia.aviation-civile.gouv.fr/aip/enligne/PDF_AIPparSSection/VAC/AD/2/1012_AD-2.LFFC.pdf">
+<text>Official AIP VAC web site (www.sia.avation-civile.gouv.fr) AIRAC 1012</text></link>
+<sym>Airplane</sym><type>RESTRICT-PUBLIC</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>LFFC</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airports</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="49.0463888" lon="2.3530555">
+<ele>102.108</ele>
+<time>2010-10-21T00:30:01Z</time>
+<name>LFFE</name>
+<cmt>121.250 A/A 520 T ENGHIEN</cmt>
+<desc>ENGHIEN MOISSELLES-LFFE (Airport FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.8530555%2C48.5463888%2C2.8530555%2C49.5463888%2C2.3530555%2C49.0463888%2CENGHIEN%20MOISSELLES">
+<text>ENGHIEN MOISSELLES-LFFE (zoom 30NM)</text></link>
+<link href="https://www.sia.aviation-civile.gouv.fr/aip/enligne/PDF_AIPparSSection/VAC/AD/2/1012_AD-2.LFFE.pdf">
+<text>Official AIP VAC web site (www.sia.avation-civile.gouv.fr) AIRAC 1012</text></link>
+<sym>Airplane</sym><type>RESTRICT-PUBLIC</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>LFFE</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airports</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="49.0097222" lon="2.5477777">
+<ele>119.4816</ele>
+<time>2010-10-21T00:30:01Z</time>
+<name>LFPG</name>
+<cmt>119.250 TWR 2700 H DE GAULLE</cmt>
+<desc>PARIS CHARLES DE GAULLE-LFPG (Airport FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=2.0477777%2C48.5097222%2C3.0477777%2C49.5097222%2C2.5477777%2C49.0097222%2CPARIS%20CHARLES%20DE%20GAULLE">
+<text>PARIS CHARLES DE GAULLE-LFPG (zoom 30NM)</text></link>
+<link href="https://www.sia.aviation-civile.gouv.fr/aip/enligne/PDF_AIPparSSection/VAC/AD/2/1012_AD-2.LFPG.pdf">
+<text>Official AIP VAC web site (www.sia.avation-civile.gouv.fr) AIRAC 1012</text></link>
+<sym>Airplane</sym><type>OPEN-PUBLIC</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>LFPG</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airports</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.9983333" lon="1.9427777">
+<ele>27.1272</ele>
+<time>2010-10-21T00:30:01Z</time>
+<name>LFXU</name>
+<cmt>122.950 A/A 850 T LES MUREAU</cmt>
+<desc>LES MUREAUX-LFXU (Airport FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.4427777%2C48.4983333%2C2.4427777%2C49.4983333%2C1.9427777%2C48.9983333%2CLES%20MUREAUX">
+<text>LES MUREAUX-LFXU (zoom 30NM)</text></link>
+<link href="https://www.sia.aviation-civile.gouv.fr/aip/enligne/PDF_AIPparSSection/VAC/AD/2/1012_AD-2.LFXU.pdf">
+<text>Official AIP VAC web site (www.sia.avation-civile.gouv.fr) AIRAC 1012</text></link>
+<sym>Airplane</sym><type>OPEN-PUBLIC</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>LFXU</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airports</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.9694444" lon="2.4413888">
+<ele>66.4464</ele>
+<time>2010-10-21T00:30:01Z</time>
+<name>LFPB</name>
+<cmt>118.925 TWR 1845 H LE BOURGET</cmt>
+<desc>PARIS LE BOURGET-LFPB (Airport FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.9413888%2C48.4694444%2C2.9413888%2C49.4694444%2C2.4413888%2C48.9694444%2CPARIS%20LE%20BOURGET">
+<text>PARIS LE BOURGET-LFPB (zoom 30NM)</text></link>
+<link href="https://www.sia.aviation-civile.gouv.fr/aip/enligne/PDF_AIPparSSection/VAC/AD/2/1012_AD-2.LFPB.pdf">
+<text>Official AIP VAC web site (www.sia.avation-civile.gouv.fr) AIRAC 1012</text></link>
+<sym>Airplane</sym><type>OPEN-PUBLIC</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>LFPB</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airports</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.9277777" lon="2.8352777">
+<ele>66.1416</ele>
+<time>2010-10-21T00:30:01Z</time>
+<name>LFPE</name>
+<cmt>120.150 TWR 1020 T MEAUX</cmt>
+<desc>MEAUX ESBLY-LFPE (Airport FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=2.3352777%2C48.4277777%2C3.3352777%2C49.4277777%2C2.8352777%2C48.9277777%2CMEAUX%20ESBLY">
+<text>MEAUX ESBLY-LFPE (zoom 30NM)</text></link>
+<link href="https://www.sia.aviation-civile.gouv.fr/aip/enligne/PDF_AIPparSSection/VAC/AD/2/1012_AD-2.LFPE.pdf">
+<text>Official AIP VAC web site (www.sia.avation-civile.gouv.fr) AIRAC 1012</text></link>
+<sym>Airplane</sym><type>OPEN-PUBLIC</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>LFPE</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airports</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.8977777" lon="2.6075">
+<ele>63.0936</ele>
+<time>2010-10-21T00:30:01Z</time>
+<name>LFPH</name>
+<cmt>123.925 A/A 511 T CHELLES</cmt>
+<desc>CHELLES LE PIN-LFPH (Airport FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=2.1075000%2C48.3977777%2C3.1075000%2C49.3977777%2C2.6075000%2C48.8977777%2CCHELLES%20LE%20PIN">
+<text>CHELLES LE PIN-LFPH (zoom 30NM)</text></link>
+<link href="https://www.sia.aviation-civile.gouv.fr/aip/enligne/PDF_AIPparSSection/VAC/AD/2/1012_AD-2.LFPH.pdf">
+<text>Official AIP VAC web site (www.sia.avation-civile.gouv.fr) AIRAC 1012</text></link>
+<sym>Airplane</sym><type>OPEN-PUBLIC</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>LFPH</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airports</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.8436111" lon="1.9088888">
+<ele>113.0808</ele>
+<time>2010-10-21T00:30:01Z</time>
+<name>LFPF</name>
+<cmt>120.425 A/A 880 T BEYNES</cmt>
+<desc>BEYNES THIVERVAL-LFPF (Airport FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.4088888%2C48.3436111%2C2.4088888%2C49.3436111%2C1.9088888%2C48.8436111%2CBEYNES%20THIVERVAL">
+<text>BEYNES THIVERVAL-LFPF (zoom 30NM)</text></link>
+<link href="https://www.sia.aviation-civile.gouv.fr/aip/enligne/PDF_AIPparSSection/VAC/AD/2/1012_AD-2.LFPF.pdf">
+<text>Official AIP VAC web site (www.sia.avation-civile.gouv.fr) AIRAC 1012</text></link>
+<sym>Airplane</sym><type>RESTRICT-PUBLIC</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>LFPF</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airports</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.8422222" lon="1.9802777">
+<ele>129.54</ele>
+<time>2010-10-21T00:30:01Z</time>
+<name>LFPX</name>
+<cmt>126.950 TWR 570 T CHAVENAY</cmt>
+<desc>CHAVENAY VILLEPREUX-LFPX (Airport FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.4802777%2C48.3422222%2C2.4802777%2C49.3422222%2C1.9802777%2C48.8422222%2CCHAVENAY%20VILLEPREUX">
+<text>CHAVENAY VILLEPREUX-LFPX (zoom 30NM)</text></link>
+<link href="https://www.sia.aviation-civile.gouv.fr/aip/enligne/PDF_AIPparSSection/VAC/AD/2/1012_AD-2.LFPX.pdf">
+<text>Official AIP VAC web site (www.sia.avation-civile.gouv.fr) AIRAC 1012</text></link>
+<sym>Airplane</sym><type>OPEN-PUBLIC</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>LFPX</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airports</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.8377777" lon="3.0152777">
+<ele>142.9512</ele>
+<time>2010-10-21T00:30:01Z</time>
+<name>LFPK</name>
+<cmt>122.200 A/A 1400 H COULOMMIER</cmt>
+<desc>COULOMMIERS VOISINS-LFPK (Airport FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=2.5152777%2C48.3377777%2C3.5152777%2C49.3377777%2C3.0152777%2C48.8377777%2CCOULOMMIERS%20VOISINS">
+<text>COULOMMIERS VOISINS-LFPK (zoom 30NM)</text></link>
+<link href="https://www.sia.aviation-civile.gouv.fr/aip/enligne/PDF_AIPparSSection/VAC/AD/2/1012_AD-2.LFPK.pdf">
+<text>Official AIP VAC web site (www.sia.avation-civile.gouv.fr) AIRAC 1012</text></link>
+<sym>Airplane</sym><type>OPEN-PUBLIC</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>LFPK</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airports</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.8230555" lon="2.6238888">
+<ele>107.8992</ele>
+<time>2010-10-21T00:30:01Z</time>
+<name>LFPL</name>
+<cmt>118.600 TWR 700 H LOGNES</cmt>
+<desc>LOGNES EMERAINVILLE-LFPL (Airport FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=2.1238888%2C48.3230555%2C3.1238888%2C49.3230555%2C2.6238888%2C48.8230555%2CLOGNES%20EMERAINVILLE">
+<text>LOGNES EMERAINVILLE-LFPL (zoom 30NM)</text></link>
+<link href="https://www.sia.aviation-civile.gouv.fr/aip/enligne/PDF_AIPparSSection/VAC/AD/2/1012_AD-2.LFPL.pdf">
+<text>Official AIP VAC web site (www.sia.avation-civile.gouv.fr) AIRAC 1012</text></link>
+<sym>Airplane</sym><type>OPEN-PUBLIC</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>LFPL</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airports</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.8102777" lon="2.0733333">
+<ele>113.6904</ele>
+<time>2010-10-21T00:30:01Z</time>
+<name>LFPZ</name>
+<cmt>118.000 TWR 615 T SAINT CYR</cmt>
+<desc>SAINT CYR L'ECOLE-LFPZ (Airport FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.5733333%2C48.3102777%2C2.5733333%2C49.3102777%2C2.0733333%2C48.8102777%2CSAINT%20CYR%20L%27ECOLE">
+<text>SAINT CYR L'ECOLE-LFPZ (zoom 30NM)</text></link>
+<link href="https://www.sia.aviation-civile.gouv.fr/aip/enligne/PDF_AIPparSSection/VAC/AD/2/1012_AD-2.LFPZ.pdf">
+<text>Official AIP VAC web site (www.sia.avation-civile.gouv.fr) AIRAC 1012</text></link>
+<sym>Airplane</sym><type>OPEN-PUBLIC</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>LFPZ</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airports</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.7747222" lon="2.1925">
+<ele>178.0032</ele>
+<time>2006-07-20T21:40:30Z</time>
+<name>LFPV</name>
+<cmt>122.100 TWR   VILLACOUBL</cmt>
+<desc>VILLACOUBLAY VELIZY-LFPV (Airport FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.6925000%2C48.2747222%2C2.6925000%2C49.2747222%2C2.1925000%2C48.7747222%2CVILLACOUBLAY%20VELIZY">
+<text>VILLACOUBLAY VELIZY-LFPV (zoom 30NM)</text></link>
+
+
+<sym>Airplane</sym><type>CLOSE-MILITARY</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>LFPV</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airports</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.7497222" lon="2.1111111">
+<ele>163.9824</ele>
+<time>2010-10-21T00:30:01Z</time>
+<name>LFPN</name>
+<cmt>119.300 TWR 1050 H TOUSSUS</cmt>
+<desc>TOUSSUS LE NOBLE-LFPN (Airport FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.6111111%2C48.2497222%2C2.6111111%2C49.2497222%2C2.1111111%2C48.7497222%2CTOUSSUS%20LE%20NOBLE">
+<text>TOUSSUS LE NOBLE-LFPN (zoom 30NM)</text></link>
+<link href="https://www.sia.aviation-civile.gouv.fr/aip/enligne/PDF_AIPparSSection/VAC/AD/2/1012_AD-2.LFPN.pdf">
+<text>Official AIP VAC web site (www.sia.avation-civile.gouv.fr) AIRAC 1012</text></link>
+<sym>Airplane</sym><type>OPEN-PUBLIC</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>LFPN</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airports</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.7233333" lon="2.3794444">
+<ele>88.6968</ele>
+<time>2010-10-21T00:30:01Z</time>
+<name>LFPO</name>
+<cmt>118.700 TWR 2400 H ORLY</cmt>
+<desc>PARIS ORLY-LFPO (Airport FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.8794444%2C48.2233333%2C2.8794444%2C49.2233333%2C2.3794444%2C48.7233333%2CPARIS%20ORLY">
+<text>PARIS ORLY-LFPO (zoom 30NM)</text></link>
+<link href="https://www.sia.aviation-civile.gouv.fr/aip/enligne/PDF_AIPparSSection/VAC/AD/2/1012_AD-2.LFPO.pdf">
+<text>Official AIP VAC web site (www.sia.avation-civile.gouv.fr) AIRAC 1012</text></link>
+<sym>Airplane</sym><type>OPEN-PUBLIC</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>LFPO</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airports</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.7072222" lon="2.9044444">
+<ele>113.0808</ele>
+<time>2010-10-21T00:30:01Z</time>
+<name>LFPQ</name>
+<cmt>120.225 A/A 535 H FONTENAY T</cmt>
+<desc>FONTENAY TRESIGNY-LFPQ (Airport FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=2.4044444%2C48.2072222%2C3.4044444%2C49.2072222%2C2.9044444%2C48.7072222%2CFONTENAY%20TRESIGNY">
+<text>FONTENAY TRESIGNY-LFPQ (zoom 30NM)</text></link>
+<link href="https://www.sia.aviation-civile.gouv.fr/aip/enligne/PDF_AIPparSSection/VAC/AD/2/1012_AD-2.LFPQ.pdf">
+<text>Official AIP VAC web site (www.sia.avation-civile.gouv.fr) AIRAC 1012</text></link>
+<sym>Airplane</sym><type>OPEN-PUBLIC</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>LFPQ</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airports</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.6052777" lon="2.6708333">
+<ele>92.0496</ele>
+<time>2010-10-21T00:30:01Z</time>
+<name>LFPM</name>
+<cmt>121.100 TWR 1300 H MELUN</cmt>
+<desc>MELUN VILLAROCHE-LFPM (Airport FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=2.1708333%2C48.1052777%2C3.1708333%2C49.1052777%2C2.6708333%2C48.6052777%2CMELUN%20VILLAROCHE">
+<text>MELUN VILLAROCHE-LFPM (zoom 30NM)</text></link>
+<link href="https://www.sia.aviation-civile.gouv.fr/aip/enligne/PDF_AIPparSSection/VAC/AD/2/1012_AD-2.LFPM.pdf">
+<text>Official AIP VAC web site (www.sia.avation-civile.gouv.fr) AIRAC 1012</text></link>
+<sym>Airplane</sym><type>CLOSE-MILITARY</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>LFPM</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airports</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.5961111" lon="2.3322222">
+<ele>82.296</ele>
+<time>2005-11-05T22:29:59Z</time>
+<name>LFPY</name>
+<cmt>136.200 TWR 2200 H BRETIGNY</cmt>
+<desc>BRETIGNY SUR ORGE-LFPY (Airport FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.8322222%2C48.0961111%2C2.8322222%2C49.0961111%2C2.3322222%2C48.5961111%2CBRETIGNY%20SUR%20ORGE">
+<text>BRETIGNY SUR ORGE-LFPY (zoom 30NM)</text></link>
+
+
+<sym>Airplane</sym><type>CLOSE-MILITARY</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>LFPY</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airports</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.5958333" lon="3.0141666">
+<ele>128.9304</ele>
+<time>2010-10-21T00:30:01Z</time>
+<name>LFAI</name>
+<cmt>122.550 A/A 955 H NANGIS</cmt>
+<desc>NANGIS LES LOGES-LFAI (Airport FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=2.5141666%2C48.0958333%2C3.5141666%2C49.0958333%2C3.0141666%2C48.5958333%2CNANGIS%20LES%20LOGES">
+<text>NANGIS LES LOGES-LFAI (zoom 30NM)</text></link>
+<link href="https://www.sia.aviation-civile.gouv.fr/aip/enligne/PDF_AIPparSSection/VAC/AD/2/1012_AD-2.LFAI.pdf">
+<text>Official AIP VAC web site (www.sia.avation-civile.gouv.fr) AIRAC 1012</text></link>
+<sym>Airplane</sym><type>OPEN-PUBLIC</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>LFAI</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airports</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.5158333" lon="1.64">
+<ele>155.1432</ele>
+<time>2010-10-21T00:30:01Z</time>
+<name>LFFL</name>
+<cmt>122.050 A/A 780 T BAILLEAU</cmt>
+<desc>BAILLEAU ARMENONVILLE-LFFL (Airport FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.1400000%2C48.0158333%2C2.1400000%2C49.0158333%2C1.6400000%2C48.5158333%2CBAILLEAU%20ARMENONVILLE">
+<text>BAILLEAU ARMENONVILLE-LFFL (zoom 30NM)</text></link>
+<link href="https://www.sia.aviation-civile.gouv.fr/aip/enligne/PDF_AIPparSSection/VAC/AD/2/1012_AD-2.LFFL.pdf">
+<text>Official AIP VAC web site (www.sia.avation-civile.gouv.fr) AIRAC 1012</text></link>
+<sym>Airplane</sym><type>RESTRICT-PUBLIC</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>LFFL</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airports</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.4977777" lon="2.3433333">
+<ele>138.0744</ele>
+<time>2010-10-21T00:30:01Z</time>
+<name>LFFQ</name>
+<cmt>128.750 LFPY-TWR 1000 T LA FERTE A</cmt>
+<desc>LA FERTE ALAIS-LFFQ (Airport FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.8433333%2C47.9977777%2C2.8433333%2C48.9977777%2C2.3433333%2C48.4977777%2CLA%20FERTE%20ALAIS">
+<text>LA FERTE ALAIS-LFFQ (zoom 30NM)</text></link>
+<link href="https://www.sia.aviation-civile.gouv.fr/aip/enligne/PDF_AIPparSSection/VAC/AD/2/1012_AD-2.LFFQ.pdf">
+<text>Official AIP VAC web site (www.sia.avation-civile.gouv.fr) AIRAC 1012</text></link>
+<sym>Airplane</sym><type>RESTRICT-PUBLIC</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>LFFQ</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airports</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.975" lon="2.3666666">
+<time>2005-01-22T20:33:50Z</time>
+<name>W2</name>
+<cmt>LE BOURGET-LFPB</cmt>
+<desc>W2 LE BOURGET-LFPB (Waypoint)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.8666666%2C48.4750000%2C2.8666666%2C49.4750000%2C2.3666666%2C48.9750000%2CW2">
+<text>W2 (zoom 30NM)</text></link>
+<sym>Waypoint</sym><type>NAV</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>W2</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Waypoints</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.9266666" lon="2.48">
+<time>2005-03-06T17:19:11Z</time>
+<name>E2</name>
+<cmt>LE BOURGET-LFPB</cmt>
+<desc>E2 LE BOURGET-LFPB (Waypoint)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.9800000%2C48.4266666%2C2.9800000%2C49.4266666%2C2.4800000%2C48.9266666%2CE2">
+<text>E2 (zoom 30NM)</text></link>
+<sym>Waypoint</sym><type>NAV</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>E2</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Waypoints</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.9" lon="2.56">
+<time>2005-03-06T17:17:46Z</time>
+<name>E1</name>
+<cmt>LE BOURGET-LFPB</cmt>
+<desc>E1 LE BOURGET-LFPB (Waypoint)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=2.0600000%2C48.4000000%2C3.0600000%2C49.4000000%2C2.5600000%2C48.9000000%2CE1">
+<text>E1 (zoom 30NM)</text></link>
+<sym>Waypoint</sym><type>NAV</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>E1</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Waypoints</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.7083333" lon="2.1083333">
+<time>2005-01-22T20:28:51Z</time>
+<name>S</name>
+<cmt>TOUSSUS-LFPN</cmt>
+<desc>S TOUSSUS-LFPN (Waypoint)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.6083333%2C48.2083333%2C2.6083333%2C49.2083333%2C2.1083333%2C48.7083333%2CS">
+<text>S (zoom 30NM)</text></link>
+<sym>Waypoint</sym><type>NAV</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>S</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Waypoints</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.6983333" lon="2.7233333">
+<time>2005-01-22T20:27:50Z</time>
+<name>N</name>
+<cmt>MELUN-LFPM</cmt>
+<desc>N MELUN-LFPM (Waypoint)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=2.2233333%2C48.1983333%2C3.2233333%2C49.1983333%2C2.7233333%2C48.6983333%2CN">
+<text>N (zoom 30NM)</text></link>
+<sym>Waypoint</sym><type>NAV</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>N</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Waypoints</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.6666666" lon="2.5333333">
+<time>2004-12-05T18:31:31Z</time>
+<name>E</name>
+<cmt>BRETIGNY-LFPY</cmt>
+<desc>E BRETIGNY-LFPY (Waypoint)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=2.0333333%2C48.1666666%2C3.0333333%2C49.1666666%2C2.5333333%2C48.6666666%2CE">
+<text>E (zoom 30NM)</text></link>
+<sym>Waypoint</sym><type>NAV</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>E</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Waypoints</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.6266666" lon="2.4683333">
+<time>2004-12-05T18:31:31Z</time>
+<name>EA</name>
+<cmt>BRETIGNY-LFPY</cmt>
+<desc>EA BRETIGNY-LFPY (Waypoint)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.9683333%2C48.1266666%2C2.9683333%2C49.1266666%2C2.4683333%2C48.6266666%2CEA">
+<text>EA (zoom 30NM)</text></link>
+<sym>Waypoint</sym><type>NAV</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>EA</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Waypoints</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.625" lon="2.2983333">
+<time>2004-12-05T18:31:31Z</time>
+<name>N</name>
+<cmt>BRETIGNY-LFPY</cmt>
+<desc>N BRETIGNY-LFPY (Waypoint)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.7983333%2C48.1250000%2C2.7983333%2C49.1250000%2C2.2983333%2C48.6250000%2CN">
+<text>N (zoom 30NM)</text></link>
+<sym>Waypoint</sym><type>NAV</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>N</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Waypoints</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.585" lon="2.2166666">
+<time>2004-12-05T18:31:31Z</time>
+<name>W</name>
+<cmt>BRETIGNY-LFPY</cmt>
+<desc>W BRETIGNY-LFPY (Waypoint)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.7166666%2C48.0850000%2C2.7166666%2C49.0850000%2C2.2166666%2C48.5850000%2CW">
+<text>W (zoom 30NM)</text></link>
+<sym>Waypoint</sym><type>NAV</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>W</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Waypoints</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="49.0816666" lon="2.1083333">
+<time>2004-12-22T13:43:48Z</time>
+<name>E</name>
+<cmt>PONTOISE-LFPT</cmt>
+<desc>E PONTOISE-LFPT (Waypoint)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.6083333%2C48.5816666%2C2.6083333%2C49.5816666%2C2.1083333%2C49.0816666%2CE">
+<text>E (zoom 30NM)</text></link>
+<sym>Waypoint</sym><type>NAV</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>E</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Waypoints</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.5716666" lon="2.4666666">
+<time>2004-12-05T18:31:31Z</time>
+<name>B</name>
+<cmt>BRETIGNY-LFPY</cmt>
+<desc>B BRETIGNY-LFPY (Waypoint)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.9666666%2C48.0716666%2C2.9666666%2C49.0716666%2C2.4666666%2C48.5716666%2CB">
+<text>B (zoom 30NM)</text></link>
+<sym>Waypoint</sym><type>NAV</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>B</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Waypoints</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.5516666" lon="2.32">
+<time>2004-12-05T18:31:31Z</time>
+<name>SA</name>
+<cmt>BRETIGNY-LFPY</cmt>
+<desc>SA BRETIGNY-LFPY (Waypoint)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.8200000%2C48.0516666%2C2.8200000%2C49.0516666%2C2.3200000%2C48.5516666%2CSA">
+<text>SA (zoom 30NM)</text></link>
+<sym>Waypoint</sym><type>NAV</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>SA</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Waypoints</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.4933333" lon="2.7066666">
+<time>2005-01-22T20:28:01Z</time>
+<name>SM</name>
+<cmt>MELUN-LFPM</cmt>
+<desc>SM MELUN-LFPM (Waypoint)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=2.2066666%2C47.9933333%2C3.2066666%2C48.9933333%2C2.7066666%2C48.4933333%2CSM">
+<text>SM (zoom 30NM)</text></link>
+<sym>Waypoint</sym><type>NAV</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>SM</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Waypoints</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.4783333" lon="2.515">
+<time>2004-12-05T18:31:31Z</time>
+<name>SB</name>
+<cmt>BRETIGNY-LFPY</cmt>
+<desc>SB BRETIGNY-LFPY (Waypoint)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=2.0150000%2C47.9783333%2C3.0150000%2C48.9783333%2C2.5150000%2C48.4783333%2CSB">
+<text>SB (zoom 30NM)</text></link>
+<sym>Waypoint</sym><type>NAV</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>SB</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Waypoints</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="49.2552777" lon="2.5161111">
+<ele>102.108</ele>
+<time>2004-12-06T19:10:24Z</time>
+<name>CRL</name>
+<cmt>109.20 VORTACAN CREIL</cmt>
+<desc>CREIL-CRL (Airnav FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=2.0161111%2C48.7552777%2C3.0161111%2C49.7552777%2C2.5161111%2C49.2552777%2CCREIL-CRL">
+<text>CREIL-CRL (zoom 30NM)</text></link>
+<sym>x</sym><type>VORTACAN</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>CRL</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airnavs</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="49.1883333" lon="3.0569444">
+
+<time>2004-12-06T19:10:24Z</time>
+<name>BSN</name>
+<cmt>112.50 VOR BOURSONNE</cmt>
+<desc>BOURSONNE-BSN (Airnav FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=2.5569444%2C48.6883333%2C3.5569444%2C49.6883333%2C3.0569444%2C49.1883333%2CBOURSONNE-BSN">
+<text>BOURSONNE-BSN (zoom 30NM)</text></link>
+<sym>x</sym><type>VOR</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>BSN</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airnavs</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="49.0961111" lon="2.0366666">
+
+<time>2004-12-06T19:10:24Z</time>
+<name>PON</name>
+<cmt>111.60 VOR PONTOISE</cmt>
+<desc>PONTOISE CORMEILLES EN VEXIN-PON (Airnav FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.5366666%2C48.5961111%2C2.5366666%2C49.5961111%2C2.0366666%2C49.0961111%2CPONTOISE%20CORMEILLES%20EN%20VEXIN-PON">
+<text>PONTOISE CORMEILLES EN VEXIN-PON (zoom 30NM)</text></link>
+<sym>x</sym><type>VOR</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>PON</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airnavs</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="49.0311111" lon="2.7069444">
+
+<time>2004-12-06T19:10:24Z</time>
+<name>RSY</name>
+<cmt>356.0 NDB CHARLES DE</cmt>
+<desc>PARIS CHARLES DE GAULLE-RSY (Airnav FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=2.2069444%2C48.5311111%2C3.2069444%2C49.5311111%2C2.7069444%2C49.0311111%2CPARIS%20CHARLES%20DE%20GAULLE-RSY">
+<text>PARIS CHARLES DE GAULLE-RSY (zoom 30NM)</text></link>
+<sym>x</sym><type>NDB</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>RSY</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airnavs</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="49.02" lon="2.5008333">
+<ele>116.1288</ele>
+<time>2004-12-06T19:10:24Z</time>
+<name>CGN</name>
+<cmt>115.35 VORDME CHARLES DE</cmt>
+<desc>PARIS CHARLES DE GAULLE-CGN (Airnav FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=2.0008333%2C48.5200000%2C3.0008333%2C49.5200000%2C2.5008333%2C49.0200000%2CPARIS%20CHARLES%20DE%20GAULLE-CGN">
+<text>PARIS CHARLES DE GAULLE-CGN (zoom 30NM)</text></link>
+<sym>x</sym><type>VORDME</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>CGN</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airnavs</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="49.0113888" lon="2.3622222">
+
+<time>2004-12-06T19:10:24Z</time>
+<name>RSO</name>
+<cmt>364.0 NDB CHARLES DE</cmt>
+<desc>PARIS CHARLES DE GAULLE-RSO (Airnav FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.8622222%2C48.5113888%2C2.8622222%2C49.5113888%2C2.3622222%2C49.0113888%2CPARIS%20CHARLES%20DE%20GAULLE-RSO">
+<text>PARIS CHARLES DE GAULLE-RSO (zoom 30NM)</text></link>
+<sym>x</sym><type>NDB</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>RSO</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airnavs</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="49.0058333" lon="2.7408333">
+
+<time>2004-12-06T19:10:24Z</time>
+<name>CGZ</name>
+<cmt>370.0 NDB CHARLES DE</cmt>
+<desc>PARIS CHARLES DE GAULLE-CGZ (Airnav FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=2.2408333%2C48.5058333%2C3.2408333%2C49.5058333%2C2.7408333%2C49.0058333%2CPARIS%20CHARLES%20DE%20GAULLE-CGZ">
+<text>PARIS CHARLES DE GAULLE-CGZ (zoom 30NM)</text></link>
+<sym>x</sym><type>NDB</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>CGZ</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airnavs</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.9994444" lon="2.6244444">
+<ele>117.9576</ele>
+<time>2004-12-06T19:10:24Z</time>
+<name>PGS</name>
+<cmt>117.05 VORDME CHARLES DE</cmt>
+<desc>PARIS CHARLES DE GAULLE-PGS (Airnav FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=2.1244444%2C48.4994444%2C3.1244444%2C49.4994444%2C2.6244444%2C48.9994444%2CPARIS%20CHARLES%20DE%20GAULLE-PGS">
+<text>PARIS CHARLES DE GAULLE-PGS (zoom 30NM)</text></link>
+<sym>x</sym><type>VORDME</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>PGS</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airnavs</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.9875" lon="2.4013888">
+
+<time>2004-12-06T19:10:30Z</time>
+<name>CGO</name>
+<cmt>343.0 NDB CHARLES DE</cmt>
+<desc>PARIS CHARLES DE GAULLE-CGO (Airnav FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.9013888%2C48.4875000%2C2.9013888%2C49.4875000%2C2.4013888%2C48.9875000%2CPARIS%20CHARLES%20DE%20GAULLE-CGO">
+<text>PARIS CHARLES DE GAULLE-CGO (zoom 30NM)</text></link>
+<sym>x</sym><type>NDB</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>CGO</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airnavs</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.9747222" lon="2.4558333">
+<ele>70.104</ele>
+<time>2004-12-06T19:10:24Z</time>
+<name>BT</name>
+<cmt>108.80 VORDME LE BOURGET</cmt>
+<desc>PARIS LE BOURGET-BT (Airnav FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.9558333%2C48.4747222%2C2.9558333%2C49.4747222%2C2.4558333%2C48.9747222%2CPARIS%20LE%20BOURGET-BT">
+<text>PARIS LE BOURGET-BT (zoom 30NM)</text></link>
+<sym>x</sym><type>VORDME</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>BT</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airnavs</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="49.1966666" lon="2.6183333">
+<time>2004-12-05T18:31:31Z</time>
+<name>SE</name>
+<cmt>CREIL-LFPC</cmt>
+<desc>SE CREIL-LFPC (Waypoint)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=2.1183333%2C48.6966666%2C3.1183333%2C49.6966666%2C2.6183333%2C49.1966666%2CSE">
+<text>SE (zoom 30NM)</text></link>
+<sym>Waypoint</sym><type>NAV</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>SE</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Waypoints</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.9388888" lon="2.28">
+
+<time>2004-12-06T19:10:24Z</time>
+<name>BGW</name>
+<cmt>334.0 NDB LE BOURGET</cmt>
+<desc>PARIS LE BOURGET-BGW (Airnav FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.7800000%2C48.4388888%2C2.7800000%2C49.4388888%2C2.2800000%2C48.9388888%2CPARIS%20LE%20BOURGET-BGW">
+<text>PARIS LE BOURGET-BGW (zoom 30NM)</text></link>
+<sym>x</sym><type>NDB</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>BGW</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Airnavs</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="49.03" lon="2.03">
+<time>2004-12-22T13:43:55Z</time>
+<name>S</name>
+<cmt>PONTOISE-LFPT</cmt>
+<desc>S PONTOISE-LFPT (Waypoint)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.5300000%2C48.5300000%2C2.5300000%2C49.5300000%2C2.0300000%2C49.0300000%2CS">
+<text>S (zoom 30NM)</text></link>
+<sym>Waypoint</sym><type>NAV</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>S</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Waypoints</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="49.3283333" lon="2.1966666">
+<time>2004-12-05T18:31:31Z</time>
+<name>SE</name>
+<cmt>BEAUVAIS-LFOB</cmt>
+<desc>SE BEAUVAIS-LFOB (Waypoint)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.6966666%2C48.8283333%2C2.6966666%2C49.8283333%2C2.1966666%2C49.3283333%2CSE">
+<text>SE (zoom 30NM)</text></link>
+<sym>Waypoint</sym><type>NAV</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>SE</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Waypoints</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="49.1466666" lon="1.9033333">
+<time>2004-12-22T13:43:51Z</time>
+<name>NW</name>
+<cmt>PONTOISE-LFPT</cmt>
+<desc>NW PONTOISE-LFPT (Waypoint)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.4033333%2C48.6466666%2C2.4033333%2C49.6466666%2C1.9033333%2C49.1466666%2CNW">
+<text>NW (zoom 30NM)</text></link>
+<sym>Waypoint</sym><type>NAV</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>NW</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Waypoints</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="49.0266666" lon="2.1336111">
+<time>2005-03-19T23:22:14Z</time>
+<name>W1</name>
+<cmt>LE BOURGET-LFPB</cmt>
+<desc>W1 LE BOURGET-LFPB (Waypoint)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.6336111%2C48.5266666%2C2.6336111%2C49.5266666%2C2.1336111%2C49.0266666%2CW1">
+<text>W1 (zoom 30NM)</text></link>
+<sym>Waypoint</sym><type>NAV</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>W1</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Waypoints</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="49.3233333" lon="2.08">
+<time>2004-12-05T18:31:31Z</time>
+<name>SW</name>
+<cmt>BEAUVAIS-LFOB</cmt>
+<desc>SW BEAUVAIS-LFOB (Waypoint)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.5800000%2C48.8233333%2C2.5800000%2C49.8233333%2C2.0800000%2C49.3233333%2CSW">
+<text>SW (zoom 30NM)</text></link>
+<sym>Waypoint</sym><type>NAV</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>SW</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>Waypoints</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.533333" lon="2.566667">
+<time>1994-01-06T00:00:00Z</time>
+<name>BOISSISE</name>
+<cmt>Populated place</cmt>
+<desc>Boissise-le-Roi (GeoData Populated place FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=2.0666670%2C48.0333330%2C3.0666670%2C49.0333330%2C2.5666670%2C48.5333330%2CBoissise-le-Roi">
+<text>Boissise-le-Roi (zoom 30NM)</text></link>
+<sym>dot</sym><type>Populated place</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>Boissise-le-Roi</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>GeoData</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.55" lon="2.366667">
+<time>1994-01-06T00:00:00Z</time>
+<name>VERTLEPE</name>
+<cmt>Populated place</cmt>
+<desc>Vert-le-Petit (GeoData Populated place FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.8666670%2C48.0500000%2C2.8666670%2C49.0500000%2C2.3666670%2C48.5500000%2CVert-le-Petit">
+<text>Vert-le-Petit (zoom 30NM)</text></link>
+<sym>dot</sym><type>Populated place</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>Vert-le-Petit</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>GeoData</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.65" lon="2.433333">
+<time>1994-01-06T00:00:00Z</time>
+<name>RUDECOUT</name>
+<cmt>Hydrographic</cmt>
+<desc>Ru d' Ecoute (GeoData Hydrographic FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.9333330%2C48.1500000%2C2.9333330%2C49.1500000%2C2.4333330%2C48.6500000%2CRu%20d%27%20Ecoute">
+<text>Ru d' Ecoute (zoom 30NM)</text></link>
+<sym>dot</sym><type>Hydrographic</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>Ru d' Ecoute</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>GeoData</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.85" lon="1.916667">
+<time>1994-01-06T00:00:00Z</time>
+<name>THIVERVA</name>
+<cmt>Populated place</cmt>
+<desc>Thiverval-Grignon (GeoData Populated place FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.4166670%2C48.3500000%2C2.4166670%2C49.3500000%2C1.9166670%2C48.8500000%2CThiverval-Grignon">
+<text>Thiverval-Grignon (zoom 30NM)</text></link>
+<sym>dot</sym><type>Populated place</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>Thiverval-Grignon</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>GeoData</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="49.2" lon="2.216667">
+<time>1994-01-06T00:00:00Z</time>
+<name>BORNEL</name>
+<cmt>Populated place</cmt>
+<desc>Bornel (GeoData Populated place FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.7166670%2C48.7000000%2C2.7166670%2C49.7000000%2C2.2166670%2C49.2000000%2CBornel">
+<text>Bornel (zoom 30NM)</text></link>
+<sym>dot</sym><type>Populated place</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>Bornel</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>GeoData</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.716667" lon="2.533333">
+<time>1994-01-06T00:00:00Z</time>
+<name>VILLECRE</name>
+<cmt>Populated place</cmt>
+<desc>Villecresnes (GeoData Populated place FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=2.0333330%2C48.2166670%2C3.0333330%2C49.2166670%2C2.5333330%2C48.7166670%2CVillecresnes">
+<text>Villecresnes (zoom 30NM)</text></link>
+<sym>dot</sym><type>Populated place</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>Villecresnes</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>GeoData</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.566667" lon="2.366667">
+<time>1994-01-06T00:00:00Z</time>
+<name>VERTLEGR</name>
+<cmt>Populated place</cmt>
+<desc>Vert-le-Grand (GeoData Populated place FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.8666670%2C48.0666670%2C2.8666670%2C49.0666670%2C2.3666670%2C48.5666670%2CVert-le-Grand">
+<text>Vert-le-Grand (zoom 30NM)</text></link>
+<sym>dot</sym><type>Populated place</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>Vert-le-Grand</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>GeoData</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+<wpt lat="48.6" lon="2.35">
+<time>1994-01-06T00:00:00Z</time>
+<name>MONTBRAN</name>
+<cmt>Populated place</cmt>
+<desc>Montbran (GeoData Populated place FRA)</desc>
+<link href="http://www.flygoto.com/fg_1/default.asp?bbox=1.8500000%2C48.1000000%2C2.8500000%2C49.1000000%2C2.3500000%2C48.6000000%2CMontbran">
+<text>Montbran (zoom 30NM)</text></link>
+<sym>dot</sym><type>Populated place</type>
+<extensions><label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3"><label_text>Montbran</label_text></label>
+<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v2 http://www.garmin.com/xmlschemas/GpxExtensions/v2/GpxExtensionsv2.xsd">
+<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode><gpxx:Categories>
+<gpxx:Category>GeoData</gpxx:Category>
+</gpxx:Categories></gpxx:WaypointExtension>
+</extensions></wpt>
+</gpx>
+

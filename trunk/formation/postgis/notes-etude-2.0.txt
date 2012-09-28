@@ -1,0 +1,19 @@
+Idees de test Postgis 2.0:
+
+________________________
+Chargement des communes.
+Union pour dept, region, france
+    -> comparer ce temps avec un PGIS 1.5
+    
+________________________________________
+Tester les nouvelles fonctions fournies:
+
+___________________________________________________
+Passer en topologie et voir les fonctions fournies:
+
+
+___________________
+Tester les rasters: 
+truemarble chargé dans la base, 
+requete affichage MS et autres.
+Quelles fonctions, limitations

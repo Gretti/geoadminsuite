@@ -1,0 +1,86 @@
+____________
+TP Raster 3:
+____
+But: 
+charger un MNT dans Postgis, 
+réaliser un profil altimétrique par croisement spatial entre une ligne et le MNT
+
+_______
+Etapes:
+
+0°) (Si la base de données "tp" n'existe pas, la créer et y ajouter Postgis)
+
+1°) Charger le MNT située dans le repertoire formation_postgis/data/raster/srtm/srtm_36_03_2154.tif
+dans une table Postgis (nom de la table: mnt) en choisissant:
+    • Le bon SRID (utilisation de gdalinfo pour lire le SRID)
+    • une taille de tuile de 100x100 pixels
+    • la création des contraintes 
+
+raster2pgsql -M -I -C -Y -s 2154 -t 100x100  data/raster/srtm/srtm_36_03_2154.tif mnt | psql tp    
+   
+2°) Réaliser le profil altimétrique par croisement de cette table avec la ligne suivante:
+LINESTRING ( 150000 6950000, 330000 6950000, 160000 6890000, 270000 6860000, 270000 6810000, 360000 6810000, 330000 6760000, 380000 6730000 )
+
+Idéalement, on veut une liste de points X-Y-Z
+
+Le but de la requete est:
+    • de realiser l'intersection de la ligne avec le raster
+    • de "deconstruire" les points de la ligne pour en fabriquer des points 3D
+    • de stocker la requete dans une table, pour pouvoir utiliser le profil plus tard
+    
+-- construction WITH, qui permet de mieux organiser les sous-requetes
+-- plusieurs tables peuvent etre définies dans le WITH et peuvent se référencer.
+
+create table profil as (
+    with ln as (
+        select st_setSRID('LINESTRING ( 150000 6950000, 330000 6950000, 160000 6890000, 270000 6860000, 270000 6810000, 360000 6810000, 330000 6760000, 380000 6730000 )'::geometry, 2154)
+        as geom
+    ), 
+    inter as (
+    -- intersection du raster avec la ligne
+    SELECT ST_Intersection(ln.geom, mnt.rast) as gv 
+        from mnt, ln where 
+        ST_Intersects(ln.geom, mnt.rast)
+    )
+    --fabrication des points a partir des start/end points des lignes renvoyées:
+    -- precision suffisante: bcp de ligne renvoyées n'ont que deux points
+    -- on pourrait ici se contenter du milieu de la ligne ou juste du point de depart,
+    -- etant donnée la précision des données.
+    SELECT st_makePoint(st_X(st_startPoint((gv).geom)), st_Y(st_startPoint((gv).geom)), (gv).val) as geom, (gv).val 
+    from inter
+    
+    UNION
+    
+    SELECT st_makePoint(st_X(st_endPoint((gv).geom)), st_Y(st_endPoint((gv).geom)), (gv).val) as geom, (gv).val 
+    from inter
+);
+
+-- mise a jour du SRID pour la table profile
+update profile set geom = st_setSRID(geom, 2154);
+
+3°) Afficher dans QGis, en trichant: 
+
+-- reconstruction de points en 2 dimensions, en prenant les dimensions X et Z des points de la table profil.
+-- cela produit un affichage artificiel ayant juste pour but de montrer la forme du profil.
+-- pour cet affichage, un seul point des lignes initiales est suffisant
+-- les altitudes etant faibles devant les distances, il faut exagerer les altitudes
+-- par un facteur multiplicatif pour la visu
+-- Une remise a plat de la ligne initiale est necessaire en placant les points d'altitudes repartis comme
+-- il faut le long de la ligne:
+-- utilisation de st_line_locate_point:
+
+with ln as (
+	select st_setSRID('LINESTRING ( 150000 6950000, 330000 6950000, 160000 6890000, 270000 6860000, 270000 6810000, 360000 6810000, 330000 6760000, 380000 6730000 )'::geometry, 2154)
+	as geom
+) select st_makePoint(st_line_locate_point(ln.geom, pt.geom) * st_length(ln.geom), st_Z(pt.geom) * 300)
+from ln, profile as pt
+where ln.geom is not null and pt.geom is not null;
+
+En une seule requete, pour  
+
+_________
+Conseils:
+
+• st_makePoint permet de créer un point avec partir de coordonnées
+• st_line_locate_point et les fonctions de referencement linéaire peuvent etre utiles.
+

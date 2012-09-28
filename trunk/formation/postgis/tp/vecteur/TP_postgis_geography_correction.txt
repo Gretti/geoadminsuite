@@ -1,0 +1,29 @@
+______________________________________________________
+TP illustrant le nouveau type GEOGRAPHY (PostGIS 1.5+)
+
+1°) Charger le fichier de donnees TrajectoireRef dans PostGIS (donnees globales, WGS84):
+(chemin du fichier: postgis/data/vecteur/monde/TrajectoireRef.shp)
+
+ shp2pgsql -IiDdG -s 4326 postgis/data/vecteur/monde/TrajectoireRef.shp traj | psql -p 5433 postgis
+
+2°) Verifier que les donnees sont bien du type GEOGRAPHY, convertir si ce n'est pas le cas
+
+select * from geography_columns;
+
+3°) Indexer la table
+
+create index traj_geog_idx on traj using gist(geog);
+
+4°) Calculer la distance de la trace
+
+select st_distance(t.geog, t2.geog)/1000 as "dist en km."
+from traj t, traj t2
+where t.gid = (select min(gid) from traj)  
+and t2.gid = (select max(gid) from traj);
+
+
+5°) Exporter ces donnees sous forme de LINESTRING en KML pour visu dans Google Earth
+
+select st_askml(st_makeline(geom)) 
+from (select geog::geometry as geom from traj  order by time) as foo;
+

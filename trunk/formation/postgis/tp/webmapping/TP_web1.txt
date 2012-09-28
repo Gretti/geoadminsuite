@@ -1,0 +1,35 @@
+________________
+TP Webmapping 1:
+____
+But: 
+Afficher des objets vectoriels issus de Postgis dans OpenLayer.
+Necessite donc un serveur d'application capable de lire les données depuis postgis et
+de les envoyer vers un client (Navigateur, openLayers)
+
+PHP sera utilisé comme langage coté serveur. Tout autre langages est possible:
+Javascript server
+Java
+Python
+Ruby
+...
+
+_______
+Etapes:
+
+0°) (Si la base de données "tp" n'existe pas, la créer et y ajouter Postgis)
+
+1°) Charger les departements de France dans une table departement
+(données: postgis/data/vecteur/geofla_dep/geofla.shp)
+
+2°) Mettre en place une page web contenant une carte OpenLayers
+
+3°) Ecrire une page PHP se connectant a Postgis (driver PDO PGSQL) et récupérant les departements
+au format geoJson, en projection 4326 pour les afficher sur un fond de carte fourni par OpenLayers
+
+_________
+Conseils:
+
+Demo JSON OpenLayers: http://openlayers.org/dev/examples/geojson.html
+Connexion PHP / PG: http://php.net/manual/en/function.pg-connect.php
+
+

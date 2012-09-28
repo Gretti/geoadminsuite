@@ -1,0 +1,29 @@
+___________________________________________
+TP sur l'import de donnees MIF/MID en masse
+
+0) Creer une base de donnees Postgis test_ign destinee a recevoir les donnees de test
+
+
+1) Convertir en masse les donnees MIF/MID du repertoire:
+	data/38_BDTOPO_mif (donnees de test de l'IGN) en donnees postgis dans la base test_ign
+	
+Note: les donnees sont en projection Lambert 93.
+	
+Pour cela, utiliser le logiciel ETL (Extract-Transform-Load) OpenSource GDAL/OGR 
+(http://gdal.org).
+
+Scripter les appels au logiciels dans un fichier batch ou shell, suivant la plateforme.
+
+2) Verifier la validite des donnees dans Postgis:
+
+Soit a la main: 
+Soit avec une fonction plpgsql:
+
+3) En cas de donnees invalides, verifier les donnees graphiquement (OpenJump ou QGis), par exemple sur une des tables invalides
+
+4) En cas de donnees invalides, corriger les donnees (st_buffer, et/ou corrections a la main)
+
+5) Exporter un sous-ensemble de ces donnees donnees au format shapefile, par traitement
+    batch (zone d'export: un rectangle dont les coordonnees (coin bas-gauche, haut-droit: (915614, 6454634), (917498, 6456110) )
+    Utiliser pour cela l'outil pgsql2shp
+

@@ -1,0 +1,23 @@
+____________________________
+TP Introduction a MapServer:
+
+• Verifier que MapServer est installé sur le serveur web Apache local, vérifier sa version
+  et les supports en entree/sortie.
+  
+• Copier la page HTML du TP (test_mapserver.html) a la racine du serveur Web apache
+
+• Editer le fichier mapfile (test_mapserver.map) et adapter les valeurs a l'environnement
+  windows local
+• Editer la page HTML du TP (test_mapserver.html) et adapter le chemin vers le mapfile
+  en fonction du chemin local des données du TP
+  
+• Charger la page dans un navigateur
+
+• Jouer avec le mapfile, ses parametres:
+
+    - Changer la taille de l'image
+    - changer la couleur de representation (LAYER->CLASS)
+    - changer la requete Postgis des données: affichage des centroid des lacs a la place des lac
+      (nouvelle couche eventuellement)
+      
+

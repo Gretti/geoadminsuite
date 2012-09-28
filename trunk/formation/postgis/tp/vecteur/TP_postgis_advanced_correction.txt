@@ -1,0 +1,189 @@
+------------------------------------------------
+TP PostGIS avancé 1 
+-------------------------------------------------
+
+
+(Utilisation des données Frida créées dans le TP1)
+
+___________________________________________________________________________
+Manipulation des coordonnées, des elements, des parties des objets spatiaux
+
+Ecrire une requete listant tous les points de tous les polygones de 
+tous les lacs (table lakes, base frida) (interiorRingN, pointN, generate_series, geometryN) :
+
+select st_asText(
+    st_pointN(
+         st_exteriorRing(foo.polygon), 
+         generate_series(1, st_numPoints(st_exteriorRing(foo.polygon))))),
+         poly_position || ' - point: ' || generate_series(1, st_numPoints(st_exteriorRing(foo.polygon))) as pt_pos
+from (
+    select st_geometryN(the_geom, generate_series(1, st_numGeometries(bar.the_geom))) as polygon, 
+    'lac: ' || gid || ' polygon: ' || generate_series(1, st_numGeometries(the_geom)) as poly_position
+    from (
+        select gid, the_geom  from lake
+    ) as bar
+) as foo;
+
+
+
+------------------------------------------------
+Distance et index spatiaux
+-------------------------------------------------
+
+Travail avec la table Streets de la base Frida créée au TP1
+
+
+Selectionner toutes les rues plus proche de 450m du point:
+x: 3436800 y: 5793247
+
+select gid, strname
+from street 
+where st_distance(the_geom, st_pointfromtext('POINT (3436800 5793247)', 31467)) < 450;
+
+Mesurer le temps de la requete.
+
+Executer la meme requete en utilisant un filtre spatial basé sur l'extent 
+(fonction st_expand)
+
+select gid, strname
+from 
+street 
+where the_geom && st_expand(st_pointfromtext('POINT (3436800 5793247)', 31467), 450) 
+and st_distance(the_geom, st_pointfromtext('POINT (3436800 5793247)', 31467)) < 450;
+
+
+Mesurer le temps de la requete, comparer les resultats (explain, explain analyse)
+
+------------------------------------------------
+TP PostGIS avancé 2 
+-------------------------------------------------
+
+TP 2: travailler avec un reseau de rues et des points d'arrets de bus.
+Le but
+
+1) Charger le fichier CSV des points d'arrets dans une table PG des arrets (commande copy):
+
+create table arrets_hg (
+    id int8 primary key,
+    id_tisseo text,
+    x float,
+    y float,                                
+    commune text not null,
+    nom_commercial text not null,                                          
+    nom_physique text,
+    nom_hastus text
+);
+
+copy arrets_hg(id, id_tisseo, x, y, commune, nom_commercial, nom_physique, nom_hastus) 
+from '/tmp/postgis/data/arrets_hg2.csv' 
+WITH DELIMITER AS ';' CSV QUOTE AS '"';
+
+2) transformer les coordonnees X Y en objet POINT. (cf. aide postgis)
+
+-- ajout de la colonne geo a la table
+select addGeometryColumn('', 'tp1', 'arrets_hg', 'geom', 27582, 'POINT', 2);
+
+update arrets_hg set geom = st_setsrid(st_makePoint(x, y), 27582);
+
+3) reduire la precision des coordonnees au metre.
+
+update arrets_hg set geom = st_snapToGrid(geom, 1);
+
+4) charger les donnees de rues (Streets.shp) (shp2pgsql, option -S pour avoir des geometries simples.)
+
+ shp2pgsql -SiID -s 27582 -W latin1 Streets.shp streets | psql
+
+5) supprimer les points qui ne sont pas dans l'extension spatiale des rues.
+
+
+6) projeter les points d'arrets sur les rues les plus proches. (cf. referencement lineaire):
+creer une table contenant les points d'arrets de la table  arrets_hg recalés sur le graphe des rues:
+Il s'agit de projeter les points, mal calés par rapport aux rues, sur la rue la plus proche, pour 
+corriger l'imprecision de numerisation des points.
+
+create table projected_nodes as (
+    SELECT DISTINCT ON (arrets_id) arrets_id, 
+           street_id, 
+           ST_line_locate_point(ln_geom, pt_geom) as locus,
+           
+           ST_line_interpolate_point(ln_geom, 
+                                     ST_line_locate_point(ln_geom, pt_geom) 
+           ) as the_geom
+     FROM (
+       SELECT 
+         ln.the_geom AS ln_geom, 
+         pt.geom AS pt_geom, 
+         ln.gid AS street_id, 
+         pt.id AS arrets_id, 
+         ST_Distance(ln.the_geom, pt.geom) AS d 
+       FROM 
+         arrets_hg pt, 
+         streets ln 
+       WHERE 
+         ST_DWithin(pt.geom, ln.the_geom, 50.0) 
+       ORDER BY
+         arrets_id,d
+       ) AS subquery
+);
+
+Explication de la requete:
+
+Premiere sous-requete:
+D'abord trouver les lignes les plus proches de chaque point: utilisation de st_dwithin pour 
+filtrer spatialement les candidats, autour d'un extent de 50 m autour de chaque point.
+Pour ces points, calculer la distance avec la ligne et prendre le plus proche: order by d (d = alias de distance):
+
+       SELECT 
+         ln.the_geom AS ln_geom, 
+         pt.geom AS pt_geom, 
+         ln.gid AS street_id, 
+         pt.id AS arrets_id, 
+         ST_Distance(ln.the_geom, pt.geom) AS d 
+       FROM 
+         arrets_hg pt, 
+         streets ln 
+       WHERE 
+         ST_DWithin(pt.geom, ln.the_geom, 50.0) 
+       ORDER BY
+         arrets_id,d
+       ) AS subquery
+       
+puis requete finale qui exploite cette sous requete pour ne garder que le point le plus proche:
+distinct on (arrets_id) arrets_id: ce 'distinct on' permet de filtrer
+les résultats uniques d'un certain champs (et pas de tous comme avec un distinct classique).
+Utilisation de deux fonctions postgis de referencement lineaire:
+
+ST_line_locate_point     : cf doc: index, sur la ligne, de la coordonnée du point projeté (on garde cette valeur car elle peut etre utile pour gérer un réseau)
+ST_line_interpolate_point: fabrication du point projeté (geometry retournée) et réutilisation de ST_line_locate_point pour trouver l'index du point projeté.
+
+Création de la table a la volée avec "create table matable as select ..."
+
+7) Reconstruire le reseau des rues en inserant les points projetes dans le reseau
+
+Utilisation de ST_Line_Substring pour decouper la ligne suivant le nouveau point:
+st_lineMerge pour reconstruire la ligne:
+
+select st_lineMerge(
+    st_collect(
+        st_line_substring(s.the_geom, 0, p.locus),
+        st_line_substring(s.the_geom, p.locus, 1)
+        )
+    )
+from streets s, projected_nodes p
+where s.gid = p.street_id;
+
+Mettre a jour la table des streets si besoin, avec:
+
+update streets set the_geom = 
+st_lineMerge(
+    st_collect(
+        st_line_substring(streets.the_geom, 0, p.locus),
+        st_line_substring(streets.the_geom, p.locus, 1)
+        )
+    )
+from projected_nodes p
+where streets.gid = p.street_id; 
+
+Pour aller plus loin: modifier la requete pour tenir compte des cas ou plusieurs points
+sont projetés sur la meme ligne) (generate_series pour iterer sur le nombre de points présents sur
+chaque ligne)
