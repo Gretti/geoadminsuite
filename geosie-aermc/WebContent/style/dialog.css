@@ -1,0 +1,106 @@
+.ui-widget-overlay {
+	background-color:black;
+	opacity: 0.5;
+	filter:alpha(opacity=50);
+	position:absolute;
+	top:0;
+	left:0;
+}
+
+.ui-dialog {
+	background-color: white;
+	border: 1px solid #972618;
+}
+
+.ui-dialog-titlebar {
+	background-color: #972618;
+	color: white;
+	padding: 3px 10px;
+}
+
+.ui-dialog-titlebar-close {
+	position : absolute;
+	right: 5px;
+}
+
+.ui-icon-closethick {
+	overflow:hidden;
+	font-size:0px;
+	display:block;
+	background-repeat:no-repeat;
+	height:12px;
+	width:12px;
+	background-image: url(../images/pictos_window_close.png);
+}
+
+/*#dialogContent {*/
+/*	overflow: scroll;*/
+/*	padding: 5px;*/
+/*	text-align: center;*/
+/*}*/
+
+#dialogContent label{
+    display: block;
+	width: 85px;
+	float: left;	
+	text-align: left;
+}
+
+#dialogContent {
+	padding: 5px;
+	height: 93px;
+}
+.ui-dialog-buttonpane {
+	text-align: center;
+	padding: 5px;
+}
+
+.ui-dialog-buttonpane button {
+	text-align: center;
+	background-color:#F8FBFF;
+    border:1px solid #93A0B9;
+    font-family:Verdana;
+    font-size:11px;
+}
+
+#dialogPrintContent label{
+    display: block;
+	width: 85px;
+	float: left;	
+	text-align: left;
+}
+
+#dialogPrintContent {
+	padding: 5px;
+	/*For IE 7*/
+	/*height: 112px;*/
+}
+
+#dialogGetFeatureInfoContent {
+	padding: 5px;
+	height: 45px;
+}
+
+#dialogWpsDownloadContent {
+	padding: 5px;
+	height: 65px;
+}
+
+#dialogWpsDownloadContent label{
+    display: block;
+	width: 85px;
+	float: left;	
+	text-align: left;
+}
+
+#dialogWpsContent {
+	padding: 5px;
+	height: 50px;
+}
+
+#dialogWpsContent label{
+    display: block;
+	width: 85px;
+	float: left;	
+	text-align: left;
+}
