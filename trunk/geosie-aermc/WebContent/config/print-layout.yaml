@@ -1,0 +1,656 @@
+#===========================================================================
+# allowed DPIs
+#===========================================================================
+dpis:
+  - 96
+  - 72
+
+#===========================================================================
+# the allowed scales
+#===========================================================================
+scales:
+  - 1000
+  - 2500
+  - 5000
+  - 10000
+  - 25000
+  - 50000
+  - 100000
+  - 250000
+  - 500000
+  - 1000000
+  - 2000000
+  - 4000000
+  - 10000000
+
+#===========================================================================
+# the list of allowed hosts : allow all host
+#===========================================================================
+hosts:
+  - !localMatch
+    dummy: true
+  - !ipMatch
+    host:0.0.0.0
+    mask:0.0.0.0
+    
+#
+# 4 layouts :
+#  - A4 portrait, paysage avec titre long et court en point 210mm x 297mm 595.28 841.89
+#  - A3 portrait, paysage avec titre long et court (c est un copie du yaml de A4 avec le pageSize a A3) 
+#
+#  Remarque:
+#  Legende : la valeur de defaultScale est appliqué seulement quand la largeur
+#            de l'image est < maxIconWidth
+#
+# the default fileName for the files downloaded from the servlet
+#outputFilename: Onema_Geobs # ne marche pas, faut le passer au client
+
+layouts:
+  #===========================================================================
+  A4 paysage:
+  #===========================================================================
+    metaData:&commonMetaData
+      title: ''
+      author: ''
+      subject: ''
+      keywords: ''
+      creator: 'ONEMA'
+                  
+    #-------------------------------------------------------------------------
+    # Titre | Carte | Echelle | Copyright 
+    #-------------------------------------------------------------------------
+    mainPage:
+      pageSize: A4
+      backgroundPdf: '${configDir}/template/pdf/A4/${backgroundPdf}'
+      landscape: true
+      items:
+        # Carte      
+        - !map
+          condition: showHeaderShort
+          # Le nom dans le pdf pour le calque
+          name: 'Données'        
+          absoluteX: 1
+          absoluteY: 576
+          width: 606
+          height: 547
+
+        - !map
+          condition: showHeaderLong
+          # Le nom dans le pdf pour le calque 
+          name: 'Données'        
+          absoluteX: 1
+          absoluteY: 571
+          width: 604
+          height: 542 
+                
+        # Bandeau
+        - !columns
+          absoluteX: 0
+          absoluteY: 595
+          width: 842
+          items:
+            - !image
+              maxWidth: 842
+              maxHeight: 595
+              url: '${urlAppli}config/template/img/A4/${backgroundSvg}'          
+        
+        # Ruse pour avoir de la place + Titre 588
+        - !columns
+          absoluteX: 0
+          absoluteY: 587
+          width: 606
+          items:
+            - !text
+              align: center
+              fontColor: white
+              font: Helvetica
+              #backgroundColor: #65C2D4
+              fontColor: white
+              vertAlign: middle
+              fontSize: 14
+              text: '  '  
+        - !columns
+          absoluteX: 0
+          absoluteY: 587
+          width: 606
+          #height: 35
+          items:
+            - !text
+              align: center
+              fontColor: white
+              font: Helvetica
+              #backgroundColor: #65C2D4
+              fontColor: white
+              vertAlign: middle
+              fontSize: 14
+              text: '${mapTitle}'  
+              spacingAfter: 6
+
+
+        # Legende   
+        - !columns
+          condition: showLegendMap
+          absoluteX: 640
+          absoluteY: 538
+          width: 215
+          items:
+            - !legends
+              defaultScale: 75
+              maxIconWidth: 140
+              maxIconHeight: 0
+              layerUnderLine: true
+              layerSpace: 3
+              layerFontSize: 7
+              classIndentation: 0
+              classFontSize: 7
+              classSpace: 3
+
+        # Echelle  
+        - !columns
+          absoluteX: 500
+          absoluteY: 45
+          width: 100
+          items:
+            - !scalebar
+              align: right
+              #textDirection: right
+              maxSize: 100
+              type: line
+              #barDirection: down
+              intervals: 5
+              fontSize: 8
+   
+        # Footer  
+        - !columns
+          absoluteX: 5
+          absoluteY: 27
+          # width map (titre long or short...) - absoluteX = 604 - 5
+          width: 599
+          items:
+            - !text
+              align: left
+              fontColor: white
+              font: Helvetica-BoldOblique
+              fontSize: 6
+              text: '${footer}'                           
+      
+    #-------------------------------------------------------------------------
+    # Legende
+    #-------------------------------------------------------------------------
+    lastPage:
+      pageSize: A4
+      landscape: false   
+      items:  
+                
+        # Legende Attention faut au moins mettre une option
+        - !legends
+          condition: showLegendNextPage
+          defaultScale: 75
+          maxIconWidth: 140          
+          layerUnderLine: true
+          layerSpace: 3
+          layerFontSize: 7
+          classIndentation: 0
+          classFontSize: 7
+          classSpace: 3
+             #layerFontSize: 16
+             #classIndentation: 0
+             #classFontSize: 8
+             #classSpace: 5  
+          #title: 'Légende'  
+ 
+      # Pied de page        
+      footer: &commonFooterA4
+        # pour avoir plus de place sinon le texte au dessus peut "coller" le footer
+        height: 40
+        items:
+          - !columns
+            nbColumns: 2
+            items:
+              - !text
+                align: right
+                text: 'Page n°${pageNum}'        
+            
+  #===========================================================================
+  A3 paysage:
+  #===========================================================================
+    metaData:*commonMetaData
+
+    #-------------------------------------------------------------------------
+    # Titre | Carte | Echelle | Copyright 
+    #-------------------------------------------------------------------------
+    mainPage:
+      pageSize: A3
+      backgroundPdf: '${configDir}/template/pdf/A3/${backgroundPdf}'
+      landscape: true
+      items:
+        # Carte      
+        - !map
+          condition: showHeaderShort
+          # Le nom dans le pdf pour le calque
+          name: 'Données'        
+          absoluteX: 1
+          absoluteY: 815
+          width: 856
+          height: 774
+
+        - !map
+          condition: showHeaderLong
+          # Le nom dans le pdf pour le calque
+          name: 'Données'        
+          absoluteX: 1
+          absoluteY: 805
+          width: 856
+          height: 764
+                
+        # Bandeau
+        - !columns
+          absoluteX: 0
+          absoluteY: 842
+          width: 1191
+          items:
+            - !image
+              maxWidth: 1191
+              maxHeight: 842
+              url: '${urlAppli}config/template/img/A3/${backgroundSvg}'          
+              
+        # Ruse pour avoir de la place + Titre 
+        - !columns
+          absoluteX: 1
+          absoluteY: 829
+          width: 856
+          items:
+            - !text
+              align: center
+              fontColor: white
+              font: Helvetica
+              #backgroundColor: #65C2D4
+              fontColor: white
+              vertAlign: middle
+              fontSize: 14
+              text: '  '  
+        - !columns
+          absoluteX: 1
+          absoluteY: 829
+          width: 856
+          #height: 35
+          items:
+            - !text
+              align: center
+              fontColor: white
+              font: Helvetica
+              #backgroundColor: #65C2D4
+              fontColor: white
+              vertAlign: middle
+              fontSize: 14
+              text: '${mapTitle}'  
+              spacingAfter: 9
+
+        # Legende   
+        - !columns
+          condition: showLegendMap        
+          absoluteX: 906
+          absoluteY: 728
+          width: 293
+          items:
+            - !legends
+              defaultScale: 75
+              maxIconWidth: 140
+              maxIconHeight: 0
+              layerUnderLine: true
+              layerSpace: 4
+              layerFontSize: 10
+              classIndentation: 0
+              classFontSize: 10
+              classSpace: 4
+
+        # Echelle  
+        - !columns
+          absoluteX: 707
+          absoluteY: 64
+          width: 141
+          items:
+            - !scalebar
+              align: right
+              #textDirection: right
+              maxSize: 141
+              type: line
+              #barDirection: down
+              intervals: 7
+              fontSize: 11
+
+        # Footer  
+        - !columns
+          absoluteX: 7
+          absoluteY: 38
+          # width map (titre long or short...) - absoluteX = 856 - 7 - ...
+          width: 847
+          items:
+            - !text
+              align: left
+              fontColor: white
+              font: Helvetica-BoldOblique
+              fontSize: 6
+              text: '${footer}'   
+                    
+    #-------------------------------------------------------------------------
+    # Legende
+    #-------------------------------------------------------------------------
+    lastPage:&commonLastPageA3
+      pageSize: A3
+      landscape: false   
+      items:  
+         # Legende Attention faut au moins mettre une option
+        - !legends
+          condition: showLegendNextPage
+          defaultScale: 75
+          maxIconWidth: 140          
+          layerUnderLine: true
+          layerSpace: 3
+          layerFontSize: 7
+          classIndentation: 0
+          classFontSize: 7
+          classSpace: 3
+             #layerFontSize: 16
+             #classIndentation: 0
+             #classFontSize: 8
+             #classSpace: 5  
+          #title: 'Légende' 
+          
+    
+
+      # Pied de page        
+      footer: *commonFooterA4     
+
+  #===========================================================================
+  A4 portrait:
+  #===========================================================================
+    metaData:*commonMetaData
+
+    #-------------------------------------------------------------------------
+    # Titre | Carte | Echelle | Copyright 
+    #-------------------------------------------------------------------------
+    mainPage:
+      pageSize: A4
+      backgroundPdf: '${urlAppli}config/template/pdf/A4/${backgroundPdf}'
+      landscape: false
+      items:
+        # Ensemble de cartes (WMS et Vector)
+        - !map
+          condition: showHeaderShort
+          # Le nom dans le pdf pour le calque
+          name: 'Données'
+          absoluteX: 1
+          absoluteY: 823
+          width: 595
+          # si trop haut le titre Resultat est mal positionne 
+          height: 617
+          #borderWidth: 2
+        
+        - !map
+          condition: showHeaderLong
+          # Le nom dans le pdf pour le calque 
+          name: 'Données'
+          absoluteX: 1
+          absoluteY: 813
+          width: 595
+          # si trop haut le titre Resultat est mal positionne 
+          height: 610
+          #borderWidth: 2
+                          
+        # Bandeau
+        - !columns
+          absoluteX: 0
+          absoluteY: 842
+          width: 595
+          items:
+            - !image
+              maxWidth: 595
+              maxHeight: 842
+              url: '${urlAppli}config/template/img/A4/${backgroundSvg}'   
+                      
+        # Ruse pour avoir de la place + Titre 
+        - !columns
+          absoluteX: 0
+          absoluteY: 834
+          width: 595
+          items:
+            - !text
+              align: center
+              fontColor: white
+              font: Helvetica
+              fontColor: white
+              vertAlign: middle
+              fontSize: 14
+              text: '  '  
+        - !columns
+          absoluteX: 0
+          absoluteY: 834
+          width: 595
+          #height: 35
+          items:
+            - !text
+              align: center
+              fontColor: white
+              font: Helvetica
+              fontColor: white
+              vertAlign: middle
+              fontSize: 14
+              text: '${mapTitle}'  
+              spacingAfter: 6                          
+
+        # Legende   width 215
+        - !columns
+          condition: showLegendMap
+          absoluteX: 5
+          absoluteY: 200
+          width: 500 
+          items:
+            - !legends
+              defaultScale: 75
+              #maxHeight: 150
+              #maxWidth: 250 
+              #inline: false
+              maxIconWidth: 140
+              maxIconHeight: 0
+              layerUnderLine: true
+              layerSpace: 3
+              layerFontSize: 7
+              classIndentation: 0
+              classFontSize: 7
+              classSpace: 3
+
+        # Echelle  
+        - !columns
+          absoluteX: 485
+          absoluteY: 220
+          width: 100
+          items:
+            - !scalebar
+              align: right
+              #textDirection: right
+              maxSize: 100
+              type: line
+              #barDirection: down
+              intervals: 5
+              fontSize: 8
+              
+        # Footer  
+        - !columns
+          absoluteX: 5
+          absoluteY: 27
+          # width map (titre long or short...) - absoluteX - largeur du logo eau france = 595 - 5 - 
+          width: 487
+          items:
+            - !text
+              align: left
+              fontColor: white
+              font: Helvetica-BoldOblique
+              fontSize: 6
+              text: '${footer}'         
+      
+    #-------------------------------------------------------------------------
+    # Legende
+    #-------------------------------------------------------------------------
+    lastPage: 
+      pageSize: A4
+      landscape: false   
+      items:  
+        # Legende Attention faut au moins mettre une option
+        - !legends
+          condition: showLegendNextPage 
+          defaultScale: 75
+          maxIconWidth: 140 
+          maxIconHeight: 0         
+          layerUnderLine: true
+          layerSpace: 3
+          layerFontSize: 7
+          classIndentation: 0
+          classFontSize: 7
+          classSpace: 3
+                                 
+              
+  #===========================================================================
+  A3 portrait:
+  #===========================================================================
+    metaData:*commonMetaData
+
+    #-------------------------------------------------------------------------
+    # Titre | Carte | Echelle | Copyright 
+    #-------------------------------------------------------------------------
+    mainPage:
+      pageSize: A3
+      backgroundPdf: '${urlAppli}config/template/pdf/A3/${backgroundPdf}'
+      landscape: false
+      items:
+        # Carte      
+        - !map
+          condition: showHeaderShort
+          # Le nom dans le pdf pour le calque
+          name: 'Données'        
+          absoluteX: 1
+          absoluteY: 1163
+          width: 842
+          height: 873
+          
+        - !map
+          condition: showHeaderLong
+          # Le nom dans le pdf pour le calque
+          name: 'Données'        
+          absoluteX: 1
+          absoluteY: 1153
+          width: 842
+          height: 863
+                          
+        # Bandeau
+        - !columns
+          absoluteX: 0
+          absoluteY: 1191
+          width: 842
+          items:
+            - !image
+              maxWidth: 842
+              maxHeight: 1191
+              url: '${urlAppli}config/template/img/A3/${backgroundSvg}'          
+        
+        # Ruse pour avoir de la place + Titre 
+        - !columns
+          absoluteX: 0
+          absoluteY: 1178
+          width: 842
+          items:
+            - !text
+              align: center
+              fontColor: white
+              font: Helvetica
+              #backgroundColor: #65C2D4
+              fontColor: white
+              vertAlign: middle
+              fontSize: 14
+              text: '  '  
+        - !columns
+          absoluteX: 0
+          absoluteY: 1178
+          width: 842
+          #height: 35
+          items:
+            - !text
+              align: center
+              fontColor: white
+              font: Helvetica
+              fontColor: white
+              vertAlign: middle
+              fontSize: 14
+              text: '${mapTitle}'  
+              spacingAfter: 9
+
+        # Legende   
+        - !columns
+          condition: showLegendMap
+          absoluteX: 5
+          absoluteY: 282
+          width: 215
+          items:
+            - !legends
+              defaultScale: 75
+              maxIconWidth: 140
+              maxIconHeight: 0
+              layerUnderLine: true
+              layerSpace: 3
+              layerFontSize: 7
+              classIndentation: 0
+              classFontSize: 7
+              classSpace: 3
+              
+        # Echelle  
+        - !columns
+          absoluteX: 686
+          absoluteY: 311
+          width: 141
+          items:
+            - !scalebar
+              align: right
+              #textDirection: right
+              maxSize: 141
+              type: line
+              #barDirection: down
+              intervals: 7
+              fontSize: 11
+
+        # Footer  
+        - !columns
+          absoluteX: 7
+          absoluteY: 40
+          # width map (titre long or short...) - absoluteX - largeur logo eaufrance = 842 - 7 - ...
+          width: 685
+          items:
+            - !text
+              align: left
+              fontColor: white
+              font: Helvetica-BoldOblique
+              fontSize: 6
+              text: '${footer}'    
+      
+    #-------------------------------------------------------------------------
+    # Legende 
+    #-------------------------------------------------------------------------
+    lastPage:
+      pageSize: A3
+      landscape: false   
+      items:  
+        # Legende Attention faut au moins mettre une option
+        - !legends
+          condition: showLegendNextPage    
+          defaultScale: 75
+          maxIconHeight: 0
+          maxIconWidth: 140          
+          layerUnderLine: true
+          layerSpace: 3
+          layerFontSize: 7
+          classIndentation: 0
+          classFontSize: 7
+          classSpace: 3
+
+      # Pied de page        
+      footer: *commonFooterA4        
+                                      

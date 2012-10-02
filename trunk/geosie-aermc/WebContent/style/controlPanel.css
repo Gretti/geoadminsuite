@@ -1,0 +1,188 @@
+/*
+Styles for buttonBar
+*/
+
+.olControlPanel {
+    height: 35px;
+    margin-left: 90px;
+    margin-right: 5px;
+}
+
+.olControlPanelOther {
+    height: 35px;
+    margin-right: 5px;
+}
+
+.olControlPanel div {
+    display: block;
+    float: left;
+    width: 32px;
+    cursor: pointer;
+    height: 34px;
+    margin-left: 5px;
+}
+
+.olControlPanelOther div {
+    display: block;
+    float: left;
+    width: 32px;
+    cursor: pointer;
+    height: 34px;
+    margin-left: 5px;
+}
+
+.olControlZoomBoxItemActive {
+    background-image:url(images/zoomplus_on.png);
+}
+
+.olControlZoomBoxItemInactive {
+    background-image:url(images/zoomplus_off.png);
+}
+
+.olControlZoomOutItemActive {
+    background-image:url(images/zoommoins_on.png);
+}
+
+.olControlZoomOutItemInactive {
+    background-image:url(images/zoommoins_off.png);
+}
+
+.olControlDragPanItemActive {
+    background-image:url(images/deplace_on.png);
+}
+
+.olControlDragPanItemInactive {
+    background-image:url(images/deplace_off.png);
+}
+
+.olControlZoomToMaxExtentItemInactive {
+    background-image:url(images/pan_off.png);
+}
+
+.GeoSIEControlNavigationHistory {
+   background-image: url("images/navigation_history.png") !important;
+   background-repeat: no-repeat;
+   width:  32px !important;
+   height: 34px !important;
+
+}
+.GeoSIEControlNavigationHistoryPreviousItemInactive { 
+  background-position: 0px 0px !important;
+   cursor: default !important;
+}
+.GeoSIEControlNavigationHistoryPreviousItemActive {
+   background-position: -32px 0px !important;
+}
+.GeoSIEControlNavigationHistoryNextItemInactive {
+   background-position: 0px -34px !important; 
+   cursor: default !important;
+}
+.GeoSIEControlNavigationHistoryNextItemActive { 
+   background-position: -32px -34px !important; 
+}
+
+.GeoSIEControlEditPointItemActive {
+    background-image:url(images/dessinpt_on.png);
+}
+
+.GeoSIEControlEditPointItemInactive {
+    background-image:url(images/dessinpt_off.png);
+}
+
+.GeoSIEControlEditLineItemActive {
+
+    background-image:url(images/dessinln_on.png);
+}
+
+.GeoSIEControlEditLineItemInactive {
+    background-image:url(images/dessinln_off.png);
+}
+
+.GeoSIEControlEditPolygonItemActive {
+    background-image:url(images/dessinpoly_on.png);
+}
+
+.GeoSIEControlEditPolygonItemInactive {
+    background-image:url(images/dessinpoly_off.png);
+}
+
+.GeoSIEControlWfsGetFeatureItemActive {
+    background-image: url("images/selecpt_on.png");
+}
+
+.GeoSIEControlWfsGetFeatureItemInactive {
+    background-image: url("images/selecpt_off.png");
+}
+
+.GeoSIEControlDragFeatureItemActive {
+    background-image: url("images/deplacept_on.png");
+}
+
+.GeoSIEControlDragFeatureItemInactive {
+    background-image: url("images/deplacept_off.png");
+}
+
+.GeoSIEControlSnappingItemActive {
+    background-image: url("images/dessinpt_on.png");
+}
+
+.GeoSIEControlSnappingItemInactive {
+    background-image: url("images/dessinpt_off.png");
+}
+
+.GeoSIEControlWpsSelectItemInactive {
+/*	left: 285px;*/
+    background-image: url("images/wps/wps_vide_off.png");
+}
+
+.GeoSIEControlWpsGetFeatureItemActive {
+    background-image: url("images/getfeatureinfo_on.png");
+}
+
+.GeoSIEControlWpsGetFeatureItemInactive {
+    background-image: url("images/getfeatureinfo_off.png");
+}
+
+.GeoSIEControlWpsDownloadItemActive {
+    background-image: url("images/enregistre_on.png");
+}
+
+.GeoSIEControlWpsDownloadItemInactive {
+    background-image: url("images/enregistre_off.png");
+}
+
+.GeoSIEControlPrintItemInactive {
+    background-image: url("images/print_off.png");
+}
+
+.GeoSIEControlFullScreenItemInactive{
+    background-image: url("images/logo_agrandir.png");/*pan_off.png*/
+    background-repeat: no-repeat;
+}
+
+.GeoSIEControlFullScreenItemActive{
+    background-image: url("images/logo_fermer.png");/*pan_off.png*/
+    background-repeat: no-repeat;
+}
+
+.GeoSIEControlHelpItemInactive{
+    background-image: url("images/aide_off.png");
+    background-repeat: no-repeat;
+}
+
+/** TODO : remplacer l'image **/
+.GeoSIEControlContactItemInactive{
+    background-image: url("images/contact_off.png");
+    background-repeat: no-repeat;
+}
+
+.GeoSIEControlMeasureItemInactive{
+    background-image: url("images/mesurer_off.png");
+    background-repeat: no-repeat;
+}
+
+/** TODO : remplacer l'image **/
+.GeoSIEControlMeasureItemActive{
+    background-image: url("images/mesurer_on.png");
+    background-repeat: no-repeat;
+}
