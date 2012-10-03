@@ -38,9 +38,9 @@
         <!--<script src="lib/OpenLayers/lib/Firebugs/firebug.js"></script>-->
 
         <!-- OpenLayers 2.10 -->
-        <!--script type="text/javascript" src="lib/OpenLayers/OpenLayers.js"></script-->
+        <script type="text/javascript" src="lib/OpenLayers/OpenLayers.js"></script>
         <!--script type="text/javascript" src="lib/OpenLayers/ol-debug.js"></script-->
-        <script type="text/javascript" src="js/OpenLayers.debug.js"></script>
+        <!--script type="text/javascript" src="js/OpenLayers.debug.js"></script-->
 
         <!-- GeoSIE -->
         <script type="text/javascript" src="lib/GeoSIE/GeoSIE.js"></script>
@@ -118,9 +118,9 @@
             
                 // ajout d'une couche vectorielle type WFS
                 // ses attributs
-                propertyNames = ["gid", "numouv","numcomloc","msGeometry"];
+                propertyNames = ["gid", "classification","attribut_2","attribut_3","msGeometry"];
                 // la couche
-                ouvrageLayer = new OpenLayers.Layer.Vector("Ouvrages", {
+                ouvrageLayer = new OpenLayers.Layer.Vector("Ouvrages (WFS mapserver)", {
                     opacity: 1,
                     strategies: [new OpenLayers.Strategy.BBOX()], 
                     projection: new OpenLayers.Projection("EPSG:2154"),
@@ -150,7 +150,7 @@
                 // event de fin de chargement: zoom et Z index réglés la.
                 ouvrageLayer.events.register("loadend", ouvrageLayer, function (e) {
                     console.log("loadend on ouvrageLayer");
-                    GeoSIE.Brique.map.zoomTo(this.getDataExtent());
+                    //GeoSIE.Brique.map.zoomTo(this.getDataExtent());
                     
                     // affichage au sommet pour les events:
                     ouvrageLayer.setZIndex(1000);
@@ -169,7 +169,12 @@
                     console.log("featureUNselected on ouvrageLayer: " + e.feature);
                 });
                 
-                //GeoSIE.Brique.map.addLayer(ouvrageLayer);
+                GeoSIE.Brique.map.addLayer(ouvrageLayer);
+                
+                // ZOom sur scan/ortho, sous ensemble de la zone AERMC
+                //GeoSIE.Brique.map.zoomToExtent(new OpenLayers.Bounds(823116, 6361804, 885205, 6404049), true);
+                GeoSIE.Brique.map.zoomTo(new OpenLayers.Bounds(823116, 6361804, 885205, 6404049));
+                //GeoSIE.Brique.map.zoomToExtent(new OpenLayers.Bounds(4.54442324324455, 44.3444297804572,5.33860996443098, 44.7108776475941), true);
 
             });
             

@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Configuration Specifique à Tomcat de l'application Web -->
-<Context crossContext="true" debug="5" docBase="GeoSIE-Brique" path="/GeoSIE-Brique" reloadable="true">
-  <Resource 
-      auth="Container" 
-      driverClassName="org.postgresql.Driver" 
-      maxActive="20" 
-      maxIdle="10" 
-      maxWait="-1" 
-      name="jdbc/PostGreDS" 
-      password="toto" 
-      type="javax.sql.DataSource" 
-      url="jdbc:postgresql://aermc:5432/aermc" 
-      username="aermc"/>
+<Context crossContext="true" debug="5" docBase="GeoSIE-Brique" path="/geosie-aermc" reloadable="true">
+  <Resource auth="Container" driverClassName="org.postgresql.Driver" maxActive="20" maxIdle="10" maxWait="-1" name="jdbc/PostGreDS" password="toto" type="javax.sql.DataSource" url="jdbc:postgresql://aermc:5432/aermc" username="aermc"/>
 </Context>
