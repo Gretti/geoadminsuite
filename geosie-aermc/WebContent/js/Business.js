@@ -351,6 +351,7 @@ var Business = {
      * feature - {<OpenLayers.Feature.Vector>} La geometrie a afficher dans la popup.
      */       
     onConsult: function(feature) {
+        console.log("onconsult");
         var displayAttributes=this.getAttributs(feature);
         var form = 
         '<form id="editForm">'+

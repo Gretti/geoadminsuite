@@ -17,7 +17,7 @@
  */
 GeoSIE.Control.WfsGetFeature = OpenLayers.Class( OpenLayers.Control, {
 
-	/**
+    /**
 	 * Property: type
      * {OpenLayers.Control.TYPES}
 	 */
@@ -67,12 +67,12 @@ GeoSIE.Control.WfsGetFeature = OpenLayers.Class( OpenLayers.Control, {
      * {<GeoSIE.Control.WfsGetFeature>}  
 	 */
     initialize: function(options){
-    	OpenLayers.Util.extend(this, options);
+        OpenLayers.Util.extend(this, options);
     	
         this.wgs84 = new OpenLayers.Projection("EPSG:4326");
 
         OpenLayers.Control.prototype.initialize.apply(this, [options]);
-	},
+    },
     
     /**
      * Method: draw
@@ -96,8 +96,8 @@ GeoSIE.Control.WfsGetFeature = OpenLayers.Class( OpenLayers.Control, {
 	 */    
     activate: function() {
         if (!this.layer){
-        	OpenLayers.Console.warn("Il faut definir une couche vecteur pour WfsGetfeature");
-        	return;
+            OpenLayers.Console.warn("Il faut definir une couche vecteur pour WfsGetfeature");
+            return;
         }
         
         return OpenLayers.Control.prototype.activate.apply(this, arguments);
@@ -112,11 +112,11 @@ GeoSIE.Control.WfsGetFeature = OpenLayers.Class( OpenLayers.Control, {
      * featuresId - {Array(String)} The features id.
      */
     selectIds: function (featuresId) {
-    	// TODO : tester
+        // TODO : tester
         this.setQueryLayers();
         OpenLayers.Console.log(this.CLASS_NAME + "::selectIds - featuresId " + featuresId);
         // Effectue les GetFeature sur les couches interrogeables avec les featureIds spécifiés
-    	this.i_selectIds(featuresId, this.queryableLayers.slice(0), []);
+        this.i_selectIds(featuresId, this.queryableLayers.slice(0), []);
     },
 
     /**
@@ -131,12 +131,12 @@ GeoSIE.Control.WfsGetFeature = OpenLayers.Class( OpenLayers.Control, {
      * featureList - {Array(<OpenLayers.Feature.Vector>)} The features to add.
      */
     i_selectIds: function (featuresId,layerList,featureList) {
-       // Clause d'arrêt : s'il n'y a plus de couches à interroger, on dessine les features récupérés jusque là 
-       if(!layerList || layerList.length <= 0) {
-	        this.layer.removeFeatures(this.layer.features);
+        // Clause d'arrêt : s'il n'y a plus de couches à interroger, on dessine les features récupérés jusque là 
+        if(!layerList || layerList.length <= 0) {
+            this.layer.removeFeatures(this.layer.features);
             this.layer.addFeatures(featureList);
-			return;
-		}
+            return;
+        }
        
         var layer = layerList.pop();
         
@@ -144,24 +144,24 @@ GeoSIE.Control.WfsGetFeature = OpenLayers.Class( OpenLayers.Control, {
         var selectedFeaturesString = "";
         var selectedFeaturesArray = new Array();
         // update geometry || new geometry TODO : verifier que fonctionne bien dans tous les cas
-    	for (var i=0; i<featuresId.length; i++) {
-    		//console.log("featuresId point: "+featuresId[i].split(".")[1]);
+        for (var i=0; i<featuresId.length; i++) {
+            //console.log("featuresId point: "+featuresId[i].split(".")[1]);
             var fid = featuresId[i].split(".")[1]; //|| featuresId[i]
-    		var layerFid = featuresId[i].split(".")[0];
-    		var layerParams = layer.params["LAYERS"];
+            var layerFid = featuresId[i].split(".")[0];
+            var layerParams = layer.params["LAYERS"];
 
-    		// request only the features that belong to this layer when refresh
-    		// TODO : probleme avec les generiques, je dois chercher sur toutes les layers
-    		// car je ne sais pas a quelle couche appartient ce nouveau points
-    		if(layerParams == layerFid || layerFid == "GENERIQUE" ){
-    			var selectedFeatures = layerParams + "." + fid;
-    			selectedFeaturesArray.push(selectedFeatures);
-    		}
-    	}
+            // request only the features that belong to this layer when refresh
+            // TODO : probleme avec les generiques, je dois chercher sur toutes les layers
+            // car je ne sais pas a quelle couche appartient ce nouveau points
+            if(layerParams == layerFid || layerFid == "GENERIQUE" ){
+                var selectedFeatures = layerParams + "." + fid;
+                selectedFeaturesArray.push(selectedFeatures);
+            }
+        }
         
-    	if(selectedFeaturesArray.length>0){
-    		selectedFeaturesString = selectedFeaturesArray.join(",");
-    	}
+        if(selectedFeaturesArray.length>0){
+            selectedFeaturesString = selectedFeaturesArray.join(",");
+        }
     	
         var params = {
             SERVICE: "WFS",
@@ -179,14 +179,15 @@ GeoSIE.Control.WfsGetFeature = OpenLayers.Class( OpenLayers.Control, {
             params: params,
             scope: this,
             success: function(request) {
-		            var format = new OpenLayers.Format.GML({	            	
-		            	// to convert the geometry projection, WFS give 4326 we
-							// need to convert in the map projection
-		                    internalProjection: this.map.baseLayer.projection,
-		                    externalProjection: this.wgs84});
-		            featureList = featureList.concat(format.read(request.responseXML));
-		            this.i_selectIds(featuresId, layerList, featureList);
-		        },
+                var format = new OpenLayers.Format.GML({	            	
+                    // to convert the geometry projection, WFS give 4326 we
+                    // need to convert in the map projection
+                    internalProjection: this.map.baseLayer.projection,
+                    externalProjection: this.wgs84
+                    });
+                featureList = featureList.concat(format.read(request.responseXML));
+                this.i_selectIds(featuresId, layerList, featureList);
+            },
             failure: function() {
                 OpenLayers.Console.error("failure");
             }
@@ -201,12 +202,12 @@ GeoSIE.Control.WfsGetFeature = OpenLayers.Class( OpenLayers.Control, {
         // get all the queryable layer defined in the context.xml
         this.queryableLayers = [];
         if(this.map.layers && this.map.layers.length > 0) {
-        	for(var i = 0 ; i < this.map.layers.length ; i++) {
-        		var layer = this.map.layers[i];
-        		if(layer.options["queryable"] && layer.visibility == true) {
-        			this.queryableLayers.push(layer);
-        		}
-        	}
+            for(var i = 0 ; i < this.map.layers.length ; i++) {
+                var layer = this.map.layers[i];
+                if(layer.options["queryable"] && layer.visibility == true) {
+                    this.queryableLayers.push(layer);
+                }
+            }
         }
     },
     
@@ -242,7 +243,7 @@ GeoSIE.Control.WfsGetFeature = OpenLayers.Class( OpenLayers.Control, {
         
         if(layerList.length == 0){
             alert(GeoSIE.Messages.noQuerableLayerMessage); 
-        	return;
+            return;
         } else {
             // Effectue les GetFeature sur les couches interrogeables avec la zone calculée
             this.i_selectBox(bounds, layerList, []);
@@ -260,19 +261,19 @@ GeoSIE.Control.WfsGetFeature = OpenLayers.Class( OpenLayers.Control, {
 	 * featureList - {Array(<OpenLayers.Feature.Vector>)} The features to add.
 	 */
     i_selectBox: function (bounds, layerList, featureList) {
-    	// Clause d'arrêt : s'il n'y a plus de couches à interroger, on dessine les features récupérés jusque là 
-		if(!layerList || layerList.length <= 0) {
-	        this.layer.removeFeatures(this.layer.features);
+        // Clause d'arrêt : s'il n'y a plus de couches à interroger, on dessine les features récupérés jusque là 
+        if(!layerList || layerList.length <= 0) {
+            this.layer.removeFeatures(this.layer.features);
             this.layer.addFeatures(featureList);
-			return;
-		}
+            return;
+        }
 		
         var layer = layerList.pop();
         
         // request in 4326
         var boundsConvert = bounds.clone().transform(layer.map.getProjectionObject(),this.wgs84);
-        //var srs = layer.projection && layer.projection.getCode() ||
-        //layer.map && layer.map.getProjectionObject().getCode();//this.wgs84.getCode(),
+        var srs = layer.projection && layer.projection.getCode() ||
+        layer.map && layer.map.getProjectionObject().getCode();//this.wgs84.getCode(),
         
         var params = {
             SERVICE: "WFS",
@@ -280,9 +281,10 @@ GeoSIE.Control.WfsGetFeature = OpenLayers.Class( OpenLayers.Control, {
             REQUEST: "GetFeature",
             TYPENAME: layer.params["LAYERS"],
             MAXFEATURES: this.maxFeatures,
-            SRS: this.wgs84.getCode(),//boundsConvert.toBBOX(),
-            //SRSNAME: srs,
-            BBOX: boundsConvert.toBBOX(),
+            //SRS: this.wgs84.getCode(),//boundsConvert.toBBOX(),
+            //BBOX: boundsConvert.toBBOX(),
+            SRSNAME: srs,
+            BBOX: bounds.toBBOX(),
             NOCACHE: new Date().getTime()
         };
                 
@@ -291,19 +293,22 @@ GeoSIE.Control.WfsGetFeature = OpenLayers.Class( OpenLayers.Control, {
             params: params,
             scope: this,
             success: 
-				function(request) {
-		            var format = new OpenLayers.Format.GML({		            	
-		            		// to convert the geometry projection, WFS give 4326 we
-							// need to convert in the map projection 
-		            	    // TODO : utiliser le parametre srsname dans la requete WFS pour obtenir le resultat dans la projection voulue
-		                    internalProjection: this.map.baseLayer.projection,
-		                    externalProjection: this.wgs84});
-		            var features = format.read(request.responseXML);
-		            OpenLayers.Console.log(this.CLASS_NAME + "::i_selectBox - nb features wfs getfeature : "+features.length);
-		            //OpenLayers.Console.log(featureList);
-		            featureList = featureList.concat(features);
-		            this.i_selectBox(bounds, layerList, featureList);
-		        }
+            function(request) {
+                var format = new OpenLayers.Format.GML({		            	
+                    // to convert the geometry projection, WFS give 4326 we
+                    // need to convert in the map projection 
+                    // TODO : utiliser le parametre srsname dans la requete WFS pour obtenir le resultat dans la projection voulue
+                    internalProjection: this.map.baseLayer.projection,
+                    externalProjection: this.map.baseLayer.projection
+                    //externalProjection: this.wgs84
+                    });
+                                
+                var features = format.read(request.responseXML);
+                OpenLayers.Console.log(this.CLASS_NAME + "::i_selectBox - nb features wfs getfeature : "+features.length);
+                OpenLayers.Console.log(featureList);
+                featureList = featureList.concat(features);
+                this.i_selectBox(bounds, layerList, featureList);
+            }
             ,
             failure: function() {
                 OpenLayers.Console.error("failure");
