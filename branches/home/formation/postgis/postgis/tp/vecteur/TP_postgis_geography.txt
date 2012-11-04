@@ -1,0 +1,12 @@
+______________________________________________________
+TP illustrant le nouveau type GEOGRAPHY (PostGIS 1.5+)
+
+1) Charger le fichier de données sample_gpx_u8 dans PostGIS (données globales, WGS84)
+
+2) Vérifier que les données sont bien du type GEOGRAPHY, convertir si ce n'est pas le cas
+
+3) Indexer la table 
+
+4) Calculer la distance de la trace
+
+5) Exporter ces données sous forme de LINESTRING en KML pour visu dans Google Earth

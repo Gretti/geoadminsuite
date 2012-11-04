@@ -1,0 +1,31 @@
+__________________________________________________________________________________
+Trouver tous les objets non contenus dans une zone, utilisation des index spatiaux
+
+• Charger les données des couches 10m_populated_places_simple.shp et 10m_admin_0_countries.shp
+
+shp2pgsql -IiDd -s 4326 -W LATIN1 geodata/10m_cultural/10m_populated_places_simple.shp villes | psql -p 5433 postgis
+shp2pgsql -IiDd -s 4326 -W LATIN1 geodata/10m_cultural/10m_admin_0_countries.shp pays | psql -p 5433 postgis
+
+• Vérifier la validité des données et nettoyer les données invalides
+
+update pays set the_geom = st_multi(st_buffer(the_geom, 0.0)) where not st_isvalid(the_geom);
+
+• Trouver toutes les villes qui ne sont pas contenues dans un pays (!)
+
+Premiere idee:
+
+select * from villes v, pays p where not st_contains(p.geometry, v.the_geom);
+
+Mais temps tres long. Deuxieme idee: sous requete pour eliminer les candidats:
+
+select count(*) from villes where gid not in (select gid from villes v, pays p where st_contains(p.geometry, v.the_geom));
+
+• Comparer les requetes avec index spatiaux et sans index spatiaux (timing de la requete):
+
+(recharger la table depuis le shapefile, sans index et en mode drop/recreate):
+
+shp2pgsql -iDd -s 4326 -W LATIN1 geodata/10m_cultural/10m_populated_places_simple.shp villes | psql -p 5433 postgis
+shp2pgsql -iDd -s 4326 -W LATIN1 geodata/10m_cultural/10m_admin_0_countries.shp pays | psql -p 5433 postgis
+
+Avec index: temps: 4.2 s
+Sans index: temps: 27 s

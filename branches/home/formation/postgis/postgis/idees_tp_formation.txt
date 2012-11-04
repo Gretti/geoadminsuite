@@ -1,0 +1,41 @@
+-- a query to dump multi objects into single one, basic first, then by dumping
+-- all attributes (system table to find all relation attributes) and increasing
+-- identifiers automatically, based on:
+
+SELECT generate_series(1,(Select ST_NumGeometries(the_geom))) as id,
+ST_GeometryN(the_geom, generate_series(1, ST_NumGeometries(the_geom))) AS the_geom 
+into single_lines FROM lines;
+
+Thread:
+http://postgis.refractions.net/pipermail/postgis-users/2008-February/018494.html
+
+-- virer toute reference a 1.4 => mise a jour de la version
+
+-- Expliquer le type geography: 
+	pendant du type geometry,
+	limitations et forces
+	utilisation
+	conversion
+	TP: données de france (L93) converties en WGS84/geog:
+	
+	calculer la distance directement: regarder la difference avec un type geometry
+	surface de la france en WGS et projection: comparer
+	
+	
+-- hausdorff distance ?
+
+-- readers: GML et KML: des exemples, depuis un serveur WFS par exemple.
+
+-- nouvelles fonctions expliquees, avec TP:
+	ST_ClosestPoint
+	ST_DFullyWithin
+	ST_LongestLine
+	ST_MaxDistance
+	ST_ShortestLine
+	
+	
+-- integration de trace GPX, 
+creation de table, 
+fabrication de point (makePoint)
+reprojection en l93
+affichage qgis avec la france par ex.
