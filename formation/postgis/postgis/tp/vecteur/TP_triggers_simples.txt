@@ -1,0 +1,16 @@
+___________________________
+TP de creation de triggers:
+
+But: creation d'un trigger sur une colonne geographique, la mettant à jour
+automatiquement en cas d'insertion dans d'autres colonnes de la table
+
+• Reprendre le TP: tp_import_gps.txt: charger les données dans une table, qui contiendra
+  6 colonnes: gid, latitude, longitude, altitude, temps, geom
+
+• Créer un trigger sur cette table mettant automatiquement a jour le champ "geom" lorsque
+  des coordonnées latitude/longitude sont insérées dans la table:
+    - Soit gérer le cas de coordonnées qui peuvent etre nulles
+    - Soit mettre des contraintes de non nullité sur ces colonnes, a la creation de la table
+  
+• Vérifier la prise en compte du trigger en inserant des données
+

@@ -1,0 +1,12 @@
+__________________________________________________________________________________
+Trouver tous les objets non contenus dans une zone, utilisation des index spatiaux
+
+• Charger les données des couches 10m_populated_places_simple.shp et 10m_admin_0_countries.shp
+
+• Vérifier la validité des données et nettoyer les données invalides
+
+• Trouver toutes les villes qui ne sont pas contenues dans un pays (!)
+
+• Comparer les requetes avec index spatiaux et sans index spatiaux (timing de la requete):
+
+

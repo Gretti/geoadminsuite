@@ -1,0 +1,79 @@
+_____________________________________
+TP Import de points GPS au format CSV
+
+__________________
+But de l'exercice: 
+
+Importer des donnees depuis un fichier texte dans PostgreSQL
+Fabriquer des donnees geographiques a partir de coordonnees
+Reprojeter des donnees en projection officielle francaise
+Simplifier les donnees geographiques
+Visualiser le resultat dans Qgis
+
+_______
+Etapes:
+
+• Creer une table qui va contenir les donnees issues du fichier CSV:
+les colonnes doivent permettre de stocker latitude, longitude, altitude et temps
+
+create table traces (
+	id serial primary key,
+	lat double precision,
+	lon double precision,
+	elev double precision,
+	temps timestamp);
+	
+• Importer les donnees dans cette table (commande COPY FROM)
+
+copy traces (lat, lon, elev, temps) 
+from 'postgis/data/vecteur/trace.csv' 
+WITH (format CSV, delimiter ',' , header true);
+
+• Ajouter deux colonnes geographiques permettant de stocker des points, dans deux
+  systemes de projection differents (Referentiel GPS et projection officielle francaise)
+  
+  -> trouver les codes EPSG/SRID d'une projection: spatialreference.org, ou http://www.spatial-reference.org/
+
+select addgeometryColumn('traces', 'geom', 4326, 'POINT', 2);
+select addgeometryColumn('traces', 'geom_l93', 2154, 'POINT', 3); -- cette colonne sera en 3D, pour voir ce qu'on peut faire...
+  
+•Convertir les coordonnees en objets geographiques
+
+update traces set geom = st_setSrid(st_makePoint(lon, lat), 4326);
+
+•mettre a jour la deuxieme colonne geographique en reprojetant les objets geographiques 
+  dans le systeme francais et en prenant en compte les 3 dimensions (altitude)
+  
+update traces set geom_l93 = st_transform(st_setSrid(st_makePoint(lon, lat, elev), 4326), 2154);
+
+•Fabriquer une ligne comportant tous les points GPS, dans le bon ordre
+
+-- avec une sous requete
+select st_makeline(geom) from (select * from traces order by temps) as foo;
+
+-- sans sous requete...
+
+•Fabriquer une ligne "simplifiee", contenant moins de points mais respectant le dessin de la ligne
+  (Controler la simplification pour obtenir le resultat desire)
+
+-- pour verifier le nombre de points de la simplification:
+select st_npoints(st_simplify(st_makeline(geom),0.0001)) from (select * from traces order by temps) as foo;
+
+select st_simplify(st_makeline(geom),0.0001) from (select * from traces order by temps) as foo;
+
+-erreur sur la distance entre la version simplifiee et la version originale
+
+select st_length_spheroid(simpleline, 'SPHEROID["GRS_1980",6378137,298.257222101]') as simpleDist, 
+       st_length_spheroid(line, 'SPHEROID["GRS_1980",6378137,298.257222101]') as dist from
+
+(select st_simplify(st_makeline(geom),0.0001) as simpleLine, st_makeline(geom) as line 
+from (select * from traces order by temps) as foo) as bar;
+
+•Calculer la vitesse moyenne entre chaque point. Ajouter ces valeurs dans une nouvelle colonne
+   de la table: vitesse
+
+select...
+
+•Visualiser le resultat dans QGis ou OpenJump
+
+
