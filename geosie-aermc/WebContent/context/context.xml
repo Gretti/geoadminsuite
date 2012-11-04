@@ -7,12 +7,19 @@
         <Title/>    
     </General>
     <LayerList>
+
         <Layer queryable="0" hidden="1">
             <Server service="OGC:WMS" version="1.1.1">
-                <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://aermc/mapcache"/>
+                <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://aermc:8180/mapcache"/>
             </Server>
             <Name>ortho</Name>
-            <Title>Ortho (mapcache)</Title>
+            <Title>ortho</Title>
+            <!-- ici le lien vers le catalogue GeoSource qui sera mis en place à l'Agence 
+            <MetadataURL type="TC211">
+                <Format>text/html</Format>
+                <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://aermc:8180/cat/Detail.do?id=1912"/>
+            </MetadataURL>      
+            -->
             <SRS>EPSG:2154</SRS>
             <FormatList>
                 <Format current="1">image/png</Format>
@@ -32,16 +39,22 @@
                 <ol:isBaseLayer xmlns:ol="http://openlayers.org/context">false</ol:isBaseLayer>
                 <ol:opacity xmlns:ol="http://openlayers.org/context">1</ol:opacity>
                 <ol:displayInLayerSwitcher xmlns:ol="http://openlayers.org/context">true</ol:displayInLayerSwitcher>
-                <ol:singleTile xmlns:ol="http://openlayers.org/context">true</ol:singleTile>
+                <ol:singleTile xmlns:ol="http://openlayers.org/context">false</ol:singleTile>
             </Extension>
         </Layer>
-        
+
         <Layer queryable="0" hidden="1">
             <Server service="OGC:WMS" version="1.1.1">
-                <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://aermc/mapcache"/>
+                <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://aermc:8180/mapcache"/>
             </Server>
             <Name>scan25</Name>
             <Title>scan25 (mapcache)</Title>
+            <!-- ici le lien vers le catalogue GeoSource qui sera mis en place à l'Agence 
+            <MetadataURL type="TC211">
+                <Format>text/html</Format>
+                <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://aermc:8180/cat/Detail.do?id=1912"/>
+            </MetadataURL>      
+            -->
             <SRS>EPSG:2154</SRS>
             <FormatList>
                 <Format current="1">image/png</Format>
@@ -61,71 +74,12 @@
                 <ol:isBaseLayer xmlns:ol="http://openlayers.org/context">false</ol:isBaseLayer>
                 <ol:opacity xmlns:ol="http://openlayers.org/context">1</ol:opacity>
                 <ol:displayInLayerSwitcher xmlns:ol="http://openlayers.org/context">true</ol:displayInLayerSwitcher>
-                <ol:singleTile xmlns:ol="http://openlayers.org/context">true</ol:singleTile>
+                <ol:singleTile xmlns:ol="http://openlayers.org/context">false</ol:singleTile>
             </Extension>
         </Layer>
-        
-        <Layer queryable="0" hidden="1">
-            <Server service="OGC:WMS" version="1.1.1">
-                <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://aermc/cgi-bin/mapserv?map=/home/aermc/scripts/mapcache/test.map"/>
-            </Server>
-            <Name>ortho</Name>
-            <Title>ortho (mapserver)</Title>
-            <SRS>EPSG:2154</SRS>
-            <FormatList>
-                <Format current="1">image/png</Format>
-            </FormatList>
-            <StyleList>
-                <Style current="1">
-                    <Name/>
-                    <Title>Default</Title>
-                </Style>
-            </StyleList>
-            <Extension>
-                <ol:attribution xmlns:ol="http://openlayers.org/context">AERMC</ol:attribution>
-                <!--        <ol:maxExtent xmlns:ol="http://openlayers.org/context" minx="40428.0000000000000" miny="1600797.00000000000" maxx="1216896.00000000000" maxy="2698833.79999999981"/>-->
-                <ol:transparent xmlns:ol="http://openlayers.org/context">true</ol:transparent>
-                <ol:numZoomLevels xmlns:ol="http://openlayers.org/context">13</ol:numZoomLevels>
-                <ol:units xmlns:ol="http://openlayers.org/context">m</ol:units>
-                <ol:isBaseLayer xmlns:ol="http://openlayers.org/context">false</ol:isBaseLayer>
-                <ol:opacity xmlns:ol="http://openlayers.org/context">1</ol:opacity>
-                <ol:displayInLayerSwitcher xmlns:ol="http://openlayers.org/context">true</ol:displayInLayerSwitcher>
-                <ol:singleTile xmlns:ol="http://openlayers.org/context">true</ol:singleTile>
-            </Extension>
-        </Layer>
-        
-        <Layer queryable="0" hidden="1">
-            <Server service="OGC:WMS" version="1.1.1">
-                <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://aermc/cgi-bin/mapserv?map=/home/aermc/scripts/mapcache/test.map"/>
-            </Server>
-            <Name>scan25</Name>
-            <Title>scan25 (mapserver)</Title>
-            <SRS>EPSG:2154</SRS>
-            <FormatList>
-                <Format current="1">image/png</Format>
-            </FormatList>
-            <StyleList>
-                <Style current="1">
-                    <Name/>
-                    <Title>Default</Title>
-                </Style>
-            </StyleList>
-            <Extension>
-                <ol:attribution xmlns:ol="http://openlayers.org/context">AERMC</ol:attribution>
-                <!--        <ol:maxExtent xmlns:ol="http://openlayers.org/context" minx="40428.0000000000000" miny="1600797.00000000000" maxx="1216896.00000000000" maxy="2698833.79999999981"/>-->
-                <ol:transparent xmlns:ol="http://openlayers.org/context">true</ol:transparent>
-                <ol:numZoomLevels xmlns:ol="http://openlayers.org/context">13</ol:numZoomLevels>
-                <ol:units xmlns:ol="http://openlayers.org/context">m</ol:units>
-                <ol:isBaseLayer xmlns:ol="http://openlayers.org/context">false</ol:isBaseLayer>
-                <ol:opacity xmlns:ol="http://openlayers.org/context">1</ol:opacity>
-                <ol:displayInLayerSwitcher xmlns:ol="http://openlayers.org/context">true</ol:displayInLayerSwitcher>
-                <ol:singleTile xmlns:ol="http://openlayers.org/context">true</ol:singleTile>
-            </Extension>
-        </Layer>
-        
-        
-        
-        
+
+
+
         <Layer queryable="0" hidden="0">
             <Server service="OGC:WMS" version="1.1.1">
                 <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://mapsref.brgm.fr/wxs/refcom-env/refign?"/>
@@ -228,7 +182,7 @@
         <!-- maquette AERMC: Couche carthage servie localement par le serveur PostGIS -->
         <Layer queryable="1" hidden="1">
             <Server service="OGC:WMS" version="1.1.1">
-                <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://aermc/cgi-bin/mapserv?map=/carto/demo_maquette.map"/>
+                <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://aermc:8180/cgi-bin/mapserv?map=/carto/demo_maquette.map"/>
             </Server>
             <Name>carthage_aermc</Name>
             <Title>Carthage AERMC</Title>
@@ -265,7 +219,7 @@
         <!-- maquette AERMC: Couche des ouvrages servie localement par le serveur PostGIS -->
         <Layer queryable="1" hidden="0">
             <Server service="OGC:WMS" version="1.1.1">
-                <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://aermc/cgi-bin/mapserv?map=/carto/demo_maquette.map"/>
+                <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://aermc:8180/cgi-bin/mapserv?map=/carto/demo_maquette.map"/>
             </Server>
             <Name>ouvrages</Name>
             <Title>Ouvrages AERMC</Title>
@@ -297,28 +251,29 @@
                 <ol:singleTile xmlns:ol="http://openlayers.org/context">true</ol:singleTile>
             </Extension>
         </Layer>
-<!--        <Layer queryable="0" hidden="1">
-            <Server service="OGC:WMS" version="1.3.0">
-                <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://mapsrefrec.brgm.fr/WMS/mapserv?map=/carto/ONEMA/mapFiles/Geobs_Monde.map"/>
+
+        <!--Layer queryable="0" hidden="1">
+            <Server service="OGC:WMS" version="1.1.0">
+                <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://aermc/8180/mapcache"/>
             </Server>
-            <Name>OBSTACLE</Name>
-            <Title>Obstacles</Title>
+            <Name>ortho</Name>
+            <Title>ortho (mapcache)</Title>
             <SRS>EPSG:4326</SRS>
             <SRS>EPSG:2154</SRS>
             <FormatList>
-                <Format current="1">image/gif</Format>
+                <Format current="1">image/png</Format>
             </FormatList>
             <StyleList>
                 <Style current="1">
                     <Name>default</Name>
                     <Title>default</Title>
                     <LegendURL format="image/gif">
-                        <OnlineResource xlink:type="simple" xlink:href="http://mapsrefrec.brgm.fr/WMS/mapserv?map=/carto/ONEMA/mapFiles/Geobs_Monde.map&amp;SERVICE=WMS&amp;VERSION=1.0.0&amp;REQUEST=GetLegendGraphic&amp;layer=OBSTACLE&amp;format=image/gif"/>
+                        <OnlineResource xlink:type="simple" xlink:href="http://aermc:8180/mapcache?REQUEST=GetCApabilities&SERVICE=WMS&amp;layer=ortho&amp;format=image/png"/>
                     </LegendURL>
                 </Style>
             </StyleList>
             <Extension>
-                <ol:attribution xmlns:ol="http://openlayers.org/context">ONEMA</ol:attribution>
+                <ol:attribution xmlns:ol="http://openlayers.org/context">aermc</ol:attribution>
                 <ol:transparent xmlns:ol="http://openlayers.org/context">true</ol:transparent>
                 <ol:numZoomLevels xmlns:ol="http://openlayers.org/context">13</ol:numZoomLevels>
                 <ol:units xmlns:ol="http://openlayers.org/context">m</ol:units>
@@ -327,6 +282,6 @@
                 <ol:displayInLayerSwitcher xmlns:ol="http://openlayers.org/context">true</ol:displayInLayerSwitcher>
                 <ol:singleTile xmlns:ol="http://openlayers.org/context">true</ol:singleTile>
             </Extension>
-        </Layer>-->
+        </Layer-->
     </LayerList>
 </ViewContext>
