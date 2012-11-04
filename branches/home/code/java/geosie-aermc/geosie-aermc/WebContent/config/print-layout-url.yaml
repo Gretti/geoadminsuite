@@ -1,0 +1,562 @@
+#=====================  ATTENTION POUR TEST SEULEMENT ==========================
+
+#===========================================================================
+# allowed DPIs
+#===========================================================================
+dpis:
+  - 96
+  - 72
+
+#===========================================================================
+# the allowed scales
+#===========================================================================
+scales:
+  - 1000
+  - 2500
+  - 5000
+  - 10000
+  - 25000
+  - 50000
+  - 100000
+  - 250000
+  - 500000
+  - 1000000
+  - 2000000
+  - 4000000
+  - 10000000
+
+#===========================================================================
+# the list of allowed hosts
+#===========================================================================
+hosts:
+  - !localMatch
+    dummy: true
+  - !ipMatch
+    ip: 217.108.210.48
+  - !dnsMatch
+    host: mapsrefrec.brgm.fr
+    port: 80
+  - !dnsMatch
+    host: mapdmzrec.brgm.fr
+    port: 80
+  - !dnsMatch
+    host: mapsref.brgm.fr
+    port: 80
+  - !dnsMatch
+    host: mapdmz.brgm.fr
+    port: 80
+
+#
+# 2 layouts :
+#  - A4 portrait
+#  - A3 portrait (c est un copie du yaml de A4 avec le pageSize a A3) 
+#
+
+layouts:
+  #===========================================================================
+  A4 portrait:
+  #===========================================================================
+    metaData:
+      title: ''
+      author: ''
+      subject: ''
+      keywords: ''
+      creator: 'ONEMA'
+
+    # Page de couverture '${configDir}/template/pdf/onema_A4.pdf'
+    titlePage:
+      pageSize: A4
+      # Ne pas mettre file:// '${configDir} gabarit_impression_portrait_A4
+      backgroundPdf: '${urlAppli}config/template/pdf/onema_A4.pdf'
+      items:
+        - !columns
+          # columns can have an absolute position. In that case, they need a width.
+          absoluteX: 50
+          absoluteY: 500
+          width: 400
+          items:
+            - !text
+              font: Helvetica
+              fontSize: 30
+              align: left
+              #lineSpacing: 2 
+              text: 'Fiches référentiel des obstacles à l’écoulement URL'       
+        - !columns
+          absoluteX: 50
+          absoluteY: 585
+          width: 160
+          items:
+            - !image
+              maxWidth: 160
+              maxHeight: 160
+              spacingAfter: 100
+              url: http://inpn.mnhn.fr/isb/img/logo_onema.jpg
+      
+      # Pied de page       	
+      footer: &commonFooterA4
+        # pour avoir plus de place sinon le texte au dessus peut "coller" le footer
+        height: 40
+        items:
+          - !columns
+            nbColumns: 2
+            items:
+              - !text   
+                align: left
+                text: 'GeoSIE-Brique version 2 - ${now dd/MM/yyyy}'            
+              - !text
+                align: right
+                text: 'Page n°${pageNum}'
+
+    #-------------------------------------------------------------------------
+    # Titre | Carte | Echelle | Copyright 
+    #-------------------------------------------------------------------------
+    mainPage:
+      pageSize: A4
+      landscape: true
+      items:
+        # Titre
+        - !text
+          font: Helvetica-Bold
+          fontSize: 30
+          align: center
+          text: 'Carte : ${mapTitle}'  
+          link: false
+          spacingAfter: 20      
+        
+        # Copyright
+        - !text
+          align: left
+          text: '${copyright}'
+          spacingAfter: 10
+          
+        # Ensemble de cartes (WMS et Vector)
+        - !map
+          # Le nom dans le pdf pour le calque
+          name: 'Données'
+          spacingAfter: 10
+          #absoluteX: 29
+          #absoluteY: 728
+          #width: 440
+          #height: 483
+          width: 758
+          # si trop haut le titre Resultat est mal positionne
+          height: 383
+          borderWidth: 2
+        # Overview
+        - !map
+           width: 80
+           height: 80
+           overviewMap: 2  
+           condition: showOverView
+           
+        # Echelle  
+        - !columns
+          config:
+            cells:
+              - paddingBottom: 0   
+          items:
+            - !text
+              align: left
+              text: 'Echelle de restitution ~ 1/${scale}'
+            - !scalebar
+              type: bar
+              maxSize: 100
+              barBgColor: white
+              fontSize: 8
+              align: right
+              spacingAfter: 10
+                                    
+      # Pied de page       	
+      footer: *commonFooterA4
+      
+    #-------------------------------------------------------------------------
+    # Tableau resume obstacle | Legende | Tableaux fiches obstacle 
+    #-------------------------------------------------------------------------
+    lastPage:
+      pageSize: A4
+      landscape: false   
+      items:  
+        # Titre du tableau
+        - !text
+          spacingAfter: 5
+          font: Helvetica-Bold
+          fontSize: 12
+          align: left
+          text: 'Résultat' 
+          condition: showTable  
+          
+        # Tableau avec la liste des obstacles  
+        - !attributes
+          source: data
+          condition: showTable  
+          spacingAfter: 30
+          tableConfig:
+            borderWidth: 0
+            cells:
+            # match every cell (default cell formatting)
+              - padding: 4
+          columnDefs:
+            obs_original_id:
+              columnWeight: 2
+              header: !text
+                text: Obstacle
+                backgroundColor: #A0A0A0
+              cell: !text
+                text: '${obs_original_id}'
+                fontColor: #1111CC
+                link: true
+            obs_nom:
+              columnWeight: 5
+              header: !text
+                text: Libellé
+                backgroundColor: #A0A0A0
+              cell: !text
+                text: '${obs_nom}'   
+            obs_nom_source:
+              columnWeight: 2
+              header: !text
+                text: Source
+                backgroundColor: #A0A0A0
+              cell: !text
+                text: '${obs_nom_source}'
+            etat:
+              columnWeight: 2
+              header: !text
+                text: Etat
+                backgroundColor: #A0A0A0
+              cell: !text
+                text: '${etat}' 
+                      
+        # Legende Attention faut au moins mettre une option
+        - !legends
+             #maxIconWidth: 150
+             #maxIconHeight: 960        
+          layerSpace: 5
+             #layerFontSize: 16
+             #classIndentation: 0
+             #classFontSize: 8
+             #classSpace: 5  
+          title: 'Légende'
+
+        # Fiches des obstacles Referentiel
+        - !records
+          condition: showRecords    
+          source: featuresRef
+          spacingAfter: 30
+          tableConfig:
+            borderWidth: 0.5
+            borderColor: #B7D4E1
+            cells:
+            # match every cell (default cell formatting)
+              - borderWidthBottom: 0.5
+                borderWidthLeft: 0.5
+                borderColor: #B7D4E1
+                padding: 4
+              # Colonne la plus a gauche
+              - col: 0
+                backgroundColor:#018881
+  
+          columnDefs:
+            libelle:
+              columnWeight: 2
+              header: !text
+                text: ' '
+              cell: !text
+                font: Helvetica-Bold
+                text: '${libelle}'
+                fontColor: white
+            value:
+              columnWeight: 5
+              header: !text
+                text: ' '
+              cell: !text
+                text: '${value}'  
+                     
+        # Fiches des obstacles Partenaire
+        - !records
+          condition: showRecords    
+          source: featuresPar
+          spacingAfter: 30
+          tableConfig:
+            borderWidth: 0.5
+            borderColor: #B7D4E1
+            cells:
+            # match every cell (default cell formatting)
+              - borderWidthBottom: 0.5
+                borderWidthLeft: 0.5
+                borderColor: #B7D4E1
+                padding: 4
+              # Colonne la plus a gauche
+              - col: 0
+                backgroundColor:#018881
+          columnDefs:
+            libelle:
+              columnWeight: 2
+              header: !text
+                text: ' '               
+              cell: !text
+                font: Helvetica-Bold
+                text: '${libelle}'
+                fontColor: white
+            value:
+              columnWeight: 5
+              header: !text
+                text: ' '
+              cell: !text
+                text: '${value}'          
+
+      # Pied de page       	
+      footer: *commonFooterA4                
+  #===========================================================================
+  A3 portrait:
+  #===========================================================================
+    metaData:
+      title: ''
+      author: ''
+      subject: ''
+      keywords: ''
+      creator: 'ONEMA'
+      
+    # Page de couverture
+    titlePage:
+      pageSize: A3
+      # Ne pas mettre file:// '${configDir} gabarit_impression_portrait_A4
+      backgroundPdf: '${configDir}/template/pdf/onema_A3.pdf'
+      items:
+        - !columns
+          # columns can have an absolute position. In that case, they need a width.
+          absoluteX: 50
+          absoluteY: 750
+          width: 400
+          items:
+            - !text
+              font: Helvetica
+              fontSize: 30
+              align: left
+              #lineSpacing: 2 
+              text: 'Fiches référentiel des obstacles à l’écoulement'       
+        - !columns
+          absoluteX: 50
+          absoluteY: 835
+          width: 160
+          items:
+            - !image
+              maxWidth: 160
+              maxHeight: 160
+              spacingAfter: 100
+              url: http://inpn.mnhn.fr/isb/img/logo_onema.jpg
+      
+      # Pied de page       	
+      footer: &commonFooterA3
+        # pour avoir plus de place sinon le texte au dessus peut "coller" le footer
+        height: 40
+        items:
+          - !columns
+            nbColumns: 2
+            items:
+              - !text   
+                align: left
+                text: 'GeoSIE-Brique version 2 - ${now dd/MM/yyyy}'            
+              - !text
+                align: right
+                text: 'Page n°${pageNum}'
+
+    #-------------------------------------------------------------------------
+    mainPage:
+      pageSize: A3
+      items:
+        # Titre
+        - !text
+          font: Helvetica-Bold
+          fontSize: 30
+          align: center
+          text: 'Carte : ${mapTitle}'  
+          link: false
+          spacingAfter: 20      
+        
+        # Copyright
+        - !text
+          align: left
+          text: '${copyright}'
+          spacingAfter: 10
+          
+        # Ensemble de cartes (WMS et Vector)
+        - !map
+          # Le nom dans le pdf pour le calque
+          name: 'Données'
+          spacingAfter: 10
+          #absoluteX: 29
+          #absoluteY: 728
+          #width: 440
+          #height: 483
+          width: 730
+          height: 483
+          borderWidth: 2
+        - !map
+           width: 80
+           height: 80
+           overviewMap: 2  
+           condition: showOverView
+           
+        # Echelle  
+        - !columns
+          config:
+            cells:
+              - paddingBottom: 0   
+          items:
+            - !text
+              align: left
+              text: 'Echelle de restitution ~ 1/${scale}'
+            - !scalebar
+              type: bar
+              maxSize: 100
+              barBgColor: white
+              fontSize: 8
+              align: right
+              spacingAfter: 10
+                  
+        # Titre du tableau
+        - !text
+          spacingAfter: 5
+          font: Helvetica-Bold
+          fontSize: 12
+          align: left
+          text: 'Résultat' 
+          condition: showTable  
+                  
+        # Tableau avec la liste des obstacles  
+        - !attributes
+          source: data
+          spacingAfter: 30
+          condition: showTable  
+          tableConfig:
+            borderWidth: 0
+            cells:
+            # match every cell (default cell formatting)
+              - padding: 4
+          columnDefs:
+            obs_original_id:
+              columnWeight: 2
+              header: !text
+                text: Obstacle
+                backgroundColor: #A0A0A0
+              cell: !text
+                text: '${obs_original_id}'
+                fontColor: #1111CC
+                link: true
+            obs_nom:
+              columnWeight: 5
+              header: !text
+                text: Libellé
+                backgroundColor: #A0A0A0
+              cell: !text
+                text: '${obs_nom}'   
+            obs_nom_source:
+              columnWeight: 2
+              header: !text
+                text: Source
+                backgroundColor: #A0A0A0
+              cell: !text
+                text: '${obs_nom_source}'
+            etat:
+              columnWeight: 2
+              header: !text
+                text: Etat
+                backgroundColor: #A0A0A0
+              cell: !text
+                text: '${etat}' 
+
+        # Legende Attention faut au moins mettre une option
+        - !columns
+          # columns can have an absolute position. In that case, they need a width.
+          nbColumns: 1
+          items:
+            # Ne permet pas de mettre la légende avec le titre sur 1 seul page
+            #- !text
+            #  spacingAfter: 5
+            #  font: Helvetica-Bold
+            #  fontSize: 12
+            #  align: left
+            #  text: 'Légende' 
+            #  condition: showLegends  
+            - !legends
+             #maxIconWidth: 150
+             #maxIconHeight: 960        
+              layerSpace: 5
+             #layerFontSize: 16
+             #classIndentation: 0
+             #classFontSize: 8
+             #classSpace: 5  
+              title: 'Légende'
+              condition: showLegends                        
+                                 
+        # Fiches des obstacles Referentiel
+        - !records
+          condition: showRecords    
+          source: featuresRef
+          spacingAfter: 30
+          tableConfig:
+            borderWidth: 0.5
+            borderColor: #B7D4E1
+            cells:
+            # match every cell (default cell formatting)
+              - borderWidthBottom: 0.5
+                borderWidthLeft: 0.5
+                borderColor: #B7D4E1
+                padding: 4
+              # Colonne la plus a gauche
+              - col: 0
+                backgroundColor:#018881
+  
+          columnDefs:
+            libelle:
+              columnWeight: 2
+              header: !text
+                text: ' '               
+              cell: !text
+                font: Helvetica-Bold
+                text: '${libelle}'
+                fontColor: white
+            value:
+              columnWeight: 5
+              header: !text
+                text: ' '
+              cell: !text
+                text: '${value}'  
+                     
+        # Fiches des obstacles Partenaire
+        - !records
+          condition: showRecords    
+          source: featuresPar
+          spacingAfter: 30
+          tableConfig:
+            borderWidth: 0.5
+            borderColor: #B7D4E1
+            cells:
+            # match every cell (default cell formatting)
+              - borderWidthBottom: 0.5
+                borderWidthLeft: 0.5
+                borderColor: #B7D4E1
+                padding: 4
+              # Colonne la plus a gauche
+              - col: 0
+                backgroundColor:#018881
+          columnDefs:
+            libelle:
+              columnWeight: 2
+              header: !text
+                text: ' '               
+              cell: !text
+                font: Helvetica-Bold
+                text: '${libelle}'
+                fontColor: white
+            value:
+              columnWeight: 5
+              header: !text
+                text: ' '
+              cell: !text
+                text: '${value}'          
+                                    
+      # Pied de page       	
+      footer: *commonFooterA3
+             
