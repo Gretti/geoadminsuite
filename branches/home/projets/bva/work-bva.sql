@@ -1045,5 +1045,4 @@ from troncon t, tronq q
 where t.idtraj = q.idtraj || '1'
 group by substring(idtraj from ''), ordre;
 
-
-
+--
