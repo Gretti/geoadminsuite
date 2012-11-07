@@ -994,6 +994,9 @@ vacuum analyse troncon;
 --nouveau count: 
 select count(*) from trajets_paris_2009_view;
 -- 9774060 --diff de 18150 trajets: bad ids ?
+-- (update du 7 nov: non; doublons dus aux insertion de trajets dans troncon et a la mise
+-- a jour des idtraj apres coup, alors que les troncons avec idtraj tronques etaient deja dans la table
+-- => il faut virer ces doublons, cf 7 nov)
 
 select t.*
 from troncon t, tgeom g
@@ -1028,21 +1031,55 @@ group by linkid;
 
 select count(*) from troncon where idtraj like E'%\\_';
 
+-- trouver tous les doublons idtraj/ordre parmi les trajets tronques
+create index troncon_idtraj_idx on troncon(idtraj); 
+vacuum analyse troncon;
+
+create table acorriger as 
 with tronq as (
 	select distinct idtraj from trajets_tronq 
-)
-select t.idtraj, ordre, count(t.idtraj)
-from troncon t, tronq q
-where t.idtraj = q.idtraj || '1'
-group by substring(t.idtraj from '(^[0-9]*_[0-9]*_)[0-9]'), ordre;
+), tt as (
+	select idtraj||'1' as idtraj from tronq
+) select t.*
+from troncon t, tt q
+where t.idtraj = q.idtraj;
+-- 38263
 
+-- creation de la table des doublons: on ne sait pas lesquels on garde => recalcul du sens a faire.
+create table doublons as 
+	select distinct on (idtraj, ordre) idtraj, ordre, id from acorriger;
+	
+-- virer  les doublons de la table des troncons
+delete from troncon t
+using doublons d
+where t.id = d.id
 
-with tronq as (
-	select distinct idtraj from trajets_tronq 
-)
-select t.idtraj, t.ordre, t.sens, t.linkid
-from troncon t, tronq q
-where t.idtraj = q.idtraj || '1'
-group by substring(idtraj from ''), ordre;
+-- check:
+select count(*) from trajets_paris_2009_view;
+-- 9754916 
+-- 9754832 comme target => 84 de difference: good: la table des troncon est netttoyŽe des doublons d'itraj tronquŽs qui ont ete corrigŽs.
 
---
+select count(*) from troncon where idtraj like E'%\\_'; -- les 946 troncons idtraj tronques non recuperes.
+
+-- nettoyage
+drop table doublons;
+drop table acorriger ;
+
+-- les sens...
+select sens, count(sens) from troncon  group by sens;
+
+--il faut les mettre a jour: meme regle qu'alem, ou regle nrt: 
+-- 1: le trajet parcourt l'arc dans le sens de num
+-- -1: le trajet parcourt l'arc dans le sens inverse de num
+-- 0: mono troncon => pas de sens.
+-- prendre uniquement les modetr compatibles: pas les TC et autres !!
+
+-- table de test pour le sens
+create table test as select * from troncon limite 20000;
+
+with t as (
+select idtraj, geom from troncon
+where geom is not null
+order by idtraj, ordre
+) select count(st_linemerge(geom)) from t
+group by idtraj;
