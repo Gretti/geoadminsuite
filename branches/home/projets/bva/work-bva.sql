@@ -407,3 +407,41 @@ select count(*) from trajet where idtraj = '10869_10_1';
 
 select * from troncon where idtraj = '10648_10_1' order by ordre;
 select * from troncon where idtraj = '10869_10_1' order by ordre;
+
+select count(*) from troncon;
+-- 9775006.
+-- 9735713 dans les fournitures précédentes
+-- 
+
+-- doublons présents dans la table des troncons, avec sens ambigus la plupart du temps.
+-- d'ou viennent ces troncons, comment les virer ?
+-- parmi les idtraj tronques, trouver ceux qui ont un count > 1 group by idtraj, ordre
+with tronq as (
+	select distinct idtraj from trajets_tronq 
+)
+select linkid, count(linkid) 
+from troncon t, tronq q
+where t.idtraj = q.idtraj || '_1'
+group by linkid;
+
+select count(*) from troncon where idtraj like E'%\\_';
+
+with tronq as (
+	select distinct idtraj from trajets_tronq 
+)
+select t.idtraj, ordre, count(t.idtraj)
+from troncon t, tronq q
+where t.idtraj = q.idtraj || '1'
+group by substring(t.idtraj from '(^[0-9]*_[0-9]*_)[0-9]'), ordre;
+
+
+with tronq as (
+	select distinct idtraj from trajets_tronq 
+)
+select t.idtraj, t.ordre, t.sens, t.linkid
+from troncon t, tronq q
+where t.idtraj = q.idtraj || '1'
+group by substring(idtraj from ''), ordre;
+
+
+
