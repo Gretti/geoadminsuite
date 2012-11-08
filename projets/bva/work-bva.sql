@@ -52,7 +52,7 @@ from (select * from tj_final limit 1000 offset 100000) as t,
 where n.id = t.idmenage
 order by t.idtraj, t.ordre;
 
--- table de test pour v�rifier le match
+-- table de test pour vérifier le match
 drop table if exists test;
 create table test as select * from tj_final limit 15000;
 create index test_id_idx on test(id);
@@ -69,7 +69,7 @@ where t.idmenage = n.id;
 
 -- test de la requete finale.
 select  gid, 
-    iddepl || '_' || numdepl || '_' ||�numtrajet as idtraj,
+    iddepl || '_' || numdepl || '_' || numtrajet as idtraj,
     poids, code_gs, sens, lgtron2009 as lgtron_2009, numdepl, numtrajet, modetr, iddepl
 from (
     select t.gid, 
@@ -83,16 +83,16 @@ as foo;
 -- mise a jour de la table:
 
 
-IDTRAJ (d�j� pr�sent dans table)
-ORDRE (d�j� pr�sent dans table)
-CODE_GS (d�j� pr�sent dans table)
-LGTRON_2009 (d�j� pr�sent dans table)
-SENS (d�j� pr�sent dans table)
-NUMDEPL (d�j� pr�sent dans table)
-MODETR (d�j� pr�sent dans table)
-NUMTRAJET (d�j� pr�sent dans table)
-ID (d�j� pr�sent dans table)
-IDDEPL (� cr�er)
+IDTRAJ (déjà présent dans table)
+ORDRE (déjà présent dans table)
+CODE_GS (déjà présent dans table)
+LGTRON_2009 (déjà présent dans table)
+SENS (déjà présent dans table)
+NUMDEPL (déjà présent dans table)
+MODETR (déjà présent dans table)
+NUMTRAJET (déjà présent dans table)
+ID (déjà présent dans table)
+IDDEPL (à créer)
 
 
 idtraj     | text                  | 
@@ -119,7 +119,7 @@ idtraj     | text                  |
 create table trajets_paris2009 as (
 select 
     -- idtraj
-    idmenage || '_' || numdepl || '_' ||�numtrajet as idtraj,
+    idmenage || '_' || numdepl || '_' || numtrajet as idtraj,
     n.poids
 from tj_final t, correspid n
 where t.idmenage = n.id
@@ -140,7 +140,7 @@ update tj_final t set
 from correspid n
 where t.idmenage = n.id;
 
--- verification des données:
+-- verification des donn√©es:
 select idtraj, ordre, idmenage, numdepl, numtrajet, modetr, new_modetr
 from (select * from tj_final limit 1000 offset 200000) as t 
 order by idtraj, ordre;
@@ -221,7 +221,7 @@ create index trajets_nonnvq_idmenage_idx on trajets_nonnvq (idmenage);
 --numdepl = substring(iddepl from '^[0-9]*_([0-9]*)')::int
 --select iddepl, substring(iddepl from '^[0-9]*_([0-9]*)')::int from trajets_;
 
--- mise � jour des id/id_new depuis la table correspid (trajets.dbf)
+-- mise à jour des id/id_new depuis la table correspid (trajets.dbf)
 -- (requete de verif)
 -- drop indices for faster upate
 drop index trajets_nonnvq_idmenage_idx;
@@ -253,7 +253,7 @@ create index correspid_id_new_idx on correspid (id_new);
 update trajets_nonnvq t set poids = c.poids
 from correspid c
 where t.idmenage = c.id_new;
--- table prete a etre inject�e dans le resultat final
+-- table prete a etre injectée dans le resultat final
 
 -- injection dans tj_final des troncons de trajets qui ne sont pas navteq
 -- depuis trajets.dat (trajets_dat dans la base)
@@ -317,7 +317,7 @@ select count(*) from tj_final where numtrajet is null;
 
 -- l'idtraj de sortie doit prendre l'idmenage mis a jour.
 
--- suppression des trajets non NVQ (ordre oubli� fuck)
+-- suppression des trajets non NVQ (ordre oublié fuck)
 delete from tj_final where code_gs < 56164364;
 
 -------------------------- Reste a faire --------------------------------------
@@ -330,7 +330,7 @@ delete from tj_final where code_gs < 56164364;
 -- attention au modetr, soit sous forme de string, soit sous forme d'int
 -- bon type de col pour modetr.
 
--- idtraj tronqu�s ? a virer ou pas
+-- idtraj tronqués ? a virer ou pas
 -- sens ?
 
 -- requete finale issue de tj_final, modetrnull, trajets_nonnvq
@@ -418,10 +418,10 @@ select count(*) from trajets_paris_2009 where numtrajet is null;
 --------------------------------------------------------------------------------
 ----------------------------------- 23 octobre 2012 ----------------------------
 --------------------------------------------------------------------------------
--- reimport des trajets recalés initiaux pour verifier les id tronquees.
+-- reimport des trajets recal√©s initiaux pour verifier les id tronquees.
 -- cf shell pour remonter les trajets.
 
--- nouvelle structure de table pour représenter un individu, un deplacement, un trajet, un troncon.
+-- nouvelle structure de table pour repr√©senter un individu, un deplacement, un trajet, un troncon.
 
 create table individu (
     id serial primary key,
@@ -508,7 +508,7 @@ from dist_trajets t, trajets_retour d
 where t.idtraj = d.idtraj
 and d.compar_200 = 0 limit 1000;
 
--- injection des trajets tronqués.
+-- injection des trajets tronqu√©s.
 -- shp2pgsql -iD  aggr_2005_id_dep_trajetunique.dbf aggr_trajets | psql 
 
 -- analyse des trajets tronques:
@@ -518,10 +518,10 @@ where t.id = a.id and t.numdepl::int = a.numdepl;
 
 select count(distint idtraj, id, iddepl) from trajets_tronq;
 
--- mise a jour des trajets tronqués et des modetr
+-- mise a jour des trajets tronqu√©s et des modetr
 -- en creant une nouvelle table:
 -- modetr  a prendre depuis trajets.dat pour tout le monde
--- UNION new idtraj pour les tronqués
+-- UNION new idtraj pour les tronqu√©s
 
 create index aggr_trajets_id_idx on aggr_trajets (id);
 create index aggr_trajets_numdepl_idx on aggr_trajets (numdepl);
@@ -560,10 +560,10 @@ from aggr_trajets a
 where t.idtraj like '%\\_'
 and t.id = a.id and t.numdepl::int = a.numdepl;
 
--- nombre de trajets restant tronqués:
+-- nombre de trajets restant tronqu√©s:
 select count(*) from trajets_paris_2009 where t.idtraj like '%\\_';
 
--- suppression des trajets restant tronqués:
+-- suppression des trajets restant tronqu√©s:
 delete from trajets_paris_2009 where t.idtraj like '%\\_';
 
 -- controle sur les modetr: doivent etre les memes que ceux de trajets_dat
@@ -596,10 +596,10 @@ from trajets_retour
 
 ------------------------------------------------------------------------------------------
 -- Nouvelle structure de table indivudu, deplacement, trajet, troncons.
--- reimport des trajets recalés initiaux pour verifier les id tronquees.
+-- reimport des trajets recal√©s initiaux pour verifier les id tronquees.
 -- cf shell pour remonter les trajets.
 
--- nouvelle structure de table pour représenter un individu, un deplacement, un trajet, un troncon.
+-- nouvelle structure de table pour repr√©senter un individu, un deplacement, un trajet, un troncon.
 
 create table individu (
     id serial primary key,
@@ -656,7 +656,7 @@ insert into deplacement (numdepl, id_individu)
 create index deplacement_iddepl_idx on deplacement(iddepl);
 
 select count(*) from trajets_paris_2009 where numtrajet = '' or numtrajet is null;
--- -> 20174 trajets tronqués.
+-- -> 20174 trajets tronqu√©s.
 
 -- trajet
 truncate trajet;
@@ -691,7 +691,7 @@ alter table troncon alter column ordre set not null;
 alter table troncon alter column sens set not null;
 alter table troncon alter column linkid set not null;
 
--- creation de la vue représentant la table de sortie BVA/AFFI
+-- creation de la vue repr√©sentant la table de sortie BVA/AFFI
 create view trajets_paris_2009_view as (
 	select i.idmenage||'_'||d.numdepl||'_'||tj.numtrajet as idtraj,
 		i.idmenage||'_'||d.numdepl as iddepl,
@@ -776,7 +776,7 @@ and t.modetr <> d.modetr;
 ----------------------------------- 27 octobre 2012 ----------------------------
 --------------------------------------------------------------------------------
 
--- 	idtraj tronqu�s: 20174 dont 19119 recuperables: numtrajet = 1
+-- 	idtraj tronqués: 20174 dont 19119 recuperables: numtrajet = 1
 select count(*) from trajet where numtrajet = 0;
 -- 1001 trajets a recuperer
 select distinct id, numdepl, numtrajet from aggr_trajets;
@@ -801,7 +801,7 @@ where b.iddepl = a.iddepl;
 -- nettoyage de la table trajets; certains trajets a numtrajet=0 existent dans la table
 select distinct iddepl from trajet where numtrajet = 1 or numtrajet = 0;
 
--- 4�) requetes de mise a jour => controle a la sortie
+-- 4°) requetes de mise a jour => controle a la sortie
 
 -- mise a jour des trajets
 update trajet t set numtrajet = a.numtrajet
@@ -810,7 +810,7 @@ where t.numtrajet = 0
 and a.iddepl = t.iddepl;
 -- 959 updated
 
--- nettoyage des idtraj tronqu�s:
+-- nettoyage des idtraj tronqués:
 create table tmp_trajets as select * from trajet where idtraj like E'%\\_';
 delete from trajet where idtraj like E'%\\_';
 
@@ -840,7 +840,7 @@ create table trajet_badnumtrajet as select * from trajet  where numtrajet = 0;
 
 delete from trajet  where numtrajet = 0;
  
--- 5�) Vue des trajets complets: penser aux trajets sans troncon (mode non nvq: voir ce qui se passe)
+-- 5°) Vue des trajets complets: penser aux trajets sans troncon (mode non nvq: voir ce qui se passe)
 select trajet, count(distinct trajet) from trajets_dbf group by trajet;
 
 -- on refait la table de controle:
@@ -904,7 +904,7 @@ select count(*) from trajets_dbf;
 --------------------------------------------------------------------------------
 ----------------------------------- 04 novembre 2012 ----------------------------
 --------------------------------------------------------------------------------
--- analyse des trajets tronqu�s:
+-- analyse des trajets tronqués:
 -- combien d'idtraj uniques dans la table de controle (aggr_trajets)
 select count(distinct idtraj) from aggr_trajets;
 -- 107015
@@ -1015,10 +1015,10 @@ select * from troncon where idtraj = '10869_10_1' order by ordre;
 
 select count(*) from troncon;
 -- 9775006.
--- 9735713 dans les fournitures précédentes
+-- 9735713 dans les fournitures pr√©c√©dentes
 -- 
 
--- doublons présents dans la table des troncons, avec sens ambigus la plupart du temps.
+-- doublons pr√©sents dans la table des troncons, avec sens ambigus la plupart du temps.
 -- d'ou viennent ces troncons, comment les virer ?
 -- parmi les idtraj tronques, trouver ceux qui ont un count > 1 group by idtraj, ordre
 with tronq as (
@@ -1057,7 +1057,7 @@ where t.id = d.id
 -- check:
 select count(*) from trajets_paris_2009_view;
 -- 9754916 
--- 9754832 comme target => 84 de difference: good: la table des troncon est netttoy�e des doublons d'itraj tronqu�s qui ont ete corrig�s.
+-- 9754832 comme target => 84 de difference: good: la table des troncon est netttoyée des doublons d'itraj tronqués qui ont ete corrigés.
 
 select count(*) from troncon where idtraj like E'%\\_'; -- les 946 troncons idtraj tronques non recuperes.
 
