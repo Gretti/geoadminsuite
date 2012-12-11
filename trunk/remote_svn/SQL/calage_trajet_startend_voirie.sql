@@ -110,7 +110,8 @@ where t.idtraj = tsv.idtraj;
 -- startvoirie = endvoirie
 drop table if exists trajet_2009_tmp;
 create table trajet_2009_tmp as (
-select t.idtraj, v.gid, -1 as node_id, 1 as depth, v.link_id, v.shape_length as lgtron2009, v.geom
+select t.idtraj, v.gid, -1 as node_id, 1 as depth, v.link_id, v.shape_length as lgtron2009, v.geom,
+    t.ordre, t.sens, t.numdepl, t.modetr, t.modeprinc, t.numtrajet, t.poste, t.id, t.pid, t.poids, t.lgtron2006
 from trajet t, voirie_work v, trajet_startend_voirie tsv
 where t.idtraj = tsv.idtraj
 and v.idtraj = tsv.idtraj
