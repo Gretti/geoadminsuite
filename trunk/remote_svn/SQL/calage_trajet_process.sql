@@ -37,12 +37,17 @@ create table trajet_2009 as
 select * from buildTrajets();
 
 -- insertion des entrees de la table trajet_2009_tmp
-insert into trajet_2009
-select * from trajet_2009_tmp;
+insert into trajet_2009 (idtraj, ordre, code_gs, lgtron2009, geom, sens, numdepl, modetr,
+                         modeprinc, numtrajet, poste, id, pid, poids, lgtron2006)
+select  idtraj, ordre, link_id, lgtron2009, geom, sens, numdepl, modetr,
+     modeprinc, numtrajet, poste, id, pid, poids, lgtron2006
+from trajet_2009_tmp;
 
 -- insertion des entrees de la table trajet_2009_ok: les trajets 2006 avec code NVQ 2009 valide
-insert into trajet_2009
-select idtraj, gid, node_id, ordre, link_id, lgtron2009, geom
+insert into trajet_2009 (idtraj, ordre, code_gs, lgtron2009, geom, sens, numdepl, modetr,
+                         modeprinc, numtrajet, poste, id, pid, poids, lgtron2006)
+select idtraj, ordre, link_id, lgtron2009, geom, sens, numdepl, modetr,
+     modeprinc, numtrajet, poste, id, pid, poids, lgtron2006
 from trajet_2009_ok;
 
 create index trajet_2009_ordre on trajet_2009 (ordre);
