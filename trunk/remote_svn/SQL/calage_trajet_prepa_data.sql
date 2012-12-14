@@ -26,7 +26,10 @@ create index ident_new_uu_id_new on ident_new_uu(id_new);
 -- create index ident_new_uu_aresimuler on ident_new_uu(aresimuler);
 
 -- mise a jour de la colonne id avec le bon identifiant
-update trajet t set id = n.id_new 
+-- MAJ NRT 14 dec 2012: on met aussi a jour la colonne idtraj avec le nouvel identifiant
+-- attention, idtraj ne contient pas numdepl: 1 delacement = 1 trajet => idmenage_idtraj
+update trajet t set id = n.id_new ,
+                    idtraj = n.id_new||'_'||numtraj
 from ident_new_uu n 
 where t.id = n.id and n.aresimuler=0;
 
