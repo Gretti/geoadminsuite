@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <style>
+            .example {
+                padding: 10px;
+                border: 1px solid #CCC;
+            }
+            #example-list-fs ul {
+                padding-left: 0;
+            }
+            #example-list-fs li {
+                list-style: none;
+            }
+            #example-list-fs img {
+                vertical-align: middle;
+            }
+            button {
+                padding: 5px 8px;
+                cursor: pointer;
+                text-shadow: 1px 1px white;
+                font-weight: 700;
+                font-size: 10pt;
+            }
+            body {
+                font: 14px Arial;
+            }
+        </style>
+
+        <script type="text/javascript" src="scripts/poc.js"></script>
+
+    </head>
+    <body>
+        <div id="example-list-fs" class="example">
+            <button>Create empty mapfile</button> <button>List files</button> 
+            <button>Remove all files</button> <br/><button>Test</button>
+            <ul id="example-list-fs-ul"></ul>
+        </div>
+        
+        <!-- iframe div, to display MapServer maps -->
+        <div id="mapIframeDiv">
+            <iframe id="mapIframce" src="" height="800" width="600"/>
+        </div>
+        <script>
+            // The local MapFile URL used in the iframe to display
+            // Chrome filesystem mapFile
+            // TODO: ln or guess the true Filepath, but how ?
+            var MAPFILE_URL="http://localhost/cgi-bin/mapserv?mode=browse&template=openlayers&map=/Users/nicolas/Library/Application%20Support/Google/Chrome/Default/File%20System/002/t/00/00000004"
+            window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
+            var fs = null;
+            // the mapfile FileEntry object
+            var mapFileEntry = null;
+            // the Mapfile object. TODO: config...
+            var mapFile = new MapObj();
+            
+            var mapFileText =  '#aspecialcoment\nMAP\n';
+            mapFileText += '\n';
+            mapFileText += '    size 800 601\n';
+            mapFileText += '    extent -180 -84 180 84\n';
+            mapFileText += '    WEB\n';
+            mapFileText += '        imagepath "/tmp/"\n';
+            mapFileText += '    END\n';
+            mapFileText += '    LAYER\n';
+            mapFileText += '        type polygon\n';
+            mapFileText += '        status default\n';
+            mapFileText += '        name "countries"\n';
+            mapFileText += '        data "/Users/nicolas/geodata/10m_cultural/ne_110m_admin_0_countries.shp"\n';
+            mapFileText += '        class\n';
+            mapFileText += '            color 255 0 0\n';
+            mapFileText += '        end\n';
+            mapFileText += '        projection\n';
+            mapFileText += '            "init=epsg:4326"\n';
+            mapFileText += '        end\n';
+            mapFileText += '    END\n';
+            mapFileText += 'END\n';
+      
+            function errorHandler(e) {
+                var msg = '';
+                switch (e.code) {
+                    case FileError.QUOTA_EXCEEDED_ERR:
+                        msg = 'QUOTA_EXCEEDED_ERR';
+                        break;
+                    case FileError.NOT_FOUND_ERR:
+                        msg = 'NOT_FOUND_ERR';
+                        break;
+                    case FileError.SECURITY_ERR:
+                        msg = 'SECURITY_ERR';
+                        break;
+                    case FileError.INVALID_MODIFICATION_ERR:
+                        msg = 'INVALID_MODIFICATION_ERR';
+                        break;
+                    case FileError.INVALID_STATE_ERR:
+                        msg = 'INVALID_STATE_ERR';
+                        break;
+                    default:
+                        msg = 'Unknown Error';
+                        break;
+                };
+                document.querySelector('#example-list-fs-ul').innerHTML = 'Error: ' + msg;
+            }
+      
+            // inits the filesystem
+            function initFS() {
+                window.requestFileSystem(window.TEMPORARY, 1024*1024, function(filesystem) {
+                    fs = filesystem;
+                }, errorHandler);
+            }
+            
+            // writes the mapfile
+            function writeMap() {
+                // generates mapfile
+                fs.root.getFile('local.map', {create: true}, function(fileEntry) {
+                    mapFileEntry = fileEntry
+                    // Create a FileWriter object for our FileEntry (log.txt).
+                    mapFileEntry.createWriter(function(fileWriter) {
+
+                        fileWriter.onwriteend = function(e) {
+                            console.log('Write completed.');
+                        };
+
+                        fileWriter.onerror = function(e) {
+                            console.log('Write failed: ' + e.toString());
+                        };
+
+                        // Create a new Blob and write it to local.map.
+                        var s = mapFile.toString();
+                        console.log(s);
+                        var blob = new Blob([s], {type: 'text/plain'});
+                        fileWriter.write(blob);
+
+                    }, errorHandler);
+
+                }, errorHandler);
+                filelist.innerHTML = 'MapFile created: <button onclick="showMapFileEntry()">view</button>';
+            }
+            
+            // shows the mapfile content in another window
+            function showMapFileEntry() {
+                if (mapFileEntry == null) {
+                    console.log("null MapFileEntry...");
+                } else {
+                    window.open(mapFileEntry.toURL());
+
+                }
+            }
+            
+            // adds a test layer
+            function addTestLayer() {
+                var layer = new LayerObj({
+                    "name" : "test",
+                    "data" : "/Users/nicolas/geodata/10m_cultural/ne_110m_admin_0_countries.shp "
+                });
+                mapFile.addLayer(layer);
+                writeMap();
+                document.querySelector('#mapIframe').src = MAPFILE_URL;
+            }
+            
+            // loads the mapfile into MapServer
+            function loadMap() {
+                document.location.href = "http://localhost/cgi-bin/mapserv?mode=browse&template=openlayers&map=" + mapFileEntry.toURL();
+            }
+      
+            var buttons = document.querySelectorAll('#example-list-fs button');
+            var filelist = document.querySelector('#example-list-fs-ul');
+
+            // adds event handlers for buttons
+            if (buttons.length >= 3) {
+                buttons[0].addEventListener('click', function(e) {
+                    if (!fs) {
+                        return;
+                    }
+                    writeMap();
+                }, false);
+      
+                buttons[1].addEventListener('click', function(e) {
+                    if (!fs) {
+                        return;
+                    }
+      
+                    var dirReader = fs.root.createReader();
+                    dirReader.readEntries(function(entries) {
+                        if (!entries.length) {
+                            filelist.innerHTML = 'Filesystem is empty.';
+                        } else {
+                            filelist.innerHTML = '';
+                        }
+      
+                        var fragment = document.createDocumentFragment();
+                        for (var i = 0, entry; entry = entries[i]; ++i) {
+                            var img = entry.isDirectory ? '<img src="http://www.html5rocks.com/static/images/tutorials/icon-folder.gif">' :
+                                '<img src="http://www.html5rocks.com/static/images/tutorials/icon-file.gif">';
+                            var li = document.createElement('li');
+                            li.innerHTML = [img, '<span>', entry.name, '</span>'].join('');
+                            fragment.appendChild(li);
+                        }
+                        filelist.appendChild(fragment);
+                    }, errorHandler);
+                }, false);
+      
+                buttons[2].addEventListener('click', function(e) {
+                    if (!fs) {
+                        return;
+                    }
+      
+                    var dirReader = fs.root.createReader();
+                    dirReader.readEntries(function(entries) {
+                        for (var i = 0, entry; entry = entries[i]; ++i) {
+                            if (entry.isDirectory) {
+                                entry.removeRecursively(function() {}, errorHandler);
+                            } else {
+                                entry.remove(function() {}, errorHandler);
+                            }
+                        }
+                        filelist.innerHTML = 'Directory emptied.';
+                    }, errorHandler);
+                }, false);
+                
+                buttons[3].addEventListener('click', function(e) {
+                    if (!fs) {
+                        console.log ("filesystem not initialized...")
+                        return;
+                    }
+                    //addTestLayer();
+                    loadMap();
+                }, false);
+            }
+      
+            // Initiate filesystem on page load.
+            if (window.requestFileSystem) {
+                initFS();
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,21 @@
+
+<html>
+<head>
+  <title>MapServer Simple Viewer</title>
+    <script type="text/javascript" src="http://www.mapserver.org/lib/OpenLayers-ms60.js"></script>
+    </head>
+    <body>
+      <div style="width:1200; height:900" id="map">coucoy</div>
+      <script defer="defer" type="text/javascript">
+        var map = new OpenLayers.Map('map',
+                                     {maxExtent: new OpenLayers.Bounds(-180.000000,-134.962469,180.000000,134.962469),
+                                      maxResolution: 0.300250});
+        var mslayer = new OpenLayers.Layer.MapServer( "MapServer Layer",
+                                              "http://localhost/cgi-bin/mapserv?map=/Users/nicolas/Library/Application Support/Google/Chrome/Default/File System/004/t/00/00000000&",
+                                              {layers: ''},
+                                              {singleTile: "true", ratio:1} );
+        map.addLayer(mslayer);
+        map.zoomToMaxExtent();
+      </script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+MAP
+
+    size 800 600
+    extent -180 -84 180 84
+    projection 
+        "proj=ortho"  
+        "lat_0=45"  
+        "lon_0=45"  
+        "ellps=WGS84"
+    end
+
+    LAYER
+        type polygon
+        status default
+        name "countries"
+        data "/Users/nicolas/geodata/10m_cultural/ne_110m_admin_0_countries.shp"
+        class
+            color 255 0 0
+        end
+        projection
+            "init=epsg:4326"
+        end
+    END
+END
