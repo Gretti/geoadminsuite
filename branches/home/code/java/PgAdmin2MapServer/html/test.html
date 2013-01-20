@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>MapFish Lab</title>
+
+        <link rel="stylesheet" type="text/css" href="mfbase/ext/resources/css/ext-all.css" />
+
+        <script type="text/javascript" src="mfbase/openlayers/lib/OpenLayers.js"></script>
+
+        <script type="text/javascript" src="mfbase/ext/adapter/ext/ext-base.js"></script>
+        <script type="text/javascript" src="mfbase/ext/ext-all-debug.js"></script>
+
+        <script type="text/javascript">
+            // Because of a bug in Firefox 2 we need to specify the MapFish base path.
+            // See https://bugzilla.mozilla.org/show_bug.cgi?id=351282
+            var gMfLocation = "mfbase/mapfish/";
+        </script>
+        <script type="text/javascript" src="mfbase/mapfish/MapFish.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="mapfish.css" />
+
+        <script type="text/javascript"><!--
+
+            var map; // for debug
+            var centered = false;
+
+            function createMap() {
+                //map = new OpenLayers.Map("map");
+                map = new OpenLayers.Map('map',
+                {
+                    maxExtent: new OpenLayers.Bounds(1682667.23673968, 2182020.94070385, 1719513.08792259, 2242575.97358883),
+                    maxResolution: 2688.579158
+                });
+                return map;
+            }
+
+            function createMetacartaLayer(map) {
+                var wms =  new OpenLayers.Layer.WMS(
+                "metacarta",
+                "http://labs.metacarta.com/wms/vmap0",
+                {layers: "basic"},
+                {isBaseLayer: true}
+            );
+                map.addLayer(wms);
+            }
+            
+            function createMapserverLayer(map) {
+                baseLayer = new OpenLayers.Layer("Blank",{isBaseLayer: true});
+                
+                var mslayer = new OpenLayers.Layer.MapServer( "testpg",
+                "http://localhost/cgi-bin/mapserv?map=/tmp/pgadmin_viewer.map",
+                {layers: 'testpg,testline'},
+                {isBaseLayer: true},
+                {singleTile: "true", ratio:1} );
+                
+                var mslayer2 = new OpenLayers.Layer.MapServer( "testline",
+                "http://localhost/cgi-bin/mapserv?map=/tmp/pgadmin_viewer.map&layer=testline",
+                {layers: 'testline'},
+                {isBaseLayer: true},
+                {singleTile: "true", ratio:1} );
+                console.log(mslayer);
+                map.addLayer(baseLayer);
+                map.addLayer(mslayer);
+                //map.addLayer(mslayer2);
+            }
+
+            function createCamptocampLayers(map) {
+                var summits = new OpenLayers.Layer.WMS("summits",
+                "http://demo.mapfish.org/mapfishsample/trunk/wms?", {
+                    layers: "summits",
+                    format: "image/png",
+                    transparent: "true"
+                }, {
+                    singleTile: true
+                });
+                var parkings = new OpenLayers.Layer.WMS("parkings",
+                "http://demo.mapfish.org/mapfishsample/trunk/wms?", {
+                    layers: "parkings",
+                    format: "image/png",
+                    transparent: "true"
+                }, {
+                    singleTile: true
+                });
+                map.addLayers([summits, parkings]);
+            }
+
+            function centerMap() {
+                if (!centered) {
+                    this.setCenter(new OpenLayers.LonLat(5,45), 6);
+                    centered = true;
+                }
+            }
+
+            function createTreeModel() {
+                return [{
+                        text: "testmapfile",
+                        leaf: false,
+                        checked: true,
+                        expanded: true,
+                        children: [{
+                                text: "testline",
+                                layerName: "testline",
+                                leaf: false,
+                                // 4.5
+                                icon: "icons/img2.png",
+                                checked: true
+                            }, {
+                                text: "testpg",
+                                layerName: "testpg",
+                                leaf: false,
+                                // 4.5
+                                icon: "icons/img1.png",
+                                checked: true
+                            }]
+                    }];
+            }
+
+            function createShortcutsStore() {
+                return new Ext.data.SimpleStore({
+                    fields: ["value", "text", "bbox"],
+                    data: [
+                        ["A", "Alps", new OpenLayers.Bounds(5.04, 44.77, 10.93, 46.91)],
+                        ["P", "Pyrenees", new OpenLayers.Bounds(-2.25, 41.50, 3.63, 43.79)]
+                    ]
+                });
+            }
+
+            function createToolbar(map) {
+                return new mapfish.widgets.toolbar.Toolbar({map: map});
+            }
+
+            function initToolbarContent(toolbar) {
+                function addSeparator(toolbar){
+                    toolbar.add(new Ext.Toolbar.Spacer());
+                    toolbar.add(new Ext.Toolbar.Separator());
+                    toolbar.add(new Ext.Toolbar.Spacer());
+                }
+
+                toolbar.addControl(
+                new OpenLayers.Control.ZoomToMaxExtent({map: map}), {
+                    iconCls: "zoomfull",
+                    toggleGroup: "map"
+                }
+            );
+                addSeparator(toolbar);
+                toolbar.addControl(
+                new OpenLayers.Control.ZoomBox(), {
+                    iconCls: "zoomin",
+                    toggleGroup: "map"
+                }
+            );
+                toolbar.addControl(
+                new OpenLayers.Control.ZoomBox({
+                    out: true
+                }), {
+                    iconCls: "zoomout",
+                    toggleGroup: "map"
+                }
+            );
+                toolbar.addControl(
+                new OpenLayers.Control.DragPan({
+                    isDefault: true
+                }), {
+                    iconCls: "pan",
+                    toggleGroup: "map"
+                }
+            );
+                toolbar.activate();
+            }
+
+            Ext.onReady(function() {
+
+                var map = createMap();
+                //createMetacartaLayer(map);
+                //createCamptocampLayers(map);
+                createMapserverLayer(map);
+                var model = createTreeModel();
+                var toolbar = createToolbar(map);
+
+                var viewport = new Ext.Viewport({
+                    layout: "border",
+                    listeners: {
+                        afterlayout: centerMap,
+                        scope: map
+                    },
+                    items: [{
+                            region: "west",
+                            id: "tools",
+                            title: "Tools",
+                            border: true,
+                            width: 250,
+                            split: true,
+                            items: [{
+                                    id: "tree",
+                                    title: "layer tree",
+                                    xtype: "layertree",
+                                    map: map,
+                                    height: 500,
+                                    showWmsLegend: true,
+                                    resizable: true,
+                                    enableDD: true,
+                                    model: model,
+                                    plugins: [
+                                        mapfish.widgets.LayerTree.createContextualMenuPlugin([
+                                            'opacitySlide',
+                                            'remove'
+                                        ])
+                                    ]
+                                }]
+                        }, {
+                            region: "center",
+                            id: "map",
+                            title: "Map",
+                            layout: "fit",
+                            split: true,
+                            xtype: 'mapcomponent',
+                            map: map,
+                            tbar: toolbar
+                        }]
+                });
+                viewport.doLayout();
+
+                initToolbarContent(toolbar);
+
+            });
+            --></script>
+        <style type="text/css">
+            .zoomin {
+                background-image:url(mfbase/mapfish/img/icon_zoomin.png) !important;
+                height:20px !important;
+                width:20px !important;
+            }
+            .zoomout {
+                background-image:url(mfbase/mapfish/img/icon_zoomout.png) !important;
+                height:20px !important;
+                width:20px !important;
+            }
+            .zoomfull {
+                background-image:url(mfbase/mapfish/img/icon_zoomfull.png) !important;
+                height:20px !important;
+                width:20px !important;
+            }
+            .pan {
+                background-image:url(mfbase/mapfish/img/icon_pan.png) !important;
+                height:20px !important;
+                width:20px !important;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="map"></div>
+    </body>
+</html>
