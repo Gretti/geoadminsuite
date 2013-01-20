@@ -1,0 +1,33 @@
+____________________________
+PgAdmin2MapServer TODO List:
+
+______
+First:
+? Display a Postgis Vector layer from PgAdmin if plugin launch on a table name
+? Display the list of available layers from PgAdmin if plugin launch on a database name or schema name
+? Basic layer styling:
+    ? Color, outlinecolor
+    ? line width
+    ? transparency
+? Reorder layers by D'n'D in the UI
+? SRS management:
+    ? If single layer with SRID, use it
+    ? If single layer without SRID, WGS84 by default with UI to choose Map and Layers
+    ? If multiple layers with same SRID: single
+    ? If multiple layers with heterogeneous SRS: map SRS in WGS84
+? MapExtent management: one layer => layer extent
+                        several => same SRS ? extend extent : WGS84 world extent
+_______
+Later: 
+? support drag n drop for other files/URL/Other database connexion
+
+______
+Open:
+
+Keep layers in UI if user changes the database in PgAdmin ?
+
+OnConnect: 
+    Launch Server, 
+    launch GUI, 
+    open browser with generateMap: gets layer list from params, with extent for each layer.
+    mapfile extent ?

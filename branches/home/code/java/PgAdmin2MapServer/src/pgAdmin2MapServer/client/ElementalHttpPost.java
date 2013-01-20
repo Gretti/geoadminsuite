@@ -26,7 +26,6 @@
  */
 package pgAdmin2MapServer.client;
 
-import java.io.ByteArrayInputStream;
 import java.net.Socket;
 
 import org.apache.http.ConnectionReuseStrategy;
@@ -35,10 +34,7 @@ import org.apache.http.HttpHost;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
-import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.DefaultConnectionReuseStrategy;
 import org.apache.http.impl.DefaultHttpClientConnection;
 import org.apache.http.impl.NoConnectionReuseStrategy;
 import org.apache.http.message.BasicHttpEntityEnclosingRequest;
@@ -56,7 +52,7 @@ import org.apache.http.protocol.RequestContent;
 import org.apache.http.protocol.RequestExpectContinue;
 import org.apache.http.protocol.RequestTargetHost;
 import org.apache.http.protocol.RequestUserAgent;
-import org.apache.http.util.EntityUtils;
+import pgAdmin2MapServer.Pg2MS;
 
 /**
  * Elemental example for executing multiple POST requests sequentially. <p>
@@ -86,7 +82,7 @@ public class ElementalHttpPost {
 
         HttpContext context = new BasicHttpContext(null);
 
-        HttpHost host = new HttpHost("localhost", 8080);
+        HttpHost host = new HttpHost("localhost", Pg2MS.serverPort);
 
         DefaultHttpClientConnection conn = new DefaultHttpClientConnection();
         ConnectionReuseStrategy connStrategy = new NoConnectionReuseStrategy();
@@ -104,7 +100,7 @@ public class ElementalHttpPost {
             }
             BasicHttpEntityEnclosingRequest request = new BasicHttpEntityEnclosingRequest("POST", postUrl);
             request.setEntity(requestBody);
-            System.out.println(">> Request URI: " + request.getRequestLine().getUri());
+            Pg2MS.log(">> Request URI: " + request.getRequestLine().getUri());
 
             request.setParams(params);
             httpexecutor.preProcess(request, httpproc, context);
@@ -112,9 +108,9 @@ public class ElementalHttpPost {
             response.setParams(params);
             httpexecutor.postProcess(response, httpproc, context);
 
-//            System.out.println("<< Response: " + response.getStatusLine());
-//            System.out.println(EntityUtils.toString(response.getEntity()));
-//            System.out.println("==============");
+//            Pg2MS.log("<< Response: " + response.getStatusLine());
+//            Pg2MS.log(EntityUtils.toString(response.getEntity()));
+//            Pg2MS.log("==============");
             return response;
         } finally {
             conn.close();

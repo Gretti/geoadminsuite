@@ -84,12 +84,6 @@ import pgAdmin2MapServer.mapserver.MapfileWriter;
  */
 public class ElementalHttpServer {
 
-    public static void appendMsg(String mgs) {
-        if (Pg2MS.fileDroper != null && Pg2MS.fileDroper.jTextArea1 != null) {
-            Pg2MS.fileDroper.jTextArea1.setText(Pg2MS.fileDroper.jTextArea1.getText() + "\n" + mgs);
-        }
-    }
-
     public static void main(String[] args) throws Exception {
 
 //        if (args.length < 1) {
@@ -126,15 +120,18 @@ public class ElementalHttpServer {
                     HttpEntity entity = ((HttpEntityEnclosingRequest) request).getEntity();
                     String entityContent = EntityUtils.toString(entity);
                     String target = URLDecoder.decode(request.getRequestLine().getUri(), "UTF-8");
-                    System.out.println("target: " + target + " content: " + entityContent);
+                    Pg2MS.log("target: " + target + " content: " + entityContent);
 
                     if (Pg2MS.UPDATE_PG_PARAMS.equals(target)) {
-                        ElementalHttpServer.appendMsg("updating pgadmin parameters: " + entityContent);
+                        //updateLayers(entityContent);
+                        Pg2MS.log("updating pgadmin parameters: " + entityContent);
+                        Pg2MS.args = entityContent.replace("[", "").replace("]", "").split(",");
+                        generateMap(request, response, context);
                     } else {
                         throw new Exception("invalid endpoint: " + target);
                     }
                 } catch (Exception e) {
-                    ElementalHttpServer.appendMsg("error: " + e.getMessage());
+                    Pg2MS.log("Server Error1: " + e.toString());
                     // todo: custom http codes according to failures
                     response.setStatusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR);
                 }
@@ -142,21 +139,22 @@ public class ElementalHttpServer {
                 try {
                     BasicHttpRequest req = (BasicHttpRequest) request;
                     String target = URLDecoder.decode(req.getRequestLine().getUri(), "UTF-8");
-                    HttpParams params = req.getParams();
                     if (Pg2MS.GENERATE_MAP.equals(target)) {
                         generateMap(request, response, context);
                     }
                 } catch (Exception e) {
                     // todo: custom http codes according to failures
-                    ElementalHttpServer.appendMsg("error basic: " + e.getMessage());
+                    Pg2MS.log("Server Error2 : " + e.toString());
                     response.setStatusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR);
                 }
             }
         }
+        
 
         /**
          * Returns the HTML map to the caller
-         *
+         * TODO: refactor to LayerManager
+         * 
          * @param request
          * @param response
          * @param context
@@ -168,20 +166,24 @@ public class ElementalHttpServer {
                 final HttpContext context) throws Exception {
 
             String m = MapfileWriter.write();
-            ElementalHttpServer.appendMsg("mapfile written: " + m);
+            Pg2MS.log("mapfile written: " + m);
             
             //URL u = ElementalHttpServer.class.getResource("/pgAdmin2Mapserver/resources/html/ol.html");
-            InputStream is = ElementalHttpServer.class.getResourceAsStream("/pgAdmin2Mapserver/resources/html/ol.html");
+            InputStream is = ElementalHttpServer.class.getResourceAsStream("/resources/ol.html");
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
             StringBuilder sb = new StringBuilder();
             String line = null;
             while ((line = reader.readLine()) != null) {
+                //new OpenLayers.Bounds(1682667.23673968, 2182020.94070385, 1719513.08792259, 2242575.97358883)
+                if (MapfileWriter.olBounds != null) {
+                    //line = line.replace("\"$$BOUNDS$$\"", MapfileWriter.olBounds);
+                }
                 sb.append(line).append("\n");
             }
             is.close();
             //URL u = Thread.currentThread().getContextClassLoader().getResource("/pgAdmin2Mapserver/resources/html/ol.html");
             //File f = new File(u.toURI());
-            ElementalHttpServer.appendMsg("sending file: /pgAdmin2Mapserver/resources/html/ol.html");
+            Pg2MS.log("sending file: /pgAdmin2Mapserver/resources/html/ol.html");
             response.setStatusCode(HttpStatus.SC_OK);
             StringEntity body = new StringEntity(sb.toString(), ContentType.create("text/html", Charset.forName("UTF-8")));
             //FileEntity body = new FileEntity(f, ContentType.create("text/html", (Charset) null));
@@ -228,15 +230,13 @@ public class ElementalHttpServer {
 
         @Override
         public void run() {
-            System.out.println("Listening on port " + this.serversocket.getLocalPort());
-            ElementalHttpServer.appendMsg("Listening on port " + this.serversocket.getLocalPort());
+            Pg2MS.log("Server: listening on port " + this.serversocket.getLocalPort());
             while (!Thread.interrupted()) {
                 try {
                     // Set up HTTP connection
                     Socket socket = this.serversocket.accept();
                     DefaultHttpServerConnection conn = new DefaultHttpServerConnection();
-                    System.out.println("Incoming connection from " + socket.getInetAddress());
-                    ElementalHttpServer.appendMsg("Incoming connection from " + socket.getInetAddress());
+                    Pg2MS.log("Incoming connection from " + socket.getInetAddress());
                     conn.bind(socket, this.params);
 
                     // Start worker thread
@@ -246,8 +246,8 @@ public class ElementalHttpServer {
                 } catch (InterruptedIOException ex) {
                     break;
                 } catch (IOException e) {
-                    System.err.println("I/O error initialising connection thread: " + e.getMessage());
-                    ElementalHttpServer.appendMsg("I/O error initialising connection thread: " + e.getMessage());
+                    System.err.println("I/O error initialising connection thread: " + e.toString());
+                    Pg2MS.log("I/O error initialising connection thread: " + e.toString());
                     break;
                 }
             }
@@ -269,8 +269,7 @@ public class ElementalHttpServer {
 
         @Override
         public void run() {
-            System.out.println("New connection thread");
-            ElementalHttpServer.appendMsg("New connection thread");
+            Pg2MS.log("New connection thread");
 
             HttpContext context = new BasicHttpContext(null);
             try {
@@ -279,13 +278,13 @@ public class ElementalHttpServer {
                 }
             } catch (ConnectionClosedException ex) {
                 System.err.println("Client closed connection");
-                ElementalHttpServer.appendMsg("Client closed connection");
+                Pg2MS.log("Client closed connection");
             } catch (IOException ex) {
-                System.err.println("I/O error: " + ex.getMessage());
-                ElementalHttpServer.appendMsg("I/O error: " + ex.getMessage());
+                System.err.println("I/O error: " + ex.toString());
+                Pg2MS.log("I/O error: " + ex.toString());
             } catch (HttpException ex) {
-                System.err.println("Unrecoverable HTTP protocol violation: " + ex.getMessage());
-                ElementalHttpServer.appendMsg("Unrecoverable HTTP protocol violation: " + ex.getMessage());
+                System.err.println("Unrecoverable HTTP protocol violation: " + ex.toString());
+                Pg2MS.log("Unrecoverable HTTP protocol violation: " + ex.toString());
             } finally {
                 try {
                     this.conn.shutdown();

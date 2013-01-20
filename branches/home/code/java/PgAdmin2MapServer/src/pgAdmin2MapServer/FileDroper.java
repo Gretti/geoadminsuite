@@ -22,10 +22,11 @@ public class FileDroper extends javax.swing.JFrame {
         new FileDrop(this, new FileDrop.Listener() {
             public void filesDropped(java.io.File[] files) {
                 for (File file : files) {
-                    ElementalHttpServer.appendMsg("FIle dropped: " + file.getAbsolutePath());
+                    Pg2MS.log("FIle dropped: " + file.getAbsolutePath());
                 }
             }   // end filesDropped
-        }); // end FileDrop.Listener    
+        }); // end FileDrop.Listener 
+        setTitle(getTitle() + " " + Pg2MS.VERSION);
     }
 
     /**
@@ -42,7 +43,12 @@ public class FileDroper extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("PostGIS et al. viewer, based on MapServer");
+        setTitle("PostGIS viewer, based on MapServer");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jLabel1.setText("Server msg");
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -85,6 +91,15 @@ public class FileDroper extends javax.swing.JFrame {
         // TODO add your handling code here:
         jLabel1.setText("mouseReleased: " + evt.toString());
     }//GEN-LAST:event_jLabel1MouseReleased
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        try {
+            Pg2MS.loadLayers();
+        } catch (Exception e) {
+            Pg2MS.log(e.toString());
+        }
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
