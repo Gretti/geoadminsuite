@@ -187,9 +187,11 @@
             <script src="fullScreen.js"></script>
         </div>
         <script defer="defer" type="text/javascript">
+            var bounds = "$$BOUNDS$$"; //new OpenLayers.Bounds(1682667.23673968, 2182020.94070385, 1719513.08792259, 2242575.97358883)
+            //var maxRes = "$$MAXRES$$"; // 2688.579158
             var map = new OpenLayers.Map('map',
-            {maxExtent: new OpenLayers.Bounds(1682667.23673968, 2182020.94070385, 1719513.08792259, 2242575.97358883),
-                maxResolution: 2688.579158});
+            {maxExtent: bounds,
+                maxResolution: "auto"});
             var mslayer = new OpenLayers.Layer.MapServer( "MapServer Layer",
             "http://localhost/cgi-bin/mapserv?map=/tmp/pgadmin_viewer.map&",
             {layers: ''},

@@ -23,6 +23,8 @@ import pgAdmin2MapServer.server.ElementalHttpServer;
 public class Pg2MS {
     public static final String UPDATE_PG_PARAMS = "/updatePgParams";
     public static final String GENERATE_MAP = "/generateMap";
+    public static final String VERSION = "0.0.3";
+    
     //public static final int SERVER_PORT = 8080;
     
     /**
@@ -30,9 +32,9 @@ public class Pg2MS {
      * fail
      */
     private static ServerSocket SERVER_SOCKET;
-    private static String msg = "";
+    public static String[] args = null;
     public static FileDroper fileDroper = null;
-    private static int serverPort = 8081;
+    public static int serverPort = 8081;
 
     public Pg2MS() {
     }
@@ -49,33 +51,68 @@ public class Pg2MS {
     }
     
     /**
+     * TODO: real logging...
+     * @param msg 
+     */
+    public static void log(String msg) {
+        if (Pg2MS.fileDroper != null && Pg2MS.fileDroper.jTextArea1 != null) {
+            Pg2MS.fileDroper.jTextArea1.setText(Pg2MS.fileDroper.jTextArea1.getText() + "\n" + msg);
+        }
+
+        System.out.println(msg);
+    }
+    
+    /**
      * Loads the properties file
      */
     private static void loadProperties() throws IOException {
         Properties p = new Properties();
         p.load(Pg2MS.class.getClassLoader().getResourceAsStream("/pgAdmin2MapServer/resources/pg2ms.properties"));
         serverPort = Integer.valueOf(p.getProperty("INTERNAL_SERVER_PORT", "8081"));
-        System.out.println("props read: " + serverPort);
+        Pg2MS.log("props read: " + serverPort);
     }
 
-    public static void startServer(String[] args) throws IOException {
+    public static void startServer(String[] args) throws Exception {
         //loadProperties();
         // TODO: find system tmp, not user tmp
         String docRoot = "/tmp/";
-        String genUrl = "http://localhost:" + Pg2MS.serverPort + Pg2MS.GENERATE_MAP;
+        Pg2MS.args = args;
         
         //Thread t = new ElementalHttpServer.RequestListenerThread(8080, args[0]);
-        System.out.println("calling: " + genUrl);
         Thread t = new ElementalHttpServer.RequestListenerThread(Pg2MS.serverPort, docRoot);
         t.setDaemon(false);
         t.start();
+        
+        // register PG driver
+        Class.forName("org.postgresql.Driver");
 
-        // and launch GUI, should not be called if server already running
-        MapfileWriter.params = args;
-        Desktop.getDesktop().browse(URI.create(genUrl));
+        //launch GUI
+        //Desktop.getDesktop().browse(URI.create(genUrl));
         WindowRunner r = new WindowRunner();
         java.awt.EventQueue.invokeLater(r);
-        System.out.println("gui launched...");
+        // its windowOpened event then calls loadLayers
+    }
+
+    /**
+     * Loads layers and launch browser. Should be called in the main gui onload event
+     * @throws Exception 
+     */
+    public static void loadLayers() throws Exception {
+        // and loads layers from program arguments
+        MapfileWriter.params = args;
+        // directly write mapfile and call the openlayers mapserver template, time
+        // to set-up a nice HTML interface
+        String m = MapfileWriter.write();
+        Pg2MS.log("mapfile written: " + m);
+        
+        //String genUrl = "http://localhost/cgi-bin/mapserv?mode=browse&template=OpenLayers&map=/tmp/pgadmin_viewer.map&params=" 
+        //        + Arrays.toString(args).replace("[", "").replace("]", "").replace(" ", "").replace(",", "&");
+        String genUrl = "http://localhost:" + Pg2MS.serverPort + Pg2MS.GENERATE_MAP;
+        Pg2MS.log("calling: " + genUrl);
+        
+        Desktop.getDesktop().browse(URI.create(genUrl));
+        
+        Pg2MS.log("gui launched with args: " + Arrays.toString(args));
     }
 
     public static void sendParamsToServer(String[] args) throws Exception {
@@ -84,9 +121,9 @@ public class Pg2MS {
         b.append("}");
         //HttpResponse response = ElementalHttpPost.post(Pg2MS.UPDATE_PG_PARAMS, b.toString());
         HttpResponse response = ElementalHttpPost.post(Pg2MS.UPDATE_PG_PARAMS, Arrays.toString(args));
-        System.out.println("<< Response: " + response.getStatusLine());
-        System.out.println(EntityUtils.toString(response.getEntity()));
-        System.out.println("==============");
+        Pg2MS.log("<< Response: " + response.getStatusLine());
+        Pg2MS.log(EntityUtils.toString(response.getEntity()));
+        Pg2MS.log("==============");
     }
 
     /**
@@ -97,9 +134,9 @@ public class Pg2MS {
         try {
             startServer(args);
         } catch (IOException x) {
+            Pg2MS.log("Another internal server instance already running: " + Pg2MS.serverPort 
+                    + " .Exit: " + x.toString());
             sendParamsToServer(args);
-            System.out.println("Another internal server instance already running: " + Pg2MS.serverPort 
-                    + " .Exit: " + x.getMessage());
             System.exit(1);
         }
         // TODO code application logic here
