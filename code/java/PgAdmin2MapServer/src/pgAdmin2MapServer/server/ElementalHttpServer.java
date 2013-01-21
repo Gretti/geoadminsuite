@@ -26,6 +26,7 @@
  */
 package pgAdmin2MapServer.server;
 
+import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -34,6 +35,7 @@ import java.io.InputStreamReader;
 import java.io.InterruptedIOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URI;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.Locale;
@@ -126,7 +128,12 @@ public class ElementalHttpServer {
                         //updateLayers(entityContent);
                         Pg2MS.log("updating pgadmin parameters: " + entityContent);
                         Pg2MS.args = entityContent.replace("[", "").replace("]", "").split(",");
-                        generateMap(request, response, context);
+                        //generateMap(request, response, context);
+
+                        String genUrl = "http://localhost:" + Pg2MS.serverPort + Pg2MS.GENERATE_MAP;
+                        Pg2MS.log("calling: " + genUrl);
+
+                        Desktop.getDesktop().browse(URI.create(genUrl));
                     } else {
                         throw new Exception("invalid endpoint: " + target);
                     }
@@ -149,12 +156,10 @@ public class ElementalHttpServer {
                 }
             }
         }
-        
 
         /**
-         * Returns the HTML map to the caller
-         * TODO: refactor to LayerManager
-         * 
+         * Returns the HTML map to the caller TODO: refactor to LayerManager
+         *
          * @param request
          * @param response
          * @param context
@@ -167,7 +172,7 @@ public class ElementalHttpServer {
 
             String m = MapfileWriter.write();
             Pg2MS.log("mapfile written: " + m);
-            
+
             //URL u = ElementalHttpServer.class.getResource("/pgAdmin2Mapserver/resources/html/ol.html");
             InputStream is = ElementalHttpServer.class.getResourceAsStream("/resources/ol.html");
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));

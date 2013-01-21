@@ -3,20 +3,37 @@ PgAdmin2MapServer TODO List:
 
 ______
 First:
-? Display a Postgis Vector layer from PgAdmin if plugin launch on a table name
-? Display the list of available layers from PgAdmin if plugin launch on a database name or schema name
-? Basic layer styling:
+- Display a Postgis Vector layer from PgAdmin if plugin launch on a table name
+- Display the list of available layers from PgAdmin if plugin launch on a database name or schema name
+
+- layer tree: database
+                schema
+                    table
+                    table
+                schema
+
+- Basic layer styling:
     ? Color, outlinecolor
     ? line width
     ? transparency
+
 ? Reorder layers by D'n'D in the UI
-? SRS management:
-    ? If single layer with SRID, use it
-    ? If single layer without SRID, WGS84 by default with UI to choose Map and Layers
-    ? If multiple layers with same SRID: single
+
+- SRS management:
+    ? If single layer with SRID: use it
+    ? If single layer without SRID: WGS84 by default with UI to choose Map and Layers
+    ? If multiple layers with same SRID: use it
     ? If multiple layers with heterogeneous SRS: map SRS in WGS84
-? MapExtent management: one layer => layer extent
+
+- MapExtent management: one layer => layer extent
                         several => same SRS ? extend extent : WGS84 world extent
+
+layer submenu:  reorder by dnd
+                remove
+                transparency
+                style: color, outlineColor, symbol, sym size
+                display in native projection (available if case apply)
+                
 _______
 Later: 
 ? support drag n drop for other files/URL/Other database connexion
@@ -31,3 +48,55 @@ OnConnect:
     launch GUI, 
     open browser with generateMap: gets layer list from params, with extent for each layer.
     mapfile extent ?
+
+______
+Notes:
+
+Mapserver layer: pas de gestion de transparence
+    extent: bbox de la carte et maxResol = map width / img width
+
+WMS Layer: gestion de transparence
+    extent: set a projection parameter to the map: this will be the map default.
+
+___________
+Java Model:
+
+Database object: 
+    name
+    list of schemas, 
+    render itself as a mapfish tree
+Schema object: 
+    name
+    list of tables, 
+    render itself as a mapfish tree
+table/layer: 
+    name
+    a mapserver layer; 
+    render itself as a mapfish tree
+
+____________
+Service API:
+
+getLayersTree: server returns the l
+
+
+_________
+UseCases:
+
+Parse program arguments: 
+    if table name, build layer, schema, database. Manage extent and projection when adding objects in each other
+    if schema name: list of geo layers.
+    if only database name: list of schemas, list of layers
+
+WriteMapFile with a database object, reading extent and projection from objects
+
+Call browser with map URL: map calls back server to get the MapConfig JSON object, containing:
+    the map bounds, client computes maxResolution from map div
+    the map projection,
+    the layer list, in an array of databases containing an array of schemas containing an array of layers
+
+Map is displayed, user plays with it
+
+if recall from pgAdmin, refresh the map with the new Map object:
+    how to recall client ? new web page ? long polling ?
+

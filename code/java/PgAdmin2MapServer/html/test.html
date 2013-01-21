@@ -17,23 +17,57 @@
         </script>
         <script type="text/javascript" src="mfbase/mapfish/MapFish.js"></script>
 
-        <link rel="stylesheet" type="text/css" href="mapfish.css" />
+        <link rel="stylesheet" type="text/css" href="mfbase/mapfish/mapfish.css" />
 
         <script type="text/javascript"><!--
 
             var map; // for debug
             var centered = false;
+            var layer = null;
+            var mapConfig = null; // the object storing layers configuration
 
             function createMap() {
-                //map = new OpenLayers.Map("map");
-                map = new OpenLayers.Map('map',
+                map = new OpenLayers.Map("map", 
                 {
-                    maxExtent: new OpenLayers.Bounds(1682667.23673968, 2182020.94070385, 1719513.08792259, 2242575.97358883),
-                    maxResolution: 2688.579158
+                    controls: [],
+                    maxExtent: new OpenLayers.Bounds(99226, 6049647, 1242375, 7110524),
+                    projection: new OpenLayers.Projection("EPSG:2154"),
+                    //maxExtent: new OpenLayers.Bounds(-180, -85, 180, 85),
+                    maxResolution: 2400 //map units per pixel
+                    //maxResolution: 0.36
                 });
+
                 return map;
             }
-
+            
+            function createMapserverLayer(map) {
+                var baseLayer = new OpenLayers.Layer("Blank",{isBaseLayer: true});
+                
+                var layer1 = new OpenLayers.Layer.WMS( "tm",
+                "http://localhost/cgi-bin/mapserv?map=/Library/WebServer/Documents/test.map&",
+                {layers: 'tm', transparent: true, format: "image/png"},
+                {isBaseLayer: false, singleTile: true, ratio:1});
+                
+                var layer2 = new OpenLayers.Layer.WMS( "countries",
+                "http://localhost/cgi-bin/mapserv?map=/Library/WebServer/Documents/test.map&",
+                {layers: 'countries', transparent: true, format: "image/png"},
+                {isBaseLayer: false, singleTile: true, ratio:1});
+                
+                var layer3 = new OpenLayers.Layer.WMS( "dept",
+                "http://localhost/cgi-bin/mapserv?map=/Library/WebServer/Documents/test.map&",
+                {layers: 'dept', transparent: true, format: "image/png"},
+                {isBaseLayer: false, singleTile: true, ratio:1});
+                
+                var layer4 = new OpenLayers.Layer.WMS( "com",
+                "http://localhost/cgi-bin/mapserv?map=/Library/WebServer/Documents/test.map&",
+                {layers: 'com', transparent: true, format: "image/png"},
+                {isBaseLayer: false, singleTile: true, ratio:1});
+                
+                //map.addLayers([baseLayer, layer1, layer2, layer3]);
+                map.addLayers([baseLayer, layer3, layer4]);
+                layer = layer3;
+            }            
+        
             function createMetacartaLayer(map) {
                 var wms =  new OpenLayers.Layer.WMS(
                 "metacarta",
@@ -43,28 +77,11 @@
             );
                 map.addLayer(wms);
             }
-            
-            function createMapserverLayer(map) {
-                baseLayer = new OpenLayers.Layer("Blank",{isBaseLayer: true});
-                
-                var mslayer = new OpenLayers.Layer.MapServer( "testpg",
-                "http://localhost/cgi-bin/mapserv?map=/tmp/pgadmin_viewer.map",
-                {layers: 'testpg,testline'},
-                {isBaseLayer: true},
-                {singleTile: "true", ratio:1} );
-                
-                var mslayer2 = new OpenLayers.Layer.MapServer( "testline",
-                "http://localhost/cgi-bin/mapserv?map=/tmp/pgadmin_viewer.map&layer=testline",
-                {layers: 'testline'},
-                {isBaseLayer: true},
-                {singleTile: "true", ratio:1} );
-                console.log(mslayer);
-                map.addLayer(baseLayer);
-                map.addLayer(mslayer);
-                //map.addLayer(mslayer2);
-            }
 
             function createCamptocampLayers(map) {
+                var baseLayer = new OpenLayers.Layer("Blank",
+                {isBaseLayer: true});
+                
                 var summits = new OpenLayers.Layer.WMS("summits",
                 "http://demo.mapfish.org/mapfishsample/trunk/wms?", {
                     layers: "summits",
@@ -81,7 +98,7 @@
                 }, {
                     singleTile: true
                 });
-                map.addLayers([summits, parkings]);
+                map.addLayers([baseLayer, summits, parkings]);
             }
 
             function centerMap() {
@@ -91,27 +108,57 @@
                 }
             }
 
-            function createTreeModel() {
+            function createTreeModelOriginal() {
                 return [{
-                        text: "testmapfile",
+                        text: "Nicolas",
                         leaf: false,
+                        icon: "img/database.png",
                         checked: true,
                         expanded: true,
                         children: [{
-                                text: "testline",
-                                layerName: "testline",
+                                text: "Public",
                                 leaf: false,
+                                icon: "img/database_table.png",
+                                checked: true,
+                                expanded: true,
+                                children: [{
+                                        text: "departement",
+                                        layerName: "dept",
+                                        leaf: true,
+                                        // 4.5
+                                        icon: "img/shape_group.png",
+                                        checked: true
+                                    }]
+                            },{
+                                text: "work",
+                                leaf: false,
+                                icon: "img/database_table.png",
+                                checked: true,
+                                expanded: true,
+                                children: [{
+                                        text: "com",
+                                        layerName: "com",
+                                        leaf: true,
+                                        // 4.5
+                                        icon: "img/shape_group.png",
+                                        checked: true
+                                    }]}
+                            /*{
+                                text: "TrueMarble",
+                                layerName: "tm",
+                                leaf: true,
                                 // 4.5
-                                icon: "icons/img2.png",
+                                icon: "img/photo.png",
                                 checked: true
                             }, {
-                                text: "testpg",
-                                layerName: "testpg",
-                                leaf: false,
+                                text: "countries",
+                                layerName: "countries",
+                                leaf: true,
                                 // 4.5
-                                icon: "icons/img1.png",
+                                icon: "img/shape_group.png",
                                 checked: true
-                            }]
+                            },*/
+                        ] // end database
                     }];
             }
 
@@ -171,10 +218,15 @@
             Ext.onReady(function() {
 
                 var map = createMap();
-                //createMetacartaLayer(map);
-                //createCamptocampLayers(map);
-                createMapserverLayer(map);
-                var model = createTreeModel();
+                // parameters needed from server:
+                // map extent, map projection
+                // a list of layers with parameters:
+                //  name, url, projection ?
+                // createTreeModel with config option
+                // text = objects name
+                // icon according to type: collection position in json ?
+                // if layer: name = layer name
+                var model = createTreeModelOriginal();
                 var toolbar = createToolbar(map);
 
                 var viewport = new Ext.Viewport({
@@ -187,7 +239,7 @@
                             region: "west",
                             id: "tools",
                             title: "Tools",
-                            border: true,
+                            border: false,
                             width: 250,
                             split: true,
                             items: [{
@@ -195,15 +247,16 @@
                                     title: "layer tree",
                                     xtype: "layertree",
                                     map: map,
-                                    height: 500,
+                                    height: 800,
                                     showWmsLegend: true,
-                                    resizable: true,
                                     enableDD: true,
                                     model: model,
                                     plugins: [
                                         mapfish.widgets.LayerTree.createContextualMenuPlugin([
+                                            'zoomToExtent',
                                             'opacitySlide',
-                                            'remove'
+                                            'remove',
+                                            
                                         ])
                                     ]
                                 }]
@@ -221,9 +274,10 @@
                 viewport.doLayout();
 
                 initToolbarContent(toolbar);
-
+                map.zoomToMaxExtent();
             });
-            --></script>
+        </script>
+
         <style type="text/css">
             .zoomin {
                 background-image:url(mfbase/mapfish/img/icon_zoomin.png) !important;
