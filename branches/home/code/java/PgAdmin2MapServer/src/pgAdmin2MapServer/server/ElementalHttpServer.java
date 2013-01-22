@@ -26,37 +26,22 @@
  */
 package pgAdmin2MapServer.server;
 
-import java.awt.Desktop;
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.InterruptedIOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.URI;
-import java.net.URLDecoder;
-import java.nio.charset.Charset;
 import java.util.Locale;
 
 import org.apache.http.ConnectionClosedException;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpResponseInterceptor;
 import org.apache.http.HttpServerConnection;
-import org.apache.http.HttpStatus;
 import org.apache.http.MethodNotSupportedException;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.FileEntity;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.DefaultConnectionReuseStrategy;
 import org.apache.http.impl.DefaultHttpResponseFactory;
 import org.apache.http.impl.DefaultHttpServerConnection;
-import org.apache.http.message.BasicHttpRequest;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.CoreProtocolPNames;
@@ -72,9 +57,7 @@ import org.apache.http.protocol.ResponseConnControl;
 import org.apache.http.protocol.ResponseContent;
 import org.apache.http.protocol.ResponseDate;
 import org.apache.http.protocol.ResponseServer;
-import org.apache.http.util.EntityUtils;
 import pgAdmin2MapServer.Pg2MS;
-import pgAdmin2MapServer.model.Mapfile;
 
 /**
  * Basic, yet fully functional and spec compliant, HTTP/1.1 file server. <p>
@@ -117,82 +100,7 @@ public class ElementalHttpServer {
             if (!method.equals("GET") && !method.equals("HEAD") && !method.equals("POST")) {
                 throw new MethodNotSupportedException(method + " method not supported");
             }
-            if (request instanceof HttpEntityEnclosingRequest) {
-                try {
-                    HttpEntity entity = ((HttpEntityEnclosingRequest) request).getEntity();
-                    String entityContent = EntityUtils.toString(entity);
-                    String target = URLDecoder.decode(request.getRequestLine().getUri(), "UTF-8");
-                    Pg2MS.log("target: " + target + " content: " + entityContent);
-
-                    if (Pg2MS.UPDATE_PG_PARAMS.equals(target)) {
-                        //updateLayers(entityContent);
-                        Pg2MS.log("updating pgadmin parameters: " + entityContent);
-                        Pg2MS.args = entityContent.replace("[", "").replace("]", "").split(",");
-                        //generateMap(request, response, context);
-
-                        String genUrl = "http://localhost:" + Pg2MS.serverPort + Pg2MS.GENERATE_MAP;
-                        Pg2MS.log("calling: " + genUrl);
-
-                        Desktop.getDesktop().browse(URI.create(genUrl));
-                    } else {
-                        throw new Exception("invalid endpoint: " + target);
-                    }
-                } catch (Exception e) {
-                    Pg2MS.log("Server Error1: " + e.toString());
-                    // todo: custom http codes according to failures
-                    response.setStatusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR);
-                }
-            } else if (request instanceof BasicHttpRequest) {
-                try {
-                    BasicHttpRequest req = (BasicHttpRequest) request;
-                    String target = URLDecoder.decode(req.getRequestLine().getUri(), "UTF-8");
-                    if (Pg2MS.GENERATE_MAP.equals(target)) {
-                        generateMap(request, response, context);
-                    }
-                } catch (Exception e) {
-                    // todo: custom http codes according to failures
-                    Pg2MS.log("Server Error2 : " + e.toString());
-                    response.setStatusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR);
-                }
-            }
-        }
-
-        /**
-         * Returns the HTML map to the caller TODO: refactor to LayerManager
-         *
-         * @param request
-         * @param response
-         * @param context
-         * @throws Exception
-         */
-        public void generateMap(
-                final HttpRequest request,
-                final HttpResponse response,
-                final HttpContext context) throws Exception {
-
-            String m = Mapfile.write();
-            Pg2MS.log("mapfile written: " + m);
-
-            //URL u = ElementalHttpServer.class.getResource("/pgAdmin2Mapserver/resources/html/ol.html");
-            InputStream is = ElementalHttpServer.class.getResourceAsStream("/resources/ol.html");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                //new OpenLayers.Bounds(1682667.23673968, 2182020.94070385, 1719513.08792259, 2242575.97358883)
-                if (Mapfile.olBounds != null) {
-                    //line = line.replace("\"$$BOUNDS$$\"", MapfileWriter.olBounds);
-                }
-                sb.append(line).append("\n");
-            }
-            is.close();
-            //URL u = Thread.currentThread().getContextClassLoader().getResource("/pgAdmin2Mapserver/resources/html/ol.html");
-            //File f = new File(u.toURI());
-            Pg2MS.log("sending file: /pgAdmin2Mapserver/resources/html/ol.html");
-            response.setStatusCode(HttpStatus.SC_OK);
-            StringEntity body = new StringEntity(sb.toString(), ContentType.create("text/html", Charset.forName("UTF-8")));
-            //FileEntity body = new FileEntity(f, ContentType.create("text/html", (Charset) null));
-            response.setEntity(body);
+            RequestManager.processRequest(request, response, context);
         }
     }
 

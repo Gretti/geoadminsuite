@@ -6,37 +6,36 @@ package pgAdmin2MapServer;
 
 import java.awt.Desktop;
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.net.URI;
 import java.util.Arrays;
-import java.util.Properties;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import pgAdmin2MapServer.client.ElementalHttpPost;
 import pgAdmin2MapServer.model.Mapfile;
 import pgAdmin2MapServer.server.ElementalHttpServer;
+import pgAdmin2MapServer.server.RequestManager;
 
 /**
  *
  * @author nicolas
  */
 public class Pg2MS {
-    public static final String UPDATE_PG_PARAMS = "/updatePgParams";
-    public static final String GENERATE_MAP = "/generateMap";
-    public static final String VERSION = "0.0.3";
-    
-    //public static final int SERVER_PORT = 8080;
-    
-    /**
-     * The socket to make our class a single instance: other invokations should
-     * fail
-     */
-    private static ServerSocket SERVER_SOCKET;
-    public static FileDroper fileDroper = null;
-    public static int serverPort = 8081;
 
-    public Pg2MS() {
-    }
+    /**
+     * The Swing frame displaying program logs and allowing geographic files
+     * drag'n'drop (not yet available)
+     */
+    public static FileDroper fileDroper = null;
+    /**
+     * The port this server starts on
+     */
+    public static int serverPort = 8081;
+    public static boolean debug = true;
+    /**
+     * The tmp file where MapServer can write image TODO: find correct folder
+     * according to plateform
+     */
+    public static String docRoot = "/tmp/";
 
     /**
      * Thread for the DnD frame
@@ -48,39 +47,36 @@ public class Pg2MS {
             Pg2MS.fileDroper.setVisible(true);
         }
     }
-    
+
     /**
-     * TODO: real logging...
-     * @param msg 
+     * TODO: real logging... log4j ?
+     *
+     * @param msg
      */
     public static void log(String msg) {
-        if (Pg2MS.fileDroper != null && Pg2MS.fileDroper.jTextArea1 != null) {
-            Pg2MS.fileDroper.jTextArea1.setText(Pg2MS.fileDroper.jTextArea1.getText() + "\n" + msg);
+        if (debug) {
+            if (Pg2MS.fileDroper != null && Pg2MS.fileDroper.jTextArea1 != null) {
+                Pg2MS.fileDroper.jTextArea1.setText(Pg2MS.fileDroper.jTextArea1.getText() + "\n" + msg);
+            }
+
+            System.out.println(msg);
         }
-
-        System.out.println(msg);
     }
-    
+
     /**
-     * Loads the properties file
+     * Starts the internal server on configured port.
+     *
+     * @throws Exception if the port is in use, or another unexpected error
+     * occured
      */
-    private static void loadProperties() throws IOException {
-        Properties p = new Properties();
-        p.load(Pg2MS.class.getClassLoader().getResourceAsStream("/pgAdmin2MapServer/resources/pg2ms.properties"));
-        serverPort = Integer.valueOf(p.getProperty("INTERNAL_SERVER_PORT", "8081"));
-        Pg2MS.log("props read: " + serverPort);
-    }
-
     public static void startServer() throws Exception {
         //loadProperties();
         // TODO: find system tmp, not user tmp
-        String docRoot = "/tmp/";
-        
-        //Thread t = new ElementalHttpServer.RequestListenerThread(8080, args[0]);
+
         Thread t = new ElementalHttpServer.RequestListenerThread(Pg2MS.serverPort, docRoot);
         t.setDaemon(false);
         t.start();
-        
+
         // register PG driver
         Class.forName("org.postgresql.Driver");
 
@@ -92,33 +88,36 @@ public class Pg2MS {
     }
 
     /**
-     * Loads layers and launch browser. Should be called in the main gui onload event
-     * @throws Exception 
+     * Loads layers and launch browser. Should be called in the main gui onload
+     * event
+     *
+     * @throws Exception
      */
     public static void loadLayers() throws Exception {
-        // and loads layers from program arguments
-        Mapfile.params = args;
-        // directly write mapfile and call the openlayers mapserver template, time
-        // to set-up a nice HTML interface
         String m = Mapfile.write();
         Pg2MS.log("mapfile written: " + m);
-        
-        //String genUrl = "http://localhost/cgi-bin/mapserv?mode=browse&template=OpenLayers&map=/tmp/pgadmin_viewer.map&params=" 
-        //        + Arrays.toString(args).replace("[", "").replace("]", "").replace(" ", "").replace(",", "&");
-        String genUrl = "http://localhost:" + Pg2MS.serverPort + Pg2MS.GENERATE_MAP;
-        Pg2MS.log("calling: " + genUrl);
-        
-        Desktop.getDesktop().browse(URI.create(genUrl));
-        
-        Pg2MS.log("gui launched with args: " + Arrays.toString(args));
+
+        String serverUrl = "http://localhost:port/action".replace("port", String.valueOf(Pg2MS.serverPort))
+                .replace("action", RequestManager.REQUEST_MAP);
+
+        // Open GUI: a client browser ;)
+        Pg2MS.log("Launching default browser with URL: " + serverUrl);
+        Desktop.getDesktop().browse(URI.create(serverUrl));
+
+        Pg2MS.log("GUI launched with config: " + Config.getInstance().toString());
     }
 
+    /**
+     * Method to call the server, giving it new arguments
+     *
+     * @param args
+     * @throws Exception
+     */
     public static void sendParamsToServer(String[] args) throws Exception {
-        StringBuilder b = new StringBuilder("{");
-        b.append("'dbname': ").append("'").append(args[0]).append("'");
-        b.append("}");
         //HttpResponse response = ElementalHttpPost.post(Pg2MS.UPDATE_PG_PARAMS, b.toString());
-        HttpResponse response = ElementalHttpPost.post(Pg2MS.UPDATE_PG_PARAMS, Arrays.toString(args));
+        HttpResponse response = ElementalHttpPost.post(
+                RequestManager.REQUEST_NEW_PARAMS,
+                Arrays.toString(args).replace("[", "").replace("]", "").replace(" ", "").replace(",", "&"));
         Pg2MS.log("<< Response: " + response.getStatusLine());
         Pg2MS.log(EntityUtils.toString(response.getEntity()));
         Pg2MS.log("==============");
@@ -134,9 +133,10 @@ public class Pg2MS {
         try {
             startServer();
         } catch (IOException x) {
-            Pg2MS.log("Another internal server instance already running: " + Pg2MS.serverPort 
-                    + " .Exit: " + x.toString());
-            sendParamsToServer();
+            Pg2MS.log("Another internal server instance already running on " + Pg2MS.serverPort
+                    + ".\n\tException: " + x.toString());
+            Pg2MS.log("Sending new params to running server:  " + Arrays.toString(args));
+            sendParamsToServer(args);
             System.exit(1);
         }
     }
