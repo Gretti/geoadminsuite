@@ -74,7 +74,7 @@ import org.apache.http.protocol.ResponseDate;
 import org.apache.http.protocol.ResponseServer;
 import org.apache.http.util.EntityUtils;
 import pgAdmin2MapServer.Pg2MS;
-import pgAdmin2MapServer.mapserver.MapfileWriter;
+import pgAdmin2MapServer.model.Mapfile;
 
 /**
  * Basic, yet fully functional and spec compliant, HTTP/1.1 file server. <p>
@@ -170,7 +170,7 @@ public class ElementalHttpServer {
                 final HttpResponse response,
                 final HttpContext context) throws Exception {
 
-            String m = MapfileWriter.write();
+            String m = Mapfile.write();
             Pg2MS.log("mapfile written: " + m);
 
             //URL u = ElementalHttpServer.class.getResource("/pgAdmin2Mapserver/resources/html/ol.html");
@@ -180,7 +180,7 @@ public class ElementalHttpServer {
             String line = null;
             while ((line = reader.readLine()) != null) {
                 //new OpenLayers.Bounds(1682667.23673968, 2182020.94070385, 1719513.08792259, 2242575.97358883)
-                if (MapfileWriter.olBounds != null) {
+                if (Mapfile.olBounds != null) {
                     //line = line.replace("\"$$BOUNDS$$\"", MapfileWriter.olBounds);
                 }
                 sb.append(line).append("\n");

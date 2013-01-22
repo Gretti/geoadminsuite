@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>MapFish Lab</title>
+        <title>MapFish Test</title>
 
         <link rel="stylesheet" type="text/css" href="mfbase/ext/resources/css/ext-all.css" />
 
@@ -25,16 +25,17 @@
             var centered = false;
             var layer = null;
             var mapConfig = null; // the object storing layers configuration
+            var mapFileUrl = "http://localhost/cgi-bin/mapserv?map=/Library/WebServer/Documents/mf/test.map&";
 
             function createMap() {
                 map = new OpenLayers.Map("map", 
                 {
                     controls: [],
-                    maxExtent: new OpenLayers.Bounds(99226, 6049647, 1242375, 7110524),
-                    projection: new OpenLayers.Projection("EPSG:2154"),
-                    //maxExtent: new OpenLayers.Bounds(-180, -85, 180, 85),
-                    maxResolution: 2400 //map units per pixel
-                    //maxResolution: 0.36
+                    //maxExtent: new OpenLayers.Bounds(99226, 6049647, 1242375, 7110524),
+                    projection: new OpenLayers.Projection("EPSG:4326"),
+                    maxExtent: new OpenLayers.Bounds(-180, -85, 180, 85),
+                    //maxResolution: 2400 //map units per pixel
+                    maxResolution: 0.36
                 });
 
                 return map;
@@ -44,26 +45,26 @@
                 var baseLayer = new OpenLayers.Layer("Blank",{isBaseLayer: true});
                 
                 var layer1 = new OpenLayers.Layer.WMS( "tm",
-                "http://localhost/cgi-bin/mapserv?map=/Library/WebServer/Documents/test.map&",
+                mapFileUrl,
                 {layers: 'tm', transparent: true, format: "image/png"},
                 {isBaseLayer: false, singleTile: true, ratio:1});
                 
                 var layer2 = new OpenLayers.Layer.WMS( "countries",
-                "http://localhost/cgi-bin/mapserv?map=/Library/WebServer/Documents/test.map&",
+                mapFileUrl,
                 {layers: 'countries', transparent: true, format: "image/png"},
                 {isBaseLayer: false, singleTile: true, ratio:1});
                 
                 var layer3 = new OpenLayers.Layer.WMS( "dept",
-                "http://localhost/cgi-bin/mapserv?map=/Library/WebServer/Documents/test.map&",
+                mapFileUrl,
                 {layers: 'dept', transparent: true, format: "image/png"},
                 {isBaseLayer: false, singleTile: true, ratio:1});
                 
                 var layer4 = new OpenLayers.Layer.WMS( "com",
-                "http://localhost/cgi-bin/mapserv?map=/Library/WebServer/Documents/test.map&",
+                mapFileUrl,
                 {layers: 'com', transparent: true, format: "image/png"},
                 {isBaseLayer: false, singleTile: true, ratio:1});
                 
-                //map.addLayers([baseLayer, layer1, layer2, layer3]);
+                //map.addLayers([baseLayer, layer1]);
                 map.addLayers([baseLayer, layer3, layer4]);
                 layer = layer3;
             }            
@@ -136,7 +137,7 @@
                                 checked: true,
                                 expanded: true,
                                 children: [{
-                                        text: "com",
+                                        text: "Communes de france",
                                         layerName: "com",
                                         leaf: true,
                                         // 4.5
@@ -160,16 +161,6 @@
                             },*/
                         ] // end database
                     }];
-            }
-
-            function createShortcutsStore() {
-                return new Ext.data.SimpleStore({
-                    fields: ["value", "text", "bbox"],
-                    data: [
-                        ["A", "Alps", new OpenLayers.Bounds(5.04, 44.77, 10.93, 46.91)],
-                        ["P", "Pyrenees", new OpenLayers.Bounds(-2.25, 41.50, 3.63, 43.79)]
-                    ]
-                });
             }
 
             function createToolbar(map) {
@@ -226,6 +217,8 @@
                 // text = objects name
                 // icon according to type: collection position in json ?
                 // if layer: name = layer name
+                
+                createMapserverLayer(map);
                 var model = createTreeModelOriginal();
                 var toolbar = createToolbar(map);
 

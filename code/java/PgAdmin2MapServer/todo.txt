@@ -61,6 +61,8 @@ WMS Layer: gestion de transparence
 ___________
 Java Model:
 
+Mapfile object: writes itself to file, trigger layer list creation
+
 Database object: 
     name
     list of schemas, 
