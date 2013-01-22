@@ -4,6 +4,7 @@
  */
 package pgAdmin2MapServer.model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -15,9 +16,9 @@ public class Database {
     private String name;
     private Map<String, Schema> schemas;
     
-    public Database(String name, Map<String, Schema> schemas) {
+    public Database(String name) {
         this.name = name;
-        this.schemas = schemas;
+        this.schemas = new HashMap<String, Schema>();
     }
 
     public String getName() {
@@ -31,8 +32,19 @@ public class Database {
     public Map<String, Schema> getSchemas() {
         return schemas;
     }
-
+    /*
     public void setSchemas(Map<String, Schema> schemas) {
         this.schemas = schemas;
+    }
+    * */
+
+    /**
+     * Adds the given schema to this database
+     * @param s 
+     */
+    public void addSchema(Schema s) {
+        if (s != null) {
+            this.schemas.put(s.getName(), s);
+        }
     }
 }

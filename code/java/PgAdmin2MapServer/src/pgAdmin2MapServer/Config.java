@@ -42,14 +42,23 @@ public class Config {
             this.port = args[1].replace("port=", "");
             this.database = args[2].replace("database=", "");
             this.user = args[3].replace("user=", "");
-            this.user = args[4].replace("passwd=", "");
+            this.pwd = args[4].replace("passwd=", "");
             
             if (args.length > 5) {
                 this.schema = args[5].replace("schema=", "");
             }
             if (args.length > 6) {
-                this.schema = args[6].replace("table=", "");
+                this.table = args[6].replace("table=", "");
             }
         }
+    }
+    
+    public String toString() {
+        return "host=" + host + " port=" + port + " database=" 
+                + database + " user=" + user + " passwd=" + pwd + " schema=" + schema + " table=" + table;
+    }
+    
+    public void updateParams(String newParams) {
+        Pg2MS.log("updateParams: " + newParams);
     }
 }
