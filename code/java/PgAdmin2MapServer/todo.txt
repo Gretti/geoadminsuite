@@ -36,7 +36,7 @@ layer submenu:  reorder by dnd
                 
 _______
 Later: 
-? support drag n drop for other files/URL/Other database connexion
+- support drag n drop for other files/URL/Other database connexion
 
 ______
 Open:
