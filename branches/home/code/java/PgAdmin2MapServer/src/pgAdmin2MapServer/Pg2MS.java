@@ -13,7 +13,7 @@ import java.util.Properties;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import pgAdmin2MapServer.client.ElementalHttpPost;
-import pgAdmin2MapServer.mapserver.MapfileWriter;
+import pgAdmin2MapServer.model.Mapfile;
 import pgAdmin2MapServer.server.ElementalHttpServer;
 
 /**
@@ -32,7 +32,6 @@ public class Pg2MS {
      * fail
      */
     private static ServerSocket SERVER_SOCKET;
-    public static String[] args = null;
     public static FileDroper fileDroper = null;
     public static int serverPort = 8081;
 
@@ -72,11 +71,10 @@ public class Pg2MS {
         Pg2MS.log("props read: " + serverPort);
     }
 
-    public static void startServer(String[] args) throws Exception {
+    public static void startServer() throws Exception {
         //loadProperties();
         // TODO: find system tmp, not user tmp
         String docRoot = "/tmp/";
-        Pg2MS.args = args;
         
         //Thread t = new ElementalHttpServer.RequestListenerThread(8080, args[0]);
         Thread t = new ElementalHttpServer.RequestListenerThread(Pg2MS.serverPort, docRoot);
@@ -99,10 +97,10 @@ public class Pg2MS {
      */
     public static void loadLayers() throws Exception {
         // and loads layers from program arguments
-        MapfileWriter.params = args;
+        Mapfile.params = args;
         // directly write mapfile and call the openlayers mapserver template, time
         // to set-up a nice HTML interface
-        String m = MapfileWriter.write();
+        String m = Mapfile.write();
         Pg2MS.log("mapfile written: " + m);
         
         //String genUrl = "http://localhost/cgi-bin/mapserv?mode=browse&template=OpenLayers&map=/tmp/pgadmin_viewer.map&params=" 
@@ -130,30 +128,16 @@ public class Pg2MS {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception {
+        // init configuration
+        Config.getInstance().parseArgs(args);
         // starts or exit if started
         try {
-            startServer(args);
+            startServer();
         } catch (IOException x) {
             Pg2MS.log("Another internal server instance already running: " + Pg2MS.serverPort 
                     + " .Exit: " + x.toString());
-            sendParamsToServer(args);
+            sendParamsToServer();
             System.exit(1);
         }
-        // TODO code application logic here
-        String params = Arrays.toString(args);
-        //File f = new File ("/tmp/test");
-        //FileWriter fw = new FileWriter(f);
-        //fw.write(params);
-        //fw.close();
-        if (args.length > 6) {
-            String host = args[0];
-            String port = args[1];
-            String user = args[2];
-            String passwd = args[3];
-            String database = args[4];
-            String schema = args[5];
-            String table = args[6];
-        }
-        //System.exit(0);
     }
 }

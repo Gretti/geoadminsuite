@@ -1,0 +1,113 @@
+MAP
+    extent -175 -85 175 85
+	size 640 480
+	NAME "Serveur WMS de test 1"
+	SHAPEPATH "/Users/nicolas/Projets/Formation/kits/MapServer/data"
+	projection 
+		"init=epsg:4326"
+	end
+	
+	WEB
+		METADATA
+			"wms_title"           "Serveur WMS de test 1"
+			"wms_onlineresource"  "http://localhost/cgi-bin/mapserv?map=/Users/nicolas/Sites/test.map&"
+			"wms_srs"             "EPSG:4326"
+			"wms_enable_request"  "*"
+		END	
+        imagepath  "/tmp/"
+	END
+	
+	### a raster
+    LAYER
+		# partie necessaire pour support OGC
+        name "rast"
+        data "/Users/nicolas/Projets/Formation/kits/PostGIS/tp/webmapping/tm.tif"
+        type raster
+        status default
+		projection 
+			"init=epsg:4326"
+		end
+		METADATA
+			"wms_title"           "TrueMarble (low resolution)"
+		END	
+    END
+    
+	### La couche des regions des pays
+    LAYER
+		# partie necessaire pour support OGC
+        name "admin98"
+        data "countries.shp"
+        type polygon
+        status default
+        class
+            color 50 50 255
+        end
+		projection 
+			"init=epsg:4326"
+		end
+		METADATA
+			"wms_title"           "World Countries (low resolution)"
+		END	
+    END
+    
+	### La couche des points
+    LAYER
+        name "sites"
+        data "sites.shp"
+        type point
+        status default
+        class
+            color 255 0 0
+			symbol "circle"
+			size 6
+        end
+		projection 
+			"init=epsg:4326"
+		end
+		METADATA
+			"wms_title"           "Sites de test"
+		END	
+    END
+	
+	### La couche des departements
+    LAYER
+        name "dept"
+        data "/Users/nicolas/geodata/GEOFLA_COMMUNE/DEPARTEMENTS/DEPARTEMENT.SHP"
+        type polygon
+        status on
+        class
+            color 255 0 0
+        end
+		projection 
+			"init=epsg:2154"
+		end
+		METADATA
+			"wms_title"           "departement"
+		END	
+    END
+	
+	### La couche des communes
+    LAYER
+        name "com"
+        data "/Users/nicolas/geodata/GEOFLA_COMMUNE/COMMUNES/COMMUNE.SHP"
+        type polygon
+        status on
+        class
+            color 0 255 0
+        end
+		projection 
+			"init=epsg:2154"
+		end
+		METADATA
+			"wms_title"           "commune"
+		END	
+    END
+	
+	SYMBOL
+		NAME "circle"
+		TYPE ELLIPSE
+		POINTS
+			1 1
+		END
+	END
+END
