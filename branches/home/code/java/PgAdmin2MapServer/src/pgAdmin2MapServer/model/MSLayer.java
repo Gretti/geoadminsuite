@@ -11,9 +11,9 @@ package pgAdmin2MapServer.model;
  * TODO: use Bastien framework to manage MapServer objects
  * @author nicolas
  */
-public class Layer {
+public class MSLayer {
     public String schema = "";
-    public String table = "";
+    public String name = "";
     public String geom = "";
     public String status = "";
     public String type = "";
@@ -26,15 +26,13 @@ public class Layer {
     public String opacity = "100";
     public String extent = "";
     
-    public Layer(String schema, String table, String geom, String type, String[] params,
+    public MSLayer(String schema, String table, String geom, String type,
             String connectionType, String srs) {
         this.schema = schema;
-        this.table = table;
+        this.name = table;
         this.geom = geom;
         this.status = "ON";
         this.setType(type);
-        this.data = data;
-        this.setConnection(params);
         this.connectionType = connectionType;
         this.srs = srs;
         this.color = "255 0 0";
@@ -42,12 +40,12 @@ public class Layer {
     }
     
     /**
-     * Returns the DATA property built from schema, table, geom:
-     * geom from schema.table
+     * Returns the DATA property built from schema, name, geom:
+     * geom from schema.name
      * @return 
      */
     public String getData() {
-        return this.geom + " from " + this.schema + "." + this.table;
+        return this.geom + " from " + this.schema + "." + this.name;
     }
     
     /** 
@@ -99,7 +97,7 @@ public class Layer {
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder("\tLAYER\n");
-        b.append("\t\tNAME ").append(table).append("\n");
+        b.append("\t\tNAME ").append(name).append("\n");
         b.append("\t\tTYPE ").append(type).append("\n");
         b.append("\t\tSTATUS DEFAULT\n");
         b.append("\t\tOPACITY ").append(opacity).append("\n");

@@ -7,6 +7,7 @@ package pgAdmin2MapServer;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
@@ -20,6 +21,7 @@ import pgAdmin2MapServer.server.RequestManager;
  * @author nicolas
  */
 public class Pg2MS {
+    public static final String VERSION = "0.0.3";
 
     /**
      * The Swing frame displaying program logs and allowing geographic files
@@ -95,10 +97,19 @@ public class Pg2MS {
      */
     public static void loadLayers() throws Exception {
         String m = Mapfile.write();
-        Pg2MS.log("mapfile written: " + m);
-
+        
+        //TODO: implement this behaviour ?
+        // opens the normal page: the client, fetching the config, should see its empty 
+        //  => no geo to display
+        if (m != null && !m.isEmpty()) {
+            Pg2MS.log("mapfile written: " + m);
+        } else {
+            Pg2MS.log("No mapfile to write: no geo data from database");
+        }
+        //String action = RequestManager.REQUEST_FILE + "?fileName=" + URLEncoder.encode("/resources/ol.html", "UTF-8");
+        String action = RequestManager.REQUEST_MAP;
         String serverUrl = "http://localhost:port/action".replace("port", String.valueOf(Pg2MS.serverPort))
-                .replace("action", RequestManager.REQUEST_MAP);
+                .replace("action", action);
 
         // Open GUI: a client browser ;)
         Pg2MS.log("Launching default browser with URL: " + serverUrl);

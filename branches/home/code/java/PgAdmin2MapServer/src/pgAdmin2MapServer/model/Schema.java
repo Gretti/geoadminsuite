@@ -17,15 +17,13 @@ public class Schema {
     /** database name */
     private String databaseName; // helper
     /** the list of tables */
-    private Map<String, Table> tables;
+    private Map<String, MSLayer> layers;
 
     public Schema(String name, String databaseName) {
         this.name = name;
         this.databaseName = databaseName;
-        this.tables = new HashMap<String, Table>();
+        this.layers = new HashMap<String, MSLayer>();
     }
-    
-    
 
     public String getName() {
         return name;
@@ -43,20 +41,20 @@ public class Schema {
         this.databaseName = databaseName;
     }
 
-    public Map<String, Table> getTables() {
-        return tables;
+    public Map<String, MSLayer> getLayers() {
+        return layers;
     }
 
-    public void setTables(Map<String, Table> tables) {
-        this.tables = tables;
+    public void setLayers(Map<String, MSLayer> layers) {
+        this.layers = layers;
     }
     /**
      * Adds the given schema to this database
      * @param s 
      */
-    public void addTable(Table t) {
-        if (t != null) {
-            this.tables.put(t.getName(), t);
+    public void addTable(MSLayer l) {
+        if (l != null) {
+            this.layers.put(l.name, l);
         }
     }
     

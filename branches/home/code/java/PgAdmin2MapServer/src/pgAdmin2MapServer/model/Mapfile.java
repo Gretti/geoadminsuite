@@ -7,6 +7,8 @@ package pgAdmin2MapServer.model;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.List;
+import pgAdmin2MapServer.Config;
+import pgAdmin2MapServer.Pg2MS;
 
 /**
  * A simple object representing a MapFile: 
@@ -27,8 +29,15 @@ public class Mapfile {
      */
     public static String write() throws Exception {
         // gets layers to display
-        List<Layer> layers = LayerManager.getLayers(params);
-        String mapExt = LayerManager.getMapExtent(layers);
+        List<MSLayer> layers = Database.getDatabase().getLayers();
+        
+        if (layers == null || layers.isEmpty()) {
+            Pg2MS.log("No spatial layers found in database: ddbb, schema: sscchh"
+                    .replace("ddbb", Config.getInstance().database)
+                    .replace("sscchh", Config.getInstance().schema));
+            return "";
+        } 
+        String mapExt = Database.getMapExtent(layers);
         // stores this extent as new OpenLayers.Bounds(1682667.23673968, 2182020.94070385, 1719513.08792259, 2242575.97358883)
         // to be injected in html OL page
         String[] bounds = mapExt.split(" ");
@@ -43,7 +52,7 @@ public class Mapfile {
         b.append("\tsize 500 500\n");
         b.append("\textent ").append(mapExt).append("\n");
         
-        for (Layer layer : layers) {
+        for (MSLayer layer : layers) {
             b.append(layer.toString());
         }
         
@@ -56,7 +65,7 @@ public class Mapfile {
         f.close();
         return mapfile.getAbsolutePath();
     }
-
+    
     public String getName() {
         return name;
     }
@@ -65,6 +74,7 @@ public class Mapfile {
         this.name = name;
     }
 
+    
     public String getExtent() {
         return extent;
     }
@@ -73,6 +83,11 @@ public class Mapfile {
         this.extent = extent;
     }
 
+    /**
+     * Returns the map extent srs, in the form init:EPSG=<value> based on layers SRS:
+     * If all layers have the same SRS, it will be returned, else, a 4326 EPSG code is returned
+     * // TODO: smarter handling
+     */
     public String getProjection() {
         return projection;
     }
