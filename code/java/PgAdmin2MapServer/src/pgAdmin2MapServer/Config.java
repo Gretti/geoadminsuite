@@ -11,13 +11,13 @@ package pgAdmin2MapServer;
 public class Config {
     private static Config instance;
     
-    private String host;
-    private String port;
-    private String database;
-    private String user;
-    private String pwd;
-    private String schema;
-    private String table;
+    public String host = "";
+    public String port = "";
+    public String database = "";
+    public String user = "";
+    public String pwd = "";
+    public String schema = "";
+    public String table = "";
     
     private Config() {
         this.host = "";

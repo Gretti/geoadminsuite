@@ -92,7 +92,7 @@ Parse program arguments:
 
 WriteMapFile with a database object, reading extent and projection from objects
 
-Call browser with map URL: map calls back server to get the MapConfig JSON object, containing:
+Call browser with map URL: map calls back server to get all resources (img, js, etc) and the MapConfig JSON object, containing:
     the map bounds, client computes maxResolution from map div
     the map projection,
     the layer list, in an array of databases containing an array of schemas containing an array of layers
@@ -100,5 +100,5 @@ Call browser with map URL: map calls back server to get the MapConfig JSON objec
 Map is displayed, user plays with it
 
 if recall from pgAdmin, refresh the map with the new Map object:
-    how to recall client ? new web page ? long polling ?
+    how to recall client ? new web page ? long polling ? HTML5 WebSocket 
 
