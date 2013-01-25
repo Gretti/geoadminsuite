@@ -8,12 +8,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URI;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
@@ -21,14 +18,13 @@ import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHttpRequest;
-import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
 import pgAdmin2MapServer.Config;
 import pgAdmin2MapServer.Pg2MS;
 import pgAdmin2MapServer.model.Mapfile;
@@ -46,6 +42,12 @@ public class RequestManager {
     public static final String REQUEST_FILE = "file";
     public static final String REQUEST_NEW_PARAMS = "newParams";
     public static final String VERSION = "0.0.3";
+    // Configuration item values
+    /**
+     * sent by the client to get the MapConfig object with all layers in a JSON
+     * object
+     */
+    public static final String CONFIG_LAYERS = "allLayers";
 
     /**
      * processes incoming request and calls suitable method. TODO: understant HC
@@ -76,6 +78,9 @@ public class RequestManager {
                 } else if (REQUEST_FILE.equals(action)) {
                     Pg2MS.log("File requested: " + entityContent);
                     RequestManager.File(entityContent, response, context);
+                } else if (REQUEST_MAP_CONFIG.equals(action)) {
+                    Map<String, String> params = getParameterMap(entityContent);
+                    MapConfig(params, response, context);
                 } else {
                     throw new Exception("invalid endpoint: " + action);
                 }
@@ -87,13 +92,22 @@ public class RequestManager {
         } else if (request instanceof BasicHttpRequest) {
             try {
                 BasicHttpRequest req = (BasicHttpRequest) request;
-                URLEncodedUtils.parse();
                 String target = URLDecoder.decode(req.getRequestLine().getUri(), "UTF-8");
-                if (REQUEST_MAP.equals(target)) {
+                Map<String, String> params = RequestManager.getParameterMap(target);
+                String serverAction = params.get("serverAction");
+
+                if (REQUEST_MAP.equals(serverAction)) {
                     Map(request, response, context);
+                } else if (REQUEST_FILE.equals(serverAction)) {
+                    File(params.get("fileName"), response, context);
+                } else if (REQUEST_MAP_CONFIG.equals(serverAction)) {
+                    MapConfig(params, response, context);
                 } else {
-                    HttpParams p = request.getParams();
-                    Pg2MS.log("RequestManager: unknown action: " + target);
+                    if (Pg2MS.debugNetwork) {
+                        Pg2MS.log("RequestManager: unknown server action: " + serverAction
+                                + ". Requesting resource as a file at /resources/html/");
+                    }
+                    File("/resources/html/" + serverAction, response, context);
                 }
             } catch (Exception e) {
                 // todo: custom http codes according to failures
@@ -108,7 +122,7 @@ public class RequestManager {
      * MapFish map (with its resources) to the client.
      *
      * No parameters are expected from the client TODO: replace by a
-     * file?name=map.html ?
+     * file?name=map.html ? TODO: factorize string response
      */
     public static void Map(
             final HttpRequest request,
@@ -116,9 +130,9 @@ public class RequestManager {
             final HttpContext context) throws HttpException, IOException {
         //String m = Mapfile.write();
         //Pg2MS.log("mapfile written: " + m);
-
+        String mapHtml = "/resources/html/test.html";
         //URL u = ElementalHttpServer.class.getResource("/pgAdmin2Mapserver/resources/html/ol.html");
-        InputStream is = ElementalHttpServer.class.getResourceAsStream("/resources/ol.html");
+        InputStream is = ElementalHttpServer.class.getResourceAsStream(mapHtml);
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
         String line = null;
@@ -132,7 +146,7 @@ public class RequestManager {
         is.close();
         //URL u = Thread.currentThread().getContextClassLoader().getResource("/pgAdmin2Mapserver/resources/html/ol.html");
         //File f = new File(u.toURI());
-        Pg2MS.log("sending file: /pgAdmin2Mapserver/resources/html/ol.html");
+        Pg2MS.log("sending file: /pgAdmin2Mapserver/resources/html/test.html");
         response.setStatusCode(HttpStatus.SC_OK);
         StringEntity body = new StringEntity(sb.toString(), ContentType.create("text/html", Charset.forName("UTF-8")));
         //FileEntity body = new FileEntity(f, ContentType.create("text/html", (Charset) null));
@@ -148,14 +162,30 @@ public class RequestManager {
      * No parameters are expected from the client
      *
      */
-    public static void MapConfig() {
+    public static void MapConfig(
+            final Map<String, String> params,
+            final HttpResponse response,
+            final HttpContext context) throws HttpException, IOException, JSONException {
+
+        if (params != null) {
+            String item = params.get("item");
+
+            if (CONFIG_LAYERS.equals(item)) {
+                // sends full layer definition as JSON object
+                response.setStatusCode(HttpStatus.SC_OK);
+                String mapConfig = Mapfile.getMapConfig();
+                Pg2MS.log("sending mapConfig to client: " + mapConfig);
+                StringEntity body = new StringEntity(mapConfig, ContentType.create("application/json", Charset.forName("UTF-8")));
+                response.setEntity(body);
+            }
+        }
     }
 
     /**
      * Called when server receive a REQUEST_FILE request: returns the file whose
      * name is given in parameter. Parameters: name=<fileName> where <filename>
      * is the qualified name of the file to get.
-     *
+     * TODO: read web resources from an external zip file => use pgAdmin params to get running folder
      */
     public static void File(
             final String fileName,
@@ -163,10 +193,41 @@ public class RequestManager {
             final HttpContext context) throws HttpException, IOException {
 
         InputStream is = ElementalHttpServer.class.getResourceAsStream(fileName);
-        Pg2MS.log("Sending file: " + fileName);
+        if (Pg2MS.debugNetwork) {
+            Pg2MS.log("Sending file: " + fileName);
+        }
         response.setStatusCode(HttpStatus.SC_OK);
-        InputStreamEntity ise = new InputStreamEntity(is, -1, ContentType.create("text/html", Charset.forName("UTF-8")));
+        ContentType contentType = getContentType(fileName);
+        InputStreamEntity ise = new InputStreamEntity(is, -1, contentType);
         response.setEntity(ise);
+    }
+
+    /**
+     * Try to guess the content type from filename extension
+     *
+     * @param fileName
+     * @return
+     */
+    private static ContentType getContentType(String fileName) {
+        ContentType res = ContentType.create("text/html", Charset.forName("UTF-8"));
+
+        if (fileName != null) {
+            if (fileName.endsWith(".js")) {
+                res = ContentType.create("text/javascript", Charset.forName("UTF-8"));
+            } else if (fileName.endsWith(".css")) {
+                res = ContentType.create("text/css", Charset.forName("UTF-8"));
+            } else if (fileName.endsWith(".gif")) {
+                res = ContentType.create("image/gif");
+            } else if (fileName.endsWith(".png")) {
+                res = ContentType.create("image/png");
+            } else if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg")) {
+                res = ContentType.create("image/jpeg");
+            } else {
+                // defaut CT is html
+            }
+        }
+
+        return res;
     }
 
     /**
@@ -183,24 +244,33 @@ public class RequestManager {
     /**
      * Own query parser, time to find how to receive a HC request with
      * parameters...
+     *
+     * @param queryString the received query string
+     * @return a map with query parameters as key/value + a "serverAction" key
+     * containing the server action called by the client
      */
     public static Map<String, String> getParameterMap(String queryString) {
-        Map<String, String> mapOfLists = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<String, String>();
         if (queryString == null || queryString.length() == 0) {
-            return mapOfLists;
+            return params;
         }
-        List<NameValuePair> list = URLEncodedUtils.parse(URI.create("http://localhost/?" + queryString), "UTF-8");
-        for (NameValuePair pair : list) {
-            List<String> values = mapOfLists.get(pair.getName());
-            if (values == null) {
-                values = new ArrayList<String>();
-                mapOfLists.put(pair.getName(), values);
-            }
-            if (pair.getValue() != null) {
-                values.add(pair.getValue());
+        int argSep = queryString.indexOf("?");
+        String serverAction = "";
+        if (argSep < 0) {
+            serverAction = queryString.substring(1);
+        } else {
+            // some params
+            serverAction = queryString.substring(1, argSep);
+            String[] vals = queryString.substring(argSep + 1).split("&");
+            for (String s : vals) {
+                String[] p = s.split("=");
+                if (p.length > 1) {
+                    params.put(p[0], p[1]);
+                }
             }
         }
+        params.put("serverAction", serverAction);
 
-        return mapOfLists;
+        return params;
     }
 }

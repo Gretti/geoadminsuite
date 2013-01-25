@@ -5,6 +5,7 @@
 package pgAdmin2MapServer;
 
 import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -17,7 +18,7 @@ import pgAdmin2MapServer.server.ElementalHttpServer;
 import pgAdmin2MapServer.server.RequestManager;
 
 /**
- *
+ * TODO: real logging...
  * @author nicolas
  */
 public class Pg2MS {
@@ -31,13 +32,20 @@ public class Pg2MS {
     /**
      * The port this server starts on
      */
-    public static int serverPort = 8081;
+    public static int serverPort = 9472;
     public static boolean debug = true;
+    public static boolean debugNetwork = false;
+    public static String mapfileName = "pgadmin_viewer.map";
+    // TODO: get it from config or smart guess
+    public static String tmpDir = "/tmp";
+    public String mapserverExe = ("".equals(System.getProperty("os.name").contains("Windows")) ? "mapserv.exe" : "mapserv");
+    public static String mapfileUrl = "http://localhost:" 
+            + serverPort + "/cgi-bin/mapserv?map=" + tmpDir + File.separator + mapfileName;
     /**
      * The tmp file where MapServer can write image TODO: find correct folder
      * according to plateform
      */
-    public static String docRoot = "/tmp/";
+    public static String docRoot = tmpDir + File.separator;
 
     /**
      * Thread for the DnD frame
