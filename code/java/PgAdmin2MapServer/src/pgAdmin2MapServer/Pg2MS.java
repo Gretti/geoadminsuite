@@ -23,7 +23,8 @@ import pgAdmin2MapServer.server.RequestManager;
  */
 public class Pg2MS {
     public static final String VERSION = "0.0.3";
-
+    /** The Relative path to zip file containing HTML resources (Map, JS et al.) */
+    public static final String HTML_RESOURCES_PATH = "../SharedSupport/plugins.d/lib/htmlResources.zip";
     /**
      * The Swing frame displaying program logs and allowing geographic files
      * drag'n'drop (not yet available)
@@ -38,9 +39,8 @@ public class Pg2MS {
     public static String mapfileName = "pgadmin_viewer.map";
     // TODO: get it from config or smart guess
     public static String tmpDir = "/tmp";
-    public String mapserverExe = ("".equals(System.getProperty("os.name").contains("Windows")) ? "mapserv.exe" : "mapserv");
-    public static String mapfileUrl = "http://localhost:" 
-            + serverPort + "/cgi-bin/mapserv?map=" + tmpDir + File.separator + mapfileName;
+    public static String mapserverExe = ("".equals(System.getProperty("os.name").contains("Windows")) ? "mapserv.exe" : "mapserv");
+    public static String mapfileUrl = "http://localhost/cgi-bin/mapserv?map=" + tmpDir + File.separator + mapfileName;
     /**
      * The tmp file where MapServer can write image TODO: find correct folder
      * according to plateform

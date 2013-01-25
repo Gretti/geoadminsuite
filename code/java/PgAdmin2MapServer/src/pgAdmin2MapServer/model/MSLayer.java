@@ -4,16 +4,23 @@
  */
 package pgAdmin2MapServer.model;
 
+import java.util.SortedSet;
+import java.util.TreeSet;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import pgAdmin2MapServer.Config;
 
 /**
- * Represents very simply a mapserver layer, able to write itself as a MapFile LAYER
- * object
- * 
+ * Represents very simply a mapserver layer, able to write itself as a MapFile
+ * LAYER object
+ *
  * TODO: use Bastien framework to manage MapServer objects
+ *
  * @author nicolas
  */
 public class MSLayer {
+
     public String schema = "";
     public String name = "";
     public String url = ""; // the mapserver URL returning this layer
@@ -27,8 +34,8 @@ public class MSLayer {
     public String color = "";
     public String outlineColor = "";
     public String opacity = "100";
-    public String extent = "";
-    
+    public Extent extent = null;
+
     public MSLayer(String url, String schema, String table, String geom, String type,
             String connectionType, String srs) {
         this.url = url;
@@ -41,46 +48,53 @@ public class MSLayer {
         this.srs = srs;
         this.color = "255 0 0";
         this.outlineColor = "0 0 0";
-        
+
         this.setConnection();
     }
-    
+
+    public Extent getExtent() {
+        return extent;
+    }
+
     /**
-     * Returns the DATA property built from schema, name, geom:
-     * geom from schema.name
-     * @return 
+     * Returns the DATA property built from schema, name, geom: geom from
+     * schema.name
+     *
+     * @return
      */
     public String getData() {
         return this.geom + " from " + this.schema + "." + this.name;
     }
-    
-    /** 
-     * Sets this layer connection based on PgAdmin PostgreSQL parameters (program arguments)
+
+    /**
+     * Sets this layer connection based on PgAdmin PostgreSQL parameters
+     * (program arguments)
      */
     public void setConnection() {
         Config c = Config.getInstance();
         this.connection = this.connection.replaceAll("_host_", c.host).replace("_port_", c.port)
                 .replace("_dbname_", c.database).replace("_user_", c.user).replace("_pwd_", c.pwd);
     }
+
     /**
      * Sets the layer extent based on given box2d representation:
      * BOX(1111705.875 2037524.5,2241439.25 3100623)
-     * @param ext 
+     *
+     * @param ext
      */
-    public void setExtent(String ext) {
-        if (ext != null && ext.startsWith("BOX(")) {
-            this.extent = ext.substring(4, ext.length()-1).replace(",", " ");
-        }
+    public void setExtent(Extent ext) {
+        this.extent = ext;
     }
-    
+
     /**
      * Sets the Mapserver layer type according to given Postgis type
-     * @param pgType 
+     *
+     * @param pgType
      */
     public void setType(String pgType) {
         if ("POINT".equalsIgnoreCase(pgType) || "MULTIPOINT".equalsIgnoreCase(pgType)) {
             this.type = "POINT";
-        } else if ("LINESTRING".equalsIgnoreCase(pgType) || "MULTILINESTRING".equalsIgnoreCase(pgType) 
+        } else if ("LINESTRING".equalsIgnoreCase(pgType) || "MULTILINESTRING".equalsIgnoreCase(pgType)
                 || "GEOMETRY".equalsIgnoreCase(pgType) || "GEOMETRYCOLLECTION".equalsIgnoreCase(pgType)) {
             // also display geometries as lines
             this.type = "LINE";
@@ -90,8 +104,7 @@ public class MSLayer {
             this.type = "RASTER";
         }
     }
-    
-    
+
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder("\tLAYER\n");
@@ -112,7 +125,27 @@ public class MSLayer {
             b.append("\t\tEND #PROJECTION\n");
         }
         b.append("\tEND #LAYER\n");
-        
+
         return b.toString();
+    }
+
+    public JSONObject toJsonTreeModel() throws JSONException {
+        JSONObject res = new JSONObject();
+        String img = "RASTER".equalsIgnoreCase(this.type) ? "img/photo.png" : "img/shape_group.png";
+        res.put("text", this.name);
+        res.put("layerName", this.name);
+        res.put("icon", img);
+        res.put("leaf", true);
+        res.put("checked", true);
+
+        return res;
+    }
+
+    public JSONObject toJson() throws JSONException {
+        JSONObject res = new JSONObject();
+        res.put("name", this.name);
+        res.put("url", this.url);
+
+        return res;
     }
 }
