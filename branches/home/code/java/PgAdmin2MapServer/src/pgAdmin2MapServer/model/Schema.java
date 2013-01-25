@@ -6,6 +6,11 @@ package pgAdmin2MapServer.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * A simple object representing a PgAdmin schema: name, databaseName, list of tables
@@ -58,4 +63,20 @@ public class Schema {
         }
     }
     
+    public JSONObject toJsonTreeModel() throws JSONException {
+        JSONObject res = new JSONObject();
+        res.put("text", this.name);
+        res.put("leaf", false);
+        res.put("icon", "img/database_table.png");
+        res.put("checked", true);
+        res.put("expanded", true);
+        
+        JSONArray layers = new JSONArray();
+        SortedSet<String> layersKeys = new TreeSet<String>(getLayers().keySet());
+        for (String keys : layersKeys) {
+            layers.put(getLayers().get(keys).toJsonTreeModel());
+        }
+        res.put("children", layers);
+        return res;
+    }
 }

@@ -5,6 +5,7 @@
 package pgAdmin2MapServer.server;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -12,6 +13,8 @@ import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpException;
@@ -90,9 +93,10 @@ public class RequestManager {
                 response.setStatusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR);
             }
         } else if (request instanceof BasicHttpRequest) {
+            String target = "";
             try {
                 BasicHttpRequest req = (BasicHttpRequest) request;
-                String target = URLDecoder.decode(req.getRequestLine().getUri(), "UTF-8");
+                target = URLDecoder.decode(req.getRequestLine().getUri(), "UTF-8");
                 Map<String, String> params = RequestManager.getParameterMap(target);
                 String serverAction = params.get("serverAction");
 
@@ -105,13 +109,13 @@ public class RequestManager {
                 } else {
                     if (Pg2MS.debugNetwork) {
                         Pg2MS.log("RequestManager: unknown server action: " + serverAction
-                                + ". Requesting resource as a file at /resources/html/");
+                                + ". Requesting resource as a file");
                     }
-                    File("/resources/html/" + serverAction, response, context);
+                    File(serverAction, response, context);
                 }
             } catch (Exception e) {
                 // todo: custom http codes according to failures
-                Pg2MS.log("Server Error2 : " + e.toString());
+                Pg2MS.log("Server Error2 : " + e.toString() + ": " + target);
                 response.setStatusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR);
             }
         }
@@ -122,35 +126,23 @@ public class RequestManager {
      * MapFish map (with its resources) to the client.
      *
      * No parameters are expected from the client TODO: replace by a
-     * file?name=map.html ? TODO: factorize string response
+     * file?name=map.html ? 
+     * TODO: factorize response
      */
     public static void Map(
             final HttpRequest request,
             final HttpResponse response,
-            final HttpContext context) throws HttpException, IOException {
+            final HttpContext context) throws Exception {
         //String m = Mapfile.write();
         //Pg2MS.log("mapfile written: " + m);
-        String mapHtml = "/resources/html/test.html";
-        //URL u = ElementalHttpServer.class.getResource("/pgAdmin2Mapserver/resources/html/ol.html");
-        InputStream is = ElementalHttpServer.class.getResourceAsStream(mapHtml);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
-        String line = null;
-        while ((line = reader.readLine()) != null) {
-            //new OpenLayers.Bounds(1682667.23673968, 2182020.94070385, 1719513.08792259, 2242575.97358883)
-            if (Mapfile.olBounds != null) {
-                //line = line.replace("\"$$BOUNDS$$\"", MapfileWriter.olBounds);
-            }
-            sb.append(line).append("\n");
-        }
-        is.close();
-        //URL u = Thread.currentThread().getContextClassLoader().getResource("/pgAdmin2Mapserver/resources/html/ol.html");
-        //File f = new File(u.toURI());
-        Pg2MS.log("sending file: /pgAdmin2Mapserver/resources/html/test.html");
+        String mapHtml = "index.html";
         response.setStatusCode(HttpStatus.SC_OK);
-        StringEntity body = new StringEntity(sb.toString(), ContentType.create("text/html", Charset.forName("UTF-8")));
-        //FileEntity body = new FileEntity(f, ContentType.create("text/html", (Charset) null));
-        response.setEntity(body);
+        ContentType contentType = getContentType(mapHtml);
+        InputStreamEntity ise = new InputStreamEntity(
+                getStreamFromZip(mapHtml), 
+                -1, 
+                contentType);
+        response.setEntity(ise);
     }
 
     /**
@@ -173,7 +165,7 @@ public class RequestManager {
             if (CONFIG_LAYERS.equals(item)) {
                 // sends full layer definition as JSON object
                 response.setStatusCode(HttpStatus.SC_OK);
-                String mapConfig = Mapfile.getMapConfig();
+                String mapConfig = Mapfile.getMapConfigJson();
                 Pg2MS.log("sending mapConfig to client: " + mapConfig);
                 StringEntity body = new StringEntity(mapConfig, ContentType.create("application/json", Charset.forName("UTF-8")));
                 response.setEntity(body);
@@ -185,20 +177,24 @@ public class RequestManager {
      * Called when server receive a REQUEST_FILE request: returns the file whose
      * name is given in parameter. Parameters: name=<fileName> where <filename>
      * is the qualified name of the file to get.
-     * TODO: read web resources from an external zip file => use pgAdmin params to get running folder
+     * Files are read from external zip lying in the lib folder.
+     * It allows client modifications.
+     * TODO: mutualize ZipFile
      */
     public static void File(
             final String fileName,
             final HttpResponse response,
-            final HttpContext context) throws HttpException, IOException {
+            final HttpContext context) throws Exception {
 
-        InputStream is = ElementalHttpServer.class.getResourceAsStream(fileName);
         if (Pg2MS.debugNetwork) {
             Pg2MS.log("Sending file: " + fileName);
         }
         response.setStatusCode(HttpStatus.SC_OK);
         ContentType contentType = getContentType(fileName);
-        InputStreamEntity ise = new InputStreamEntity(is, -1, contentType);
+        InputStreamEntity ise = new InputStreamEntity(
+                getStreamFromZip(fileName), 
+                -1, 
+                contentType);
         response.setEntity(ise);
     }
 
@@ -273,4 +269,17 @@ public class RequestManager {
 
         return params;
     }
+    
+    /**
+     * Gets the filename from the HTML zip resource
+     * @param fileName
+     * @return 
+     */
+    private static InputStream getStreamFromZip(String fileName) throws Exception {
+        File f = new File(Config.getInstance().binDir, Pg2MS.HTML_RESOURCES_PATH);
+        ZipFile zip = new ZipFile(f);
+        ZipEntry entry = new ZipEntry(fileName);
+        return zip.getInputStream(new ZipEntry(fileName));
+    }
+    
 }
