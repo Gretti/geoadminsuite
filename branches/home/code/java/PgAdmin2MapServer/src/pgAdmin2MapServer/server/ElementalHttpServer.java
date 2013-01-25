@@ -149,7 +149,9 @@ public class ElementalHttpServer {
                     // Set up HTTP connection
                     Socket socket = this.serversocket.accept();
                     DefaultHttpServerConnection conn = new DefaultHttpServerConnection();
-                    Pg2MS.log("Incoming connection from " + socket.getInetAddress());
+                    if (Pg2MS.debugNetwork) {
+                        Pg2MS.log("Incoming connection from " + socket.getInetAddress());
+                    }
                     conn.bind(socket, this.params);
 
                     // Start worker thread
@@ -159,8 +161,9 @@ public class ElementalHttpServer {
                 } catch (InterruptedIOException ex) {
                     break;
                 } catch (IOException e) {
-                    System.err.println("I/O error initialising connection thread: " + e.toString());
-                    Pg2MS.log("I/O error initialising connection thread: " + e.toString());
+                    if (Pg2MS.debugNetwork) {
+                        Pg2MS.log("I/O error initialising connection thread: " + e.toString());
+                    }
                     break;
                 }
             }
@@ -182,7 +185,9 @@ public class ElementalHttpServer {
 
         @Override
         public void run() {
-            Pg2MS.log("New connection thread");
+            if (Pg2MS.debugNetwork) {
+                Pg2MS.log("New connection thread");
+            }
 
             HttpContext context = new BasicHttpContext(null);
             try {
@@ -190,14 +195,17 @@ public class ElementalHttpServer {
                     this.httpservice.handleRequest(this.conn, context);
                 }
             } catch (ConnectionClosedException ex) {
-                System.err.println("Client closed connection");
-                Pg2MS.log("Client closed connection");
+                if (Pg2MS.debugNetwork) {
+                    Pg2MS.log("Client closed connection");
+                }
             } catch (IOException ex) {
-                System.err.println("I/O error: " + ex.toString());
-                Pg2MS.log("I/O error: " + ex.toString());
+                if (Pg2MS.debugNetwork) {
+                    Pg2MS.log("I/O error: " + ex.toString());
+                }
             } catch (HttpException ex) {
-                System.err.println("Unrecoverable HTTP protocol violation: " + ex.toString());
-                Pg2MS.log("Unrecoverable HTTP protocol violation: " + ex.toString());
+                if (Pg2MS.debugNetwork) {
+                    Pg2MS.log("Unrecoverable HTTP protocol violation: " + ex.toString());
+                }
             } finally {
                 try {
                     this.conn.shutdown();

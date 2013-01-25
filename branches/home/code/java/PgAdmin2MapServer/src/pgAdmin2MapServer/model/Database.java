@@ -80,7 +80,7 @@ public class Database {
      * if name name, build layer, schema, database. 
      * if schema name: list of geo layers.
      * if only database name: list of schemas, list of layers.
-     * Manages extent and projection when adding objects in each other
+     * TODO: Manages extent and projection when adding objects in each other
      * 
      * @return The database object represented by program arguments
      * @throws Exception 
@@ -120,8 +120,9 @@ public class Database {
                     dbs.getSchemas().put(sname, schema);
                 }
                 
-                String tname = rs.getString("f_table_schema");
+                String tname = rs.getString("f_table_name");
                 MSLayer l = new MSLayer(
+                        Pg2MS.mapfileUrl + "&layer=" + tname,
                         schema.getName(),
                         tname,
                         rs.getString("f_geometry_column"),
@@ -165,24 +166,4 @@ public class Database {
         }
         return dbs;
     }
-    
-    /**
-     * returns the extent of the given layers, either by expanding extent if all layers
-     * have the same SRS, or empty string otherwise.
-     * TODO: code the function...
-     * @param layers
-     * @return 
-     */
-    public static String getMapExtent(List<MSLayer> layers) {
-        String ret = "";
-        
-        if (layers != null) {
-            for (MSLayer layer : layers) {
-                ret = layer.extent;
-            }
-        }
-        
-        return ret;
-    }
-    
 }

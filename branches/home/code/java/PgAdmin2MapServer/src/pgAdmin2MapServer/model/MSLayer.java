@@ -4,6 +4,8 @@
  */
 package pgAdmin2MapServer.model;
 
+import pgAdmin2MapServer.Config;
+
 /**
  * Represents very simply a mapserver layer, able to write itself as a MapFile LAYER
  * object
@@ -14,6 +16,7 @@ package pgAdmin2MapServer.model;
 public class MSLayer {
     public String schema = "";
     public String name = "";
+    public String url = ""; // the mapserver URL returning this layer
     public String geom = "";
     public String status = "";
     public String type = "";
@@ -26,8 +29,9 @@ public class MSLayer {
     public String opacity = "100";
     public String extent = "";
     
-    public MSLayer(String schema, String table, String geom, String type,
+    public MSLayer(String url, String schema, String table, String geom, String type,
             String connectionType, String srs) {
+        this.url = url;
         this.schema = schema;
         this.name = table;
         this.geom = geom;
@@ -37,6 +41,8 @@ public class MSLayer {
         this.srs = srs;
         this.color = "255 0 0";
         this.outlineColor = "0 0 0";
+        
+        this.setConnection();
     }
     
     /**
@@ -50,19 +56,11 @@ public class MSLayer {
     
     /** 
      * Sets this layer connection based on PgAdmin PostgreSQL parameters (program arguments)
-     * @param params the program arguments (argv)
      */
-    public void setConnection(String[] params) {
-        if (params != null && params.length > 4) {
-            String host = params[0].split("=").length > 1 ? params[0].split("=")[1] : "" ;
-            String port = params[1].split("=").length > 1 ? params[1].split("=")[1] : "" ;
-            String dbname = params[2].split("=").length > 1 ? params[2].split("=")[1] : "" ;
-            String user = params[3].split("=").length > 1 ? params[3].split("=")[1] : "" ;
-            String pwd = params[4].split("=").length > 1 ? params[4].split("=")[1] : "" ;
-            
-            this.connection = this.connection.replaceAll("_host_", host).replace("_port_", port)
-                    .replace("_dbname_", dbname).replace("_user_", user).replace("_pwd_", pwd);
-        }
+    public void setConnection() {
+        Config c = Config.getInstance();
+        this.connection = this.connection.replaceAll("_host_", c.host).replace("_port_", c.port)
+                .replace("_dbname_", c.database).replace("_user_", c.user).replace("_pwd_", c.pwd);
     }
     /**
      * Sets the layer extent based on given box2d representation:
