@@ -96,6 +96,7 @@ mapfish.widgets.LayerTree.MenuFeatures = {
             text: OpenLayers.Lang.translate("mf.layertree.opacity"),
             menu: {
                 plain: true,  //no gray background and vertical bar at 20px
+                icon: "img/shading.png",
                 items: [mapfish.widgets.LayerTree.MenuFeatures.opacitySlideDirect(layerTree, node, olLayers)]
             }
         };
