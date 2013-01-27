@@ -143,7 +143,7 @@ public class ElementalHttpServer {
 
         @Override
         public void run() {
-            Pg2MS.log("Server: listening on port " + this.serversocket.getLocalPort());
+            Pg2MS.log( "Web Server listening on port: " + this.serversocket.getLocalPort() );
             while (!Thread.interrupted()) {
                 try {
                     // Set up HTTP connection

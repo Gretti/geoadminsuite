@@ -25,9 +25,11 @@ import pgAdmin2MapServer.Pg2MS;
  */
 public class Mapfile {
 
+    private static final Extent INIT_EXTENT = new Extent(-180.0, -85.0, 180.0, 85.0);
+    private static final String INIT_PROJECTION = "init=epsg:4326";
     private static String name;
-    private static Extent extent = new Extent(-180.0, -85.0, 180.0, 85.0);
-    private static String projection = "init:epsg=4326";
+    private static Extent extent = INIT_EXTENT;
+    private static String projection = INIT_PROJECTION;
     private static Map<String, Database> databases = new HashMap<String, Database>();
     public static String olBounds = "0";
 
@@ -70,16 +72,36 @@ public class Mapfile {
 
         FileWriter f = new FileWriter(mapfile);
         StringBuilder b = new StringBuilder("MAP\n");
+        b.append("\tname \"PgAdmin2MapServer\"\n");
         b.append("\tsize 500 500\n");
-        b.append("\textent ").append(extent).append("\n");
+        b.append("\textent ").append(extent.msString()).append("\n");
+        b.append("\n");
+        b.append("\tPROJECTION").append("\n");
+        b.append("\t\t\"").append(projection).append("\"\n");;
+        b.append("\tEND#PROJECTION").append("\n");
 
+        b.append("\n");
+        b.append("\tWEB\n");
+        b.append("\t\timagepath \"").append(tmpDir).append("/\"\n");
+        b.append("\n");
+        b.append("\t\tMETADATA").append("\n");
+        b.append("\t\t\t\"wms_title\"\t\"PgAdmin2MapServer local WMS server\"").append("\n");
+        b.append("\t\t\t\"wms_onlineresource\"\t\"").append(Pg2MS.mapfileUrl).append("\"\n");
+        b.append("\t\t\t\"wms_enable_request\"\t\"*\"").append("\n");
+        b.append("\t\tEND #metadata").append("\n");
+        b.append("\tEND #WEB\n");
+
+        b.append("\n##################LAYERS########################").append("\n");
         for (MSLayer layer : layers) {
             b.append(layer.toString());
         }
-
-        b.append("\tWEB\n");
-        b.append("\t    imagepath '").append(tmpDir).append("/'\n");
-        b.append("\tEND #WEB\n");
+        b.append("\tSYMBOL").append("\n");
+        b.append("\t\tNAME \"circle\"").append("\n");
+        b.append("\t\tTYPE ELLIPSE").append("\n");
+        b.append("\t\tPOINTS").append("\n");
+        b.append("\t\t\t1 1").append("\n");
+        b.append("\t\tEND # symbol").append("\n");
+        b.append("\tEND").append("\n");
         b.append("END #MAP\n");
         f.write(b.toString());
 
@@ -100,7 +122,7 @@ public class Mapfile {
     }
 
     /**
-     * Returns the map extent srs, in the form init:EPSG=<value> based on layers
+     * Returns the map extent srs, in the form init=EPSG:<value> based on layers
      * extents
      */
     public static String getProjection() {
@@ -121,8 +143,8 @@ public class Mapfile {
      * "dbName" : database name, "schemas" : [{ "schemaName" : schema name,
      * "layers" : [{ "name" : layer name, "url" : layer URL }, // other layers]
      * } // other schemas] }, // other databases] }
-     * 
-     * NEW: 
+     *
+     * NEW:
      *
      * @return
      */
@@ -169,27 +191,31 @@ public class Mapfile {
         return mapConf.toString(4);
     }
 
-    public static String getMapConfigJson() throws JSONException {
+    public static String getMapConfigJson(boolean modelOnly) throws JSONException {
         StringBuilder s = new StringBuilder();
 
         JSONObject mapConf = new JSONObject();
         JSONArray dbs = new JSONArray();
-        
-        JSONArray layers = getLayersAsJson();
-        
+
         SortedSet<String> dbKeys = new TreeSet<String>(databases.keySet());
         for (String keyd : dbKeys) {
             dbs.put(databases.get(keyd).toJsonTreeModel());
         }
 
-        mapConf.put("mapExtent", getExtent().msString());
-        mapConf.put("mapProjection", projection.replace("init:", ""));
-        mapConf.put("treeModel", dbs);
-        mapConf.put("layers", layers);
+        if (modelOnly) {
+            return dbs.toString(4);
+        } else {
 
-        return mapConf.toString(4);
+            JSONArray layers = getLayersAsJson();
+
+            mapConf.put("mapExtent", getExtent().msString());
+            mapConf.put("mapProjection", projection.replace("init=", ""));
+            mapConf.put("treeModel", dbs);
+            mapConf.put("layers", layers);
+
+            return mapConf.toString(4);
+        }
     }
-    
 
     /**
      * sets the extent and SRS of the given layers:
@@ -218,6 +244,8 @@ public class Mapfile {
                     if (!prevSrid.equals(layer.srs)) {
                         // heterogeneous SRID for layers: defaulting Map to LatLong
                         Pg2MS.log("No unique SRID found for given layers. Default to LatLon Mapfile.");
+                        Mapfile.extent = INIT_EXTENT;
+                        Mapfile.projection = INIT_PROJECTION;
                         return;
                     } else {
                         // expand global extent
@@ -228,16 +256,17 @@ public class Mapfile {
             }
         }
         Mapfile.extent = globalExt;
-        Mapfile.projection = "init:EPSG=" + prevSrid;
+        Mapfile.projection = "init=epsg:" + prevSrid;
     }
-    
+
     /**
      * Builds a JSONArray containig layers JSON objects
+     *
      * @return the array
      */
     public static JSONArray getLayersAsJson() throws JSONException {
         JSONArray arr = new JSONArray();
-        
+
         for (Database d : databases.values()) {
             for (Schema s : d.getSchemas().values()) {
                 for (MSLayer l : s.getLayers().values()) {

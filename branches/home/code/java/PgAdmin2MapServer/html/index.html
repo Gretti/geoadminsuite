@@ -5,6 +5,7 @@
         <link rel="icon" type="image/png" href="favicon.ico"/>
         <link rel="shortcut icon" href="favicon.ico"/>
 
+
         <link rel="stylesheet" type="text/css" href="mfbase/ext/resources/css/ext-all.css" />
 
         <script type="text/javascript" src="mfbase/openlayers/lib/OpenLayers.js"></script>
@@ -20,107 +21,73 @@
         <script type="text/javascript" src="mfbase/mapfish/MapFish.js"></script>
 
         <link rel="stylesheet" type="text/css" href="mfbase/mapfish/mapfish.css" />
+        <style>
+            .warningLayer {
+                color: red;
+            }
+        </style>
 
         <script type="text/javascript"><!--
-
-            var map; // for debug
+            
+            
             var centered = false;
-            var layer = null;
-            var mapConfig = null; // the object storing layers configuration
             // the default parameters
-            var mapFileUrl = "http://localhost/cgi-bin/mapserv?map=/Library/WebServer/Documents/mf/test.map&";
-            var mapExtent = "-180 -85 180 85";
-            var mapProjection = "EPSG:4326";
-            var mapResolution = 0.38;
+            var webSocket = null;
+            var viewport = null;
+            var treeModel = null;
             
             function showMessage( message, title ){
                 Ext.Msg.show({
                     title: title,
-                    msg: message ,
+                    msg: message,
                     buttons: Ext.MessageBox.OK,
                     icon: Ext.MessageBox.INFO
                 });
             }            
 
-            function createMap() {
-                var extent = mapExtent.split(" ");
-                map = new OpenLayers.Map("map", 
+            function createMap(config) {
+                // first creates the layers
+                var layers = createServerLayers(config.layers);
+                
+                var extent = config.mapExtent.split(" ");
+                var maxRes = (extent[2]-extent[0]) / 950;
+                var srid = 4326;
+                if (config.mapProjection == "epsg:0") {
+                    // Prompt for user data and process the result using a callback:
+                    Ext.Msg.prompt('Map SRS', 'Please enter EPSG code for map projection:', function(btn, text){
+                        if (btn == 'ok'){
+                            srid = text.value;
+                        }
+                    });
+                }
+                console.log(srid);
+                var proj = config.mapProjection == "epsg:0" ? "epsg:"+srid : new OpenLayers.Projection(config.mapProjection);
+                var map = new OpenLayers.Map("map", 
                 {
-                    controls: [],
                     //maxExtent: new OpenLayers.Bounds(99226, 6049647, 1242375, 7110524),
-                    projection: new OpenLayers.Projection(mapProjection),
+                    projection: proj,
                     maxExtent: new OpenLayers.Bounds(extent[0], extent[1], extent[2], extent[3]),
                     //maxResolution: 2400 //map units per pixel
-                    maxResolution: mapResolution
+                    maxResolution: maxRes
                 });
-
+                map.addControl(new OpenLayers.Control.MousePosition({
+                    separator: ' | ',
+                    numDigits: 5,
+                    emptyString: 'Mouse is not over map.'
+                }));
+                map.events.register("mousemove", map, function(e) {
+                    var position = this.events.getMousePosition(e);
+                    OpenLayers.Util.getElement("coords").innerHTML = position;
+                });
+                map.addLayers(layers);
+                console.log(map);
                 return map;
             }
             
-            function createMapserverLayer(map) {
-                var baseLayer = new OpenLayers.Layer("Blank",{isBaseLayer: true});
-                
-                var layer1 = new OpenLayers.Layer.WMS( "tm",
-                mapFileUrl,
-                {layers: 'tm', transparent: true, format: "image/png"},
-                {isBaseLayer: false, singleTile: true, ratio:1});
-                
-                var layer2 = new OpenLayers.Layer.WMS( "countries",
-                mapFileUrl,
-                {layers: 'countries', transparent: true, format: "image/png"},
-                {isBaseLayer: false, singleTile: true, ratio:1});
-                
-                var layer3 = new OpenLayers.Layer.WMS( "dept",
-                mapFileUrl,
-                {layers: 'dept', transparent: true, format: "image/png"},
-                {isBaseLayer: false, singleTile: true, ratio:1});
-                
-                var layer4 = new OpenLayers.Layer.WMS( "com",
-                mapFileUrl,
-                {layers: 'com', transparent: true, format: "image/png"},
-                {isBaseLayer: false, singleTile: true, ratio:1});
-                
-                //map.addLayers([baseLayer, layer1]);
-                map.addLayers([baseLayer, layer3, layer4]);
-                layer = layer3;
-            }            
-        
-            function createMetacartaLayer(map) {
-                var wms =  new OpenLayers.Layer.WMS(
-                "metacarta",
-                "http://labs.metacarta.com/wms/vmap0",
-                {layers: "basic"},
-                {isBaseLayer: true}
-            );
-                map.addLayer(wms);
-            }
-
-            function createCamptocampLayers(map) {
-                var baseLayer = new OpenLayers.Layer("Blank",
-                {isBaseLayer: true});
-                
-                var summits = new OpenLayers.Layer.WMS("summits",
-                "http://demo.mapfish.org/mapfishsample/trunk/wms?", {
-                    layers: "summits",
-                    format: "image/png",
-                    transparent: "true"
-                }, {
-                    singleTile: true
-                });
-                var parkings = new OpenLayers.Layer.WMS("parkings",
-                "http://demo.mapfish.org/mapfishsample/trunk/wms?", {
-                    layers: "parkings",
-                    format: "image/png",
-                    transparent: "true"
-                }, {
-                    singleTile: true
-                });
-                map.addLayers([baseLayer, summits, parkings]);
-            }
-            
             function createServerLayers(layArr) {
+                var ret = new Array();
                 var baseLayer = new OpenLayers.Layer("Blank",{isBaseLayer: true});
-                map.addLayer(baseLayer);                
+                ret[ret.length] = baseLayer;                
                 
                 for (var i = 0; i < layArr.length; i++) {
                     var ljson = layArr[i];
@@ -130,71 +97,22 @@
                         format: "image/png",
                         transparent: "true"
                     }, {
-                        singleTile: true
+                        singleTile: true,
+                        opacity: 0.5
                     });
-                    map.addLayer(l);                
+                    ret[ret.length] = l;    
+                    //console.log('adding layer');
+                    //console.log(l);
                 }
+                return ret;
             }
 
             function centerMap() {
                 if (!centered) {
+                    console.log("centering map...");
                     this.setCenter(new OpenLayers.LonLat(5,45), 6);
                     centered = true;
                 }
-            }
-
-            function createTreeModelOriginal() {
-                return [{
-                        text: "Nicolas",
-                        leaf: false,
-                        icon: "img/database.png",
-                        checked: true,
-                        expanded: true,
-                        children: [{
-                                text: "Public",
-                                leaf: false,
-                                icon: "img/database_table.png",
-                                checked: true,
-                                expanded: true,
-                                children: [{
-                                        text: "departement",
-                                        layerName: "dept",
-                                        leaf: true,
-                                        // 4.5
-                                        icon: "img/shape_group.png",
-                                        checked: true
-                                    }]
-                            },{
-                                text: "work",
-                                leaf: false,
-                                icon: "img/database_table.png",
-                                checked: true,
-                                expanded: true,
-                                children: [{
-                                        text: "Communes de france",
-                                        layerName: "com",
-                                        leaf: true,
-                                        // 4.5
-                                        icon: "img/shape_group.png",
-                                        checked: true
-                                    }]}
-                            /*{
-                                text: "TrueMarble",
-                                layerName: "tm",
-                                leaf: true,
-                                // 4.5
-                                icon: "img/photo.png",
-                                checked: true
-                            }, {
-                                text: "countries",
-                                layerName: "countries",
-                                leaf: true,
-                                // 4.5
-                                icon: "img/shape_group.png",
-                                checked: true
-                            },*/
-                        ] // end database
-                    }];
             }
 
             function createToolbar(map) {
@@ -242,43 +160,39 @@
             
             /**
              * Ajax call to server to get map and layers setting
-             * TODO: build tree in all cases !!
+             * TODO: build tree in all cases, not in the success handler !!
              */
             function initMapLayers() {
                 Ext.Ajax.request({
                     url: 'mapConfig?item=allLayers',
+                    
                     success: function( response, options ){		
                         var jsonData = Ext.util.JSON.decode(response.responseText);
-                        mapExtent = jsonData.mapExtent;
-                        mapProjection = jsonData.mapProjection;
-                        var model = jsonData.treeModel;
-                        var map = createMap();
-                        createServerLayers(jsonData.layers);
-                        console.log(model);
+                        var map = createMap(jsonData);
                         var toolbar = createToolbar(map);
                         
-                        var viewport = new Ext.Viewport({
+                        viewport = new Ext.Viewport({
                             layout: "border",
                             listeners: {
-                                afterlayout: centerMap,
-                                scope: map
+                                //afterlayout: centerMap,
+                                //scope: map
                             },
                             items: [{
                                     region: "west",
                                     id: "tools",
-                                    title: "Tools",
+                                    //title: "Tools",
                                     border: false,
                                     width: 250,
                                     split: true,
                                     items: [{
                                             id: "tree",
-                                            title: "layer tree",
+                                            //title: "layer tree",
                                             xtype: "layertree",
                                             map: map,
                                             height: 800,
                                             showWmsLegend: true,
                                             enableDD: true,
-                                            model: model,
+                                            model: jsonData.treeModel,
                                             plugins: [
                                                 mapfish.widgets.LayerTree.createContextualMenuPlugin([
                                                     'zoomToExtent',
@@ -286,11 +200,21 @@
                                                     'remove'
                                                 ])
                                             ]
+                                        },{
+                                            id: "shorcuts_container",
+                                            title: "shorcuts",
+                                            height: 50,
+                                            items: [{
+                                                    id: "shorcuts",
+                                                    xtype: "panel",
+                                                    height: 500,
+                                                    html: "TODO: <br/>color layers, map extent, websocket"
+                                                }]
                                         }]
                                 }, {
                                     region: "center",
                                     id: "map",
-                                    title: "Map",
+                                    //title: "Map",
                                     layout: "fit",
                                     split: true,
                                     xtype: 'mapcomponent',
@@ -298,6 +222,7 @@
                                     tbar: toolbar
                                 }]
                         });
+                        
                         viewport.doLayout();
                         initToolbarContent(toolbar);
                         map.zoomToMaxExtent();                        
@@ -309,12 +234,7 @@
                 });
             }
             
-            /** 
-             *  Returns a tree model based on given MapConfig object 
-             */
-            function buildExtModel(jsonData) {
-            }
-
+            
             Ext.onReady(function() {
 
                 // parameters needed from server:
@@ -329,7 +249,99 @@
                 //createMapserverLayer(map);
                 //var model = createTreeModelOriginal();
                 initMapLayers();
+                
+                // opens the WebSocket channel to receive updates from server
+                var token = '{"type": "login", "username" : "user", "password" : "user"}';
+                //var lToken = {"type": "login", "ns": "org.jWebSocket.plugins.system", "username" : "user", "password" : "user"};
+                
+                webSocket = new WebSocket('ws://localhost:8887/configDispatcher');
+                
+                webSocket.onopen = function(event) {
+                    console.log('sending to socket');
+                    webSocket.send(token);
+                };
+            
+                webSocket.onmessage = function(event) { 
+                    if (event.data.indexOf("{") == 0) {
+                        // a json object as repsonse
+                        // TODO: JSON framework here
+                        console.log("server message: " + event.data);
+                        var response = JSON.parse(event.data);
+
+                        if (response.treeModel) {
+                            // Force refresh the page :(
+                            // time to find how to refresh the map
+                            // with new MapConfig
+                            window.location.href = "/map";
+                            //
+                            // server sends us a new mapConfig.
+                            /*
+                            // Removes layers from map:
+                            var i = removeMapLayers();
+                            console.log(i + " layer(s) removed");
+                            // remove layers from layerTree
+                            removeLayersFromTree();
+                            
+                            // refreshes the map
+                            var map = createMap(response);
+                            //refreshes the tree model
+                            addLayersToTree(response.treeModel);
+                            Ext.getCmp('tree').render();
+                            viewport.doLayout();
+                            console.log(map);
+                            map.zoomToMaxExtent();
+                             */
+                        }
+                    } else {
+                        // a server message
+                        console.log("server sent message: " + event.data);
+                    }
+                }
+                
+                
+                // called when server closes this websocket
+                webSocket.onclose = function(event) { 
+                    console.log('server closed connection'); 
+                }                
             });
+            
+            function removeLayersFromTree() {
+                for (var i = 0; i < Ext.getCmp("tree").getRootNode().childNodes.length; i++) {
+                    var n = Ext.getCmp("tree").getRootNode().childNodes[i];
+                    console.log("removing node");
+                    //console.log(n);
+                    Ext.getCmp("tree").getRootNode().removeChild(n); 
+                }
+            }
+            
+            /**
+             * Add given treeModel to the map layer tree:
+             * TODO: find why mapfish contextual plugin is lost !
+             */
+            function addLayersToTree (treeModel) { 
+                var t = Ext.getCmp("tree");
+                for (var i = 0; i < treeModel.length; i++) {
+                    t.getRootNode().appendChild(treeModel[i]);
+                }
+            }
+            /**
+             * Removes all layers from map.
+             * @return the number of layers returned
+             */               
+            function removeMapLayers() {
+                var cnt = 0;
+                var m = Ext.getCmp('map').map;
+                for (var i = 0; i < m.layers.length; i++) {
+                    var l = m.layers[i];
+                    
+                    //if (!l.isBaseLayer) {
+                    m.removeLayer(l);
+                    cnt++;
+                    //}
+                }
+                return cnt;
+            }
+            
         </script>
 
         <style type="text/css">
@@ -358,5 +370,6 @@
 
     <body>
         <div id="map"></div>
+        <div id="coords" style="height: 1.5em;"></div>
     </body>
 </html>
