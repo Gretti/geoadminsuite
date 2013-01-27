@@ -49,23 +49,16 @@
             //Ext.getCmp('tree').
             mapfish.widgets.LayerTree.MenuFeatures.test = function(layerTree, node, olLayers) {
                             
-                if (olLayers.length == 0) return null;
-                var bbox = null;
-                for (var i = 0; i < olLayers.length; ++i) {
-                    var layer = olLayers[i];
-                    if (bbox) {
-                        bbox.extend(layer.maxExtent);
-                    } else {
-                        bbox = layer.maxExtent.clone();
-                    }
-                }
-                var layerName = "no se";
-                console.log(node);
                 return {
                     text: "Style layer",
                     icon: "img/photo.png",
                     handler: function(menuItem, event) {
-                        alert('Clicked on ' + layerName);
+                        if (olLayers.length > 1) {
+                            alert("More than one layer to style? ...");
+                            return;
+                        }
+                        var lay = olLayers[0];
+                        console.log("styling: " + lay.name);
                     }
                 };
             }            
@@ -421,7 +414,8 @@
         <div id="map"></div>
         <div id="coords" style="height: 1.5em;"></div>
         <div id="taskDiv">
-            TODO: layer colors, 
+            TODO: base styling: layer colors, line width, symbols. Setting layer extent.  Distinct colors for layers (color ramp to define).<br/>
+            postgis raster support to test
         </div>
     </body>
 </html>
