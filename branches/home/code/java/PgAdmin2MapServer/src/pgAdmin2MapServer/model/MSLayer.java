@@ -116,8 +116,13 @@ public class MSLayer {
         b.append("\t\tCONNECTION \"").append(connection).append("\"\n");
         b.append("\t\tDATA \"").append(getData()).append("\"\n");
         b.append("\t\tCLASS\n");
-        b.append("\t\t\tCOLOR ").append(color).append("\n");
-        b.append("\t\t\tOUTLINECOLOR ").append(outlineColor).append("\n");
+        if ("LINE".equals(type)) {
+            b.append("\t\t\tCOLOR ").append(outlineColor).append("\n");
+        } else {
+            b.append("\t\t\tCOLOR ").append(color).append("\n");
+            b.append("\t\t\tOUTLINECOLOR ").append(outlineColor).append("\n");
+            
+        }
         
         if ("POINT".equals(type)) {
             // adds a symbol for point layer
