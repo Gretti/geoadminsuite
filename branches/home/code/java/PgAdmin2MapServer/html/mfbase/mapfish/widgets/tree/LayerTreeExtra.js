@@ -132,6 +132,7 @@ mapfish.widgets.LayerTree.MenuFeatures = {
         }
         return {
             text: OpenLayers.Lang.translate('mf.layertree.remove'),
+            icon: "img/delete.png",
             handler: function() {
                 mapfish.widgets.LayerTree.removeNode(layerTree, node);
             }
@@ -151,6 +152,7 @@ mapfish.widgets.LayerTree.MenuFeatures = {
         }
         return {
             text: OpenLayers.Lang.translate('mf.layertree.zoomToExtent'),
+            icon: "img/arrow_out.png",
             handler: function() {
                 layerTree.map.zoomToExtent(bbox);
             }

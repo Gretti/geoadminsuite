@@ -145,7 +145,16 @@ public class MSLayer {
 
     public JSONObject toJsonTreeModel() throws JSONException {
         JSONObject res = new JSONObject();
-        String img = "RASTER".equalsIgnoreCase(this.type) ? "img/photo.png" : "img/shape_group.png";
+        String img = "img/shape_group.png";
+        if (this.type.contains("RASTER")) {
+            img = "img/photo.png";
+        } else if (this.type.contains("POINT")) {
+            img = "img/star.png";
+        } else if (this.type.contains("POLYGON")) {
+            img = "img/shape_group.png";
+        } else if (this.type.contains("LINE")) {
+            img = "img/chart_line.png";
+        }
         res.put("text", this.name);
         res.put("layerName", this.name);
         res.put("icon", img);
