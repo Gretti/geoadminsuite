@@ -44,14 +44,40 @@
                     icon: Ext.MessageBox.INFO
                 });
             }            
+            
+            // adds new contextual plugins to layertree
+            //Ext.getCmp('tree').
+            mapfish.widgets.LayerTree.MenuFeatures.test = function(layerTree, node, olLayers) {
+                            
+                if (olLayers.length == 0) return null;
+                var bbox = null;
+                for (var i = 0; i < olLayers.length; ++i) {
+                    var layer = olLayers[i];
+                    if (bbox) {
+                        bbox.extend(layer.maxExtent);
+                    } else {
+                        bbox = layer.maxExtent.clone();
+                    }
+                }
+                var layerName = "no se";
+                console.log(node);
+                return {
+                    text: "Style layer",
+                    icon: "img/photo.png",
+                    handler: function(menuItem, event) {
+                        alert('Clicked on ' + layerName);
+                    }
+                };
+            }            
 
             function createMap(config) {
                 // first creates the layers
-                var layers = createServerLayers(config.layers);
+                var layers = createServerLayers(config.layers, config.mapProjection);
                 
                 var extent = config.mapExtent.split(" ");
-                var maxRes = (extent[2]-extent[0]) / 950;
+                var maxRes = (extent[2]-extent[0]) / 300;
                 var srid = 4326;
+                /*
                 if (config.mapProjection == "epsg:0") {
                     // Prompt for user data and process the result using a callback:
                     Ext.Msg.prompt('Map SRS', 'Please enter EPSG code for map projection:', function(btn, text){
@@ -59,7 +85,7 @@
                             srid = text.value;
                         }
                     });
-                }
+                }*/
                 console.log(srid);
                 var proj = config.mapProjection == "epsg:0" ? "epsg:"+srid : new OpenLayers.Projection(config.mapProjection);
                 var map = new OpenLayers.Map("map", 
@@ -84,22 +110,35 @@
                 return map;
             }
             
-            function createServerLayers(layArr) {
+            function createServerLayers(layArr, mapProjection) {
                 var ret = new Array();
                 var baseLayer = new OpenLayers.Layer("Blank",{isBaseLayer: true});
                 ret[ret.length] = baseLayer;                
                 
                 for (var i = 0; i < layArr.length; i++) {
                     var ljson = layArr[i];
-                    var l = new OpenLayers.Layer.WMS(ljson.name,
-                    ljson.url, {
-                        layers: ljson.name,
-                        format: "image/png",
-                        transparent: "true"
-                    }, {
-                        singleTile: true,
-                        opacity: 0.5
-                    });
+                    var l = null;
+                    if (mapProjection == "epsg:0" || mapProjection == "epsg:-1") {
+                        // build a MS layer if no projection provided
+                        l = new OpenLayers.Layer.MapServer( ljson.name,
+                        ljson.url, {
+                            layers: ljson.name
+                        }, {
+                            singleTile: "true", 
+                            opacity: 0.5,
+                            isBaseLayer: false
+                        });
+                    } else {
+                        l = new OpenLayers.Layer.WMS(ljson.name,
+                        ljson.url, {
+                            layers: ljson.name,
+                            format: "image/png",
+                            transparent: "true"
+                        }, {
+                            singleTile: true,
+                            opacity: 0.5
+                        });
+                    }
                     ret[ret.length] = l;    
                     //console.log('adding layer');
                     //console.log(l);
@@ -134,7 +173,7 @@
             );
                 addSeparator(toolbar);
                 toolbar.addControl(
-                new OpenLayers.Control.ZoomBox(), {
+                new OpenLayers.Control.ZoomBox({isDefault: true}), {
                     iconCls: "zoomin",
                     toggleGroup: "map"
                 }
@@ -149,7 +188,7 @@
             );
                 toolbar.addControl(
                 new OpenLayers.Control.DragPan({
-                    isDefault: true
+                    isDefault: false
                 }), {
                     iconCls: "pan",
                     toggleGroup: "map"
@@ -186,10 +225,10 @@
                                     split: true,
                                     items: [{
                                             id: "tree",
-                                            //title: "layer tree",
+                                            title: "PostGIS layers",
                                             xtype: "layertree",
                                             map: map,
-                                            height: 800,
+                                            height: 400,
                                             showWmsLegend: true,
                                             enableDD: true,
                                             model: jsonData.treeModel,
@@ -197,9 +236,11 @@
                                                 mapfish.widgets.LayerTree.createContextualMenuPlugin([
                                                     'zoomToExtent',
                                                     'opacitySlide',
-                                                    'remove'
+                                                    'remove',
+                                                    'test'
                                                 ])
-                                            ]
+                                            ],
+                                            collapsible: true
                                         },{
                                             id: "shorcuts_container",
                                             title: "shorcuts",
@@ -220,6 +261,14 @@
                                     xtype: 'mapcomponent',
                                     map: map,
                                     tbar: toolbar
+                                }, {
+                                    region: "south",
+                                    id: "search_grid",
+                                    title: "Tasks",
+                                    split: true,
+                                    height: 150,
+                                    contentEl: "taskDiv",
+                                    collapsible: true
                                 }]
                         });
                         
@@ -371,5 +420,8 @@
     <body>
         <div id="map"></div>
         <div id="coords" style="height: 1.5em;"></div>
+        <div id="taskDiv">
+            TODO: layer colors, 
+        </div>
     </body>
 </html>

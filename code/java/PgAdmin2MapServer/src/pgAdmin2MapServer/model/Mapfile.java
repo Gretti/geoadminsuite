@@ -76,9 +76,11 @@ public class Mapfile {
         b.append("\tsize 500 500\n");
         b.append("\textent ").append(extent.msString()).append("\n");
         b.append("\n");
-        b.append("\tPROJECTION").append("\n");
-        b.append("\t\t\"").append(projection).append("\"\n");;
-        b.append("\tEND#PROJECTION").append("\n");
+        if (!"init=epsg:0".equals(projection) && !"init=epsg:-1".equals(projection)) {
+            b.append("\tPROJECTION").append("\n");
+            b.append("\t\t\"").append(projection).append("\"\n");;
+            b.append("\tEND#PROJECTION").append("\n");
+        }
 
         b.append("\n");
         b.append("\tWEB\n");
