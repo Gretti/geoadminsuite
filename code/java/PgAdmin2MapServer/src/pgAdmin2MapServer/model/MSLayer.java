@@ -108,22 +108,36 @@ public class MSLayer {
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder("\tLAYER\n");
-        b.append("\t\tNAME ").append(name).append("\n");
+        b.append("\t\tNAME \"").append(name).append("\"\n");
         b.append("\t\tTYPE ").append(type).append("\n");
-        b.append("\t\tSTATUS DEFAULT\n");
+        b.append("\t\tSTATUS ON\n");
         b.append("\t\tOPACITY ").append(opacity).append("\n");
         b.append("\t\tCONNECTIONTYPE ").append(connectionType).append("\n");
-        b.append("\t\tCONNECTION '").append(connection).append("'\n");
-        b.append("\t\tDATA '").append(getData()).append("'\n");
+        b.append("\t\tCONNECTION \"").append(connection).append("\"\n");
+        b.append("\t\tDATA \"").append(getData()).append("\"\n");
         b.append("\t\tCLASS\n");
         b.append("\t\t\tCOLOR ").append(color).append("\n");
         b.append("\t\t\tOUTLINECOLOR ").append(outlineColor).append("\n");
+        
+        if ("POINT".equals(type)) {
+            // adds a symbol for point layer
+            b.append("\t\t\tSYMBOL 'circle'\n");
+            b.append("\t\t\tSIZE 10\n");
+            b.append("\t\t\tCOLOR ").append("0 0 0").append("\n");
+        }
+        
         b.append("\t\tEND #CLASS\n");
+        b.append("\n");
         if (this.srs.length() > 0 && !"0".equals(this.srs)) {
             b.append("\t\tPROJECTION\n");
-            b.append("\t\t\t'init=epsg:").append(this.srs).append("'\n");
+            b.append("\t\t\t\"init=epsg:").append(this.srs).append("\"\n");
             b.append("\t\tEND #PROJECTION\n");
         }
+        b.append("\n");
+        b.append("\t\tMETADATA").append("\n");
+        b.append("\t\t\t\"wms_title\"           \"").append(name).append("\"\n");
+        b.append("\t\tEND #metadata\n");
+
         b.append("\tEND #LAYER\n");
 
         return b.toString();
@@ -138,6 +152,7 @@ public class MSLayer {
         res.put("leaf", true);
         res.put("checked", true);
 
+        
         return res;
     }
 

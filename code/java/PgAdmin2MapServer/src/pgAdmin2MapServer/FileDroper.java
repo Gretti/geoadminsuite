@@ -51,7 +51,7 @@ public class FileDroper extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Server msg");
+        jLabel1.setText("Server log");
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -97,7 +97,7 @@ public class FileDroper extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
         try {
-            Pg2MS.loadLayers();
+            Pg2MS.loadLayers(true);
         } catch (Exception e) {
             Pg2MS.log(e.toString());
         }
