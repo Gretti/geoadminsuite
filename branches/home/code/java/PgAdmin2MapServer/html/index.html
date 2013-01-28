@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html>
     <head>
         <title>PgAdmin2MapServer 2</title>
@@ -47,8 +48,9 @@
             
             // adds new contextual plugins to layertree
             //Ext.getCmp('tree').
+            // TODO: correct Firefox bug with this object.
+            // see http://lists.mapfish.org/pipermail/users/2011-April/003259.html ?
             mapfish.widgets.LayerTree.MenuFeatures.test = function(layerTree, node, olLayers) {
-                            
                 return {
                     text: "Style layer",
                     icon: "img/photo.png",
@@ -61,7 +63,7 @@
                         console.log("styling: " + lay.name);
                     }
                 };
-            }            
+            }
 
             function createMap(config) {
                 // first creates the layers
@@ -79,7 +81,7 @@
                         }
                     });
                 }*/
-                console.log(srid);
+                // TODO Manage SRS server side
                 var proj = config.mapProjection == "epsg:0" ? "epsg:"+srid : new OpenLayers.Projection(config.mapProjection);
                 var map = new OpenLayers.Map("map", 
                 {
@@ -107,10 +109,14 @@
                 var ret = new Array();
                 var baseLayer = new OpenLayers.Layer("Blank",{isBaseLayer: true});
                 ret[ret.length] = baseLayer;                
-                
+            
+                //TODO: change map projection test to put it before loop.
                 for (var i = 0; i < layArr.length; i++) {
                     var ljson = layArr[i];
+                    var e = ljson.extent.split(" ");
+                    var bnds = new OpenLayers.Bounds(e[0], e[1], e[2], e[3])
                     var l = null;
+                    
                     if (mapProjection == "epsg:0" || mapProjection == "epsg:-1") {
                         // build a MS layer if no projection provided
                         l = new OpenLayers.Layer.MapServer( ljson.name,
@@ -120,6 +126,7 @@
                             singleTile: "true", 
                             opacity: 0.5,
                             isBaseLayer: false
+                            ,maxExtent: bnds
                         });
                     } else {
                         l = new OpenLayers.Layer.WMS(ljson.name,
@@ -130,6 +137,7 @@
                         }, {
                             singleTile: true,
                             opacity: 0.5
+                            ,maxExtent: bnds
                         });
                     }
                     ret[ret.length] = l;    
@@ -221,7 +229,8 @@
                                             title: "PostGIS layers",
                                             xtype: "layertree",
                                             map: map,
-                                            height: 400,
+                                            //height: "auto",
+                                            height: 550,
                                             showWmsLegend: true,
                                             enableDD: true,
                                             model: jsonData.treeModel,
@@ -234,7 +243,7 @@
                                                 ])
                                             ],
                                             collapsible: true
-                                        },{
+                                        }/*,{
                                             id: "shorcuts_container",
                                             title: "shorcuts",
                                             height: 50,
@@ -244,7 +253,7 @@
                                                     height: 500,
                                                     html: "TODO: <br/>color layers, map extent, websocket"
                                                 }]
-                                        }]
+                                        }*/]
                                 }, {
                                     region: "center",
                                     id: "map",
@@ -266,8 +275,12 @@
                         });
                         
                         viewport.doLayout();
-                        initToolbarContent(toolbar);
-                        map.zoomToMaxExtent();                        
+                        if (jsonData.layers.length == 0) {
+                            showMessage("No PostGIS layer(s) found in the selected pgAdmin node.", "Database empty");
+                        } else {
+                            initToolbarContent(toolbar);
+                            map.zoomToMaxExtent();                        
+                        }
                     },
                     failure: function( response, options ){
                         var jsonData = Ext.util.JSON.decode(response.responseText);
@@ -293,13 +306,13 @@
                 initMapLayers();
                 
                 // opens the WebSocket channel to receive updates from server
-                var token = '{"type": "login", "username" : "user", "password" : "user"}';
-                //var lToken = {"type": "login", "ns": "org.jWebSocket.plugins.system", "username" : "user", "password" : "user"};
-                
                 webSocket = new WebSocket('ws://localhost:8887/configDispatcher');
                 
                 webSocket.onopen = function(event) {
-                    console.log('sending to socket');
+                    // just to test
+                    var token = '{"type": "login", "username" : "user", "password" : "user"}';
+                    //var lToken = {"type": "login", "ns": "org.jWebSocket.plugins.system", "username" : "user", "password" : "user"};
+                    console.log('sending login token to socket server: ' + token);
                     webSocket.send(token);
                 };
             
@@ -317,8 +330,8 @@
                             window.location.href = "/map";
                             //
                             // server sends us a new mapConfig.
-                            /*
                             // Removes layers from map:
+                            /*
                             var i = removeMapLayers();
                             console.log(i + " layer(s) removed");
                             // remove layers from layerTree
@@ -326,13 +339,15 @@
                             
                             // refreshes the map
                             var map = createMap(response);
+
+                            Ext.getCmp('map').map = map;
                             //refreshes the tree model
                             addLayersToTree(response.treeModel);
                             Ext.getCmp('tree').render();
                             viewport.doLayout();
                             console.log(map);
                             map.zoomToMaxExtent();
-                             */
+                            */
                         }
                     } else {
                         // a server message
@@ -415,7 +430,10 @@
         <div id="coords" style="height: 1.5em;"></div>
         <div id="taskDiv">
             TODO: base styling: layer colors, line width, symbols. Setting layer extent.  Distinct colors for layers (color ramp to define).<br/>
-            postgis raster support to test
+            postgis raster support to test. Pure geoJSON client for PG 9.2. 
+            File D'N'D support (geo, images, etc.)<br/>
+            Packaging for all plateforms.
         </div>
     </body>
 </html>
+

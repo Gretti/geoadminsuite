@@ -3,14 +3,17 @@ PgAdmin2MapServer TODO List:
 
 ______
 First:
-- Display a Postgis Vector layer from PgAdmin if plugin launch on a table name
+- Display a Postgis Vector layer from PgAdmin if plugin launch on a table name  
+    => OK
 - Display the list of available layers from PgAdmin if plugin launch on a database name or schema name
+    => OK
 
 - layer tree: database
                 schema
                     table
                     table
                 schema
+    => OK
 
 - Basic layer styling:
     ? Color, outlinecolor
@@ -18,25 +21,42 @@ First:
     ? transparency
 
 ? Reorder layers by D'n'D in the UI
+    => OK
 
 - SRS management:
     ? If single layer with SRID: use it
     ? If single layer without SRID: WGS84 by default with UI to choose Map and Layers
     ? If multiple layers with same SRID: use it
     ? If multiple layers with heterogeneous SRS: map SRS in WGS84
+    => OK
 
 - MapExtent management: one layer => layer extent
                         several => same SRS ? extend extent : WGS84 world extent
+    => OK
 
 layer submenu:  reorder by dnd
+        => OK
                 remove
+        => OK
                 transparency
+        => OK
                 style: color, outlineColor, symbol, sym size
                 display in native projection (available if case apply)
-                
+
+- Set layer's bound when creating layers, to allow zoom to it:
+    If all layers share same SRS, set projected extent for layer
+    If 4326 srid or heterogeneous SRID in layer list, compute WGS84 extent.
+
+- Distinct colors for created layers (color ramp to define).
+- postgis raster support to test. 
+- Packaging for all plateforms.
+- Tooltip on layers with info: no extent => analyse table, no SRID => working with other layers impossible.
+- real extent vs estimated ?
+
 _______
 Later: 
 - support drag n drop for other files/URL/Other database connexion
+- Pure geoJSON client for PG 9.2. 
 
 ______
 Open:
@@ -51,12 +71,6 @@ OnConnect:
 
 ______
 Notes:
-
-Mapserver layer: pas de gestion de transparence
-    extent: bbox de la carte et maxResol = map width / img width
-
-WMS Layer: gestion de transparence
-    extent: set a projection parameter to the map: this will be the map default.
 
 ___________
 Java Model:
@@ -75,12 +89,6 @@ table/layer:
     name
     a mapserver layer; 
     render itself as a mapfish tree
-
-____________
-Service API:
-
-getLayersTree: server returns the l
-
 
 _________
 UseCases:

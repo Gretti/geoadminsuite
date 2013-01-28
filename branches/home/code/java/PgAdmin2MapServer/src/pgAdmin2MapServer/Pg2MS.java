@@ -61,6 +61,8 @@ public class Pg2MS {
      * according to plateform
      */
     public static String docRoot = tmpDir + File.separator;
+    
+    private static String todel = "";
 
     /**
      * Thread for test WebSocket ticker, sending client a message each 30 sec
@@ -160,7 +162,6 @@ public class Pg2MS {
     public static void loadLayers(boolean openBrowser) throws Exception {
         String m = Mapfile.write();
 
-        //TODO: implement this behaviour ?
         // opens the normal page: the client, fetching the config, should see its empty 
         //  => no geo to display
         if (m != null && !m.isEmpty()) {
@@ -180,6 +181,7 @@ public class Pg2MS {
             Desktop.getDesktop().browse(URI.create(serverUrl));
 
             Pg2MS.log("GUI launched with config: " + Config.getInstance().toString());
+            Pg2MS.log(todel);
         } else {
             // send new layer config to client webSocket
             for (WebSocket ws : Pg2MS.wsServer.connections()) {
@@ -209,9 +211,13 @@ public class Pg2MS {
 
     /**
      * @param args the command line arguments
+     * Client refresh can be triggered with URL:
+     * http://localhost:9472/newParams?bindir=/Applications/Dev/pgAdmin3.app/Contents/MacOS&host=&port=5432&database=nicolas&user=nicolas&passwd=&schema=public&table=
      */
     public static void main(String[] args) throws Exception {
         // init configuration
+        // TODO: supprimer cela
+        todel = "prog args: " + Arrays.toString(args);
         Config.getInstance().parseArgs(args);
         // starts or exit if started
         try {

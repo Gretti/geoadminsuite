@@ -41,7 +41,8 @@ public class Database {
     public String getName() {
         return name;
     }
-
+    
+    
     public void setName(String name) {
         this.name = name;
     }
@@ -116,9 +117,10 @@ public class Database {
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
-            // database
             dbs = new Database(Config.getInstance().database);
-
+            
+            // gets all registered layers:
+            // TODO: also compute general extent and SRID here
             while (rs.next()) {
                 String sname = rs.getString("f_table_schema");
                 Schema schema = dbs.getSchemas().get(sname);
@@ -142,7 +144,7 @@ public class Database {
             stmt.close();
             Pg2MS.log(dbs.getLayers().size() + " layer(s) loaded");
 
-            // gets layers extent
+            // gets layers estimated extent in native and WGS84 projection, to 
             query = "select st_xmin(e), st_ymin(e), st_xmax(e), st_ymax(e) from (select st_estimated_extent(?,?,?) as e) as t;";
             PreparedStatement pstmt = con.prepareStatement(query);
             for (MSLayer layer : dbs.getLayers()) {
@@ -162,6 +164,7 @@ public class Database {
                     }
                 } catch (PSQLException pe) {
                     // null estimated extent may arise if table was not analysed
+                    Pg2MS.log("No estimated extent for layer: " + layer.getQualName() + ". Consider ANALYZING this table");
                     layer.setExtent(new Extent(-180.0, -85.0, 180.0, 85.0));
                 }
             }
@@ -186,12 +189,12 @@ public class Database {
         res.put("checked", true);
         res.put("expanded", true);
         
-        JSONArray schemas = new JSONArray();
+        JSONArray schs = new JSONArray();
         SortedSet<String> schemasKeys = new TreeSet<String>(getSchemas().keySet());
         for (String keys : schemasKeys) {
-            schemas.put(getSchemas().get(keys).toJsonTreeModel());
+            schs.put(getSchemas().get(keys).toJsonTreeModel());
         }
-        res.put("children", schemas);
+        res.put("children", schs);
         return res;
     }
 }

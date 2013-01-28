@@ -110,8 +110,8 @@ public class RequestManager {
      * Called when server receive a REQUEST_MAP request: returns the HTML
      * MapFish map (with its resources) to the client.
      *
-     * No parameters are expected from the client TODO: replace by a
-     * file?name=map.html ? TODO: factorize response
+     * No parameters are expected from the client 
+     * TODO: replace by a file?name=map.html ? TODO: factorize response
      */
     public static void Map(
             final Map<String, String> params,
@@ -165,8 +165,8 @@ public class RequestManager {
      * Called when server receive a REQUEST_FILE request: returns the file whose
      * name is given in parameter. Parameters: name=<fileName> where <filename>
      * is the qualified name of the file to get. Files are read from external
-     * zip lying in the lib folder. It allows client modifications. TODO:
-     * mutualize ZipFile
+     * zip lying in the lib folder. It allows client modifications. 
+     * TODO: mutualize ZipFile handling
      */
     public static void File(
             final Map<String, String> params,
@@ -227,8 +227,8 @@ public class RequestManager {
             final HttpResponse response,
             final HttpContext context) throws Exception {
         
-        Pg2MS.log("receiving new parameters from another instance...");
         Config.getInstance().parseArgs(params);
+        Pg2MS.log("receiving new parameters from another instance: " + Config.getInstance().toString());
         Pg2MS.loadLayers(false);
         
         response.setStatusCode(HttpStatus.SC_OK);
