@@ -40,7 +40,6 @@ public class ElementalWebSocketServer extends WebSocketServer {
 	public void onOpen( WebSocket conn, ClientHandshake handshake ) {
         if (ElementalWebSocketServer.CONFIG_DISPATCHER.equals(handshake.getResourceDescriptor())) {
             conn.send("configDispatcher started. Will send mapConfig updates when PgAdmin call this plugin...");
-            conn.send("configDispatcher started. Will send mapConfig updates when PgAdmin call this plugin...");
         } else {
             conn.send("Invalid endpoint called: " + handshake.getResourceDescriptor());
         }

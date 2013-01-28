@@ -32,6 +32,9 @@ public class Mapfile {
     private static String projection = INIT_PROJECTION;
     private static Map<String, Database> databases = new HashMap<String, Database>();
     public static String olBounds = "0";
+    // true if all layers have the same SRID, false otherwise.
+    // This will be used to set the right extent to the OL layer: either projected or global (WGS84)
+    public static boolean sameSRID = false;
 
     /**
      * Writes a mapfile with given params to system temp folder
@@ -223,7 +226,9 @@ public class Mapfile {
      * sets the extent and SRS of the given layers:
      *
      * SRS: If all layers have the same SRS, it will be returned, else, a 4326
-     * EPSG code is returned
+     * EPSG code is returned.
+     * A config parameter will be stored telling if layers have same SRID:
+     * it is used on the client
      *
      * extent: if same SRS, expand extent, else force a wide WGS84 extent //
      * TODO: smarter handling

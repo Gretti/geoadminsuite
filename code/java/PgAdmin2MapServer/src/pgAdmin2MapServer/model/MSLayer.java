@@ -56,6 +56,10 @@ public class MSLayer {
         return extent;
     }
 
+    public String getQualName() {
+        return schema + "." + name;
+    }
+
     /**
      * Returns the DATA property built from schema, name, geom: geom from
      * schema.name
@@ -63,7 +67,7 @@ public class MSLayer {
      * @return
      */
     public String getData() {
-        return this.geom + " from " + this.schema + "." + this.name;
+        return this.geom + " from " + this.getQualName();
     }
 
     /**
@@ -121,16 +125,16 @@ public class MSLayer {
         } else {
             b.append("\t\t\tCOLOR ").append(color).append("\n");
             b.append("\t\t\tOUTLINECOLOR ").append(outlineColor).append("\n");
-            
+
         }
-        
+
         if ("POINT".equals(type)) {
             // adds a symbol for point layer
             b.append("\t\t\tSYMBOL 'circle'\n");
             b.append("\t\t\tSIZE 10\n");
             b.append("\t\t\tCOLOR ").append("0 0 0").append("\n");
         }
-        
+
         b.append("\t\tEND #CLASS\n");
         b.append("\n");
         if (this.srs.length() > 0 && !"0".equals(this.srs)) {
@@ -166,14 +170,18 @@ public class MSLayer {
         res.put("leaf", true);
         res.put("checked", true);
 
-        
+
         return res;
     }
 
+    /**
+     * JSON info to build a new Layer. TODO: factorize with json tree model
+     */
     public JSONObject toJson() throws JSONException {
         JSONObject res = new JSONObject();
         res.put("name", this.name);
         res.put("url", this.url);
+        res.put("extent", this.extent.msString());
 
         return res;
     }

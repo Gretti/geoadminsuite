@@ -12,6 +12,7 @@ import java.util.Map;
  * @author nicolas
  */
 public class Config {
+    public static final String DEFAULT_HOST = "localhost";
 
     private static Config instance;
     public String host = "";
@@ -42,11 +43,19 @@ public class Config {
         }
         return instance;
     }
+    
+    /**
+     * Sets the host according to given string:
+     * if host is null or empty, it will default to DEFAULT_HOST
+     */
+    public void setHost(String h) {
+        this.host = h == null || h.isEmpty() ? DEFAULT_HOST : h;
+    }
 
     public void parseArgs(String[] args) {
         if (args.length > 5) {
             this.binDir = args[0].replace("bindir=", "");
-            this.host = args[1].replace("host=", "");
+            setHost(args[1].replace("host=", ""));
             this.port = args[2].replace("port=", "");
             this.database = args[3].replace("database=", "");
             this.user = args[4].replace("user=", "");
@@ -69,9 +78,13 @@ public class Config {
         }
     }
 
+    /**
+     * Setters for other variables
+     * @param params 
+     */
     public void parseArgs(Map<String, String> params) {
         this.binDir = params.get("binDir");
-        this.host = params.get("host");
+        setHost(params.get("host"));
         this.port = params.get("port");
         this.database = params.get("database");
         this.user = params.get("user") == null ? "" : params.get("user");
