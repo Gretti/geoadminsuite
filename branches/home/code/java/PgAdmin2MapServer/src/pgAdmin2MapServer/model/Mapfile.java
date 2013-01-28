@@ -25,7 +25,8 @@ import pgAdmin2MapServer.Pg2MS;
  */
 public class Mapfile {
 
-    private static final Extent INIT_EXTENT = new Extent(-180.0, -85.0, 180.0, 85.0);
+    public  static final Extent INIT_EXTENT = new Extent(-180.0, -85.0, 180.0, 85.0);
+    
     private static final String INIT_PROJECTION = "init=epsg:4326";
     private static String name;
     private static Extent extent = INIT_EXTENT;
@@ -217,6 +218,7 @@ public class Mapfile {
             mapConf.put("mapProjection", projection.replace("init=", ""));
             mapConf.put("treeModel", dbs);
             mapConf.put("layers", layers);
+            mapConf.put("sameSRID", Mapfile.sameSRID);
 
             return mapConf.toString(4);
         }
@@ -239,7 +241,7 @@ public class Mapfile {
         String ret = "";
 
         boolean firstTime = true;
-        String prevSrid = "";
+        int prevSrid = 0;
         Extent globalExt = new Extent();
 
         if (layers != null) {
@@ -248,11 +250,12 @@ public class Mapfile {
                     firstTime = false;
                     globalExt.expandToInclude(layer.getExtent());
                 } else {
-                    if (!prevSrid.equals(layer.srs)) {
+                    if (prevSrid != layer.srs) {
                         // heterogeneous SRID for layers: defaulting Map to LatLong
                         Pg2MS.log("No unique SRID found for given layers. Default to LatLon Mapfile.");
                         Mapfile.extent = INIT_EXTENT;
                         Mapfile.projection = INIT_PROJECTION;
+                        Mapfile.sameSRID = false;
                         return;
                     } else {
                         // expand global extent
@@ -262,6 +265,7 @@ public class Mapfile {
                 prevSrid = layer.srs;
             }
         }
+        Mapfile.sameSRID = true;
         Mapfile.extent = globalExt;
         Mapfile.projection = "init=epsg:" + prevSrid;
     }

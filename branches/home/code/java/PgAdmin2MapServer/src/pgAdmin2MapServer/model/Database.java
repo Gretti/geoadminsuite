@@ -137,7 +137,7 @@ public class Database {
                         rs.getString("f_geometry_column"),
                         rs.getString("type"),
                         "POSTGIS",
-                        rs.getString("srid"));
+                        rs.getInt("srid"));
 
                 schema.getLayers().put(tname, l);
             }
@@ -145,20 +145,22 @@ public class Database {
             Pg2MS.log(dbs.getLayers().size() + " layer(s) loaded");
 
             // gets layers estimated extent in native and WGS84 projection, to 
-            /*
-with est_ext as (
-    select st_estimated_extent('test', 'commune', 'geom') e, 0 as srid
-) select e, 
-    case when srid < 1 then 'BOX(-180 -85, 180 85)'::box2d
-    else st_transform(e, 4326)::box2d end as wgsextent  
-from est_ext ;             
-             */
-            query = "select st_xmin(e), st_ymin(e), st_xmax(e), st_ymax(e) from (select st_estimated_extent(?,?,?) as e) as t;";
+            query = "with est_ext as ( ";
+            query += "    select st_estimated_extent(?, ?, ?) as e, ? as srid ";
+            query += "), bboxes as ( ";
+            query += "	select e, ";
+            query += "		case when srid < 1 then 'BOX(-180 -85, 180 85)'::box2d ";
+            query += "		else st_transform(st_setSRID(e, srid), 4326)::box2d end as we  ";
+            query += "	from est_ext ";
+            query += ") select st_xmin(e), st_ymin(e), st_xmax(e), st_ymax(e), st_xmin(we), st_ymin(we), st_xmax(we), st_ymax(we) ";
+            query += " from bboxes";
+            //query = "select st_xmin(e), st_ymin(e), st_xmax(e), st_ymax(e) from (select st_estimated_extent(?,?,?) as e) as t;";
             PreparedStatement pstmt = con.prepareStatement(query);
             for (MSLayer layer : dbs.getLayers()) {
                 pstmt.setString(1, layer.schema);
                 pstmt.setString(2, layer.name);
                 pstmt.setString(3, layer.geom);
+                pstmt.setInt(4, layer.srs);
                 try {
                     rs = pstmt.executeQuery();
                     while (rs.next()) {
@@ -167,13 +169,21 @@ from est_ext ;
                                 rs.getDouble(2),
                                 rs.getDouble(3),
                                 rs.getDouble(4));
+                        Extent extWgs = new Extent(
+                                rs.getDouble(5),
+                                rs.getDouble(6),
+                                rs.getDouble(7),
+                                rs.getDouble(8));
                         layer.setExtent(ext);
-                        Pg2MS.log("extent: " + ext.msString());
+                        layer.setWGSExtent(extWgs);
+                        Pg2MS.log("extent: " + ext.msString() + " wgs extent: " + extWgs.msString());
                     }
                 } catch (PSQLException pe) {
+                    pe.printStackTrace();
                     // null estimated extent may arise if table was not analysed
                     Pg2MS.log("No estimated extent for layer: " + layer.getQualName() + ". Consider ANALYZING this table");
-                    layer.setExtent(new Extent(-180.0, -85.0, 180.0, 85.0));
+                    layer.setExtent(Mapfile.INIT_EXTENT);
+                    layer.setWGSExtent(Mapfile.INIT_EXTENT);
                 }
             }
 
