@@ -67,25 +67,16 @@
 
             function createMap(config) {
                 // first creates the layers
-                var layers = createServerLayers(config.layers, config.mapProjection);
+                var layers = createServerLayers(config);
                 
                 var extent = config.mapExtent.split(" ");
                 var maxRes = (extent[2]-extent[0]) / 300;
                 var srid = 4326;
-                /*
-                if (config.mapProjection == "epsg:0") {
-                    // Prompt for user data and process the result using a callback:
-                    Ext.Msg.prompt('Map SRS', 'Please enter EPSG code for map projection:', function(btn, text){
-                        if (btn == 'ok'){
-                            srid = text.value;
-                        }
-                    });
-                }*/
+                
                 // TODO Manage SRS server side
                 var proj = config.mapProjection == "epsg:0" ? "epsg:"+srid : new OpenLayers.Projection(config.mapProjection);
                 var map = new OpenLayers.Map("map", 
                 {
-                    //maxExtent: new OpenLayers.Bounds(99226, 6049647, 1242375, 7110524),
                     projection: proj,
                     maxExtent: new OpenLayers.Bounds(extent[0], extent[1], extent[2], extent[3]),
                     //maxResolution: 2400 //map units per pixel
@@ -105,17 +96,32 @@
                 return map;
             }
             
-            function createServerLayers(layArr, mapProjection) {
+            /**
+             * Creates OpenLayers layers from config object.
+             * TODO: build layer logic on the server side
+             */
+            function createServerLayers(config) {
+                var layArr = config.layers;
+                var mapProjection = config.mapProjection;
                 var ret = new Array();
                 var baseLayer = new OpenLayers.Layer("Blank",{isBaseLayer: true});
                 ret[ret.length] = baseLayer;                
             
                 //TODO: change map projection test to put it before loop.
+                
                 for (var i = 0; i < layArr.length; i++) {
                     var ljson = layArr[i];
+                    // layers bounds in projected coordinates
                     var e = ljson.extent.split(" ");
                     var bnds = new OpenLayers.Bounds(e[0], e[1], e[2], e[3])
+                    // layers bounds in WGS coordinates
+                    var ewgs = ljson.WGSExtent.split(" ");
+                    var bndsWgs = new OpenLayers.Bounds(ewgs[0], ewgs[1], ewgs[2], ewgs[3])
                     var l = null;
+                    
+                    // if layers have mixed SRID (sameSRID property of the config object), set
+                    // their wgs bounds as extent, else set their projected bounds
+                    var layBounds = config.sameSRID ? bnds : bndsWgs;
                     
                     if (mapProjection == "epsg:0" || mapProjection == "epsg:-1") {
                         // build a MS layer if no projection provided
@@ -126,6 +132,7 @@
                             singleTile: "true", 
                             opacity: 0.5,
                             isBaseLayer: false
+                            // sets real layer bounds
                             ,maxExtent: bnds
                         });
                     } else {
@@ -137,7 +144,7 @@
                         }, {
                             singleTile: true,
                             opacity: 0.5
-                            ,maxExtent: bnds
+                            ,maxExtent: layBounds
                         });
                     }
                     ret[ret.length] = l;    

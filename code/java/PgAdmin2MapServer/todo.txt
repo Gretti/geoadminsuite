@@ -45,7 +45,7 @@ layer submenu:  reorder by dnd
 
 - Set layer's bound when creating layers, to allow zoom to it:
     If all layers share same SRS, set projected extent for layer
-    If 4326 srid or heterogeneous SRID in layer list, compute WGS84 extent.
+    If 4326 srid or heterogeneous SRID in layer list, set layer's WGS84 extent.
 
 - Distinct colors for created layers (color ramp to define).
 - postgis raster support to test. 

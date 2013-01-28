@@ -30,14 +30,15 @@ public class MSLayer {
     public String data = "";
     public String connection = "host=_host_  port=_port_  dbname=_dbname_  user=_user_  password=_pwd_";
     public String connectionType = "";
-    public String srs = "";
+    public int srs = 0;
     public String color = "";
     public String outlineColor = "";
     public String opacity = "100";
     public Extent extent = null;
+    public Extent WGSExtent = null;
 
     public MSLayer(String url, String schema, String table, String geom, String type,
-            String connectionType, String srs) {
+            String connectionType, int srs) {
         this.url = url;
         this.schema = schema;
         this.name = table;
@@ -89,6 +90,18 @@ public class MSLayer {
     public void setExtent(Extent ext) {
         this.extent = ext;
     }
+    
+    /**
+     * Sets the layer WGS84 extent based on given box2d representation:
+     * BOX(1 1,2 2);
+     *
+     * @param ext
+     */
+    public void setWGSExtent(Extent wgsext) {
+        this.WGSExtent = wgsext;
+    }
+    
+    
 
     /**
      * Sets the Mapserver layer type according to given Postgis type
@@ -137,7 +150,7 @@ public class MSLayer {
 
         b.append("\t\tEND #CLASS\n");
         b.append("\n");
-        if (this.srs.length() > 0 && !"0".equals(this.srs)) {
+        if (this.srs > 0) {
             b.append("\t\tPROJECTION\n");
             b.append("\t\t\t\"init=epsg:").append(this.srs).append("\"\n");
             b.append("\t\tEND #PROJECTION\n");
@@ -182,6 +195,7 @@ public class MSLayer {
         res.put("name", this.name);
         res.put("url", this.url);
         res.put("extent", this.extent.msString());
+        res.put("WGSExtent", this.WGSExtent.msString());
 
         return res;
     }
