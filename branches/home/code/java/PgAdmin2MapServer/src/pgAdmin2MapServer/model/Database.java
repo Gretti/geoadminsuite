@@ -145,6 +145,14 @@ public class Database {
             Pg2MS.log(dbs.getLayers().size() + " layer(s) loaded");
 
             // gets layers estimated extent in native and WGS84 projection, to 
+            /*
+with est_ext as (
+    select st_estimated_extent('test', 'commune', 'geom') e, 0 as srid
+) select e, 
+    case when srid < 1 then 'BOX(-180 -85, 180 85)'::box2d
+    else st_transform(e, 4326)::box2d end as wgsextent  
+from est_ext ;             
+             */
             query = "select st_xmin(e), st_ymin(e), st_xmax(e), st_ymax(e) from (select st_estimated_extent(?,?,?) as e) as t;";
             PreparedStatement pstmt = con.prepareStatement(query);
             for (MSLayer layer : dbs.getLayers()) {
