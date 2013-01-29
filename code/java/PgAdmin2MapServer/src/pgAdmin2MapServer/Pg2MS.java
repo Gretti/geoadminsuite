@@ -30,11 +30,9 @@ public class Pg2MS {
     /**
      * The Relative path to zip file containing HTML resources (Map, JS et al.)
      */
-    //public static final String HTML_RESOURCES_PATH = "../SharedSupport/plugins.d/lib/htmlResources.zip";
-    //public static final boolean READ_FROM_ZIP = false;
     // for easier debug
     public static final String HTML_RESOURCES_PATH = "/Users/nicolas/code/java/PgAdmin2MapServer/html";
-    public static final boolean READ_FROM_ZIP = false;
+    public static final boolean READ_FROM_ZIP = true;
     /**
      * The Swing frame displaying program logs and allowing geographic files
      * drag'n'drop (not yet available)
@@ -53,15 +51,17 @@ public class Pg2MS {
     public static String mapfileName = "pgadmin_viewer.map";
     // TODO: get it from config or smart guess
     public static String tmpDir = "/tmp";
-    public static String mapserverExe = ("".equals(System.getProperty("os.name").contains("Windows")) ? "mapserv.exe" : "mapserv");
+    public static String mapserverExe = System.getProperty("os.name").contains("Windows") ? "mapserv.exe" : "mapserv";
     public static String mapfileUrl = "http://localhost/cgi-bin/mapserv?map=" + tmpDir + File.separator + mapfileName;
     public static ElementalWebSocketServer wsServer = null;
+    // The full path to the HTML resources this program uses to display the map
+    // will be computed live when the program is run
+    public static File resourceFile = null;
     /**
      * The tmp file where MapServer can write image TODO: find correct folder
      * according to plateform
      */
     public static String docRoot = tmpDir + File.separator;
-    
     private static String todel = "";
 
     /**
@@ -120,6 +120,23 @@ public class Pg2MS {
     }
 
     /**
+     * Performs some internal initialization
+     */
+    public static void init() {
+        // init the full path to the HTML resources
+        // System.getProperty("user.dir") is not robust enough on plateforms to use it:
+        System.out.println(Pg2MS.class.getClass().getProtectionDomain().getCodeSource().getLocation());
+        try {
+            //s = new File(".").getAbsolutePath();
+        } catch (Exception e) {
+            
+        }
+        String sub = "lib" + File.separator + "html.zip";
+        Pg2MS.resourceFile = new File(System.getProperty("user.dir"), sub);
+        Pg2MS.log("HTML resources in: " + Pg2MS.resourceFile.getAbsolutePath());
+    }
+
+    /**
      * Starts the internal servers on configured port: 9472 for the internal web
      * server 8887 for the internal Web Socket server
      *
@@ -128,6 +145,8 @@ public class Pg2MS {
      * occured
      */
     public static void startServer() throws Exception {
+        // internal initialisation
+        init();
         // Starts Web server
         Thread t = new ElementalHttpServer.RequestListenerThread(Pg2MS.serverPort, docRoot);
         t.setDaemon(false);
@@ -155,8 +174,10 @@ public class Pg2MS {
     /**
      * Loads layers and launch browser. Should be called in the main gui onload
      * event
-     * @param openBrowser true to open a browser with a MAP url (client initialization)
-     * false to send new MapConfig JSON through webSOcket (PgAdmin update)
+     *
+     * @param openBrowser true to open a browser with a MAP url (client
+     * initialization) false to send new MapConfig JSON through webSOcket
+     * (PgAdmin update)
      * @throws Exception if an error occured
      */
     public static void loadLayers(boolean openBrowser) throws Exception {
@@ -210,8 +231,8 @@ public class Pg2MS {
     }
 
     /**
-     * @param args the command line arguments
-     * Client refresh can be triggered with URL:
+     * @param args the command line arguments Client refresh can be triggered
+     * with URL:
      * http://localhost:9472/newParams?bindir=/Applications/Dev/pgAdmin3.app/Contents/MacOS&host=&port=5432&database=nicolas&user=nicolas&passwd=&schema=public&table=
      */
     public static void main(String[] args) throws Exception {
