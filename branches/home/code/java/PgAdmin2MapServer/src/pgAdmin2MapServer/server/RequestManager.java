@@ -24,7 +24,6 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHttpRequest;
-import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
@@ -44,7 +43,6 @@ public class RequestManager {
     public static final String REQUEST_MAP_CONFIG = "mapConfig";
     public static final String REQUEST_FILE = "file";
     public static final String REQUEST_NEW_PARAMS = "newParams";
-    public static final String VERSION = "0.0.3";
     // Configuration item values
     /**
      * sent by the client to get the MapConfig object with all layers in a JSON
@@ -52,7 +50,7 @@ public class RequestManager {
      */
     public static final String CONFIG_LAYERS = "allLayers";
     public static final String CONFIG_TREE_MODEL = "treeModel";
-
+    
     /**
      * processes incoming request and calls suitable method. first analyse types
      * of requests and build a common Map object containing serverAction
@@ -283,12 +281,9 @@ public class RequestManager {
         InputStream res = null;
 
         if (!Pg2MS.READ_FROM_ZIP) {
-            File f = new File(Pg2MS.HTML_RESOURCES_PATH, fileName);
-            res = new FileInputStream(f);
+            res = new FileInputStream(new File(Pg2MS.HTML_RESOURCES_PATH, fileName));
         } else {
-            File f = new File(Config.getInstance().binDir, Pg2MS.HTML_RESOURCES_PATH);
-            ZipFile zip = new ZipFile(f);
-            ZipEntry entry = new ZipEntry(fileName);
+            ZipFile zip = new ZipFile(Pg2MS.resourceFile);
             res = zip.getInputStream(new ZipEntry(fileName));
         }
         return res;

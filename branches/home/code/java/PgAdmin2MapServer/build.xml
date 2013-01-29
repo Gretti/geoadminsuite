@@ -71,4 +71,17 @@
     nbproject/build-impl.xml file. 
 
     -->
+    <!-- Task to compress the HTML part into a zip, putting it in the dist/lib folder -->
+    <target name="-post-jar">
+        <zip 
+            basedir="${basedir}/html" 
+            destfile="${dist.dir}/lib/html.zip"
+            update="true"/>
+        
+        <!-- copies the pgAdmin.ini file to the root of the dist folder -->
+        <copy file="${basedir}/PgAdmin2MapServer.ini" todir="${dist.dir}" overwrite="true"/>
+        <!-- copies the README.TXT file to the root of the dist folder -->
+        <copy file="${basedir}/README.TXT" todir="${dist.dir}"  overwrite="true"/>
+        <!-- TODO final dist task that will compress dist and lib to produce an archive -->
+    </target>
 </project>
