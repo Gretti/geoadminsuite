@@ -60,8 +60,9 @@ public class InitAction extends org.apache.struts.action.Action {
             DataManager.setProperty(DataManager.MAPSERVERINPUTS, msInfo.get("INPUTS"));
             DataManager.setProperty(DataManager.MAPSERVEROUTPUTS, msInfo.get("OUTPUTS"));
             DataManager.setProperty(DataManager.MAPSERVERSUPPORTS, msInfo.get("SUPPORTS"));
+            Logger.getLogger(InitAction.class.getName()).info("mapserver info got");
         } else {
-            Logger.getLogger(InitAction.class.getName()).warning(
+            Logger.getLogger(InitAction .class.getName()).warning(
                     "Null msInfo object, cannot guess MapServer version");
         }
 
