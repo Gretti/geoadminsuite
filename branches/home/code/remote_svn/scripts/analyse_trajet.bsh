@@ -1,0 +1,64 @@
+/*
+// extrait N features aleatoirement depuis la couche selectionnee
+*/
+
+import com.vividsolutions.jump.workbench.*;
+import com.vividsolutions.jump.workbench.ui.*;
+import com.vividsolutions.jump.workbench.model.Layer;
+import org.openjump.core.apitools.FeatureCollectionTools;
+import java.sql.*;
+
+// liste des trajets a checker.
+trajet="psql:../SQL/calage_trajet_routing.sql:127: NOTICE:  0 insertion => check idtraj: 267695_7848_4_1, source: 3335201, target: 5151290";
+//trajet="psql:../SQL/calage_trajet_routing.sql:127: NOTICE:  0 insertion => check idtraj: 411259_4490_3_1, source: 5151072, target: 5151491";
+//trajet="psql:../SQL/calage_trajet_routing.sql:127: NOTICE:  0 insertion => check idtraj: 411259_4490_3_2, source: 5151459, target: 5151697";
+//trajet="psql:../SQL/calage_trajet_routing.sql:127: NOTICE:  0 insertion => check idtraj: 413326_13242_3_14, source: 5609935, target: 5315291";
+//trajet="psql:../SQL/calage_trajet_routing.sql:127: NOTICE:  0 insertion => check idtraj: 475128_15732_2_1, source: 5373256, target: 3078450";
+//trajet="psql:../SQL/calage_trajet_routing.sql:127: NOTICE:  0 insertion => check idtraj: 413326_13242_1_5, source: 4721784, target: 4743721";
+//trajet="psql:../SQL/calage_trajet_routing.sql:127: NOTICE:  0 insertion => check idtraj: 212052_15500_2_2, source: 2752819, target: 5154234";
+//trajet="psql:../SQL/calage_trajet_routing.sql:127: NOTICE:  0 insertion => check idtraj: 212052_15500_2_3, source: 5373256, target: 1445615";
+//trajet="psql:../SQL/calage_trajet_routing.sql:127: NOTICE:  0 insertion => check idtraj: 417101_17763_2_4, source: 4620992, target: 5729711";
+//trajet="psql:../SQL/calage_trajet_routing.sql:127: NOTICE:  0 insertion => check idtraj: 411089_15865_2_3, source: 4700380, target: 5154617";
+//trajet="psql:../SQL/calage_trajet_routing.sql:127: NOTICE:  0 insertion => check idtraj: 413326_13242_1_2, source: 4721784, target: 5016387";
+//trajet="psql:../SQL/calage_trajet_routing.sql:127: NOTICE:  0 insertion => check idtraj: 415885_2001_1_1, source: <NULL>, target: 5151316";
+//trajet="psql:../SQL/calage_trajet_routing.sql:127: NOTICE:  0 insertion => check idtraj: 413326_13242_3_13, source: 4701656, target: 4789746";
+//trajet="psql:../SQL/calage_trajet_routing.sql:127: NOTICE:  0 insertion => check idtraj: 414372_18944_4_2, source: 4721784, target: 5016647";
+//trajet="psql:../SQL/calage_trajet_routing.sql:127: NOTICE:  0 insertion => check idtraj: 414450_9756_3_2, source: 5376456, target: 5154236";
+//trajet="psql:../SQL/calage_trajet_routing.sql:127: NOTICE:  0 insertion => check idtraj: 414450_9756_3_5, source: 4721784, target: 4743713";
+//trajet="psql:../SQL/calage_trajet_routing.sql:127: NOTICE:  0 insertion => check idtraj: 416339_15450_2_1, source: 5393801, target: 5227395";
+//trajet="psql:../SQL/calage_trajet_routing.sql:127: NOTICE:  0 insertion => check idtraj: 563845_15840_3_1, source: 1079017, target: 5151576";
+//trajet="psql:../SQL/calage_trajet_routing.sql:127: NOTICE:  0 insertion => check idtraj: 568778_15840_3_1, source: 1382157, target: 5151449";
+
+// extraction de la ligne d'erreur pour recuperer idtraj, source, target.
+idtraj = trajet.substring(trajet.indexOf("idtraj: ") + 8, trajet.indexOf(", source"));
+source = trajet.substring(trajet.indexOf(", source: ") + 10, trajet.indexOf(", target"));
+target = trajet.substring(trajet.indexOf(", target: ") + 10);
+print (idtraj + " " + source + " " + target);
+
+// recup de la voirie selectionnée pour en extraire la target et lancer le routing avec ce noeud
+// couche des voiries du trajet
+//wc.getLayerViewPanel().getSelectionManager().getSelections();
+print(workbenchContext);
+// selected feature
+// extraction de l'attribut voulu
+
+// requete de routing pour ce trajet:
+routingQuery = "select edge_id, vertex_id, cost, null, 1 as pseudoordre from ";
+routingQuery += "shortest_path('select gid as id, source::int4, target::int4, ";
+routingQuery += "shape_length::float8 as cost from vw where iddepl = ''";
+routingQuery += idtraj + "'' '," + source + "," + target + ",false,false)";
+
+print(routingQuery);
+
+// lancement de la requete
+Class.forName("org.postgresql.Driver"); //load the driver
+con = DriverManager.getConnection("jdbc:postgresql:bva","nicolas","toto");
+Statement stmt = con.createStatement();
+ResultSet rs = stmt.executeQuery(routingQuery);
+int i = 0;
+while (rs.next()) {
+    i++;
+}
+print("routing found: " + i);
+
+print("--------------done----------------");
