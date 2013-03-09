@@ -26,7 +26,7 @@ import java.io.Serializable;
 
 import org.geogurus.data.database.OracleAccessFactory;
 import org.geogurus.data.database.PostgisAccessFactory;
-import org.geogurus.data.database.SpatialiteAccessFactory;
+//import org.geogurus.data.database.SpatialiteAccessFactory;
 import org.geogurus.data.files.AbstractFileAccessFactory;
 import org.geogurus.data.files.EcwAccessFactory;
 import org.geogurus.data.files.ImgAccessFactory;
@@ -60,9 +60,9 @@ public enum DataAccessType implements Serializable {
     /** MIF file type declaration */
     MIF(VECTOR, new MifAccessFactory(), "mif"),
     /** WFS type declaration */
-    WFS(VECTOR, new WfsDataAccessFactory(), "wfs"),
+    WFS(VECTOR, new WfsDataAccessFactory(), "wfs");
     /** Spatialite type declaration */
-    SPATIALITE(VECTOR, new SpatialiteAccessFactory(), "spatialite");
+//    SPATIALITE(VECTOR, new SpatialiteAccessFactory(), "spatialite");
 
     private final AbstractDataAccessFactory factory;
     private final boolean isFileFormat;
