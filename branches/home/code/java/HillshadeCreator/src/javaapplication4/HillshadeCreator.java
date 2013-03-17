@@ -26,8 +26,8 @@ public class HillshadeCreator {
     
     
     public int createHillshade() throws Exception {
-        String line = "/Users/nicolas/bin/create_hillshade.sh";
-        CommandLine cmdLine = new CommandLine(line);
+        File script = new File (getClass().getResource("/create_hillshade.sh").toURI());
+        CommandLine cmdLine = new CommandLine(script);
         cmdLine.addArgument(inputDem.getAbsolutePath());
         cmdLine.addArgument(inputRamp.getAbsolutePath());
         cmdLine.addArgument(outputFolder.getAbsolutePath());
