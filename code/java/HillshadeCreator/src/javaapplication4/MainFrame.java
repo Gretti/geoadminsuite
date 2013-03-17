@@ -36,7 +36,8 @@ public class MainFrame extends javax.swing.JFrame implements Runnable {
     private JLabel picLabel = null;
     private ImageIcon[] rampImages;
     private String[] rampTexts = {"ramp 1", "ramp 2", "ramp 3", "ramp 4", "ramp 5", "ramp 6"};
-    ComboBoxRenderer renderer = new ComboBoxRenderer();
+    private ComboBoxRenderer renderer = new ComboBoxRenderer();
+    private File previousFolder = new File("/Users/nicolas/tmp/toto");
 
     class ComboBoxRenderer extends JLabel implements ListCellRenderer {
 
@@ -120,7 +121,6 @@ public class MainFrame extends javax.swing.JFrame implements Runnable {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -139,15 +139,13 @@ public class MainFrame extends javax.swing.JFrame implements Runnable {
         renderer = new ComboBoxRenderer();
         renderer.setPreferredSize(new Dimension(200, 60));
         jComboBox1 = new javax.swing.JComboBox();
+        jPanel1 = new javax.swing.JScrollPane();
+        jPanel3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Hillshade builder");
         setLocation(new java.awt.Point(800, 450));
-        setPreferredSize(new java.awt.Dimension(640, 480));
-
-        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
-        jPanel1.setBorder(new javax.swing.border.MatteBorder(null));
-        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
+        setPreferredSize(new java.awt.Dimension(800, 600));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -199,7 +197,7 @@ public class MainFrame extends javax.swing.JFrame implements Runnable {
                 .addComponent(jButton2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 262, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
                 .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -219,6 +217,21 @@ public class MainFrame extends javax.swing.JFrame implements Runnable {
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 563, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 456, Short.MAX_VALUE)
+        );
+
+        jPanel1.setViewportView(jPanel3);
+
+        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -231,10 +244,11 @@ public class MainFrame extends javax.swing.JFrame implements Runnable {
     private void inputDemClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputDemClicked
 
         // TODO add your handling code here:
-        final JFileChooser fc = new JFileChooser(new File("/Users/nicolas/tmp/toto"));
+        final JFileChooser fc = new JFileChooser(previousFolder);
         int returnVal = fc.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             inputDem = fc.getSelectedFile();
+            previousFolder = inputDem.getParentFile();
             this.jButton1.setIcon(createImageIcon("/javaapplication4/tick.png"));
             demChoosen = true;
             jButton3.setEnabled(demChoosen && rampChoosen);
@@ -249,7 +263,12 @@ public class MainFrame extends javax.swing.JFrame implements Runnable {
     private void inputRampClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputRampClicked
 
         // TODO add your handling code here:
-        final JFileChooser fc = new JFileChooser(new File("/Users/nicolas/tmp/toto"));
+        JFileChooser fc = null;
+        try {
+            fc = new JFileChooser(new File(getClass().getResource("/palettes").toURI()));
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
         int returnVal = fc.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             inputRamp = fc.getSelectedFile();
@@ -317,15 +336,16 @@ public class MainFrame extends javax.swing.JFrame implements Runnable {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JProgressBar jProgressBar1;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void run() {
         if (picLabel != null) {
-            jPanel1.remove(picLabel);
+            jPanel3.remove(picLabel);
         }
         HillshadeCreator creator = new HillshadeCreator(inputDem, inputRamp, output);
         try {
@@ -334,8 +354,8 @@ public class MainFrame extends javax.swing.JFrame implements Runnable {
             System.out.println("loaded: " + res.getAbsolutePath());
             BufferedImage quicklook = ImageIO.read(res);
             picLabel = new JLabel(new ImageIcon(quicklook));
-            jPanel1.add(picLabel);
-            this.setPreferredSize(new Dimension(quicklook.getWidth(), quicklook.getHeight() + jPanel2.getSize().height));
+            jPanel1.getViewport().add(picLabel);
+            //this.setPreferredSize(new Dimension(quicklook.getWidth(), quicklook.getHeight() + jPanel2.getSize().height));
             jProgressBar1.setVisible(false);
             this.pack();
         } catch (Exception ex) {

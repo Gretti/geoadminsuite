@@ -71,4 +71,8 @@
     nbproject/build-impl.xml file. 
 
     -->
+    
+    <target name="-post-compile">
+        <chmod file="build/classes/create_hillshade.sh" perm="ugo+rx"/>
+    </target>
 </project>
