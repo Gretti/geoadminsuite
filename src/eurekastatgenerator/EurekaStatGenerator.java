@@ -53,26 +53,31 @@ public class EurekaStatGenerator {
 				.replace("$PORT$", props.getProperty("dbport"))
 				.replace("$INSTANCE$", props.getProperty("dbname"))
 				.replace("$USER$", props.getProperty("dbuser"));
+        
+        while (true) {
+            char[] ret = null;
+            if (props.getProperty("dbpwd") == null) {
+                ret = PromptForm.promptForPassword(null, label);
+            } else {
+                ret = props.getProperty("dbpwd").toCharArray();
+            }
 
-		while (true) {
-			char[] ret = PromptForm.promptForPassword(null, label);
+            try {
+                Class.forName("oracle.jdbc.driver.OracleDriver");
 
-			try {
-				Class.forName("oracle.jdbc.driver.OracleDriver");
+                final String url = "jdbc:oracle:thin:@"
+                        + props.getProperty("dbhost") + ":"
+                        + props.getProperty("dbport") + "/"
+                        + props.getProperty("dbname");
 
-				final String url = "jdbc:oracle:thin:@"
-						+ props.getProperty("dbhost") + ":"
-						+ props.getProperty("dbport") + "/"
-						+ props.getProperty("dbname");
-
-				this.con = DriverManager.getConnection(url,
-						props.getProperty("dbuser"), new String(ret));
-				break;
-			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null,
-						"An error occured:\n" + e.getMessage());
-			}
-		}
+                this.con = DriverManager.getConnection(url,
+                        props.getProperty("dbuser"), new String(ret));
+                break;
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null,
+                        "An error occured:\n" + e.getMessage());
+            }
+        }
 	}
 
 	private Object getSingleQuery(String query) {
