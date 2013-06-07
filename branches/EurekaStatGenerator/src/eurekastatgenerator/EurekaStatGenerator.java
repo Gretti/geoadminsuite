@@ -18,9 +18,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+
+
 
 /**
  *
@@ -56,7 +56,6 @@ public class EurekaStatGenerator {
 
         while (true) {
             char[] ret = PromptForm.promptForPassword(null, label);
-            System.out.println("p: " + new String(ret));
 
             try {
                 Class.forName("oracle.jdbc.driver.OracleDriver");
