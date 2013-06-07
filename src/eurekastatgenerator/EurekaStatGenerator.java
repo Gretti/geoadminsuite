@@ -56,7 +56,7 @@ public class EurekaStatGenerator {
         
         while (true) {
             char[] ret = null;
-            if (props.getProperty("dbpwd") == null) {
+            if (props.getProperty("dbpwd") == null || props.getProperty("dbpwd").isEmpty()) {
                 ret = PromptForm.promptForPassword(null, label);
             } else {
                 ret = props.getProperty("dbpwd").toCharArray();
@@ -74,8 +74,13 @@ public class EurekaStatGenerator {
                         props.getProperty("dbuser"), new String(ret));
                 break;
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(null,
-                        "An error occured:\n" + e.getMessage());
+                JOptionPane.showMessageDialog(null, "An error occured:\n" + e.getMessage() 
+                        + "\nfor cnx: " + props.getProperty("dbhost") + ":" + props.getProperty("dbport")
+                        + "/" + props.getProperty("dbname") + " user: " + props.getProperty("dbuser"));
+                if (!e.getMessage().contains("username/password")) {
+                    // force an exit to avoid infinite loop
+                    System.exit(1);
+                }
             }
         }
 	}
