@@ -141,7 +141,7 @@ public class EurekaStatGenerator {
         con.close();
     }
 
-    private static void printQuery(StringBuilder query) {
+    private void printQuery(StringBuilder query) {
         System.err.println("Query : "
                 + query.toString().replaceAll("[ ]+", " ")
                 .replaceAll("\\t", " "));
@@ -173,10 +173,9 @@ public class EurekaStatGenerator {
                 }
             }
         }
-
     }
 
-    private List<String> getEmptyTableList() throws Exception {
+    private List<String> getEmptyTableList() {
         final List<String> resultList = new ArrayList<String>();
         StringBuilder query = null;
         Statement statement1 = null;
@@ -258,8 +257,12 @@ public class EurekaStatGenerator {
 
         return resultList;
     }
+    
+    public void analyseEmptyTableList() {
+    	 writeFile("emptyTableList.txt", getEmptyTableList());
+    }
 
-    private void analyseFKGraph() throws Exception {
+    public void analyseFKGraph() {
         StringBuilder query = null;
         Statement statement1 = null;
         final List<String> completeGraphList = new ArrayList<String>();
@@ -358,15 +361,12 @@ public class EurekaStatGenerator {
         writeFile("partialGraph.txt", partialGraphList);
     }
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) throws Exception {
-        // TODO code application logic here
         EurekaStatGenerator esg = new EurekaStatGenerator();
 
-        esg.writeFile("emptyTableList.txt", esg.getEmptyTableList());
+        esg.analyseEmptyTableList();
         esg.analyseFKGraph();
         esg.generateStats(System.out);
     }
+    
 }
