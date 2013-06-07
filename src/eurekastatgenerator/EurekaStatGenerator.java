@@ -58,7 +58,7 @@ public class EurekaStatGenerator {
             final String url = "jdbc:oracle:thin:@" + props.getProperty("dbhost") + ":"
                     + props.getProperty("dbport") + "/" + props.getProperty("dbname");
 
-            this.con = DriverManager.getConnection(url, props.getProperty("dbhost"), new String(ret));
+            this.con = DriverManager.getConnection(url, props.getProperty("dbuser"), new String(ret));
         } catch (SQLException e) {
             if (e.getMessage().contains("password")) {
                 PromptForm.setMsg(e.getMessage());
@@ -75,7 +75,7 @@ public class EurekaStatGenerator {
             final String url = "jdbc:oracle:thin:@" + props.getProperty("dbhost") + ":"
                     + props.getProperty("dbport") + "/" + props.getProperty("dbname");
 
-            this.con = DriverManager.getConnection(url, props.getProperty("dbhost"), pwd);
+            this.con = DriverManager.getConnection(url, props.getProperty("dbuser"), pwd);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(EurekaStatGenerator.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception e) {
