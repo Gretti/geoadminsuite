@@ -7,338 +7,420 @@ package eurekastatgenerator;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintStream;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
+
 import javax.swing.JOptionPane;
 
-
-
-/**
- *
- * @author nicolas
- */
 public class EurekaStatGenerator {
+	private Connection con = null;
+	private Properties props = null;
 
-    private Connection con = null;
-    private Properties props = null;
-    /**
-     * the label text with placeholders
-     */
-    public static final String LABEL_TXT = "<html>&nbsp;&nbsp;Enter password for database: <br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$HOST$:$PORT$/$INSTANCE$"
-            + "</b><br>&nbsp;&nbsp;Username: <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>$USER$</b></html>";
+	/**
+	 * the label text with placeholders
+	 */
+	public static final String LABEL_TXT = "<html>Enter password for database: <br><b>&nbsp;&nbsp;&nbsp;&nbsp;$HOST$:$PORT$/$INSTANCE$"
+			+ "</b><br>Username: <br>&nbsp;&nbsp;&nbsp;&nbsp;<b>$USER$</b></html>";
 
-    public EurekaStatGenerator() {
-        // loads properties file
-        props = new Properties();
-        try {
+	public EurekaStatGenerator() {
+		// loads properties file
+		props = new Properties();
+		try {
 
-            props.load(EurekaStatGenerator.class.getClassLoader().getResourceAsStream("eurekastatgenerator/statgenerator.properties"));
-        } catch (IOException ex) {
-            System.out.println("cannot read statgenerator.properties file ");
-            System.exit(1);
-        }
+			props.load(EurekaStatGenerator.class.getClassLoader()
+					.getResourceAsStream(
+							"eurekastatgenerator/statgenerator.properties"));
+		} catch (IOException ex) {
+			System.out.println("cannot read statgenerator.properties file ");
+			System.exit(1);
+		}
 
-        // opens the JDBC connection by prompting user for passwd
-        String label = EurekaStatGenerator.LABEL_TXT
-                .replace("$HOST$", props.getProperty("dbhost"))
-                .replace("$PORT$", props.getProperty("dbport"))
-                .replace("$INSTANCE$", props.getProperty("dbname"))
-                .replace("$USER$", props.getProperty("dbuser"));
+		// opens the JDBC connection by prompting user for passwd
+		String label = EurekaStatGenerator.LABEL_TXT
+				.replace("$HOST$", props.getProperty("dbhost"))
+				.replace("$PORT$", props.getProperty("dbport"))
+				.replace("$INSTANCE$", props.getProperty("dbname"))
+				.replace("$USER$", props.getProperty("dbuser"));
 
-        while (true) {
-            char[] ret = PromptForm.promptForPassword(null, label);
+		while (true) {
+			char[] ret = PromptForm.promptForPassword(null, label);
 
-            try {
-                Class.forName("oracle.jdbc.driver.OracleDriver");
+			try {
+				Class.forName("oracle.jdbc.driver.OracleDriver");
 
-                final String url = "jdbc:oracle:thin:@" + props.getProperty("dbhost") + ":"
-                        + props.getProperty("dbport") + "/" + props.getProperty("dbname");
+				final String url = "jdbc:oracle:thin:@"
+						+ props.getProperty("dbhost") + ":"
+						+ props.getProperty("dbport") + "/"
+						+ props.getProperty("dbname");
 
-                this.con = DriverManager.getConnection(url, props.getProperty("dbuser"), new String(ret));
-                break;
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "An error occured:\n" + e.getMessage());
-            }
-        }
-    }
+				this.con = DriverManager.getConnection(url,
+						props.getProperty("dbuser"), new String(ret));
+				break;
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null,
+						"An error occured:\n" + e.getMessage());
+			}
+		}
+	}
 
-    /**
-     * Generates the database/schema stats, writing result in the given out
-     * stream
-     *
-     * @param out
-     */
-    public void generateStats(PrintStream out) throws SQLException {
-        if (out == null) {
-            System.out.println("Null stream to write stats to, quitting...");
-            return;
-        }
+	private Object getSingleQuery(String query) {
+		Statement statement1 = null;
 
-        Statement stmt = con.createStatement();
-        Statement stmt2 = null;
-        String query = "SELECT DISTINCT owner, table_name, column_name, data_type, data_length \n"
-                + "    FROM all_tab_columns\n"
-                + "    WHERE owner IN (" + props.getProperty("schemas_or_users") + ")"
-                + "order by owner, table_name, column_name";
+		printQuery(query);
 
-        ResultSet rs = stmt.executeQuery(query);
-        ResultSet rs2 = null;
-        String subquery1 = "";
-        long rowCount = 0l;
-        long rowsNotNull = 0l;
+		try {
+			final ResultSet resulSet1;
 
-        // headers
-        out.println("owner,table_name,column_name,data_type,rows_count,rows_not_null");
+			statement1 = con.createStatement();
+			resulSet1 = statement1.executeQuery(query.toString());
 
-        while (rs.next()) {
-            stmt2 = con.createStatement();
-            subquery1 = "select count(*) from " + rs.getString(1) + "." + rs.getString(2);
-            rs2 = stmt2.executeQuery(subquery1);
-            rs2.next();
-            rowCount = rs2.getLong(1);
-            rs2.close();
-            stmt2.close();
+			if (resulSet1.next()) {
+				return resulSet1.getObject(1);
+			} else {
+				throw new RuntimeException("No result");
+			}
 
-            stmt2 = con.createStatement();
-            subquery1 = "select count(" + rs.getString(3) + ") from " + rs.getString(1) + "." + rs.getString(2) + " where " + rs.getString(3) + " is not null";
-            rs2 = stmt2.executeQuery(subquery1);
-            rs2.next();
-            rowsNotNull = rs2.getLong(1);
-            stmt2.close();
+		} catch (SQLException ex) {
+			throw new RuntimeException(ex);
+		} finally {
+			if (statement1 != null) {
+				try {
+					statement1.close();
+				} catch (SQLException ex) {
+					throw new RuntimeException(ex);
+				}
+			}
+		}
+	}
 
-            out.println(rs.getString(1) + "," + rs.getString(2) + "," + rs.getString(3) + "," + rs.getString(4) + "(" + rs.getString(5) + ")," + rowCount + "," + rowsNotNull);
-        }
+	/**
+	 * Generates the database/schema stats, writing result in the given out
+	 * stream
+	 * 
+	 * @param out
+	 */
+	public void generateStats() {
+		final String[] schemaNameList = getSchemaNameList();
 
-        stmt.close();
-    }
+		for (int i = 0; i < schemaNameList.length; i++) {
+			final String schemaName = schemaNameList[i];
+			final List<String> statisticList = new ArrayList<String>();
+			StringBuilder query = null;
+			Statement statement1 = null;
 
-    public void closeConnection() {
-        try {
-            con.close();
-        } catch (SQLException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
+			statisticList
+					.add("owner,table_name,column_name,data_type,comments,rows_count,rows_not_null_count");
 
-    private void printQuery(StringBuilder query) {
-        System.err.println("Query : "
-                + query.toString().replaceAll("[ ]+", " ")
-                .replaceAll("\\t", " "));
-    }
+			query = new StringBuilder();
 
-    private void writeFile(String fileName, Collection<String> lineList) {
-        BufferedWriter writer = null;
+			query.append("select distinct ");
+			query.append("	t_1.owner, t_1.table_name, t_1.column_name, t_1.data_type, t_1.data_length, t_2.comments ");
+			query.append("from ");
+			query.append("	all_tab_columns t_1 ");
+			query.append("		left outer join user_col_comments t_2 on ");
+			query.append("			(");
+			query.append("				t_1.table_name = t_2.table_name and ");
+			query.append("				t_1.column_name = t_2.column_name ");
+			query.append("			)");
+			query.append("where ");
+			query.append("	t_1.owner = '" + schemaName + "' ");
+			query.append("order by ");
+			query.append("	t_1.owner, t_1.table_name, t_1.column_name");
 
-        try {
-            final Iterator<String> iterator = lineList.iterator();
+			printQuery(query.toString());
 
-            writer = new BufferedWriter(new FileWriter(props.getProperty("output")
-                    + "/" + fileName));
+			try {
+				final ResultSet resulSet1;
+				final ResultSetMetaData resultSetMetaData1;
+				StringBuilder statistic = null;
 
-            while (iterator.hasNext()) {
-                writer.write(iterator.next());
-                writer.write("\r\n");
-            }
+				statement1 = con.createStatement();
+				resulSet1 = statement1.executeQuery(query.toString());
+				resultSetMetaData1 = resulSet1.getMetaData();
 
-            writer.flush();
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        } finally {
-            if (writer != null) {
-                try {
-                    writer.close();
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        }
-    }
+				while (resulSet1.next()) {
+					final String tableName = resulSet1.getString(2);
+					final String columnName = resulSet1.getString(3);
 
-    private List<String> getEmptyTableList() {
-        final List<String> resultList = new ArrayList<String>();
-        StringBuilder query = null;
-        Statement statement1 = null;
+					statistic = new StringBuilder();
 
-        query = new StringBuilder();
+					for (int j = 1; j <= resultSetMetaData1.getColumnCount(); j++) {
+						if (statistic.length() > 0) {
+							statistic.append(",");
+						}
 
-        query.append("select distinct ");
-        query.append("	t_1.table_name ");
-        query.append("from ");
-        query.append("	all_tables t_1 ");
-        query.append("where ");
-        query.append("	t_1.owner = '" + props.getProperty("schemas_or_users") + "' ");
-        query.append("order by ");
-        query.append("	t_1.table_name ");
+						statistic.append(resulSet1.getObject(j));
+					}
 
-        printQuery(query);
+					statistic.append(",");
+					statistic.append(countRowList(schemaName, tableName));
 
-        try {
-            final ResultSet resulSet1;
+					statistic.append(",");
+					statistic.append(getSingleQuery("select count("
+							+ schemaName + "." + tableName + "." + columnName
+							+ ") from " + schemaName + "." + tableName
+							+ " where " + schemaName + "." + tableName + "."
+							+ columnName + " is not null"));
 
-            statement1 = con.createStatement();
-            resulSet1 = statement1.executeQuery(query.toString());
+					statisticList.add(statistic.toString());
+				}
 
-            while (resulSet1.next()) {
-                final String tableName = resulSet1.getString(1);
-                Statement statement2 = null;
+			} catch (SQLException ex) {
+				throw new RuntimeException(ex);
+			} finally {
+				if (statement1 != null) {
+					try {
+						statement1.close();
+					} catch (SQLException ex) {
+						throw new RuntimeException(ex);
+					}
+				}
+			}
 
-                query = new StringBuilder();
+			writeFile(props.getProperty("dbname") + "_" + schemaName
+					+ "_statistics.txt", statisticList);
+		}
+	}
 
-                query.append("select ");
-                query.append("	count(*) as n ");
-                query.append("from ");
-                query.append("	" + props.getProperty("schemas_or_users") + "." + tableName + " ");
+	public void closeConnection() {
+		try {
+			con.close();
+		} catch (SQLException ex) {
+			throw new RuntimeException(ex);
+		}
+	}
 
-                printQuery(query);
+	private void printQuery(String query) {
+		System.err.println("Query : "
+				+ query.toString().replaceAll("[ ]+", " ")
+						.replaceAll("\\t", " "));
+	}
 
-                try {
-                    final ResultSet resulSet2;
+	private void writeFile(String fileName, Collection<String> lineList) {
+		BufferedWriter writer = null;
 
-                    statement2 = con.createStatement();
-                    resulSet2 = statement2.executeQuery(query.toString());
+		try {
+			final Iterator<String> iterator = lineList.iterator();
 
-                    if (resulSet2.next()) {
-                        if (resulSet2.getInt(1) == 0) {
-                            resultList.add(tableName);
-                        }
-                    }
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                } finally {
-                    if (statement2 != null) {
-                        try {
-                            statement2.close();
-                        } catch (SQLException ex) {
-                            throw new RuntimeException(ex);
-                        }
-                    }
-                }
-            }
-        } catch (SQLException ex) {
-            throw new RuntimeException(ex);
-        } finally {
-            if (statement1 != null) {
-                try {
-                    statement1.close();
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        }
+			writer = new BufferedWriter(new FileWriter(
+					props.getProperty("output") + "/" + fileName));
 
-        return resultList;
-    }
+			while (iterator.hasNext()) {
+				writer.write(iterator.next());
+				writer.write("\r\n");
+			}
 
-    public void analyseEmptyTableList() {
-        writeFile("emptyTableList.txt", getEmptyTableList());
-    }
+			writer.flush();
+		} catch (IOException ex) {
+			throw new RuntimeException(ex);
+		} finally {
+			if (writer != null) {
+				try {
+					writer.close();
+				} catch (IOException ex) {
+					throw new RuntimeException(ex);
+				}
+			}
+		}
+	}
 
-    public void analyseFKGraph() {
-        StringBuilder query = null;
-        Statement statement1 = null;
-        final List<String> completeGraphList = new ArrayList<String>();
-        final List<String> partialGraphList = new ArrayList<String>();
-        final List<String> emptyTableList = getEmptyTableList();
-        boolean isPrimaryEmptyTable = false;
+	private Map<String, BigDecimal> _countRowList = new HashMap<String, BigDecimal>();
 
-        query = new StringBuilder();
+	private BigDecimal countRowList(String schema, String table) {
+		final String key = schema + "." + table;
 
-        query.append("select distinct ");
-        query.append("	t_4.table_name, ");
-        query.append("	t_4.column_name, ");
-        query.append("	t_1.table_name, ");
-        query.append("	t_1.column_name ");
-        query.append("from ");
-        query.append("	all_cons_columns t_1, ");
-        query.append("	all_constraints t_2, ");
-        query.append("	all_constraints t_3, ");
-        query.append("	all_cons_columns t_4 ");
-        query.append("where ");
-        query.append("	t_1.owner = '" + props.getProperty("schemas_or_users") + "' and ");
-        query.append("	t_1.owner = t_2.owner and ");
-        query.append("	t_1.constraint_name = t_2.constraint_name and ");
-        query.append("	t_2.constraint_type = 'R' and ");
-        query.append("	t_2.r_constraint_name = t_3.constraint_name and  ");
-        query.append("	t_2.r_owner = t_3.owner  and ");
-        query.append("	t_3.constraint_name = t_4.constraint_name and ");
-        query.append("	t_3.owner = t_4.owner ");
-        query.append("order by ");
-        query.append("	t_4.table_name, ");
-        query.append("	t_4.column_name, ");
-        query.append("	t_1.table_name, ");
-        query.append("	t_1.column_name ");
+		if (!_countRowList.containsKey(key)) {
+			_countRowList.put(key, (BigDecimal) getSingleQuery("select count(*) from "
+					+ key));
+		}
 
-        printQuery(query);
+		return _countRowList.get(key);
+	}
 
-        try {
-            final ResultSet resulSet1;
-            String lastTableName = null;
+	private Map<String, List<String>> _emptyTableList = new HashMap<String, List<String>>();
 
-            statement1 = con.createStatement();
-            resulSet1 = statement1.executeQuery(query.toString());
+	private List<String> getEmptyTableList(String schema) {
+		final List<String> resultList = new ArrayList<String>();
+		StringBuilder query = null;
+		Statement statement1 = null;
 
-            while (resulSet1.next()) {
-                final String pkTableName = resulSet1.getString(1);
-                final String pkColumnName = resulSet1.getString(2);
-                final String fkTableName = resulSet1.getString(3);
-                final String fkColumnName = resulSet1.getString(4);
-                final String graphLink = "     --> " + fkTableName + "  ("
-                        + pkTableName + "." + pkColumnName + "," + fkTableName
-                        + "." + fkColumnName + ")";
+		query = new StringBuilder();
 
-                if (lastTableName == null || !lastTableName.equals(pkTableName)) {
-                    completeGraphList.add("");
-                    completeGraphList.add(pkTableName);
+		query.append("select distinct ");
+		query.append("	t_1.table_name ");
+		query.append("from ");
+		query.append("	all_tables t_1 ");
+		query.append("where ");
+		query.append("	t_1.owner = '" + schema + "' ");
+		query.append("order by ");
+		query.append("	t_1.table_name ");
 
-                    if (emptyTableList.contains(pkTableName)) {
-                        isPrimaryEmptyTable = true;
-                    } else {
-                        partialGraphList.add("");
-                        partialGraphList.add(pkTableName);
-                    }
+		printQuery(query.toString());
 
-                    lastTableName = pkTableName;
-                }
+		try {
+			final ResultSet resulSet1;
 
-                completeGraphList.add(graphLink);
+			statement1 = con.createStatement();
+			resulSet1 = statement1.executeQuery(query.toString());
 
-                if (!isPrimaryEmptyTable) {
-                    if (!emptyTableList.contains(fkTableName)) {
-                        partialGraphList.add(graphLink);
-                    }
-                }
-            }
-        } catch (SQLException ex) {
-            throw new RuntimeException(ex);
-        } finally {
-            if (statement1 != null) {
-                try {
-                    statement1.close();
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        }
+			while (resulSet1.next()) {
+				final String tableName = resulSet1.getString(1);
 
-        writeFile("completeGraph.txt", completeGraphList);
-        writeFile("partialGraph.txt", partialGraphList);
-    }
+				if (countRowList(schema, tableName).equals(new BigDecimal(0))) {
+					resultList.add(tableName);
+				}
+			}
+		} catch (SQLException ex) {
+			throw new RuntimeException(ex);
+		} finally {
+			if (statement1 != null) {
+				try {
+					statement1.close();
+				} catch (SQLException ex) {
+					throw new RuntimeException(ex);
+				}
+			}
+		}
 
-    public static void main(String[] args) throws Exception {
-        EurekaStatGenerator esg = new EurekaStatGenerator();
+		return resultList;
+	}
 
-        esg.analyseEmptyTableList();
-        esg.analyseFKGraph();
-        esg.generateStats(System.out);
-        esg.closeConnection();
-    }
+	private String[] getSchemaNameList() {
+		final String buffer = props.getProperty("schemas_or_users");
+
+		return buffer.substring(1, buffer.length() - 1).split("','");
+	}
+
+	public void analyseEmptyTableList() {
+		final String[] schemaNameList = getSchemaNameList();
+
+		for (int i = 0; i < schemaNameList.length; i++) {
+			final String schemaName = schemaNameList[i];
+
+			writeFile(props.getProperty("dbname") + "_" + schemaName
+					+ "_emptyTableList.txt", getEmptyTableList(schemaName));
+		}
+	}
+
+	public void analyseFKGraph() {
+		final String[] schemaNameList = getSchemaNameList();
+
+		for (int i = 0; i < schemaNameList.length; i++) {
+			final String schemaName = schemaNameList[i];
+
+			StringBuilder query = null;
+			Statement statement1 = null;
+			final List<String> completeGraphList = new ArrayList<String>();
+			final List<String> partialGraphList = new ArrayList<String>();
+			final List<String> emptyTableList = getEmptyTableList(schemaName);
+			boolean isPrimaryEmptyTable = false;
+
+			query = new StringBuilder();
+
+			query.append("select distinct ");
+			query.append("	t_4.table_name, ");
+			query.append("	t_4.column_name, ");
+			query.append("	t_1.table_name, ");
+			query.append("	t_1.column_name ");
+			query.append("from ");
+			query.append("	all_cons_columns t_1, ");
+			query.append("	all_constraints t_2, ");
+			query.append("	all_constraints t_3, ");
+			query.append("	all_cons_columns t_4 ");
+			query.append("where ");
+			query.append("	t_1.owner = '" + schemaName + "' and ");
+			query.append("	t_1.owner = t_2.owner and ");
+			query.append("	t_1.constraint_name = t_2.constraint_name and ");
+			query.append("	t_2.constraint_type = 'R' and ");
+			query.append("	t_2.r_constraint_name = t_3.constraint_name and  ");
+			query.append("	t_2.r_owner = t_3.owner  and ");
+			query.append("	t_3.constraint_name = t_4.constraint_name and ");
+			query.append("	t_3.owner = t_4.owner ");
+			query.append("order by ");
+			query.append("	t_4.table_name, ");
+			query.append("	t_4.column_name, ");
+			query.append("	t_1.table_name, ");
+			query.append("	t_1.column_name ");
+
+			printQuery(query.toString());
+
+			try {
+				final ResultSet resulSet1;
+				String lastTableName = null;
+
+				statement1 = con.createStatement();
+				resulSet1 = statement1.executeQuery(query.toString());
+
+				while (resulSet1.next()) {
+					final String pkTableName = resulSet1.getString(1);
+					final String pkColumnName = resulSet1.getString(2);
+					final String fkTableName = resulSet1.getString(3);
+					final String fkColumnName = resulSet1.getString(4);
+					final String graphLink = "     --> " + fkTableName + "  ("
+							+ pkTableName + "." + pkColumnName + ","
+							+ fkTableName + "." + fkColumnName + ")";
+
+					if (lastTableName == null
+							|| !lastTableName.equals(pkTableName)) {
+						completeGraphList.add("");
+						completeGraphList.add(pkTableName);
+
+						if (emptyTableList.contains(pkTableName)) {
+							isPrimaryEmptyTable = true;
+						} else {
+							partialGraphList.add("");
+							partialGraphList.add(pkTableName);
+						}
+
+						lastTableName = pkTableName;
+					}
+
+					completeGraphList.add(graphLink);
+
+					if (!isPrimaryEmptyTable) {
+						if (!emptyTableList.contains(fkTableName)) {
+							partialGraphList.add(graphLink);
+						}
+					}
+				}
+			} catch (SQLException ex) {
+				throw new RuntimeException(ex);
+			} finally {
+				if (statement1 != null) {
+					try {
+						statement1.close();
+					} catch (SQLException ex) {
+						throw new RuntimeException(ex);
+					}
+				}
+			}
+
+			writeFile(props.getProperty("dbname") + "_" + schemaName
+					+ "_completeGraph.txt", completeGraphList);
+			writeFile(props.getProperty("dbname") + "_" + schemaName
+					+ "_partialGraph.txt", partialGraphList);
+		}
+	}
+
+	public static void main(String[] args) throws Exception {
+		EurekaStatGenerator esg = new EurekaStatGenerator();
+
+		esg.analyseEmptyTableList();
+		esg.analyseFKGraph();
+		esg.generateStats();
+		esg.closeConnection();
+	}
+
 }
