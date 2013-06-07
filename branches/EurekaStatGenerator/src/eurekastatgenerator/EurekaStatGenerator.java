@@ -136,7 +136,7 @@ public class EurekaStatGenerator {
 			query = new StringBuilder();
 
 			query.append("select distinct ");
-			query.append("	t_1.owner, t_1.table_name, t_1.column_name, t_1.data_type, t_1.data_length, t_2.comments ");
+			query.append("	t_1.owner, t_1.table_name, t_1.column_name, t_1.data_type || '(' || t_1.data_length || ')', t_2.comments ");
 			query.append("from ");
 			query.append("	all_tab_columns t_1 ");
 			query.append("		left outer join user_col_comments t_2 on ");
