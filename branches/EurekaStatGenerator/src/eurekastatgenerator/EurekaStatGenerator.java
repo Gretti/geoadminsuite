@@ -84,6 +84,40 @@ public class EurekaStatGenerator {
             }
         }
 	}
+	
+	private String concatQueryResult(String query) {
+		final StringBuilder result = new StringBuilder();
+		Statement statement1 = null;
+
+		printQuery(query);
+
+		try {
+			final ResultSet resulSet1;
+
+			statement1 = con.createStatement();
+			resulSet1 = statement1.executeQuery(query.toString());
+
+			while (resulSet1.next()) {
+				if (result.length() > 0) {
+					result.append(",");
+				}
+				
+				result.append(resulSet1.getString(1));
+			} 
+		} catch (SQLException ex) {
+			throw new RuntimeException(ex);
+		} finally {
+			if (statement1 != null) {
+				try {
+					statement1.close();
+				} catch (SQLException ex) {
+					throw new RuntimeException(ex);
+				}
+			}
+		}
+		
+		return result.toString();
+	}
 
 	private Object getSingleQuery(String query) {
 		Statement statement1 = null;
@@ -131,7 +165,7 @@ public class EurekaStatGenerator {
 			Statement statement1 = null;
 
 			statisticList
-					.add("owner,table_name,column_name,data_type,comments,rows_count,rows_not_null_count");
+					.add("owner,table_name,column_name,data_type,comments,rows_count,rows_not_null_count,constraints");
 
 			query = new StringBuilder();
 
@@ -183,6 +217,27 @@ public class EurekaStatGenerator {
 							+ ") from " + schemaName + "." + tableName
 							+ " where " + schemaName + "." + tableName + "."
 							+ columnName + " is not null"));
+					
+					statistic.append(",");
+					
+					query = new StringBuilder();
+
+					query.append("select ");
+					query.append("	t_2.search_condition ");
+					query.append("from ");
+					query.append("	all_cons_columns t_1, ");
+					query.append("	all_constraints t_2 ");
+					query.append("where ");
+					query.append("	t_1.owner = '" + schemaName + "' and ");
+					query.append("	t_1.table_name = '" + tableName + "' and ");
+					query.append("	t_1.column_name = '" + columnName + "' and ");
+					query.append("	t_1.owner = t_2.owner and ");
+					query.append("	t_1.constraint_name = t_2.constraint_name and ");
+					query.append("	t_1.table_name = t_2.table_name and ");
+					query.append("	t_2.constraint_type = 'C' and ");
+					query.append("	t_2.search_condition is not null ");
+					
+					statistic.append(concatQueryResult(query.toString()));
 
 					statisticList.add(statistic.toString());
 				}
