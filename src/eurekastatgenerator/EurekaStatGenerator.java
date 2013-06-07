@@ -29,7 +29,7 @@ import javax.swing.JFrame;
 public class EurekaStatGenerator {
     private Connection con = null;
     private Properties props = null;
-    private static final String OUTPUT_DIRECTORY_PATH = "/Users/nicolas/tmp";
+   
     /**
      * the label text with placeholders
      */
