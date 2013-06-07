@@ -275,17 +275,16 @@ public class EurekaStatGenerator {
 
 		return resultList;
 	}
-	
+
 	private String[] getSchemaNameList() {
 		final String buffer = props.getProperty("schemas_or_users");
-		
-		return buffer.substring(1, buffer.length()-1)
-				.split("','");
+
+		return buffer.substring(1, buffer.length() - 1).split("','");
 	}
 
 	public void analyseEmptyTableList() {
 		final String[] schemaNameList = getSchemaNameList();
-		
+
 		for (int i = 0; i < schemaNameList.length; i++) {
 			final String schemaName = schemaNameList[i];
 
@@ -320,8 +319,7 @@ public class EurekaStatGenerator {
 			query.append("	all_constraints t_3, ");
 			query.append("	all_cons_columns t_4 ");
 			query.append("where ");
-			query.append("	t_1.owner = '"
-					+ props.getProperty("schemas_or_users") + "' and ");
+			query.append("	t_1.owner = '" + schemaName + "' and ");
 			query.append("	t_1.owner = t_2.owner and ");
 			query.append("	t_1.constraint_name = t_2.constraint_name and ");
 			query.append("	t_2.constraint_type = 'R' and ");
