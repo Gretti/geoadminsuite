@@ -138,7 +138,14 @@ public class EurekaStatGenerator {
         }
 
         stmt.close();
-        con.close();
+    }
+    
+    public void closeConnection() {
+    	try {
+			con.close();
+		} catch (SQLException ex) {
+			throw new RuntimeException(ex);
+		}
     }
 
     private void printQuery(StringBuilder query) {
@@ -238,14 +245,6 @@ public class EurekaStatGenerator {
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         } finally {
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-
             if (statement1 != null) {
                 try {
                     statement1.close();
@@ -340,14 +339,6 @@ public class EurekaStatGenerator {
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         } finally {
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-
             if (statement1 != null) {
                 try {
                     statement1.close();
@@ -367,6 +358,7 @@ public class EurekaStatGenerator {
         esg.analyseEmptyTableList();
         esg.analyseFKGraph();
         esg.generateStats(System.out);
+        esg.closeConnection();
     }
     
 }
