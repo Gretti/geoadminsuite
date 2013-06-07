@@ -147,13 +147,13 @@ public class EurekaStatGenerator {
                 .replaceAll("\\t", " "));
     }
 
-    private static void writeFile(String fileName, Collection<String> lineList) {
+    private void writeFile(String fileName, Collection<String> lineList) {
         BufferedWriter writer = null;
 
         try {
             final Iterator<String> iterator = lineList.iterator();
 
-            writer = new BufferedWriter(new FileWriter(OUTPUT_DIRECTORY_PATH
+            writer = new BufferedWriter(new FileWriter(props.getProperty("output")
                     + "/" + fileName));
 
             while (iterator.hasNext()) {
