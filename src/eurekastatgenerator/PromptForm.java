@@ -15,9 +15,10 @@ public class PromptForm extends JDialog {
         return result;
     }
 
-    public PromptForm(Frame parent) {
+    public PromptForm(Frame parent, String label) {
         super(parent, true);
         initComponents();
+        this.jLabel1.setText(label);
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (int) ((dimension.getWidth() - this.getWidth()) / 2);
         int y = (int) ((dimension.getHeight() - this.getHeight()) / 2);
@@ -28,16 +29,12 @@ public class PromptForm extends JDialog {
         this.setVisible(true);
     }
 
-    public static char[] promptForPassword(Frame parent) {
-        PromptForm pf = new PromptForm(parent);
+    public static char[] promptForPassword(Frame parent, String label) {
+        PromptForm pf = new PromptForm(parent, label);
         pf.prompt();
         return pf.getResult();
     }
     
-    public static void setMsg(String msg) {
-        
-    }
-
     private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {                                                
         // TODO add your handling code here:
         result = jPasswordField1.getPassword();
@@ -47,8 +44,6 @@ public class PromptForm extends JDialog {
 
     private void initComponents() {
         jLabel1 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jPasswordField1.setPreferredSize(new Dimension(400, 30));
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         
@@ -58,8 +53,11 @@ public class PromptForm extends JDialog {
         jLabel1.setLabelFor(jPasswordField1);
         jLabel1.setText("Enter password for database:");
         jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jLabel1.setPreferredSize(new Dimension(400, 200));
+        jLabel1.setPreferredSize(new Dimension(400, 120));
         
+        jPasswordField1 = new javax.swing.JPasswordField();
+        jPasswordField1.setPreferredSize(new Dimension(300, 30));
+
         this.add(jLabel1, BorderLayout.PAGE_START);
         this.add(jPasswordField1, BorderLayout.PAGE_END);
 
@@ -72,6 +70,5 @@ public class PromptForm extends JDialog {
     }
     
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPasswordField jPasswordField1;
 }
