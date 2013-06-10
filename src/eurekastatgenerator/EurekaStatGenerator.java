@@ -69,7 +69,7 @@ public class EurekaStatGenerator {
 
                 final String url = "jdbc:oracle:thin:@"
                         + props.getProperty("dbhost") + ":"
-                        + props.getProperty("dbport") + "/"
+                        + props.getProperty("dbport") + ":"
                         + props.getProperty("dbname");
 
                 this.con = DriverManager.getConnection(url,
@@ -453,7 +453,8 @@ public class EurekaStatGenerator {
                             partialGraphList.add("");
                             partialGraphList.add(pkTableName);
                         }
-
+    
+ 
                         lastTableName = pkTableName;
                     }
 
@@ -483,6 +484,33 @@ public class EurekaStatGenerator {
                     + "_partialGraph.txt", partialGraphList);
         }
     }
+    
+    /**
+     * Dumps the tables contained in the dictionary schema, set in the properties file.
+     * 
+     */
+
+    public void describeSchema() {
+        final String[] schemaNameList = getSchemaNameList();
+		StringBuilder query = new StringBuilder();
+        
+
+        query.append("select distinct ");
+        query.append("	t_1.owner, t_1.table_name, t_1.column_name, t_1.data_type || '(' || t_1.data_length || ')', t_2.comments ");
+        query.append("from ");
+        query.append("	all_tab_columns t_1 ");
+        query.append("		left outer join user_col_comments t_2 on ");
+        query.append("			(");
+        query.append("				t_1.table_name = t_2.table_name and ");
+        query.append("				t_1.column_name = t_2.column_name ");
+        query.append("			)");
+        query.append("where ");
+        query.append("	t_1.owner = '" + props.getProperty("dict_schema") + "' ");
+        query.append("order by ");
+        query.append("	t_1.owner, t_1.table_name, t_1.column_name");
+        
+    }
+   
 
     /**
      * Exports the given schemaName.tableName in CSV format, file name is
