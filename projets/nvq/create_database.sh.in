@@ -11,21 +11,43 @@
 # Edit the following variable to match target environment
 ################################################################################
 
-# *DBCON = -U $DBUSER -h $DBHOST -p $DBPORT
+# These variables will be replaced by configuration values after running applu_config.sh
+DBHOST=%DBHOST%
+DBPORT=%DBPORT%
+DBNAME=%DBNAME%
+DBUSER=%DBUSER%
+DBPASS=%DBPASS%
+DATADIR=%DATADIR%
+PGBIN=%PGBIN%
 
+echo
 
 echo "Dropping the database $DBNAME if exists..."
-$PGBIN/dropdb --if-exists  $DBCON  $DBNAME
-echo "Database $DBANE dropped."
+${PGBIN}dropdb --if-exists  $DBCON  $DBNAME
+OUT=$?
+
+if [ $OUT -eq 0 ];then
+    echo "Database $DBANE dropped."
+else
+    echo "Unable to drop database $DBNAME"
+    exit 1
+fi
 echo
 
 "Creating database $DBNAME..."
-$PGBIN/createdb  $DBCON -E UTF-8 -l c $DBNAME
-echo "Database $DBANE created."
+${PGBIN}createdb  $DBCON -E UTF-8 -l c $DBNAME
+OUT=$?
+
+if [ $OUT -eq 0 ];then
+    echo "Database $DBANE created."
+else
+    echo "Unable to create database $DBNAME"
+    exit 1
+fi
 echo
 
 "installing Postgis through Extension..."
-$PGBIN/psql  $DBCON - c "create extension postgis" -d $DBNAME
+${PGBIN}psql  $DBCON - c "create extension postgis" -d $DBNAME
 OUT=$?
 
 if [ $OUT -eq 0 ];then

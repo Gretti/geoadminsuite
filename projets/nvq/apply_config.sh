@@ -18,12 +18,11 @@ if [ ! -f "config-$1.txt" ]; then
     exit 1
 fi
 
-. "config-$1.txt"
+source "config-$1.txt"
 PROJECT_DIR=$(cd `dirname $0` && cd .. && pwd)
 
 # Shortcut variable to hold common PG connection parameters
-$PGCON="-h $DBHOST -U $DBUSER -p $DBPORT"
-export $PGCON
+export PGCON="-h $DBHOST -U $DBUSER -p $DBPORT"
 
 patchfile() {
   from="$1"
@@ -45,19 +44,26 @@ patchfile() {
     -e "s#%DBPORT%#$DBPORT#g" \
     -e "s#%DBNAME%#$DBNAME#g" \
     -e "s#%DBUSER%#$DBUSER#g" \
+    -e "s#%DBPASS%#$DBPASS#g" \
+    -e "s#%DATADIR%#$DATADIR#g" \
+    -e "s#%PGBIN%#$PGBIN#g" \
     "$from" >> "$to"
 }
 
 cd ""
 
 
-#patchfile "$PROJECT_DIR/shell_scripts/create_database.sh.in" "$PROJECT_DIR/scripts/create_database.sh"
+patchfile "$PROJECT_DIR/create_database.sh.in" "$PROJECT_DIR/create_database.sh"
 #patchfile "$PROJECT_DIR/sql_scripts/admin.sql.in" "$PROJECT_DIR/sql_scripts/admin.sql"
 
+echo
 echo "Configuration applied:"
 echo "database host: $DBHOST"
 echo "database port: $DBPORT"
 echo "database user: $DBUSER"
 echo "database name: $DBNAME"
-echo "Navstreet data directory: `ls -al $DATADIR`"
 echo "PostgreSQL binary directory : $PGBIN"
+echo
+echo "Navstreet data directory:"
+ls -al $DATADIR
+echo
