@@ -1,0 +1,32 @@
+﻿create table surfaces (pg admin, centre commer, a + rivieres, 
+splitté en plusieurs tables ou z-index pour choix d'affichage.
+
+
+Schema:
+	type code 
+	nom 
+	z-order
+
+generalisation de ces tables a 2 ou 3 niveaux
+
+Division admin.
+
+
+Table des toponymes ponctuels issus des pg (point on surface) + autres tables.
+
+Schema:
+	nom
+	type
+	population
+
+rues: Nom
+	type
+	z-order
+	tunnel boolean 
+	pont boolean 
+
+Tunnel et ponts sont des segments
+routes reconstruites les plus longues possibles
+prendre en compte les zindex pour noder les rues aux carrefours.
+
+Toponymes en francais puis anglais.
