@@ -1,0 +1,27 @@
+#!/bin/bash
+###################### EDIT THESE VALUES TO SUIT YOUR SETUP ####################
+
+# host the database runs on
+export DBHOST=localhost
+
+# port the database is running on
+export DBPORT=5432
+
+# name of the target database
+export DBNAME=nvq
+
+# User for the database commands
+export DBUSER=nicolas
+
+# password for the database user
+export DBPASS=
+
+# directory where the Navstreets data are located
+# A standard directory layout for french data is expected here, ie pointing to 
+# a folder containing the world zones (ASIA_PACIFIC, EMEA, etc.)
+DATADIR=/Volumes/Lucifer/data
+
+# The Postgresql binaries folder (pgsql, shp2pgsql, createdb, etc.)
+# Leave blank is PG is in the PATH
+# (Note: Put trailing slash to directory path)
+PGBIN=
