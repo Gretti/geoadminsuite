@@ -27,33 +27,33 @@ ${PGBIN}dropdb --if-exists  $DBCON  $DBNAME
 OUT=$?
 
 if [ $OUT -eq 0 ];then
-    echo "Database $DBANE dropped."
+    echo "  >> Database $DBANE dropped."
 else
-    echo "Unable to drop database $DBNAME"
+    echo "  >> Unable to drop database $DBNAME"
     exit 1
 fi
 echo
 
-"Creating database $DBNAME..."
-${PGBIN}createdb  $DBCON -E UTF-8 -l c $DBNAME
+echo "Creating database $DBNAME..."
+${PGBIN}createdb  $DBCON -E UTF-8 $DBNAME
 OUT=$?
 
 if [ $OUT -eq 0 ];then
-    echo "Database $DBANE created."
+    echo "  >> Database $DBANE created."
 else
-    echo "Unable to create database $DBNAME"
+    echo "  >> Unable to create database $DBNAME"
     exit 1
 fi
 echo
 
-"installing Postgis through Extension..."
-${PGBIN}psql  $DBCON - c "create extension postgis" -d $DBNAME
+echo "installing Postgis through Extension..."
+${PGBIN}psql  $DBCON -c "create extension postgis" -d $DBNAME
 OUT=$?
 
 if [ $OUT -eq 0 ];then
-    echo "Postgis extension created"
+    echo "  >> Postgis extension created"
 else
-    echo "Unable to create postgis extension, aborting."
+    echo "  >> Unable to create postgis extension, aborting."
     exit 1
 fi
 

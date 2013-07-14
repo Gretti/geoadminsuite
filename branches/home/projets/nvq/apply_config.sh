@@ -66,6 +66,7 @@ echo "database host: $DBHOST"
 echo "database port: $DBPORT"
 echo "database user: $DBUSER"
 echo "database name: $DBNAME"
+echo "Project directory name: $PROJDIR"
 echo "PostgreSQL binary directory : $PGBIN"
 echo
 echo "Navstreet data directory:"
