@@ -1,5 +1,5 @@
-﻿create table surfaces (pg admin, centre commer, a + rivieres, 
-splitté en plusieurs tables ou z-index pour choix d'affichage.
+create table surfaces (pg admin, centre commer, a + rivieres, 
+splitte en plusieurs tables ou z-index pour choix d'affichage.
 
 
 Schema:
@@ -7,7 +7,7 @@ Schema:
 	nom 
 	z-order
 
-generalisation de ces tables a 2 ou 3 niveaux
+generalisation de ces tables a 2 ou 3 niveaux: les boundaries admin doivent etre jointives: 
 
 Division admin.
 
