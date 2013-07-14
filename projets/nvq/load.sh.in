@@ -57,8 +57,8 @@ loadShape() {
 # Main
 ################################################################################
 
-#for ds in $datasources; do
-for ds in `cat all_datasources.txt`; do
+for ds in $datasources; do
+#for ds in `cat all_datasources.txt`; do
 
     loadShape Adminbndy2.shp adminbndy2
     loadShape Adminbndy3.shp adminbndy3

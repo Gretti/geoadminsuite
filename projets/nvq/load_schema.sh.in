@@ -22,13 +22,15 @@ echo
 echo "Loading dictionary tables (codes, enums, etc.)"
 echo
 
-${PGBIN}psql -q $PGCON -d $DBNAME -c "copy li_chain_name (chainid, chain_name, description) from '$PROJDIR/nvq/data/chain_name' with (format CSV, header true)"
+${PGBIN}psql -q $PGCON -d $DBNAME -f $PROJDIR/sql_scripts/load_ref_data.sql
+
+${PGBIN}psql -q $PGCON -d $DBNAME -c "copy li_chain_name (chainid, chain_name, description) from '$PROJDIR/data/chain_name' with (format CSV, header true)"
 
 ${PGBIN}psql -q $PGCON -d $DBNAME -c "copy li_country_chain_name (country, country_gov_code, description, facility_type, chain_name, chainid) from '$PROJDIR/data/country_and_chain_name.csv' with (format CSV, header true)"
 
-${PGBIN}psql -q $PGCON -d $DBNAME -c "copy li_family_brand_name (family_chainid, family_brand_name, description, chain_name, chainid) from '$PROJDIR/nvq/data/family_brand_name.csv' with (format CSV, header true)"
+${PGBIN}psql -q $PGCON -d $DBNAME -c "copy li_family_brand_name (family_chainid, family_brand_name, description, chain_name, chainid) from '$PROJDIR/data/family_brand_name.csv' with (format CSV, header true)"
 
-${PGBIN}psql -q $PGCON -d $DBNAME -c "copy class_code from '$PRODIR/nvq/data/class_code.csv' with (format CSV, header false, delimiter ';')"
+${PGBIN}psql -q $PGCON -d $DBNAME -c "copy class_code from '$PROJDIR/data/class_code.csv' with (format CSV, header false, delimiter ';')"
 
 echo
 echo "Loading Navteq layers structure"
