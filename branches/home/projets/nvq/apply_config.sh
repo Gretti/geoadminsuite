@@ -55,6 +55,8 @@ cd ""
 
 
 patchfile "$PROJECT_DIR/create_database.sh.in" "$PROJECT_DIR/create_database.sh"
+patchfile "$PROJECT_DIR/load_schema.sh.in" "$PROJECT_DIR/load_schema.sh"
+patchfile "$PROJECT_DIR/load.sh.in" "$PROJECT_DIR/load.sh"
 #patchfile "$PROJECT_DIR/sql_scripts/admin.sql.in" "$PROJECT_DIR/sql_scripts/admin.sql"
 
 echo

@@ -1,0 +1,34 @@
+1;actual POI location;ActPOILoc.shp
+2;Admin linear boundaries 2; AdminLine2.shp
+3;Administrative area boundary; Adminbndy2.shp
+4;Administrative area boundary; Adminbndy3.shp
+5;Administrative area boundary; Adminbndy4.shp
+6;Administrative area boundary; Adminbndy5.shp
+7;alternate street names and addresses; AltStreets.shp
+8;Auto maintenance, service and petrol; AutoSvc.shp
+9;Business Facilities; Business.shp
+10;Community service centres; CommSvc.shp                                                                               
+11;Educational institutions; EduInsts.shp
+12;Entertainment; ntertn.shp
+13;Financial Institutions; FinInsts.shp
+14;Hamlets; Hamlet.shp
+15;Hospitals; Hospital.shp
+16;Islands; Islands.shp
+17;Landuse A; LandUseA.shp
+18;Landuse B; LandUseB.shp
+19;Building/landmark features; Landmark.shp
+20;Major highways; MajHwys.shp
+21;Miscelenous categories; MiscCategories.shp
+22;Named places; NamedPlc.shp                                                                                                       
+23;Parks and recreation; ParkRec.shp
+24;Parkings; Parking.shp
+25;Rail roads; RailRds.shp
+26;Restaurants; Restrnts.shp
+27;Secondary Highways; SecHwys.shp
+28;Shopping; Shopping.shp
+29;All streets; Streets.shp
+30;Transportation Hubs; TransHubs.shp                                                                        
+31;Travel Destinations; TravDest.shp
+32;Waterway Polygons; WaterPoly.shp
+33;Waterway Segments; WaterSeg.shp
+34;Z levels; Zlevels.shp                                                                                                                               
