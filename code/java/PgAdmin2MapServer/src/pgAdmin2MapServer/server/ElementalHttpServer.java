@@ -58,6 +58,7 @@ import org.apache.http.protocol.ResponseContent;
 import org.apache.http.protocol.ResponseDate;
 import org.apache.http.protocol.ResponseServer;
 import pgAdmin2MapServer.Pg2MS;
+import pgAdmin2MapServer.Pg2MS;
 
 /**
  * Basic, yet fully functional and spec compliant, HTTP/1.1 file server. <p>
@@ -69,26 +70,10 @@ import pgAdmin2MapServer.Pg2MS;
  */
 public class ElementalHttpServer {
 
-    public static void main(String[] args) throws Exception {
-
-//        if (args.length < 1) {
-//            System.err.println("Please specify document root directory");
-//            System.exit(1);
-//        }
-        String docRoot = "/tmp/";
-        //Thread t = new ElementalHttpServer.RequestListenerThread(8080, args[0]);
-        Thread t = new ElementalHttpServer.RequestListenerThread(8080, docRoot);
-        t.setDaemon(false);
-        t.start();
-    }
-
     static class HttpFileHandler implements HttpRequestHandler {
 
-        private final String docRoot;
-
-        public HttpFileHandler(final String docRoot) {
+        public HttpFileHandler() {
             super();
-            this.docRoot = docRoot;
         }
 
         public void handle(
@@ -110,7 +95,7 @@ public class ElementalHttpServer {
         private final HttpParams params;
         private final HttpService httpService;
 
-        public RequestListenerThread(int port, final String docroot) throws IOException {
+        public RequestListenerThread(int port) throws IOException {
             this.serversocket = new ServerSocket(port);
             this.params = new SyncBasicHttpParams();
             this.params
@@ -130,7 +115,7 @@ public class ElementalHttpServer {
 
             // Set up request handlers
             HttpRequestHandlerRegistry reqistry = new HttpRequestHandlerRegistry();
-            reqistry.register("*", new ElementalHttpServer.HttpFileHandler(docroot));
+            reqistry.register("*", new ElementalHttpServer.HttpFileHandler());
 
             // Set up the HTTP service
             this.httpService = new HttpService(

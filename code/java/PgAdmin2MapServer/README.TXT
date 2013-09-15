@@ -34,3 +34,6 @@ ________
 To come:
 
 External files drag'n'drop (shp, img, etc.)
+
+Debug URL to refresh the map:
+http://localhost:9472/newParams?bindir=/Applications/Dev/pgAdmin3.app/Contents/MacOS&host=&port=5432&database=nicolas&user=nicolas&passwd=&schema=public&table=

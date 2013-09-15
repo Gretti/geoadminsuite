@@ -8,9 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -23,8 +21,8 @@ import pgAdmin2MapServer.Pg2MS;
 import pgAdmin2MapServer.server.ConnectionManager;
 
 /**
- * A simple object to represent a PgAdmin database: a name and a Map of schemas
- * TODO: inheritance
+ * An object to represent a PgAdmin database: a name and a Map of schemas TODO:
+ * inheritance
  *
  * @author nicolas
  */
@@ -32,6 +30,8 @@ public class Database {
 
     private String name;
     private Map<String, Schema> schemas;
+    // TODO: ugly
+    public static Extent extent;
 
     public Database(String name) {
         this.name = name;
@@ -41,8 +41,7 @@ public class Database {
     public String getName() {
         return name;
     }
-    
-    
+
     public void setName(String name) {
         this.name = name;
     }
@@ -56,13 +55,29 @@ public class Database {
      *
      * @return
      */
-    public List<MSLayer> getLayers() {
-        List<MSLayer> layers = new ArrayList<MSLayer>();
+    public Map<String, Layer> getLayers() {
+        Map<String, Layer> layers = new HashMap<String, Layer>();
 
         for (Schema schema : schemas.values()) {
-            layers.addAll(schema.getLayers().values());
+            layers.putAll(schema.getLayers());
         }
         return layers;
+    }
+
+    /**
+     * Convenience method: returns the given layer (qualified name)
+     *
+     * @return
+     */
+    public Layer getLayer(String qualName) {
+        Layer l = null;
+        for (Schema schema : schemas.values()) {
+            if (schema.getLayers().get(qualName) != null) {
+                l = schema.getLayers().get(qualName);
+                break;
+            }
+        }
+        return l;
     }
 
     /*
@@ -71,7 +86,7 @@ public class Database {
      }
      * */
     /**
-     * Adds the given schema to this database
+     * Adds the given schemaName to this database
      *
      * @param s
      */
@@ -83,10 +98,10 @@ public class Database {
 
     /**
      * Creates and returns a Database object from current program argument. Also
-     * creates database schemas and tables.
+     * creates database schemas and tables (layers)
      *
      * Loads the list of tables from database, according to given parameters: if
-     * name name, build layer, schema, database. if schema name: list of geo
+     * name name, build layer, schemaName, database. if schemaName name: list of geo
      * layers. if only database name: list of schemas, list of layers. TODO:
      * Manages extent and projection when adding objects in each other
      *
@@ -94,8 +109,22 @@ public class Database {
      * @throws Exception
      */
     public static Database getDatabase() {
-        Database dbs = null;
+        Database database = null;
         Connection con = null;
+        String query = "with geo as (\n" +
+            "    select f_table_schema, f_table_name, f_geometry_column,coord_dimension, srid, type \n" +
+            "    from geometry_columns \n" +
+            "    WHERE_CLAUSE \n" +
+            "), const as (\n" +
+            "    SELECT kcu.column_name, tc.constraint_name, tc.constraint_type, tc.table_schema, tc.table_name\n" +
+            "    FROM geo g, information_schema.key_column_usage kcu\n" +
+            "        JOIN information_schema.table_constraints tc ON tc.constraint_name = kcu.constraint_name \n" +
+            "    WHERE kcu.table_name = g.f_table_name and kcu.table_schema = g.f_table_schema\n" +
+            ") select distinct on (g.f_table_name) g.f_table_name, g.f_table_schema, g.f_geometry_column, c.column_name, co.constraint_type, g.type, g.srid \n" +
+            "from geo g, information_schema.columns c \n" +
+            "    left join const co on (c.table_schema = co.table_schema and c.table_name = co.table_name and c.column_name = co.column_name) \n" +
+            "where c.table_name = g.f_table_name and c.table_schema = f_table_schema \n" +
+            "order by 1, 5";
 
         try {
             con = ConnectionManager.getConnection();
@@ -110,39 +139,52 @@ public class Database {
                     whereClause += " and f_table_name='" + Config.getInstance().table + "'";
                 }
             }
-            String query = "select f_table_schema, f_table_name, f_geometry_column,"
-                    + "coord_dimension, srid, type from geometry_columns" + whereClause;
+            query = query.replace("WHERE_CLAUSE", whereClause);
 
             Pg2MS.log("query to list layers: " + query);
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
-            dbs = new Database(Config.getInstance().database);
-            
+            database = new Database(Config.getInstance().database);
+
             // gets all registered layers:
-            // TODO: also compute general extent and SRID here
             while (rs.next()) {
                 String sname = rs.getString("f_table_schema");
-                Schema schema = dbs.getSchemas().get(sname);
+                Schema schema = database.getSchemas().get(sname);
                 if (schema == null) {
-                    schema = new Schema(sname, dbs.getName());
-                    dbs.getSchemas().put(sname, schema);
+                    schema = new Schema(sname, database.getName());
+                    database.getSchemas().put(sname, schema);
                 }
 
+                Layer l = null;
                 String tname = rs.getString("f_table_name");
-                MSLayer l = new MSLayer(
-                        Pg2MS.mapfileUrl + "&layer=" + tname,
-                        schema.getName(),
-                        tname,
-                        rs.getString("f_geometry_column"),
-                        rs.getString("type"),
-                        "POSTGIS",
-                        rs.getInt("srid"));
 
-                schema.getLayers().put(tname, l);
+                // TODO: move logic elsewhere (layer ?)
+                if (Pg2MS.USE_FORMAT_GEOJSON) {
+                    l = new GeoJSONLayer(
+                            database.name,
+                            schema.getName(),
+                            tname,
+                            rs.getString("f_geometry_column"),
+                            rs.getString("type"),
+                            "POSTGIS",
+                            rs.getInt("srid"));
+                } else {
+                    l = new MSLayer(
+                            schema.getName(),
+                            tname,
+                            rs.getString("f_geometry_column"),
+                            rs.getString("type"),
+                            "POSTGIS",
+                            rs.getInt("srid"),
+                            rs.getString("column_name"),
+                            rs.getString("constraint_type"));
+                }
+
+                schema.getLayers().put(l.qualName, l);
             }
             stmt.close();
-            Pg2MS.log(dbs.getLayers().size() + " layer(s) loaded");
+            Pg2MS.log(database.getLayers().size() + " layer(s) loaded");
 
             // gets layers estimated extent in native and WGS84 projection, to 
             query = "with est_ext as ( ";
@@ -155,9 +197,12 @@ public class Database {
             query += ") select st_xmin(e), st_ymin(e), st_xmax(e), st_ymax(e), st_xmin(we), st_ymin(we), st_xmax(we), st_ymax(we) ";
             query += " from bboxes";
             //query = "select st_xmin(e), st_ymin(e), st_xmax(e), st_ymax(e) from (select st_estimated_extent(?,?,?) as e) as t;";
+            
+            Database.extent = new Extent();
+            
             PreparedStatement pstmt = con.prepareStatement(query);
-            for (MSLayer layer : dbs.getLayers()) {
-                pstmt.setString(1, layer.schema);
+            for (Layer layer : database.getLayers().values()) {
+                pstmt.setString(1, layer.schemaName);
                 pstmt.setString(2, layer.name);
                 pstmt.setString(3, layer.geom);
                 pstmt.setInt(4, layer.srs);
@@ -176,16 +221,18 @@ public class Database {
                                 rs.getDouble(8));
                         layer.setExtent(ext);
                         layer.setWGSExtent(extWgs);
-                        Pg2MS.log("extent: " + ext.msString() + " wgs extent: " + extWgs.msString());
+                        Pg2MS.log("extent for " + layer.qualName + ": " + ext.msString() + " wgs extent: " + extWgs.msString());
+                        Database.extent.expandToInclude(ext);
                     }
                 } catch (PSQLException pe) {
                     pe.printStackTrace();
                     // null estimated extent may arise if table was not analysed
-                    Pg2MS.log("No estimated extent for layer: " + layer.getQualName() + ". Consider ANALYZING this table");
-                    layer.setExtent(Mapfile.INIT_EXTENT);
-                    layer.setWGSExtent(Mapfile.INIT_EXTENT);
+                    Pg2MS.log("No estimated extent for layer: " + layer.qualName + ". Consider ANALYZING this table");
+                    layer.setExtent(pgAdmin2MapServer.model.Map.INIT_EXTENT);
+                    layer.setWGSExtent(pgAdmin2MapServer.model.Map.INIT_EXTENT);
                 }
             }
+            Pg2MS.log("General map extent: " + Database.extent.msString());
 
             pstmt.close();
         } catch (Exception e) {
@@ -196,9 +243,9 @@ public class Database {
             } catch (Exception e) {
             }
         }
-        return dbs;
+        return database;
     }
-    
+
     public JSONObject toJsonTreeModel() throws JSONException {
         JSONObject res = new JSONObject();
         res.put("text", this.name);
@@ -206,7 +253,7 @@ public class Database {
         res.put("icon", "img/database.png");
         res.put("checked", true);
         res.put("expanded", true);
-        
+
         JSONArray schs = new JSONArray();
         SortedSet<String> schemasKeys = new TreeSet<String>(getSchemas().keySet());
         for (String keys : schemasKeys) {

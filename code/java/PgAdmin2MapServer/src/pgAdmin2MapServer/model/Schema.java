@@ -13,21 +13,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * A simple object representing a PgAdmin schema: name, databaseName, list of tables
+ * A simple object representing a PgAdmin schemaName: name, databaseName, list of tables
  * @author nicolas
  */
 public class Schema {
-    /** schema name */
+    /** schemaName name */
     private String name;
     /** database name */
     private String databaseName; // helper
     /** the list of tables */
-    private Map<String, MSLayer> layers;
+    private Map<String, Layer> layers;
 
     public Schema(String name, String databaseName) {
         this.name = name;
         this.databaseName = databaseName;
-        this.layers = new HashMap<String, MSLayer>();
+        this.layers = new HashMap<String, Layer>();
     }
 
     public String getName() {
@@ -46,15 +46,15 @@ public class Schema {
         this.databaseName = databaseName;
     }
 
-    public Map<String, MSLayer> getLayers() {
+    public Map<String, Layer> getLayers() {
         return layers;
     }
-
-    public void setLayers(Map<String, MSLayer> layers) {
+    
+    public void setLayers(Map<String, Layer> layers) {
         this.layers = layers;
     }
     /**
-     * Adds the given schema to this database
+     * Adds the given schemaName to this database
      * @param s 
      */
     public void addTable(MSLayer l) {

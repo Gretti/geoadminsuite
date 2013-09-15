@@ -27,6 +27,7 @@ import pgAdmin2MapServer.Pg2MS;
  */
 public class ElementalWebSocketServer extends WebSocketServer {
     public static final String CONFIG_DISPATCHER = "/configDispatcher";
+    public static final String REFRESH_CONFIG = "refreshConfig";
 
 	public ElementalWebSocketServer( int port ) throws UnknownHostException {
 		super( new InetSocketAddress( port ) );

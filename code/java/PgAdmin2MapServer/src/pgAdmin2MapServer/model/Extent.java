@@ -251,4 +251,13 @@ public class Extent {
                 + coordSeparator + Double.toString(this.xMax) + xySeparator + Double.toString(this.yMax);
 
     }
+    
+    /**
+     * 
+     * @return coordinates as an array of 4 doubles (lllx, lly, urx, ury)
+     */
+    public double[] toArray() {
+        double[] ret = {this.xMin, this.yMin, this.xMax, this.yMax};
+        return ret;
+    }
 }
