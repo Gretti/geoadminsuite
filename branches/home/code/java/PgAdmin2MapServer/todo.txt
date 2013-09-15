@@ -110,3 +110,31 @@ Map is displayed, user plays with it
 if recall from pgAdmin, refresh the map with the new Map object:
     how to recall client ? new web page ? long polling ? HTML5 WebSocket 
 
+------
+TODO:
+
+Integrate OL3 with JSON format
+Read data in JSON from database => attribute hovering:
+    Choose format: MS/GeoJSON
+
+    GeoJSON architecture:
+        
+
+Limit read features => prepare conf page for these settings
+Manage projection: for one layer, keep its projection. If severa different projections,
+    reproject into WGS84
+
+OL Tools:
+    mouse coordinate
+    paste wkt
+    
+
+Settings:
+    for a layer: 
+        transparency, 
+        styling,
+        limit features
+
+
+Not analyzed table don't work: estimated_extent is null or 0
+correct parsing of pgadmin params: objecttype and objectname can help

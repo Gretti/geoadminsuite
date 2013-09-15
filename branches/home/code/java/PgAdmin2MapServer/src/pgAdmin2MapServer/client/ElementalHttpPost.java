@@ -53,12 +53,10 @@ import org.apache.http.protocol.RequestExpectContinue;
 import org.apache.http.protocol.RequestTargetHost;
 import org.apache.http.protocol.RequestUserAgent;
 import pgAdmin2MapServer.Pg2MS;
+import pgAdmin2MapServer.Pg2MS;
 
 /**
- * Elemental example for executing multiple POST requests sequentially. <p>
- * Please note the purpose of this application is demonstrate the usage of
- * HttpCore APIs. It is NOT intended to demonstrate the most efficient way of
- * building an HTTP client.
+ * Elemental example for executing multiple POST requests sequentially.
  */
 public class ElementalHttpPost {
 

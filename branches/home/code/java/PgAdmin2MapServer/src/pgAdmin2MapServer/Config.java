@@ -83,7 +83,7 @@ public class Config {
      * @param params 
      */
     public void parseArgs(Map<String, String> params) {
-        this.binDir = params.get("binDir");
+        this.binDir = params.get("bindir");
         setHost(params.get("host"));
         this.port = params.get("port");
         this.database = params.get("database");

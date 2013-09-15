@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import pgAdmin2MapServer.Config;
+import pgAdmin2MapServer.Pg2MS;
 
 /**
  * Represents very simply a mapserver layer, able to write itself as a MapFile
@@ -19,14 +20,9 @@ import pgAdmin2MapServer.Config;
  *
  * @author nicolas
  */
-public class MSLayer {
+public class MSLayer extends Layer {
 
-    public String schema = "";
-    public String name = "";
-    public String url = ""; // the mapserver URL returning this layer
-    public String geom = "";
     public String status = "";
-    public String type = "";
     public String data = "";
     public String connection = "host=_host_  port=_port_  dbname=_dbname_  user=_user_  password=_pwd_";
     public String connectionType = "";
@@ -34,13 +30,20 @@ public class MSLayer {
     public String color = "";
     public String outlineColor = "";
     public String opacity = "100";
-    public Extent extent = null;
-    public Extent WGSExtent = null;
+    /** true if url points to an image, false otherwise. the errMsg contains the MS error in this case. */
+    public boolean isValidURL;
+    public String errMsg;
+    public String uniqueCol;
+    public String constraintType;
+    
+    
+    // get all features
+    public long maxFeatures = -1;
+    
 
-    public MSLayer(String url, String schema, String table, String geom, String type,
-            String connectionType, int srs) {
-        this.url = url;
-        this.schema = schema;
+    public MSLayer(String schema, String table, String geom, String type, String connectionType, 
+            int srs, String uniCol, String constType) {
+        this.schemaName = schema;
         this.name = table;
         this.geom = geom;
         this.status = "ON";
@@ -49,26 +52,37 @@ public class MSLayer {
         this.srs = srs;
         this.color = "255 0 0";
         this.outlineColor = "0 0 0";
+        this.uniqueCol = uniCol;
+        this.constraintType = constraintType;
+        
+        this.qualName = this.schemaName + "." + this.name;
+        
+        this.url = Pg2MS.mapfileUrl + "&layers=" + this.qualName;
+        
+        //this.errMsg = Pg2MS.urlIsText(url.replace("?map=", "?mode=map&map=") + "&unique=" + System.currentTimeMillis());
+        //this.isValidURL = (this.errMsg == null);
 
         this.setConnection();
     }
 
-    public Extent getExtent() {
-        return extent;
-    }
-
-    public String getQualName() {
-        return schema + "." + name;
-    }
-
     /**
-     * Returns the DATA property built from schema, name, geom: geom from
-     * schema.name
+     * Returns the DATA property built from schemaName, name, geom: 
+     * "geom from schemaName.name"
      *
      * @return
      */
     public String getData() {
-        return this.geom + " from " + this.getQualName();
+        String res = "";
+        if (this.constraintType == null) {
+            // generates a unique id on the fly
+            res = this.geom + " from (select " + this.geom 
+                    + ", row_number() over () as gen_id__ from " + this.qualName
+                    + ") as t using unique gen_id__";
+        } else {
+            res = this.geom + " from " + this.qualName;
+        }
+        
+        return res;
     }
 
     /**
@@ -80,28 +94,6 @@ public class MSLayer {
         this.connection = this.connection.replaceAll("_host_", c.host).replace("_port_", c.port)
                 .replace("_dbname_", c.database).replace("_user_", c.user).replace("_pwd_", c.pwd);
     }
-
-    /**
-     * Sets the layer extent based on given box2d representation:
-     * BOX(1111705.875 2037524.5,2241439.25 3100623)
-     *
-     * @param ext
-     */
-    public void setExtent(Extent ext) {
-        this.extent = ext;
-    }
-    
-    /**
-     * Sets the layer WGS84 extent based on given box2d representation:
-     * BOX(1 1,2 2);
-     *
-     * @param ext
-     */
-    public void setWGSExtent(Extent wgsext) {
-        this.WGSExtent = wgsext;
-    }
-    
-    
 
     /**
      * Sets the Mapserver layer type according to given Postgis type
@@ -125,7 +117,7 @@ public class MSLayer {
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder("\tLAYER\n");
-        b.append("\t\tNAME \"").append(name).append("\"\n");
+        b.append("\t\tNAME \"").append(qualName).append("\"\n");
         b.append("\t\tTYPE ").append(type).append("\n");
         b.append("\t\tSTATUS ON\n");
         b.append("\t\tOPACITY ").append(opacity).append("\n");
@@ -150,15 +142,15 @@ public class MSLayer {
 
         b.append("\t\tEND #CLASS\n");
         b.append("\n");
-        if (this.srs > 0) {
-            b.append("\t\tPROJECTION\n");
-            b.append("\t\t\t\"init=epsg:").append(this.srs).append("\"\n");
-            b.append("\t\tEND #PROJECTION\n");
-        }
+//        if (this.srs > 0) {
+//            b.append("\t\tPROJECTION\n");
+//            b.append("\t\t\t\"init=epsg:").append(this.srs).append("\"\n");
+//            b.append("\t\tEND #PROJECTION\n");
+//        }
         b.append("\n");
-        b.append("\t\tMETADATA").append("\n");
-        b.append("\t\t\t\"wms_title\"           \"").append(name).append("\"\n");
-        b.append("\t\tEND #metadata\n");
+//        b.append("\t\tMETADATA").append("\n");
+//        b.append("\t\t\t\"wms_title\"           \"").append(name).append("\"\n");
+//        b.append("\t\tEND #metadata\n");
 
         b.append("\tEND #LAYER\n");
 
@@ -190,11 +182,13 @@ public class MSLayer {
     /**
      * JSON info to build a new Layer. TODO: factorize with json tree model
      */
+    @Override
     public JSONObject toJson() throws JSONException {
         JSONObject res = new JSONObject();
         res.put("name", this.name);
+        //res.put("errMsg", this.errMsg);
         res.put("url", this.url);
-        res.put("extent", this.extent.msString());
+        res.put("extent", this.extent.toArray());
         res.put("WGSExtent", this.WGSExtent.msString());
 
         return res;

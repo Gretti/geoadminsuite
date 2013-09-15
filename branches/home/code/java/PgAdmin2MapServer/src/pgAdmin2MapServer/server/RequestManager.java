@@ -29,11 +29,9 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import pgAdmin2MapServer.Config;
 import pgAdmin2MapServer.Pg2MS;
-import pgAdmin2MapServer.model.Mapfile;
 
 /**
- * Static class to manage server Service API: handle client (MapFish Map)
- * requests
+ * Static class to manage server Service API: handle client requests
  *
  * @author nicolas
  */
@@ -43,6 +41,7 @@ public class RequestManager {
     public static final String REQUEST_MAP_CONFIG = "mapConfig";
     public static final String REQUEST_FILE = "file";
     public static final String REQUEST_NEW_PARAMS = "newParams";
+    public static final String REQUEST_GEOJSON = "geoJSON";
     // Configuration item values
     /**
      * sent by the client to get the MapConfig object with all layers in a JSON
@@ -106,7 +105,7 @@ public class RequestManager {
 
     /**
      * Called when server receive a REQUEST_MAP request: returns the HTML
-     * MapFish map (with its resources) to the client.
+     * map (with its resources) to the client.
      *
      * No parameters are expected from the client 
      * TODO: replace by a file?name=map.html ? TODO: factorize response
@@ -117,7 +116,7 @@ public class RequestManager {
             final HttpContext context) throws Exception {
         //String m = Mapfile.write();
         //Pg2MS.log("mapfile written: " + m);
-        String mapHtml = "index.html";
+        String mapHtml = "index2.html";
         response.setStatusCode(HttpStatus.SC_OK);
         ContentType contentType = getContentType(mapHtml);
         InputStreamEntity ise = new InputStreamEntity(
@@ -146,11 +145,11 @@ public class RequestManager {
             String mapConfig = "";
             if (CONFIG_LAYERS.equals(item)) {
                 // sends full layer definition as JSON object
-                mapConfig = Mapfile.getMapConfigJson(false);
+                mapConfig = Pg2MS.map.getMapConfigJson(false);
                 Pg2MS.log("sending mapConfig allLayers to client: " + mapConfig);
             } else if (CONFIG_TREE_MODEL.equals(item)) {
                 // sends only layer tree model as JSON object
-                mapConfig = Mapfile.getMapConfigJson(true);
+                mapConfig = Pg2MS.map.getMapConfigJson(true);
                 Pg2MS.log("sending mapConfig treeModel to client: " + mapConfig);
             }
             response.setStatusCode(HttpStatus.SC_OK);
@@ -164,7 +163,7 @@ public class RequestManager {
      * name is given in parameter. Parameters: name=<fileName> where <filename>
      * is the qualified name of the file to get. Files are read from external
      * zip lying in the lib folder. It allows client modifications. 
-     * TODO: mutualize ZipFile handling
+     * TODO: Replace by file entity
      */
     public static void File(
             final Map<String, String> params,
@@ -182,6 +181,7 @@ public class RequestManager {
                 -1,
                 contentType);
         response.setEntity(ise);
+        EntityUtils.consume(ise);
     }
 
     /**
@@ -190,7 +190,7 @@ public class RequestManager {
      * @param fileName
      * @return
      */
-    private static ContentType getContentType(String fileName) {
+    private static synchronized ContentType getContentType(String fileName) {
         ContentType res = ContentType.create("text/html", Charset.forName("UTF-8"));
 
         if (fileName != null) {
@@ -204,6 +204,8 @@ public class RequestManager {
                 res = ContentType.create("image/png");
             } else if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg")) {
                 res = ContentType.create("image/jpeg");
+            } else if (fileName.endsWith(".ico") ) {
+                res = ContentType.create("image/x-icon");
             } else {
                 // defaut CT is html
             }
@@ -281,9 +283,11 @@ public class RequestManager {
         InputStream res = null;
 
         if (!Pg2MS.READ_FROM_ZIP) {
-            res = new FileInputStream(new File(Pg2MS.HTML_RESOURCES_PATH, fileName));
+            // Pg2MS.htmlResources contains here the path to the html folder
+            res = new FileInputStream(new File(Pg2MS.htmlResources, fileName));
         } else {
-            ZipFile zip = new ZipFile(Pg2MS.resourceFile);
+            // Pg2MS.htmlResources contains here the path to the lib/html.zip resource archive
+            ZipFile zip = new ZipFile(Pg2MS.htmlResources);
             res = zip.getInputStream(new ZipEntry(fileName));
         }
         return res;

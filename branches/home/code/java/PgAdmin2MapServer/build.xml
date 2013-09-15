@@ -73,10 +73,10 @@
     -->
     <!-- Task to compress the HTML part into a zip, putting it in the dist/lib folder -->
     <target name="-post-jar">
-        <zip 
+<!--        <zip 
             basedir="${basedir}/html" 
             destfile="${dist.dir}/lib/html.zip"
-            update="true"/>
+            update="true"/>-->
         
         <!-- copies the pgAdmin.ini file to the root of the dist folder -->
         <copy file="${basedir}/PgAdmin2MapServer.ini" todir="${dist.dir}" overwrite="true"/>
