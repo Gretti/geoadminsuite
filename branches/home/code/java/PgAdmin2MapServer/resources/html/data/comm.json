@@ -1,0 +1,1 @@
+{"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[12345, 6789], [12346, 6790]]}, "properties": {"id": 1}}]}
