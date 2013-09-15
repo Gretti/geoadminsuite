@@ -1,0 +1,270 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+        <style type="text/css">
+
+            body {
+                padding-top: 0px;
+            }
+            .map {
+                height: 400px;
+                width: 100%;
+            }
+            .ol-attribution {
+                max-width: 50%;
+            }
+            #tags {
+                display: none;
+            }
+
+            /* padding for social links to match bootstrap nav links */
+            .nav>li>.twitter-share-button, .nav>li>.g-plusone-wrapper, .nav>li>.github-watch-button {
+                padding: 10px 10px 0px;
+            }
+
+        </style>
+
+        <link rel="stylesheet" href="http://ol3js.org/en/master/resources/bootstrap/css/bootstrap.min.css" type="text/css">
+        <link rel="stylesheet" href="http://ol3js.org/en/master/resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css">
+        <link rel="stylesheet" href="ol3/ol.css" type="text/css">
+        <script src="jquery/jquery-1.10.2.js"></script>
+        <script src="socket.js"></script>
+        <script src="ol3/ol-simple.js"></script>
+
+        <script type="text/javascript">
+            //A test raster layer
+            var raster = new ol.layer.TileLayer({
+                source: new ol.source.MapQuestOpenAerial()
+            });
+            /// current array of layers 
+            var layers = null;
+
+            // SOme objects we use
+            var geoJsonParser = new ol.parser.GeoJSON();
+            var wktParser = new ol.parser.WKT();
+
+            // Defines style: TODO: from config ...
+
+            var vecStyle1 = new ol.style.Style({rules: [
+                    new ol.style.Rule({
+                        filter: 'renderIntent("selected")',
+                        symbolizers: [
+                            new ol.style.Fill({
+                                color: '#ffffff',
+                                opacity: 0.5
+                            })
+                        ]
+                    }),
+                    new ol.style.Rule({
+                        symbolizers: [
+                            new ol.style.Fill({
+                                color: '#ffff00',
+                                opacity: 0.6
+                            }),
+                            new ol.style.Stroke({
+                                color: '#319FD3',
+                                opacity: 1
+                            })
+                        ]
+                    })
+                ]});
+
+
+            function getControls() {
+                var mousePositionControl = new ol.control.MousePosition({
+                    coordinateFormat: ol.coordinate.createStringXY(4),
+                    //projection: 'EPSG:4326',
+                    // comment the following two lines to have the mouse position
+                    // be placed within the map.
+                    className: 'custom-mouse-position',
+                    target: document.getElementById('mouse-position'),
+                    undefinedHTML: '&nbsp;'
+                });
+
+                return [mousePositionControl];
+            }
+
+            function getInteractions() {
+                var selectInteraction = new ol.interaction.Select({
+                    layerFilter: function(layer) {
+                        return layer.get('id') == 'vector';
+                        // on all layers:
+                        //return true;
+                    }
+                });
+
+                return [selectInteraction];
+
+            }
+            /**
+             * Registers a click/move event on the map for each layer
+             * @returns {undefined}
+             */
+            function registMapEvent() {
+                map.on(['click'], function(evt) {
+                    map.getFeatures({
+                        pixel: evt.getPixel(),
+                        layers: layers,
+                        success: function(featuresByLayer) {
+                            var features = featuresByLayer[0];
+                            feats = features;
+//                            document.getElementById('info').innerHTML = features.length > 0 ?
+//                                    features[0].getFeatureId() + ': ' + features[0].get('nom_comm') :
+//                                    '&nbsp;';
+                            document.getElementById('info').innerHTML = formatFeatureAttr(features[0]);
+                        }
+                    });
+                });
+            }
+
+            function showMessage(message, title) {
+                Ext.Msg.show({
+                    title: title,
+                    msg: message,
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.INFO
+                });
+            }
+
+            var testlayer = new ol.layer.Vector({
+                id: 'vector',
+                source: new ol.source.Vector({
+                    //parser: geoJsonParser,
+                    parser: wktParser,
+                    url: 'data/test.wkt'
+                }),
+                style: vecStyle1
+            });
+            var testLayers = [testlayer];
+
+            /**
+             * Inits the map by ajax-calling the server to get the list of layers to display
+             * @returns {undefined}
+             */
+            function initMap() {
+                $.getJSON('/mapConfig?item=allLayers', function(data) {
+                    console.log("initMap: receiving config data:");
+                    console.log(data);
+                    layers = createServerLayers(data);
+                    map = new ol.Map({
+                        controls: ol.control.defaults().extend(getControls()),
+                        //layers: layers,
+                        layers: testLayers,
+                        renderer: ol.RendererHint.CANVAS,
+                        //renderer: ol.RendererHint.WEBGL,
+                        target: 'map',
+                        //projection: null,
+                        view: new ol.View2D({
+                            //center: [0, 0],
+                            center: [12345, 6789],
+                            zoom: 1
+                        })
+                    });
+                    registMapEvent();
+                });
+            }
+
+            /**
+             * Creates OpenLayers layers from config object.
+             * TODO: build layer logic on the server side
+             */
+            function createServerLayers(config) {
+                var layArr = config.layers;
+                var mapProjection = config.mapProjection;
+                var ret = new Array();
+                // TODO: check if needed
+                //ret[ret.length] = raster;
+
+                //TODO: change map projection test to put it before loop.
+
+                for (var i = 0; i < layArr.length; i++) {
+//                    var proj = ol.proj.configureProj4jsProjection({
+//                        code: 'EPSG:' + layArr[i].srid
+//                        ,extent: layArr[i].extent.split(" ")
+//                    });
+
+
+                    var l = new ol.layer.Vector({
+                        id: "vector",
+                        source: new ol.source.Vector({
+                            parser: geoJsonParser,
+                            //projection: proj,
+                            url: layArr[i].url
+                        }),
+                        style: vecStyle1
+                    });
+                    ret[ret.length] = l;
+                    console.log('adding layer: ');
+                    console.log(layArr[i]);
+                    console.log(l);
+                }
+                return ret;
+            }
+
+            /**
+             * Formats the given feature attributes,skipping geometry.
+             * @param {type} feature
+             * @returns {String} the attributes formatted as attr:value<br/> string
+             */
+            function formatFeatureAttr(feature) {
+                if (!feature)
+                    return "";
+                var res = "<table class='attrtable'>";
+                var sep = "";
+
+                for (a in feature.getAttributes()) {
+                    if (a != "geometry") {
+                        res += sep + "<tr><td align='right'>" + a + ": </td><td><b>" + feature.get(a) + "</b></td></row>";
+                        sep = "";
+                    }
+                }
+                res += "</table>";
+                return res;
+            }
+        </script>
+        <title>PgAdmin Postgis Viewer</title>
+    </head>
+    <body onload="initMap()">
+        <div id="map" class="map"></div>
+        <div class="span6" id="mouse-position" >&nbsp;</div>
+        <div class="span4 offset4">
+            <div id="info" class="alert alert-success">
+                &nbsp;
+            </div>
+        </div>
+        <div id="divMsg" style="border: 1px, block, solid;">Msg</div>
+    <script type="text/javascript">
+
+// TODO: discuss scale dependent rules
+        ol.expr.register('resolution', function() {
+            return map.getView().getView2D().getResolution();
+        });
+
+//            var vector = new ol.layer.Vector({
+//                source: new ol.source.Vector({
+//                    parser: geoJsonParser,
+//                    url: 'data/countries.geojson'
+//                }),
+//                style: vecStyle1
+//            });
+
+//            var map = new ol.Map({
+//                //layers: [raster, vector],
+//                layers: [raster],
+//                renderer: ol.RendererHint.CANVAS,
+//                target: 'map',
+//                view: new ol.View2D({
+//                    center: [0, 0],
+//                    zoom: 1
+//                })
+//            });
+    </script>
+</body>
+</html>

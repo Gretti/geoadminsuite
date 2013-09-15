@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <style>
+            /**
+     * Map Examples Specific
+     */
+            .smallmap {
+                width: 512px;
+                height: 256px;
+                border: 1px solid #ccc;
+            }
+            .bigmap {
+                width: 1012px;
+                height: 370px;
+                border: 1px solid #ccc;
+            }
+            #tags {
+                display: none;
+            }
+
+            html, body, #map {
+                margin: 0;
+                width: 100%;
+                height: 100%;
+            }
+
+            #text {
+                position: absolute;
+                bottom: 1em;
+                left: 1em;
+                width: 512px;
+                z-index: 20000;
+                background-color: white;
+                padding: 0 0.5em 0.5em 0.5em;
+                border: 1px solid black;
+            }            
+
+        </style>
+        <script src="ol2/OpenLayers.debug.js"></script>
+        <script src="jquery/jquery-1.10.2.js"></script>
+        <script src="socket.js"></script>
+        <script type="text/javascript">
+            var map, layer;
+            var mapConfig = {};
+
+            function checkUrl(url) {
+                document.images['imgtest'].onload = function () {
+                    alert('loaded');
+                };
+                document.images['imgtest'].src = url;
+                
+            }
+
+            // must give the full extent at each new map config
+            // some options allowing to display all data according to general map extent
+            // and to zoom in each layer.
+            function getMapConf() {
+                mapConf = {
+                    // should be set to the max extent of all the data in the map
+                    maxExtent: new OpenLayers.Bounds(
+                            mapConfig.mapExtent[0],
+                            mapConfig.mapExtent[1],
+                            mapConfig.mapExtent[2],
+                            mapConfig.mapExtent[3])
+                            // the minimal allowable extent. Should be confiurable ?
+                            , minExtent: new OpenLayers.Bounds(0, 0, 0.0001, 0.0001)
+                            , maxResolution: 'auto'
+                            , minResolution: 'auto'
+                            , projection: ""
+                            , units: "m"
+                            , allOverlays: true
+                            , fractionalZoom: true
+
+                };
+                return mapConf;
+            }
+
+            function getControls() {
+                var mouseControl = new OpenLayers.Control.MousePosition({
+                    separator: ' | ',
+                    numDigits: 4,
+                    emptyString: 'Mouse is not over map.'
+                });
+                return [mouseControl,
+                    new OpenLayers.Control.LayerSwitcher({'ascending': false}),
+                    new OpenLayers.Control.Permalink(),
+                    //new OpenLayers.Control.OverviewMap(),
+                    new OpenLayers.Control.KeyboardDefaults()];
+            }
+
+            function createServerLayers() {
+                var layArr = mapConfig.layers;
+                var ret = new Array();
+                for (var i = 0; i < layArr.length; i++) {
+                    var check = checkUrl(layArr[i].url);
+                    console.log(check);
+
+                    if (layArr[i].errMsg && layArr[i].errMsg.length > 0) {
+                        console.log("invalid layer: " + layArr[i].errMsg);
+                    } else {
+                        var l = new OpenLayers.Layer.MapServer(layArr[i].name,
+                                layArr[i].url,
+                                {layers: layArr[i].name},
+                        {isBaseLayer: false, singleTile: "true", ratio: 1, opacity: 1});
+                        ret[ret.length] = l;
+                        //console.log('adding layer: ');
+                        //console.log(layArr[i]);
+                        //console.log(l);
+                    }
+                }
+                return ret;
+            }
+
+            function getVectorLayer() {
+                var geojson_layer = new OpenLayers.Layer.Vector("GeoJSON", {
+                    strategies: [new OpenLayers.Strategy.Fixed()],
+                    protocol: new OpenLayers.Protocol.HTTP({
+                        url: "geoJSON?dbName=nicolas&layerName=public.communes&maxFeatures=-1",
+                        format: new OpenLayers.Format.GeoJSON()
+                    })
+                });
+                return geojson_layer;
+            }
+
+            // On page load, fetch the Map configuration from the server
+            // and uses it to instantiate the map
+            function init() {
+                console.log("init called");
+                $.getJSON('/mapConfig?item=allLayers', function(data) {
+                    console.log("initMap: receiving config data:");
+                    mapConfig = data
+                    console.log(mapConfig);
+                    layers = createServerLayers();
+                    controls = getControls();
+
+                    map = new OpenLayers.Map('map', getMapConf());
+                    /*
+                     var msLayer = new OpenLayers.Layer.MapServer("countries",
+                     "http://localhost/cgi-bin/mapserv?map=/tmp/test.map&layers=countries",
+                     {layers: 'countries'},
+                     {isBaseLayer: false, singleTile: "true", ratio: 1, opacity:  1});
+                     var msLayer2 = new OpenLayers.Layer.MapServer("communes",
+                     "http://localhost/cgi-bin/mapserv?map=/tmp/test.map&layers=communes",
+                     {layers: 'communes'},
+                     {isBaseLayer: false, singleTile: "true", ratio: 1, opacity: 1});
+                     map.addLayer(baseLayer);
+                     map.addLayer(msLayer);
+                     map.addLayer(msLayer2);
+                     */
+                    map.addLayers(layers);
+                    map.addControls(controls)
+
+                    // register events
+                    map.events.register("mousemove", map, function(e) {
+                        var position = this.events.getMousePosition(e);
+                        OpenLayers.Util.getElement("coords").innerHTML = position;
+                    });
+
+                    map.zoomToMaxExtent();
+                });
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="map" class="smallmap"></div>
+        <div id="coords" style="background-color: white"></div>
+        <div id="text">
+            Settings.<br/>
+        </div>
+        <img name="imgtest" style="display: inline" src=""/>
+    </body>
+</html>
