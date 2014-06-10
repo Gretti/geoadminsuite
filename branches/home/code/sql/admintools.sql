@@ -49,3 +49,22 @@ with points as (
 	'POINT (0 1)'::geometry as pt
 ) select point_side(A, B, pt)
 from points;
+
+-- list table size (total, index) for all non catalog tables
+with list as (
+    select table_name, table_schema
+    from information_schema.tables
+    where table_name not like 'pg_%' and table_name not like '_pg%'
+), size_ as ( 
+    select table_schema, table_name, 
+        pg_relation_size(table_schema||'.'||table_name) as table_size, 
+        pg_total_relation_size(table_schema||'.'||table_name) as total_table_size
+    from list
+) select table_schema, table_name, pg_size_pretty(table_size) as pts,
+    pg_size_pretty(total_table_size) as ptts,
+    pg_size_pretty(total_table_size-table_size) as pis,
+    table_size as ts,
+    total_table_size as tts,
+    total_table_size-table_size as tis
+from size_
+order by 7 desc;
