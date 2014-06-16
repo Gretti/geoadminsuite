@@ -1,0 +1,151 @@
+--------------------------------------------------------------------------------
+Creation et chargement de la base de données de travail
+--------------------------------------------------------------------------------
+
+• Créer une base de données avec la cartouche Postgis installée. Nom de la base: atenpgis
+
+• Charger des données fournies sous forme de Shapefile avec l'outil postgis shp2pgsql (cf. slides)
+    -> Choix de la bonne projection
+    -> choix de l'encodage (accents, ...) du fichier .dbf
+
+• Reprojeter les données qui le nécessitent en Lambert93: srid:2154
+
+• Appliquer une certaines précision des coordonnées aux données, pour éviter certaines erreurs
+lors des calculs geo
+
+• Controler la validité des données, corriger les données si nécessaire
+
+• Charger les données de bathymetrie: cf. tp2.txt
+
+
+• Afficher les données dans QGis ou OpenJump
+    -> créer la connexion postgis vers la base de données atenpgis
+    -> charger les couches géographiques
+
+• Requetes sur les données: 
+    - Afficher un résumé des données
+    - identifier les zones (code, nom) dans lesquelles sont présentes des especes. Deux facons de faire (distinct et sous requete): comparer les temps
+    - Calculer la somme des longueurs des rivieres (en Km) intersectant les zones de travail
+    - Fabriquer une multilinestring par zone contenant toutes les rivieres intersectant les zones
+    - Trouver tous les affluents d'un cours d'eau donné: utilisation de fonctions iteratives: WITH RECURSIVE
+    - cf. webmapping ?
+    - Trouver toutes les especes de type femelle localisés a moins de 500m d'une riviere
+    - calculer les unions des aires de repartition pour differentes especes: chaque espece est caractérisée par une aire de repartition:
+        fabriquer le buffer de meme aire autour de chaque individu appartenant a une des especes et grouper ensuite les buffer par espece:
+        Araneidae: 30 ha 
+        Clubionidae: 250 ha
+        Oxyopes lineatus: 5.5 ha
+
+    - Avec les couches zones et bathy, calculer la surface en ha des parties des zones situées en mer
+    - Pour chaque zone en mer, donner sa surface dans les différentes profondeurs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------
+Correction
+--------------------------------------------------------------------------------
+________________________________
+• Création de la base de données. Plusieurs methodes pour cela:
+
+1°) PG Admin, par interface graphique: 
+    - ouvrir PgAdmin
+    - configurer un nouveau serveur Postgresql local (hote=localhost)
+    - Créer la base de données atenpgis sur ce serveur
+    - Installer l'extension postgis
+
+2°) Par ligne de commande: Postgresql fournit des programmes en ligne de commande pour créer
+des bases de données, des utilisateurs, des langages, etc. (et supprimer ces memes objets)
+    
+    - ouvrir une fenetre de commande DOS
+    - se placer dans le repertoire 'bin' de Postgresql (drag'n'drop possible depuis l'Explorateur de fichiers
+    - lancer la commande: createdb -U postgres atenpgis
+    - se connecter à cette nouvelle base avec l'outil psql: psql -U postgres atenpgis
+    - installer l'extension PostGIS: create extension postgis;
+    - se deconnecter de psql (\q)
+
+3°) Par commande SQL, en étant connecté sur une autre base (par exemple la base par défaut 'postgres'
+    - ouvrir une fenetre de commande DOS
+    - se placer dans le repertoire 'bin' de Postgresql (drag'n'drop possible depuis l'Explorateur de fichiers
+    - se connecter à la base 'postgres' avec l'outil psql: psql -U postgres
+    - créer une nouvelle base de données 'atenpgis': create database atenpgis;
+    - se connecter à cette nouvelle base depuis psql: \c atenpgis
+    - installer l'extension PostGIS: create extension postgis;
+
+_________________________
+• Chargement des données
+
+    - ouvrir une fenetre de commande DOS
+    - se placer dans le repertoire 'bin' de Postgresql (drag'n'drop possible depuis l'Explorateur de fichiers
+    - Utiliser le programme shp2pgsql pour charger les données Shapefile fournies dans le répertoire 'donnees'
+    (utiliser l'explorateur pour copier le chemin vers le fichier shapefile ou drag'n'drop du fichier dans la fenetre dos)
+    - Commandes:
+
+shp2pgsql -ID -g geom -s 2154 -W latin1 COURS_D_EAU.SHP rivieres | psql atenpgis
+shp2pgsql -ID -g geom -s 2154 -W latin1 rnrgg_point_espece.shp especes | psql atenpgis
+shp2pgsql -ID -g geom -s 27572 -W latin1 sic_lr.shp zones | psql atenpgis
+    
+___________________________________________
+• Reprojeter les données qui le nécessitent en Lambert93: srid:2154
+
+    (requete sql en ligne de commande (psql) ou dans PgAdmin)
+
+alter table zones alter column geom type geometry(MultiPolygon, 2154) using st_transform(geom, 2154);
+
+
+
+
+• Appliquer une certaines précision des coordonnées aux données, pour éviter certaines erreurs
+lors des calculs geo
+
+• Controler la validité des données, corriger les données si nécessaire
+
+• Afficher les données dans QGis ou OpenJump
+    -> créer la connexion postgis vers la base de données atenpgis
+    -> charger les couches géographiques
+
+• Requetes sur les données
+    

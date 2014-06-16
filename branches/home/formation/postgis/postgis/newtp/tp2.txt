@@ -1,0 +1,102 @@
+--------------------------------------------------------------------------------
+Chargement de données de travail à partir d'OGR2OGR
+--------------------------------------------------------------------------------
+
+• Ouvrir une fenetre de commande (fenetre DOS sous windows, terminal sous Linux)
+• Se placer dans le répertoire bin de GDAL/OGR
+• lancer la commande:
+     ogr2ogr --help
+pour avoir l'aide en ligne
+
+• Charger la couche bathymetrie.shp dans la base de données, sous le nom bathy
+    - en la reprojetant depuis EPSG:4326 (le shapefile ne contient pas d'info de projection...)
+    - en forcant des géométries 2D
+    - en appelant la colonne géométrique "geom"
+    - en appelant la clé primaire "gid"
+    - en supprimant la colonne "PERIMETER" dans la table cible
+    - en créant un index spatial
+    - en ne gardant que les géométries dans l'extent géo suivant:
+        xmin:2.62  ymin:41.03 xmax:5.94 ymax:43.78
+
+• Vérifier que les géométries sont valides dans la base
+• Les corriger si nécessaire
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------
+Correction
+--------------------------------------------------------------------------------
+
+export PG_USE_COPY=YES
+ogr2ogr -progress -overwrite \
+    -sql "select OGR_FID, AREA,  CARTE2_, CARTE2_ID, BATHY, ID1 from bathymetrie" \
+    -spat 2.62 41.03 5.94 43.78 \
+    -s_srs EPSG:4326 -t_srs EPSG:2154 \
+    -f PostgreSQL PG:"dbname=atenpgis" bathymetrie.shp \
+    -lco GEOMETRY_NAME=geom -lco FID=gid -nln bathy -dim 2
+
+• En SQL:
+
+select st_isvalidReason(geom)
+from bathy where not st_isvalid(geom);
+
+update bathy set geom = st_makevalid(geom)
+where not st_isvalid(geom);
