@@ -1,13 +1,15 @@
--- a query to dump multi objects into single one, basic first, then by dumping
--- all attributes (system table to find all relation attributes) and increasing
--- identifiers automatically, based on:
+Slide sur les types geo de postgis:vrac, avec image et explication succincte.
 
-SELECT generate_series(1,(Select ST_NumGeometries(the_geom))) as id,
-ST_GeometryN(the_geom, generate_series(1, ST_NumGeometries(the_geom))) AS the_geom 
-into single_lines FROM lines;
 
-Thread:
-http://postgis.refractions.net/pipermail/postgis-users/2008-February/018494.html
+avec les nouvelles données aten:
+
+calculer les aires de repartition par espece:
+    convex hull des points par espece
+    cluster de points ?
+
+Creation d'une base par plusieurs methodes
+
+
 
 -- virer toute reference a 1.4 => mise a jour de la version
 
@@ -16,7 +18,7 @@ http://postgis.refractions.net/pipermail/postgis-users/2008-February/018494.html
 	limitations et forces
 	utilisation
 	conversion
-	TP: donn�es de france (L93) converties en WGS84/geog:
+	TP: données de france (L93) converties en WGS84/geog:
 	
 	calculer la distance directement: regarder la difference avec un type geometry
 	surface de la france en WGS et projection: comparer
@@ -34,8 +36,9 @@ http://postgis.refractions.net/pipermail/postgis-users/2008-February/018494.html
 	ST_ShortestLine
 	
 	
--- integration de trace GPX, 
-creation de table, 
-fabrication de point (makePoint)
-reprojection en l93
-affichage qgis avec la france par ex.
+-- 02/05/2014
+sites, tc: trouver les tc les plus proches de chaque sites en fonction du type de tc (gare, bus, metro, etc.)
+
+OSPREOP: parcelles d'une disposition: section de plus grande surface
+
+

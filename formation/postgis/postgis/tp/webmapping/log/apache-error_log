@@ -166,3 +166,455 @@ httpd: Could not reliably determine the server's fully qualified domain name, us
 [Fri Sep 28 13:58:41 2012] [error] [client 127.0.0.1] script not found or unable to stat: /Library/WebServer/CGI-Executables/mapserv.exe, referer: http://localhost:8080/GeoSIE-Brique/viewer.html
 [Fri Sep 28 13:58:41 2012] [error] [client 127.0.0.1] script not found or unable to stat: /Library/WebServer/CGI-Executables/mapserv.exe, referer: http://localhost:8080/GeoSIE-Brique/viewer.html
 [Fri Sep 28 14:00:32 2012] [error] [client 127.0.0.1] script not found or unable to stat: /Library/WebServer/CGI-Executables/mapserv.exe
+[Mon Nov 05 09:01:26 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Mon Nov 05 09:01:26 2012] [notice] Digest: generating secret for digest authentication ...
+[Mon Nov 05 09:01:26 2012] [notice] Digest: done
+[Mon Nov 05 09:01:26 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Wed Nov 07 00:13:17 2012] [notice] caught SIGTERM, shutting down
+[Wed Nov 07 18:05:38 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Wed Nov 07 18:05:38 2012] [notice] Digest: generating secret for digest authentication ...
+[Wed Nov 07 18:05:38 2012] [notice] Digest: done
+[Wed Nov 07 18:05:38 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Wed Nov 07 23:05:52 2012] [notice] caught SIGTERM, shutting down
+[Thu Nov 08 19:40:12 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Thu Nov 08 19:40:12 2012] [notice] Digest: generating secret for digest authentication ...
+[Thu Nov 08 19:40:12 2012] [notice] Digest: done
+[Thu Nov 08 19:40:12 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Sun Nov 11 19:36:40 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sun Nov 11 19:36:42 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/magProxy, referer: http://localhost/viewer.html
+[Sun Nov 11 19:36:43 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sun Nov 11 19:36:43 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sun Nov 11 22:46:33 2012] [notice] caught SIGTERM, shutting down
+[Mon Nov 12 17:57:45 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Mon Nov 12 17:57:45 2012] [notice] Digest: generating secret for digest authentication ...
+[Mon Nov 12 17:57:45 2012] [notice] Digest: done
+[Mon Nov 12 17:57:45 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Mon Nov 12 22:33:12 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Mon Nov 12 22:33:13 2012] [notice] Digest: generating secret for digest authentication ...
+[Mon Nov 12 22:33:13 2012] [notice] Digest: done
+[Mon Nov 12 22:33:13 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Tue Nov 13 22:59:19 2012] [notice] caught SIGTERM, shutting down
+[Wed Nov 14 18:22:07 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Wed Nov 14 18:22:07 2012] [notice] Digest: generating secret for digest authentication ...
+[Wed Nov 14 18:22:07 2012] [notice] Digest: done
+[Wed Nov 14 18:22:07 2012] [emerg] (17)File exists: Couldn't create accept lock (/private/var/log/apache2/accept.lock.36) (5)
+[Wed Nov 14 18:22:25 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Wed Nov 14 18:22:25 2012] [notice] Digest: generating secret for digest authentication ...
+[Wed Nov 14 18:22:25 2012] [notice] Digest: done
+[Wed Nov 14 18:22:25 2012] [warn] pid file /private/var/run/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Wed Nov 14 18:22:25 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Thu Nov 15 23:23:14 2012] [notice] caught SIGTERM, shutting down
+[Fri Nov 16 16:53:02 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Fri Nov 16 16:53:02 2012] [notice] Digest: generating secret for digest authentication ...
+[Fri Nov 16 16:53:02 2012] [notice] Digest: done
+[Fri Nov 16 16:53:02 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Fri Nov 16 17:09:35 2012] [error] [client 127.0.0.1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/scrape
+[Fri Nov 16 17:09:45 2012] [error] [client 127.0.0.1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/scrape
+[Fri Nov 16 17:10:05 2012] [error] [client 127.0.0.1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/announce
+[Fri Nov 16 17:19:46 2012] [notice] caught SIGTERM, shutting down
+[Fri Nov 16 17:21:26 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Fri Nov 16 17:21:26 2012] [notice] Digest: generating secret for digest authentication ...
+[Fri Nov 16 17:21:26 2012] [notice] Digest: done
+[Fri Nov 16 17:21:26 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Sat Nov 17 01:05:31 2012] [notice] caught SIGTERM, shutting down
+[Sat Nov 17 11:24:46 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Sat Nov 17 11:24:46 2012] [notice] Digest: generating secret for digest authentication ...
+[Sat Nov 17 11:24:46 2012] [notice] Digest: done
+[Sat Nov 17 11:24:46 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Sat Nov 17 16:38:02 2012] [notice] caught SIGTERM, shutting down
+[Sat Nov 17 16:38:59 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Sat Nov 17 16:39:00 2012] [notice] Digest: generating secret for digest authentication ...
+[Sat Nov 17 16:39:00 2012] [notice] Digest: done
+[Sat Nov 17 16:39:00 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Sat Nov 17 17:31:27 2012] [notice] caught SIGTERM, shutting down
+[Sat Nov 17 17:32:14 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Sat Nov 17 17:32:14 2012] [notice] Digest: generating secret for digest authentication ...
+[Sat Nov 17 17:32:14 2012] [notice] Digest: done
+[Sat Nov 17 17:32:14 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Sat Nov 17 17:32:47 2012] [notice] caught SIGTERM, shutting down
+[Sat Nov 17 17:38:58 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Sat Nov 17 17:38:58 2012] [notice] Digest: generating secret for digest authentication ...
+[Sat Nov 17 17:38:58 2012] [notice] Digest: done
+[Sat Nov 17 17:38:58 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Sat Nov 17 17:46:36 2012] [notice] caught SIGTERM, shutting down
+[Sat Nov 17 18:15:35 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Sat Nov 17 18:15:35 2012] [notice] Digest: generating secret for digest authentication ...
+[Sat Nov 17 18:15:35 2012] [notice] Digest: done
+[Sat Nov 17 18:15:35 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Sat Nov 17 19:00:59 2012] [notice] caught SIGTERM, shutting down
+[Sat Nov 17 21:00:54 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Sat Nov 17 21:00:54 2012] [notice] Digest: generating secret for digest authentication ...
+[Sat Nov 17 21:00:54 2012] [notice] Digest: done
+[Sat Nov 17 21:00:54 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Sun Nov 18 00:48:53 2012] [notice] caught SIGTERM, shutting down
+[Sun Nov 18 13:33:41 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Sun Nov 18 13:33:41 2012] [notice] Digest: generating secret for digest authentication ...
+[Sun Nov 18 13:33:41 2012] [notice] Digest: done
+[Sun Nov 18 13:33:41 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Sun Nov 18 13:53:45 2012] [notice] caught SIGTERM, shutting down
+[Sun Nov 18 17:27:58 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Sun Nov 18 17:27:58 2012] [notice] Digest: generating secret for digest authentication ...
+[Sun Nov 18 17:27:58 2012] [notice] Digest: done
+[Sun Nov 18 17:27:58 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Mon Nov 19 10:10:56 2012] [notice] caught SIGTERM, shutting down
+[Mon Nov 19 21:54:12 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Mon Nov 19 21:54:12 2012] [notice] Digest: generating secret for digest authentication ...
+[Mon Nov 19 21:54:12 2012] [notice] Digest: done
+[Mon Nov 19 21:54:12 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Mon Nov 19 21:21:54 2012] [notice] caught SIGTERM, shutting down
+[Mon Nov 19 21:28:07 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Mon Nov 19 21:28:07 2012] [notice] Digest: generating secret for digest authentication ...
+[Mon Nov 19 21:28:07 2012] [notice] Digest: done
+[Mon Nov 19 21:28:07 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Mon Nov 19 22:14:30 2012] [notice] caught SIGTERM, shutting down
+[Mon Nov 19 22:22:08 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Mon Nov 19 22:22:08 2012] [notice] Digest: generating secret for digest authentication ...
+[Mon Nov 19 22:22:08 2012] [notice] Digest: done
+[Mon Nov 19 22:22:08 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Mon Nov 19 22:43:49 2012] [notice] caught SIGTERM, shutting down
+[Mon Nov 19 22:46:21 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Mon Nov 19 22:46:21 2012] [notice] Digest: generating secret for digest authentication ...
+[Mon Nov 19 22:46:21 2012] [notice] Digest: done
+[Mon Nov 19 22:46:21 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Mon Nov 19 23:06:43 2012] [notice] caught SIGTERM, shutting down
+[Mon Nov 19 23:07:30 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using ::1 for ServerName
+[Mon Nov 19 23:07:30 2012] [notice] Digest: generating secret for digest authentication ...
+[Mon Nov 19 23:07:30 2012] [notice] Digest: done
+[Mon Nov 19 23:07:30 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Tue Nov 20 00:37:58 2012] [notice] caught SIGTERM, shutting down
+[Tue Nov 20 18:45:48 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Tue Nov 20 18:45:48 2012] [notice] Digest: generating secret for digest authentication ...
+[Tue Nov 20 18:45:48 2012] [notice] Digest: done
+[Tue Nov 20 18:45:48 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Wed Nov 21 23:57:27 2012] [notice] caught SIGTERM, shutting down
+[Thu Nov 22 09:09:01 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Thu Nov 22 09:09:01 2012] [notice] Digest: generating secret for digest authentication ...
+[Thu Nov 22 09:09:01 2012] [notice] Digest: done
+[Thu Nov 22 09:09:01 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Sat Nov 24 13:46:07 2012] [error] [client 127.0.0.1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/scrape
+[Sat Nov 24 13:46:26 2012] [error] [client 127.0.0.1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/announce
+[Sat Nov 24 14:16:31 2012] [error] [client 127.0.0.1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/announce
+[Sat Nov 24 14:46:36 2012] [error] [client 127.0.0.1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/announce
+[Sat Nov 24 15:16:41 2012] [error] [client 127.0.0.1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/announce
+[Sat Nov 24 15:46:46 2012] [error] [client 127.0.0.1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/announce
+[Sat Nov 24 16:16:51 2012] [error] [client 127.0.0.1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/announce
+[Sat Nov 24 16:46:56 2012] [error] [client 127.0.0.1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/announce
+[Sat Nov 24 17:17:01 2012] [error] [client 127.0.0.1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/announce
+[Sat Nov 24 17:47:06 2012] [error] [client 127.0.0.1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/announce
+[Sat Nov 24 22:08:17 2012] [error] [client 127.0.0.1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/announce
+[Sat Nov 24 22:08:22 2012] [error] [client 127.0.0.1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/announce
+[Sat Nov 24 23:03:00 2012] [error] [client 127.0.0.1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/announce
+[Sat Nov 24 23:36:47 2012] [error] [client 127.0.0.1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/announce
+[Sun Nov 25 00:05:52 2012] [error] [client 127.0.0.1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/announce
+[Sun Nov 25 00:35:57 2012] [error] [client 127.0.0.1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/announce
+[Sun Nov 25 01:06:02 2012] [error] [client 127.0.0.1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/announce
+[Sun Nov 25 01:36:07 2012] [error] [client 127.0.0.1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/announce
+[Sun Nov 25 01:55:00 2012] [notice] caught SIGTERM, shutting down
+[Sun Nov 25 13:26:53 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Sun Nov 25 13:26:53 2012] [notice] Digest: generating secret for digest authentication ...
+[Sun Nov 25 13:26:53 2012] [notice] Digest: done
+[Sun Nov 25 13:26:53 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Tue Nov 27 22:40:51 2012] [notice] caught SIGTERM, shutting down
+[Wed Nov 28 18:19:46 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Wed Nov 28 18:19:46 2012] [notice] Digest: generating secret for digest authentication ...
+[Wed Nov 28 18:19:46 2012] [notice] Digest: done
+[Wed Nov 28 18:19:46 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Wed Nov 28 23:19:37 2012] [notice] caught SIGTERM, shutting down
+[Thu Nov 29 18:38:52 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Thu Nov 29 18:38:52 2012] [notice] Digest: generating secret for digest authentication ...
+[Thu Nov 29 18:38:52 2012] [notice] Digest: done
+[Thu Nov 29 18:38:52 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Fri Dec 07 01:13:48 2012] [error] [client 10.0.1.2] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/crossdomain.xml
+[Fri Dec 07 01:13:49 2012] [warn] (2)No such file or directory: Cannot reinit SSLMutex
+[Fri Dec 07 13:28:39 2012] [notice] caught SIGTERM, shutting down
+[Sat Dec 08 01:55:28 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Sat Dec 08 01:55:28 2012] [notice] Digest: generating secret for digest authentication ...
+[Sat Dec 08 01:55:28 2012] [notice] Digest: done
+[Sat Dec 08 01:55:28 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Sat Dec 08 16:38:38 2012] [notice] caught SIGTERM, shutting down
+[Sat Dec 08 18:45:14 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Sat Dec 08 18:45:14 2012] [notice] Digest: generating secret for digest authentication ...
+[Sat Dec 08 18:45:14 2012] [notice] Digest: done
+[Sat Dec 08 18:45:14 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Sun Dec 09 22:07:56 2012] [notice] caught SIGTERM, shutting down
+[Mon Dec 10 18:16:04 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Mon Dec 10 18:16:04 2012] [notice] Digest: generating secret for digest authentication ...
+[Mon Dec 10 18:16:04 2012] [notice] Digest: done
+[Mon Dec 10 18:16:04 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Mon Dec 10 19:50:13 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/mapshup, referer: http://engine.mapshup.info/charterng/
+[Tue Dec 11 22:51:26 2012] [notice] caught SIGTERM, shutting down
+[Wed Dec 12 18:41:31 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Wed Dec 12 18:41:32 2012] [notice] Digest: generating secret for digest authentication ...
+[Wed Dec 12 18:41:32 2012] [notice] Digest: done
+[Wed Dec 12 18:41:32 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Wed Dec 12 22:29:05 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Wed Dec 12 22:29:07 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/magProxy, referer: http://localhost/viewer.html
+[Wed Dec 12 22:29:08 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Wed Dec 12 22:29:08 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Wed Dec 12 22:30:09 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Wed Dec 12 22:30:09 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/magProxy, referer: http://localhost/viewer.html
+[Wed Dec 12 22:30:09 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Wed Dec 12 22:30:09 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Wed Dec 12 22:30:46 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Wed Dec 12 22:35:50 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Wed Dec 12 22:36:08 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Wed Dec 12 22:36:16 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Wed Dec 12 22:48:22 2012] [notice] caught SIGTERM, shutting down
+[Sat Dec 29 19:12:23 2012] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Sat Dec 29 19:12:23 2012] [notice] Digest: generating secret for digest authentication ...
+[Sat Dec 29 19:12:23 2012] [notice] Digest: done
+[Sat Dec 29 19:12:23 2012] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Sat Dec 29 19:12:35 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 19:14:45 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 19:14:49 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 19:14:49 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 19:14:49 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 19:14:49 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 19:14:49 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 19:14:49 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 19:14:49 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 19:14:49 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 19:14:49 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 19:20:04 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 19:21:36 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 19:21:45 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 19:24:25 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 19:24:37 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 19:25:06 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 19:39:46 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 19:41:14 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 19:43:38 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 19:43:38 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 19:43:38 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 19:43:38 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 19:43:38 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 19:43:38 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 19:43:38 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 19:43:39 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 19:43:39 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 19:44:02 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 19:46:43 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 19:48:17 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 19:48:17 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 19:48:17 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 19:48:17 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 19:48:17 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 19:48:18 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 19:48:18 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 19:48:18 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 19:48:18 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 20:13:32 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 20:13:35 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 20:13:35 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 20:13:35 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 20:13:35 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 20:13:35 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 20:13:35 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 20:13:35 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 20:13:35 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 20:13:35 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 20:13:45 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 20:13:45 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 20:13:46 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 20:13:46 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 20:13:46 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 20:13:46 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 20:13:46 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 20:13:46 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 20:13:46 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 20:18:28 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 20:18:28 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 20:18:28 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 20:18:28 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 20:18:28 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 20:18:28 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 20:18:28 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 20:18:28 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 20:18:28 2012] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Dec 29 22:46:20 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 22:51:32 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 22:51:50 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 22:52:17 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 22:52:21 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 22:52:31 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 22:55:23 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 22:56:09 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 22:56:43 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 22:56:45 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 22:57:53 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 22:58:15 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 23:12:16 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 23:12:45 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 23:13:04 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 23:13:08 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 23:13:14 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 23:13:28 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 23:13:32 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Dec 29 23:22:53 2012] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Wed Jan 02 00:14:07 2013] [notice] caught SIGTERM, shutting down
+[Wed Jan 02 19:06:06 2013] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Wed Jan 02 19:06:06 2013] [notice] Digest: generating secret for digest authentication ...
+[Wed Jan 02 19:06:06 2013] [notice] Digest: done
+[Wed Jan 02 19:06:06 2013] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Wed Jan 02 19:39:40 2013] [notice] caught SIGTERM, shutting down
+[Wed Jan 02 19:40:18 2013] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Wed Jan 02 19:40:18 2013] [notice] Digest: generating secret for digest authentication ...
+[Wed Jan 02 19:40:18 2013] [notice] Digest: done
+[Wed Jan 02 19:40:18 2013] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Thu Jan 03 22:49:06 2013] [notice] caught SIGTERM, shutting down
+[Fri Jan 04 09:40:57 2013] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Fri Jan 04 09:40:57 2013] [notice] Digest: generating secret for digest authentication ...
+[Fri Jan 04 09:40:57 2013] [notice] Digest: done
+[Fri Jan 04 09:40:57 2013] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Fri Jan 04 09:59:41 2013] [notice] caught SIGTERM, shutting down
+[Fri Jan 04 18:54:09 2013] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Fri Jan 04 18:54:09 2013] [notice] Digest: generating secret for digest authentication ...
+[Fri Jan 04 18:54:09 2013] [notice] Digest: done
+[Fri Jan 04 18:54:09 2013] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Fri Jan 04 19:08:51 2013] [notice] caught SIGTERM, shutting down
+[Fri Jan 04 19:08:51 2013] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Fri Jan 04 19:08:51 2013] [notice] Digest: generating secret for digest authentication ...
+[Fri Jan 04 19:08:51 2013] [notice] Digest: done
+[Fri Jan 04 19:08:51 2013] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Fri Jan 04 19:09:03 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Fri Jan 04 19:12:34 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Fri Jan 04 19:14:14 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Fri Jan 04 19:14:28 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Fri Jan 04 19:15:25 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Fri Jan 04 19:15:27 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Fri Jan 04 19:16:02 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Fri Jan 04 19:16:39 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Fri Jan 04 19:16:46 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Fri Jan 04 19:17:43 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Fri Jan 04 19:29:31 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:29:31 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:29:31 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:29:31 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:29:31 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:29:31 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:29:31 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:29:31 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:29:31 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:30:19 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:30:19 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:30:19 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:30:19 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:30:19 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:30:19 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:30:19 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:30:19 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:30:19 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:31:05 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:31:05 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:31:05 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:31:05 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:31:05 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:31:05 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:31:05 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:31:05 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:31:05 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:31:18 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:31:18 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:31:18 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:31:18 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:31:18 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:31:18 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:31:18 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:31:18 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:31:18 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Fri Jan 04 19:35:48 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Jan 05 02:38:36 2013] [notice] caught SIGTERM, shutting down
+[Sat Jan 05 12:35:57 2013] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using ::1 for ServerName
+[Sat Jan 05 12:35:57 2013] [notice] Digest: generating secret for digest authentication ...
+[Sat Jan 05 12:35:57 2013] [notice] Digest: done
+[Sat Jan 05 12:35:57 2013] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Sat Jan 05 12:50:12 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Jan 05 12:50:12 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Jan 05 12:50:12 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Jan 05 12:50:12 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Jan 05 12:50:12 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Jan 05 12:50:12 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Jan 05 12:50:12 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Jan 05 12:50:12 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Jan 05 12:50:12 2013] [error] [client ::1] script not found or unable to stat: /Library/WebServer/CGI-Executables/map=, referer: http://localhost:8080/MapViewer/
+[Sat Jan 05 12:53:16 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Jan 05 12:54:12 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Jan 05 12:54:22 2013] [notice] caught SIGTERM, shutting down
+[Sat Jan 05 12:54:23 2013] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Sat Jan 05 12:54:23 2013] [notice] Digest: generating secret for digest authentication ...
+[Sat Jan 05 12:54:23 2013] [notice] Digest: done
+[Sat Jan 05 12:54:23 2013] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Sat Jan 05 12:54:30 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Jan 05 12:54:41 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Jan 05 12:55:55 2013] [notice] caught SIGTERM, shutting down
+[Sat Jan 05 12:55:55 2013] [warn] Init: Session Cache is not configured [hint: SSLSessionCache]
+httpd: Could not reliably determine the server's fully qualified domain name, using Airlap-4.local for ServerName
+[Sat Jan 05 12:55:55 2013] [notice] Digest: generating secret for digest authentication ...
+[Sat Jan 05 12:55:55 2013] [notice] Digest: done
+[Sat Jan 05 12:55:55 2013] [notice] Apache/2.2.22 (Unix) DAV/2 PHP/5.3.15 with Suhosin-Patch mod_ssl/2.2.22 OpenSSL/0.9.8r configured -- resuming normal operations
+[Sat Jan 05 12:55:59 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Jan 05 12:58:45 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Jan 05 13:03:12 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Jan 05 13:04:49 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Jan 05 13:06:55 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Jan 05 13:44:37 2013] [error] [client ::1] Symbolic link not allowed or link target not accessible: /Library/WebServer/CGI-Executables/mapserv
+[Sat Jan 05 13:44:38 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Jan 05 13:45:03 2013] [error] [client ::1] Symbolic link not allowed or link target not accessible: /Library/WebServer/CGI-Executables/mapserv
+[Sat Jan 05 13:45:04 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Jan 05 13:45:28 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Jan 05 13:45:40 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Jan 05 13:45:44 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Jan 05 13:48:51 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Jan 05 13:49:02 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Jan 05 13:49:08 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Jan 05 13:49:50 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Jan 05 13:49:55 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Jan 05 13:50:15 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Jan 05 14:35:58 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Jan 05 15:17:46 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Jan 05 15:42:43 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Jan 05 15:45:11 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Jan 05 21:33:11 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Jan 05 21:33:12 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/magProxy, referer: http://localhost/viewer.html
+[Sat Jan 05 21:33:12 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Jan 05 21:33:13 2013] [error] [client ::1] File does not exist: /Users/nicolas/code/java/GeoSIE_3.0/GeoSIE-Brique/WebContent/favicon.ico
+[Sat Jan 05 21:34:57 2013] [notice] caught SIGTERM, shutting down
